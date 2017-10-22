@@ -84,28 +84,23 @@
 </nav>
 
         <div id="main" >
-            <div class ="post_page_title_img" style="height: 25rem;background-image: url(https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1011491324,3927154791&amp;fm=27&amp;gp=0.jpg);background-position: center; background-repeat:no-repeat; background-size:cover;-moz-background-size:cover;overflow:hidden;" >
-                <a href="#" style="padding: 4rem 4rem 2rem 4rem ;"><h2 >Kotlin学习笔记（一）</h2></a>
+            <div class ="post_page_title_img" style="height: 25rem;background-image: url(https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1508150108601&amp;di=4f334ec2c40cbd95158a15fb786485f4&amp;imgtype=0&amp;src=http%3A%2F%2Fstatic.open-open.com%2Flib%2FuploadImg%2F20170220%2F20170220110034_423.jpg);background-position: center; background-repeat:no-repeat; background-size:cover;-moz-background-size:cover;overflow:hidden;" >
+                <a href="#" style="padding: 4rem 4rem 2rem 4rem ;"><h2 >Rxjava学习笔记 (二)(操作符)</h2></a>
             </div>
             <!-- Post -->
             <div class="typo" style="padding: 3rem;">
                 <hr>
-<h3 id="一、基本数据类型"><a href="#一、基本数据类型" class="headerlink" title="一、基本数据类型"></a>一、基本数据类型</h3><p>1.Boolean相当于java中的boolean和Boolean（综合），其他类型一样。</p>
-<p>2.Float的最小值是-MAX_VALUE。</p>
-<p>3.NAN为不是数的数，与任何数不相等，包括自己。</p>
-<p>4.Char字符对于于java中的Character。</p>
-<p>5.不可隐式转换，必须要加.toLong()这样的转换方法。</p>
-<p><img src="http://biaoqingbao.xin/wp-content/uploads/2016/11/1068.jpg" alt="image"></p>
-<h3 id="二、类和对象"><a href="#二、类和对象" class="headerlink" title="二、类和对象"></a>二、类和对象</h3><p>所有类的始祖是Any</p>
-<h3 id="三、空类型和智能类型转换"><a href="#三、空类型和智能类型转换" class="headerlink" title="三、空类型和智能类型转换"></a>三、空类型和智能类型转换</h3><p>1.空类型 </p>
-<p><img src="http://note.youdao.com/yws/public/resource/d368c21bd5f6cb42c7369a008d645bcc/xmlnote/9FA040CDAB40452C9DA2EF9CD2E217F3/10490" alt="image"></p>
-<p>2.智能类型转换</p>
-<p><img src="http://note.youdao.com/yws/public/resource/d368c21bd5f6cb42c7369a008d645bcc/xmlnote/211BCECC0062459CBD897BE25A8076B4/10487" alt="image"></p>
-<h3 id="四、包"><a href="#四、包" class="headerlink" title="四、包"></a>四、包</h3><p><img src="http://note.youdao.com/yws/public/resource/d368c21bd5f6cb42c7369a008d645bcc/xmlnote/1AF3A44AC01945C6AD9A70E618B98BB0/10494" alt="image"></p>
-<h3 id="五、区间"><a href="#五、区间" class="headerlink" title="五、区间"></a>五、区间</h3><p><img src="http://note.youdao.com/yws/public/resource/d368c21bd5f6cb42c7369a008d645bcc/xmlnote/364CF56922E2420EA77FE0CAE22A3BB4/10498" alt="image"></p>
-<h3 id="六、数组"><a href="#六、数组" class="headerlink" title="六、数组"></a>六、数组</h3><p><img src="http://note.youdao.com/yws/public/resource/d368c21bd5f6cb42c7369a008d645bcc/xmlnote/D2590F9A46C04EE4A4D76F8C2629499D/10501" alt="image"></p>
-<p><img src="http://note.youdao.com/yws/public/resource/d368c21bd5f6cb42c7369a008d645bcc/xmlnote/42DF4396452E4F168CC5C06A7C54D00E/10503" alt="image"></p>
-<p><img src="http://note.youdao.com/yws/public/resource/d368c21bd5f6cb42c7369a008d645bcc/xmlnote/986D9644A088431D80FA3C00422D9C0E/10505" alt="image"></p>
+<h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>使用操作符的好处？</p>
+<p>将一系列的操作用操作符链接起来就可以完成复杂的逻辑，代码被分解成一系列可以组合的片段，这就是响应式函数编程的魅力。</p>
+<p>操作符就是为了解决对Observable对象的变换的问题，操作符用于在Observable和最终的Subscriber之间修改Observable发出的事件。RxJava提供了很多很有用的操作符，下面，我们一一对一些常见的操作符来分析。</p>
+<p><img src="http://biaoqingbao.xin/wp-content/uploads/2017/07/1548.jpg" alt="image"></p>
+<h3 id="一、flatmap操作符"><a href="#一、flatmap操作符" class="headerlink" title="一、flatmap操作符"></a>一、flatmap操作符</h3><h4 id="作用："><a href="#作用：" class="headerlink" title="作用："></a>作用：</h4><p>把Observable产生的结果转换成多个Observable，然后把这多个Observable“扁平化”成一个Observable，并依次提交产生的结果给订阅者。<br>flatMap操作符通过传入一个函数作为参数转换源Observable，在这个函数中，你可以自定义转换规则，最后在这个函数中返回一个新的Observable，然后flatMap操作符通过合并这些Observable结合成一个Observable，并依次提交结果给订阅者。</p>
+<h4 id="原理："><a href="#原理：" class="headerlink" title="原理："></a>原理：</h4><p>将传入的事件对象转换成一个Observable对象，<br>这时不会直接发送这个Observable, 而是将这个Observable激活让它自己开始发送事件，<br>每一个创建出来的Observable发送的事件，都被汇入同一个Observable，这个Observable负责将这些事件统一交给Subscriber的回调方法。</p>
+<h3 id="二、map操作符"><a href="#二、map操作符" class="headerlink" title="二、map操作符"></a>二、map操作符</h3><h4 id="作用"><a href="#作用" class="headerlink" title="作用:"></a>作用:</h4><p>map操作符是把源Observable产生的结果，通过映射规则转换成另一个结果集，并提交给订阅者进行处理。</p>
+<h3 id="三、filter操作符"><a href="#三、filter操作符" class="headerlink" title="三、filter操作符"></a>三、filter操作符</h3><h4 id="作用：-1"><a href="#作用：-1" class="headerlink" title="作用："></a>作用：</h4><p>filter操作符是对源Observable产生的结果按照指定条件进行过滤，只有满足条件的结果才会提交给订阅者。</p>
+<h3 id="四、doOnNext操作符"><a href="#四、doOnNext操作符" class="headerlink" title="四、doOnNext操作符"></a>四、doOnNext操作符</h3><h4 id="作用：-2"><a href="#作用：-2" class="headerlink" title="作用："></a>作用：</h4><p>doOnNext()允许我们在每次输出一个元素之前做一些额外的事情，比如这里的保存标题。</p>
+<h4 id="五、take操作符"><a href="#五、take操作符" class="headerlink" title="五、take操作符"></a>五、take操作符</h4><h4 id="作用：-3"><a href="#作用：-3" class="headerlink" title="作用："></a>作用：</h4><p>take()输出最多指定数量的结果。</p>
+<h4 id="六、concat与merge操作符"><a href="#六、concat与merge操作符" class="headerlink" title="六、concat与merge操作符"></a>六、concat与merge操作符</h4><h4 id="区别："><a href="#区别：" class="headerlink" title="区别："></a>区别：</h4><p>concat是按被观察者的执行顺序合并的，而merge是按被观察者发送事件的时间顺序合并的。</p>
 
             </div>
 
@@ -168,8 +163,8 @@ $('.btn_click_load').click(function() {
 -->
 <script type="text/javascript">
     var disqus_config = function () {
-        this.page.url = 'http://yoursite.com/2017/10/15/Kotlin学习笔记（一）/';  // Replace PAGE_URL with your page's canonical URL variable
-        this.page.identifier = 'http://yoursite.com/2017/10/15/Kotlin学习笔记（一）/'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+        this.page.url = 'http://yoursite.com/2017/10/09/Rxjava 学习笔记(二)(操作符)/';  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = 'http://yoursite.com/2017/10/09/Rxjava 学习笔记(二)(操作符)/'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
     };
 </script>
 

@@ -84,28 +84,27 @@
 </nav>
 
         <div id="main" >
-            <div class ="post_page_title_img" style="height: 25rem;background-image: url(https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1011491324,3927154791&amp;fm=27&amp;gp=0.jpg);background-position: center; background-repeat:no-repeat; background-size:cover;-moz-background-size:cover;overflow:hidden;" >
-                <a href="#" style="padding: 4rem 4rem 2rem 4rem ;"><h2 >Kotlin学习笔记（一）</h2></a>
+            <div class ="post_page_title_img" style="height: 25rem;background-image: url(https:https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&amp;quality=100&amp;size=b4000_4000&amp;sec=1508675820&amp;di=84bc3dab2caf3bce2962f7d9289c182e&amp;src=http://imgsrc.baidu.com/imgad/pic/item/6609c93d70cf3bc7814060c9db00baa1cd112a56.jpg);background-position: center; background-repeat:no-repeat; background-size:cover;-moz-background-size:cover;overflow:hidden;" >
+                <a href="#" style="padding: 4rem 4rem 2rem 4rem ;"><h2 >android studio开发sdk</h2></a>
             </div>
             <!-- Post -->
             <div class="typo" style="padding: 3rem;">
                 <hr>
-<h3 id="一、基本数据类型"><a href="#一、基本数据类型" class="headerlink" title="一、基本数据类型"></a>一、基本数据类型</h3><p>1.Boolean相当于java中的boolean和Boolean（综合），其他类型一样。</p>
-<p>2.Float的最小值是-MAX_VALUE。</p>
-<p>3.NAN为不是数的数，与任何数不相等，包括自己。</p>
-<p>4.Char字符对于于java中的Character。</p>
-<p>5.不可隐式转换，必须要加.toLong()这样的转换方法。</p>
-<p><img src="http://biaoqingbao.xin/wp-content/uploads/2016/11/1068.jpg" alt="image"></p>
-<h3 id="二、类和对象"><a href="#二、类和对象" class="headerlink" title="二、类和对象"></a>二、类和对象</h3><p>所有类的始祖是Any</p>
-<h3 id="三、空类型和智能类型转换"><a href="#三、空类型和智能类型转换" class="headerlink" title="三、空类型和智能类型转换"></a>三、空类型和智能类型转换</h3><p>1.空类型 </p>
-<p><img src="http://note.youdao.com/yws/public/resource/d368c21bd5f6cb42c7369a008d645bcc/xmlnote/9FA040CDAB40452C9DA2EF9CD2E217F3/10490" alt="image"></p>
-<p>2.智能类型转换</p>
-<p><img src="http://note.youdao.com/yws/public/resource/d368c21bd5f6cb42c7369a008d645bcc/xmlnote/211BCECC0062459CBD897BE25A8076B4/10487" alt="image"></p>
-<h3 id="四、包"><a href="#四、包" class="headerlink" title="四、包"></a>四、包</h3><p><img src="http://note.youdao.com/yws/public/resource/d368c21bd5f6cb42c7369a008d645bcc/xmlnote/1AF3A44AC01945C6AD9A70E618B98BB0/10494" alt="image"></p>
-<h3 id="五、区间"><a href="#五、区间" class="headerlink" title="五、区间"></a>五、区间</h3><p><img src="http://note.youdao.com/yws/public/resource/d368c21bd5f6cb42c7369a008d645bcc/xmlnote/364CF56922E2420EA77FE0CAE22A3BB4/10498" alt="image"></p>
-<h3 id="六、数组"><a href="#六、数组" class="headerlink" title="六、数组"></a>六、数组</h3><p><img src="http://note.youdao.com/yws/public/resource/d368c21bd5f6cb42c7369a008d645bcc/xmlnote/D2590F9A46C04EE4A4D76F8C2629499D/10501" alt="image"></p>
-<p><img src="http://note.youdao.com/yws/public/resource/d368c21bd5f6cb42c7369a008d645bcc/xmlnote/42DF4396452E4F168CC5C06A7C54D00E/10503" alt="image"></p>
-<p><img src="http://note.youdao.com/yws/public/resource/d368c21bd5f6cb42c7369a008d645bcc/xmlnote/986D9644A088431D80FA3C00422D9C0E/10505" alt="image"></p>
+<h3 id="一、什么是AAR，与JAR区别"><a href="#一、什么是AAR，与JAR区别" class="headerlink" title="一、什么是AAR，与JAR区别"></a>一、什么是AAR，与JAR区别</h3><p>*.jar：只包含了class文件与清单文件，不包含资源文件，如图片等所有res中的文件。</p>
+<p>*.aar：包含所有资源，class以及res资源文件全部包含。</p>
+<p>如果你只是一个简单的类库那么使用生成的.jar文件即可；如果你的是一个UI库，包含一些自己写的控件布局文件以及字体等资源文件那么就只能使用.aar文件。</p>
+<h3 id="二、AndroidStudio将项目打包成jar包的简单方法"><a href="#二、AndroidStudio将项目打包成jar包的简单方法" class="headerlink" title="二、AndroidStudio将项目打包成jar包的简单方法"></a>二、AndroidStudio将项目打包成jar包的简单方法</h3><p>在build.gradle文件中，修改下面两个地方：</p>
+<p>（1）apply plugin:’com.android.application’ 改为 apply plugin: ‘com.android.library’ 。</p>
+<p>(2) 将defaultConfig中的applicationID这行注释掉。</p>
+<p>完成上述两个步骤之后，执行rebuild project,就会在app\build\intermediates\bundles\debug下生成classes.jar文件，这个文件就可以提供给其他项目使用，如果需要的话可以手动修改文件名称。</p>
+<p><img src="https://yqfile.alicdn.com/ff392acb3913ff27f32cf3851884b1dc8f5e5338.jpeg?_=7059382" alt="image"></p>
+<h3 id="三、引用jar文件"><a href="#三、引用jar文件" class="headerlink" title="三、引用jar文件"></a>三、引用jar文件</h3><p>1.将jar文件复制、粘贴到app的libs目录中；</p>
+<p>2.右键点击jar文件，并点击弹出菜单中的“Add As Library”，将jar文件作为类库添加到项目中；   </p>
+<p>3.选择指定的类库。</p>
+<p>注：如果不执行2、3步，jar文件将不起作用，并且不能使用import语句引用。</p>
+<h3 id="四、引用so文件"><a href="#四、引用so文件" class="headerlink" title="四、引用so文件"></a>四、引用so文件</h3><p>1.在“src/main”目录中新建名为“jniLibs”的目录；</p>
+<p>2.将so文件复制、粘贴到“jniLibs”目录内。</p>
+<p>注：如果没有引用so文件，可能会在程序执行的时候加载类库失败，有类似如下的DEBUG提示：<br>java.lang.UnsatisfiedLinkError: Couldn’t load library xxxx from loader dalvik.system.PathClassLoader</p>
 
             </div>
 
@@ -168,8 +167,8 @@ $('.btn_click_load').click(function() {
 -->
 <script type="text/javascript">
     var disqus_config = function () {
-        this.page.url = 'http://yoursite.com/2017/10/15/Kotlin学习笔记（一）/';  // Replace PAGE_URL with your page's canonical URL variable
-        this.page.identifier = 'http://yoursite.com/2017/10/15/Kotlin学习笔记（一）/'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+        this.page.url = 'http://yoursite.com/2017/10/22/android studio开发sdk/';  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = 'http://yoursite.com/2017/10/22/android studio开发sdk/'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
     };
 </script>
 

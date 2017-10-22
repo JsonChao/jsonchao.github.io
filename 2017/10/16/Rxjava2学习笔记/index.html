@@ -60,7 +60,7 @@
 	            <a href="#s1">分类</a>
 	                    <ul class="submenu">
 	                        <li>
-	                        <a class="category-link" href="/categories/kotlin/">kotlin</a></li><li><a class="category-link" href="/categories/rxjava/">rxjava</a>
+	                        <a class="category-link" href="/categories/kotlin/">kotlin</a></li><li><a class="category-link" href="/categories/rxjava/">rxjava</a></li><li><a class="category-link" href="/categories/sdk开发/">sdk开发</a>
 	                    </ul>
 	        </li>
 	        
@@ -96,8 +96,9 @@
 <li>Flowable/Subscriber</li>
 <li>Single/SingleObserver</li>
 <li>Completable/CompletableObserver</li>
-<li>Maybe/MaybeObserver<br>后面三种观察者模式差不多，Maybe/MaybeObserver可以说是Single/SingleObserver和Completable/CompletableObserver的复合体。</li>
+<li>Maybe/MaybeObserver<br>后面三种观察者模式差不多，Maybe/MaybeObserver可以说是Single/SingleObserver和Completable/CompletableObserver的复合体。好的，接下来，我们正式开始。。</li>
 </ol>
+<p><img src="http://biaoqingbao.xin/wp-content/uploads/2016/11/1111.jpg" alt="image"></p>
 <h4 id="一、线程制定策略"><a href="#一、线程制定策略" class="headerlink" title="一、线程制定策略"></a>一、线程制定策略</h4><p>多次指定上游的线程只有第一次指定的有效, 也就是说多次调用subscribeOn() 只有第一次的有效, 其余的会被忽略.</p>
 <p>多次指定下游的线程是可以的, 也就是说每调用一次observeOn() , 下游的线程就会切换一次.</p>
 <h4 id="二、Disposable"><a href="#二、Disposable" class="headerlink" title="二、Disposable"></a>二、Disposable</h4><p>rxjava2+retrofit网络请求的过程中，<br>如果在请求的过程中Activity已经退出了, 这个时候如果回到主线程去更新UI, 那么APP肯定就崩溃了, 怎么办呢, 上一节我们说到了Disposable , 说它是个开关, 调用它的dispose()方法时就会切断水管, 使得下游收不到事件, 既然收不到事件, 那么也就不会再去更新UI了. 因此我们可以在Activity中将这个Disposable 保存起来, 当Activity退出时, 切断它即可.<br>那如果有多个Disposable 该怎么办呢, RxJava中已经内置了一个容器==CompositeDisposable==, 每当我们得到一个Disposable时就调用==CompositeDisposable.add()==将它添加到容器中, 在退出的时候, 调用==CompositeDisposable.clear()== 即可切断所有的水管.</p>
