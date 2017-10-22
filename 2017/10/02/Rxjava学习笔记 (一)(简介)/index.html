@@ -96,7 +96,9 @@
 <p>当事件处理出现异常时框架自动触发onError()方法；</p>
 <p>同时==Observables支持链式调用，从而避免了回调嵌套的问题==。</p>
 <p>用Observable.create()创建了一个新的Observable<integer>，==并为create()方法传入了一个OnSubscribe，OnSubscribe中包含一个call()方法，一旦我们调用subscribe()订阅后就会自动触发call()方法==。call()方法中的参数Subscriber其实就是subscribe()方法中的观察者Observer</integer></p>
-<p><img src="http://biaoqingbao.xin/wp-content/uploads/2017/07/1530.jpg" alt="image"></p>
+<center><br><br> <img src="http://biaoqingbao.xin/wp-content/uploads/2017/07/1530.jpg" alt="image"><br><br><br></center>
+
+
 <h3 id="一、线程调度器"><a href="#一、线程调度器" class="headerlink" title="一、线程调度器"></a>一、线程调度器</h3><p>==subscribeOn()==: 指定 subscribe() 所发生的线程，即 Observable.OnSubscribe 被激活时所处的线程，或者叫做事件产生的线程。</p>
 <p>==observeOn()==: 指定 Subscriber 所运行在的线程，或者叫做事件消费的线程。</p>
 <p>subscribeOn()的调用切换之前的线程。</p>

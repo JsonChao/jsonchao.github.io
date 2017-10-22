@@ -93,7 +93,10 @@
 <h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>使用操作符的好处？</p>
 <p>将一系列的操作用操作符链接起来就可以完成复杂的逻辑，代码被分解成一系列可以组合的片段，这就是响应式函数编程的魅力。</p>
 <p>操作符就是为了解决对Observable对象的变换的问题，操作符用于在Observable和最终的Subscriber之间修改Observable发出的事件。RxJava提供了很多很有用的操作符，下面，我们一一对一些常见的操作符来分析。</p>
-<p><img src="http://biaoqingbao.xin/wp-content/uploads/2017/07/1548.jpg" alt="image"></p>
+<center><br><br><img src="http://biaoqingbao.xin/wp-content/uploads/2017/07/1548.jpg" alt="image"><br></center>
+
+
+
 <h3 id="一、flatmap操作符"><a href="#一、flatmap操作符" class="headerlink" title="一、flatmap操作符"></a>一、flatmap操作符</h3><h4 id="作用："><a href="#作用：" class="headerlink" title="作用："></a>作用：</h4><p>把Observable产生的结果转换成多个Observable，然后把这多个Observable“扁平化”成一个Observable，并依次提交产生的结果给订阅者。<br>flatMap操作符通过传入一个函数作为参数转换源Observable，在这个函数中，你可以自定义转换规则，最后在这个函数中返回一个新的Observable，然后flatMap操作符通过合并这些Observable结合成一个Observable，并依次提交结果给订阅者。</p>
 <h4 id="原理："><a href="#原理：" class="headerlink" title="原理："></a>原理：</h4><p>将传入的事件对象转换成一个Observable对象，<br>这时不会直接发送这个Observable, 而是将这个Observable激活让它自己开始发送事件，<br>每一个创建出来的Observable发送的事件，都被汇入同一个Observable，这个Observable负责将这些事件统一交给Subscriber的回调方法。</p>
 <h3 id="二、map操作符"><a href="#二、map操作符" class="headerlink" title="二、map操作符"></a>二、map操作符</h3><h4 id="作用"><a href="#作用" class="headerlink" title="作用:"></a>作用:</h4><p>map操作符是把源Observable产生的结果，通过映射规则转换成另一个结果集，并提交给订阅者进行处理。</p>

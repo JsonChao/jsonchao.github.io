@@ -97,7 +97,8 @@
 <p>（1）apply plugin:’com.android.application’ 改为 apply plugin: ‘com.android.library’ 。</p>
 <p>(2) 将defaultConfig中的applicationID这行注释掉。</p>
 <p>完成上述两个步骤之后，执行rebuild project,就会在app\build\intermediates\bundles\debug下生成classes.jar文件，这个文件就可以提供给其他项目使用，如果需要的话可以手动修改文件名称。</p>
-<p><img src="https://yqfile.alicdn.com/ff392acb3913ff27f32cf3851884b1dc8f5e5338.jpeg?_=7059382" alt="image"></p>
+<center><br><br> <img src="https://yqfile.alicdn.com/ff392acb3913ff27f32cf3851884b1dc8f5e5338.jpeg?_=7059382" alt="image"><br><br></center>
+
 <h3 id="三、引用jar文件"><a href="#三、引用jar文件" class="headerlink" title="三、引用jar文件"></a>三、引用jar文件</h3><p>1.将jar文件复制、粘贴到app的libs目录中；</p>
 <p>2.右键点击jar文件，并点击弹出菜单中的“Add As Library”，将jar文件作为类库添加到项目中；   </p>
 <p>3.选择指定的类库。</p>
