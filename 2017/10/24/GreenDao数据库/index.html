@@ -1,0 +1,503 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<link rel="bookmark"  type="image/x-icon"  href="/img/logo_miccall.png"/>
+	 <link rel="shortcut icon" href="/img/logo_miccall.png">
+	
+			
+    <title>
+    Deep into Android
+    </title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="/css/mic_main.css" />
+    <link rel="stylesheet" href="/css/dropdownMenu.css" />
+    
+    	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+	
+    <noscript>
+        <link rel="stylesheet" href="/css/noscript.css" />
+    </noscript>
+
+			    <script src="/js/jquery.min.js"></script>
+    <script src="/js/jquery.scrollex.min.js"></script>
+    <script src="/js/jquery.scrolly.min.js"></script>
+    <script src="/js/skel.min.js"></script>
+    <script src="/js/util.js"></script>
+    <script src="/js/main.js"></script>
+	
+</head>
+    
+		
+<!-- Layouts -->
+
+
+
+<!--  代码渲染  -->
+<link rel="stylesheet" href="/css/prism_coy.css" />
+<link rel="stylesheet" href="/css/typo.css" />
+<!-- 文章页 -->
+<body class="is-loading">
+    <!-- Wrapper 外包 s-->
+    <div id="wrapper" class="fade-in">
+        <!-- Intro 头部显示 s -->
+        <!-- Intro 头部显示 e -->
+        <!-- Header 头部logo start -->
+        <header id="header">
+    <a href="/" class="logo">JsonChao</a>
+</header>
+        <!-- Nav 导航条 start -->
+        <nav id="nav" class="special" >
+            <ul class="menu links" >
+			<!-- Homepage  主页  --> 
+			<li >
+	            <a href="/" rel="nofollow">主页</a>
+	        </li>
+			<!-- categories_name  分类   --> 
+	        
+	        <li class="active">
+	            <a href="#s1">分类</a>
+	                    <ul class="submenu">
+	                        <li>
+	                        <a class="category-link" href="/categories/kotlin/">kotlin</a></li><li><a class="category-link" href="/categories/rxjava/">rxjava</a></li><li><a class="category-link" href="/categories/sdk开发/">sdk开发</a></li><li><a class="category-link" href="/categories/数据库/">数据库</a>
+	                    </ul>
+	        </li>
+	        
+	        <!-- archives  归档   --> 
+	        
+	        
+		        <!-- Pages 自定义   -->
+		        
+
+
+            </ul>
+            <!-- icons 图标   -->
+			<ul class="icons">
+		            
+		                <li><a href="https://github.com/JsonChao" class="icon fa-github"><span class="label">GitHub</span></a></li>
+		            
+		            
+		            
+		            
+			</ul>
+</nav>
+
+        <div id="main" >
+            <div class ="post_page_title_img" style="height: 25rem;background-image: url(http://www.langsinsoft.com/uploads/160121/1-1601211I942Z2.jpg);background-position: center; background-repeat:no-repeat; background-size:cover;-moz-background-size:cover;overflow:hidden;" >
+                <a href="#" style="padding: 4rem 4rem 2rem 4rem ;"><h2 >GreenDao数据库</h2></a>
+            </div>
+            <!-- Post -->
+            <div class="typo" style="padding: 3rem;">
+                <hr>
+<p>这段时间在将公司的sql数据库使用第三方的开源数据库替代，综合比较了各个热门的数据库之后，最终还是敲定了greendao，原因不多说，综合性能之王，当然，realm和DBFlow也不错。后续会出相关的文章介绍一下，接下来，就让我们回归正题</p>
+<center><br><br><img src="http://biaoqingbao.xin/wp-content/uploads/2017/07/1548.jpg" alt="image"><br></center>
+
+<p>先给大家灌输点==洪(dou)荒(bi)之力==，好的，正式开始。。</p>
+<h3 id="一、GreenDao和Realm对比。"><a href="#一、GreenDao和Realm对比。" class="headerlink" title="一、GreenDao和Realm对比。"></a>一、GreenDao和Realm对比。</h3><p>在数据量较小的情况下，GreenDao和Realm相差无几，在数据量超过1000条时，GreenDao在删除方面优势很大，Realm在插入和查询方面优势很大，因此，要看需求选择相应的数据库。</p>
+<h3 id="二、GreenDao配置"><a href="#二、GreenDao配置" class="headerlink" title="二、GreenDao配置"></a>二、GreenDao配置</h3><pre><code>apply plugin: &apos;com.android.application&apos;  
+apply plugin: &apos;org.greenrobot.greendao&apos;  
+
+buildscript {  
+    repositories {  
+        mavenCentral()  
+    }  
+    dependencies {  
+        classpath &apos;org.greenrobot:greendao-gradle-plugin:3.0.0&apos;  
+    }  
+}  
+
+greendao {  
+    schemaVersion 1  
+    daoPackage &apos;com.example.anonymous.greendao&apos;  
+    targetGenDir &apos;src/main/java&apos;  
+}  
+
+android {  
+    compileSdkVersion 25  
+    buildToolsVersion &quot;25.0.2&quot;  
+    defaultConfig {  
+        applicationId &quot;com.example.anonymous.realmdemo&quot;  
+        minSdkVersion 15  
+        targetSdkVersion 25  
+        versionCode 1  
+        versionName &quot;1.0&quot;  
+        testInstrumentationRunner &quot;android.support.test.runner.AndroidJUnitRunner&quot;  
+    }  
+    buildTypes {  
+        release {  
+            minifyEnabled false  
+            proguardFiles getDefaultProguardFile(&apos;proguard-android.txt&apos;), &apos;proguard-rules.pro&apos;  
+        }  
+    }  
+}  
+
+dependencies {  
+    compile fileTree(dir: &apos;libs&apos;, include: [&apos;*.jar&apos;])  
+    compile &apos;com.android.support:appcompat-v7:25.0.1&apos;  
+    compile&apos;org.greenrobot:greendao:3.0.1&apos;  
+    compile&apos;org.greenrobot:greendao-generator:3.0.0&apos;  
+}  
+</code></pre><p>注意：buildscript是在工程的根build.gradle下配置的。</p>
+<h3 id="三、编写实体类，对应的是数据库的每一张表"><a href="#三、编写实体类，对应的是数据库的每一张表" class="headerlink" title="三、编写实体类，对应的是数据库的每一张表"></a>三、编写实体类，对应的是数据库的每一张表</h3><pre><code>@Entity  
+public class User {  
+    @Id  
+    private Long id;  
+    private String name;  
+} 
+</code></pre><p>@Entity：将我们的java普通类变为一个能够被greenDAO识别的数据库类型的实体类</p>
+<p>@Id：通过这个注解标记的字段必须是Long类型的，这个字段在数据库中表示它就是主键，并且它默认就是自增的</p>
+<p>然后，点击Make Project（Ctrl + F9），然后GreenDao为你生成了3个类和一些代码，<br>DaoMaster、DaoSession、与User实体对应的UserDao以及User实体类的一些新增代码。<br>其中这三个生成的类的位置是在你app的build.gradle中daoPackage字段指明的位置，如果没有设置这个字段值，默认是在User对应的包下生成的。<br>注意：如果第二次定义一个实体Age类，点击Make Project，只会生成对应的AgeDao。</p>
+<p>好，忙活了这么久，终于可以办正事了，不急，先祝贺一下咱们把扯蛋的配置弄完了</p>
+<center><br><br><img src="http://ww4.sinaimg.cn/mw690/e2b067a1gw1ebfkgjoxdzg206804ox6p.gif" alt="image"><br></center>
+
+
+<h3 id="四、GreenDao增删改查"><a href="#四、GreenDao增删改查" class="headerlink" title="四、GreenDao增删改查"></a>四、GreenDao增删改查</h3><pre><code>DaoMaster.DevOpenHelper devOpenHelper = new DaoMaster.DevOpenHelper(MyApplication.getContext(), &quot;my-db&quot;, null);   
+DaoMaster daoMaster = new DaoMaster(devOpenHelper.getWritableDatabase());
+DaoSession daoSession = daoMaster.newSession();    
+</code></pre><p>注意：得到这个daoSession对象就可以获取到任意一张表单的Dao类进行增删改查操作了。</p>
+<p>1.增</p>
+<pre><code>insert
+insertOrReplace
+</code></pre><p>insert与insertOrReplace的区别：</p>
+<p>如果数据库中已有要插入的数据，那么上面的插入方法就会失败，可以调用insertOrReplace和insertOrReplaceInTx方法。跟踪源码可以发现，insert最终执行的sql语句是”INSERT INTO …”，而insertOrReplace执行的sql语句是”INSERT OR REPLACE INTO …”。</p>
+<p>2.删</p>
+<pre><code>delete
+deleteAll
+</code></pre><p>3.改</p>
+<pre><code>update
+</code></pre><p>4.最重要的就是查了，来一大波干货。。</p>
+<pre><code>在android中进行查询：
+查询所有：List&lt;Son&gt;list=mSonDao.queryBuilder().listLazy();//.list()
+按属性查询：Son nate=mSonDao.queryBuilder().where(SonDao.Properties.Name.eq(&quot;senddi&quot;)).unique();
+匹配符查询：List tomkin=mSonDao.queryBuilder().where(SonDao.Properties.Name.like(&quot;tomkin% &quot;)).list();
+范围（区间）查询：List sons=mSonDao.queryBuilder().where(SonDao.Properties.Age.between(20,30)).list();
+范围（大于）查询：List data=mSonDao.queryBuilder().where(SonDao.Properties.Age.gt(18)).list();
+范围（小于）查询：List data=mSonDao.queryBuilder().where(SonDao.Properties.Age.lt(19)).list();
+范围（不等于）查询：List data=mSonDao.queryBuilder().where(SonDao.Properties.Age.notEq(19)).list();
+范围（大于等于）查询：List data=mSonDao.queryBuilder().where(SonDao.Properties.Age.ge(19)).list();
+升序查询：List&lt;Son&gt; data=mSonDao.queryBuilder().orderAsc(SonDao.Properties.Age).list();
+降序查询：List&lt;Son&gt; data=mSonDao.queryBuilder().orderDesc(SonDao.Properties.Age).list();
+
+与原始的SQL语句结合：（年龄在45岁一下的父亲的ID）
+List data=mSonDao.queryBuilder().where(
+new WhereCondition.StringCondition(&quot;FATHER_UD IN&quot; +
+                        &quot;(SELECT _ID FROM FATHER WHERE AGE&lt;45)&quot;)).list();
+</code></pre><h3 id="五、数据库升级"><a href="#五、数据库升级" class="headerlink" title="五、数据库升级"></a>五、数据库升级</h3><p>在这里，我提一点，数据库升级的主要目的是为了保存升级前的数据，比如说，我在表Date中新加了一个CurrentTime字段，为了使以前的Date表单数据能保存下来，同时还要在每一个Date表单新加一个CurrentTime字段，此时，数据库就需要升级。</p>
+<p>比方说，我现在要加一个字段，升级步骤如下：</p>
+<p>1、需要一个MigrationHelper.java类，StackOverFlow的专家写的，如下：</p>
+<pre><code>/**
+* Created by pokawa on 18/05/15
+*/
+
+public class MigrationHelper {
+
+    private static final String CONVERSION_CLASS_NOT_FOUND_EXCEPTION = &quot;MIGRATION HELPER - CLASS DOESN&apos;T MATCH WITH THE CURRENT PARAMETERS&quot;;
+    private static MigrationHelper instance;
+
+    public static MigrationHelper getInstance() {
+        if(instance == null) {
+            instance = new MigrationHelper();
+        }
+        return instance;
+    }
+
+    public void migrate(SQLiteDatabase db, Class&lt;? extends AbstractDao&lt;?, ?&gt;&gt;... daoClasses) {
+        generateTempTables(db, daoClasses);
+        DaoMaster.dropAllTables(new StandardDatabase(db), true);
+        DaoMaster.createAllTables(new StandardDatabase(db), false);
+        restoreData(db, daoClasses);
+    }
+
+    private void generateTempTables(SQLiteDatabase db, Class&lt;? extends AbstractDao&lt;?, ?&gt;&gt;... daoClasses) {
+        for(int i = 0; i &lt; daoClasses.length; i++) {
+            DaoConfig daoConfig = new DaoConfig(new StandardDatabase(db), daoClasses[i]);
+
+            String divider = &quot;&quot;;
+            String tableName = daoConfig.tablename;
+            String tempTableName = daoConfig.tablename.concat(&quot;_TEMP&quot;);
+            ArrayList&lt;String&gt; properties = new ArrayList&lt;&gt;();
+
+            StringBuilder createTableStringBuilder = new StringBuilder();
+
+            createTableStringBuilder.append(&quot;CREATE TABLE &quot;).append(tempTableName).append(&quot; (&quot;);
+
+            for(int j = 0; j &lt; daoConfig.properties.length; j++) {
+                String columnName = daoConfig.properties[j].columnName;
+
+                if(getColumns(db, tableName).contains(columnName)) {
+                    properties.add(columnName);
+
+                    String type = null;
+
+                    try {
+                        type = getTypeByClass(daoConfig.properties[j].type);
+                    } catch (Exception exception) {
+//                        Crashlytics.logException(exception);
+                    }
+
+                    createTableStringBuilder.append(divider).append(columnName).append(&quot; &quot;).append(type);
+
+                    if(daoConfig.properties[j].primaryKey) {
+                        createTableStringBuilder.append(&quot; PRIMARY KEY&quot;);
+                    }
+
+                    divider = &quot;,&quot;;
+                }
+            }
+            createTableStringBuilder.append(&quot;);&quot;);
+
+            db.execSQL(createTableStringBuilder.toString());
+
+            StringBuilder insertTableStringBuilder = new StringBuilder();
+
+            insertTableStringBuilder.append(&quot;INSERT INTO &quot;).append(tempTableName).append(&quot; (&quot;);
+            insertTableStringBuilder.append(TextUtils.join(&quot;,&quot;, properties));
+            insertTableStringBuilder.append(&quot;) SELECT &quot;);
+            insertTableStringBuilder.append(TextUtils.join(&quot;,&quot;, properties));
+            insertTableStringBuilder.append(&quot; FROM &quot;).append(tableName).append(&quot;;&quot;);
+
+            db.execSQL(insertTableStringBuilder.toString());
+        }
+    }
+
+    private void restoreData(SQLiteDatabase db, Class&lt;? extends AbstractDao&lt;?, ?&gt;&gt;... daoClasses) {
+        for(int i = 0; i &lt; daoClasses.length; i++) {
+            DaoConfig daoConfig = new DaoConfig(new StandardDatabase(db), daoClasses[i]);
+
+            String tableName = daoConfig.tablename;
+            String tempTableName = daoConfig.tablename.concat(&quot;_TEMP&quot;);
+            ArrayList&lt;String&gt; properties = new ArrayList();
+
+            for (int j = 0; j &lt; daoConfig.properties.length; j++) {
+                String columnName = daoConfig.properties[j].columnName;
+
+                if(getColumns(db, tempTableName).contains(columnName)) {
+                    properties.add(columnName);
+                }
+            }
+
+            StringBuilder insertTableStringBuilder = new StringBuilder();
+
+            insertTableStringBuilder.append(&quot;INSERT INTO &quot;).append(tableName).append(&quot; (&quot;);
+            insertTableStringBuilder.append(TextUtils.join(&quot;,&quot;, properties));
+            insertTableStringBuilder.append(&quot;) SELECT &quot;);
+            insertTableStringBuilder.append(TextUtils.join(&quot;,&quot;, properties));
+            insertTableStringBuilder.append(&quot; FROM &quot;).append(tempTableName).append(&quot;;&quot;);
+
+            StringBuilder dropTableStringBuilder = new StringBuilder();
+
+            dropTableStringBuilder.append(&quot;DROP TABLE &quot;).append(tempTableName);
+
+            db.execSQL(insertTableStringBuilder.toString());
+            db.execSQL(dropTableStringBuilder.toString());
+        }
+    }
+
+    private String getTypeByClass(Class&lt;?&gt; type) throws Exception {
+        if(type.equals(String.class)) {
+            return &quot;TEXT&quot;;
+        }
+        if(type.equals(Long.class) || type.equals(Integer.class) || type.equals(long.class)) {
+            return &quot;INTEGER&quot;;
+        }
+        if(type.equals(Boolean.class)) {
+            return &quot;BOOLEAN&quot;;
+        }
+
+        Exception exception = new Exception(CONVERSION_CLASS_NOT_FOUND_EXCEPTION.concat(&quot; - Class: &quot;).concat(type.toString()));
+//        Crashlytics.logException(exception);
+        throw exception;
+    }
+
+    private static List&lt;String&gt; getColumns(SQLiteDatabase db, String tableName) {
+        List&lt;String&gt; columns = new ArrayList&lt;&gt;();
+        Cursor cursor = null;
+        try {
+            cursor = db.rawQuery(&quot;SELECT * FROM &quot; + tableName + &quot; limit 1&quot;, null);
+            if (cursor != null) {
+                columns = new ArrayList&lt;&gt;(Arrays.asList(cursor.getColumnNames()));
+            }
+        } catch (Exception e) {
+            Log.v(tableName, e.getMessage(), e);
+            e.printStackTrace();
+        } finally {
+            if (cursor != null)
+                cursor.close();
+        }
+        return columns;
+    }
+}
+</code></pre><p>2、实现DaoMaster.OpenHelper，用MigrationHelper类对数据库进行升级，对应的类如下：</p>
+<pre><code>public class Helper extends DaoMaster.OpenHelper{
+
+    private static DaoMaster daoMaster;
+    private static DaoSession daoSession;
+
+    public static final String DBNAME = &quot;greendao.db&quot;;
+
+    public Helper(Context context){
+        super(context,DBNAME,null);
+    }
+
+
+    @Override
+    public void onUpgrade(Database db, int oldVersion, int newVersion) {
+        super.onUpgrade(db, oldVersion, newVersion);
+        Log.i(&quot;version&quot;, oldVersion + &quot;---先前和更新之后的版本---&quot; + newVersion);
+        if (oldVersion &lt; newVersion) {
+            Log.i(&quot;version&quot;, oldVersion + &quot;---先前和更新之后的版本---&quot; + newVersion);
+            MigrationHelper.getInstance().migrate(db, UserDao.class);
+            //更改过的实体类(新增的不用加)   更新UserDao文件 可以添加多个  XXDao.class 文件
+//             MigrationHelper.getInstance().migrate(db, UserDao.class,XXDao.class);
+        }
+    }
+
+    /**
+     * 取得DaoMaster
+     *
+     * @param context
+     * @return
+     */
+    public static DaoMaster getDaoMaster(Context context) {
+        if (daoMaster == null) {
+            DaoMaster.OpenHelper helper = new DaoMaster.DevOpenHelper(context,
+                    DBNAME, null);
+            daoMaster = new DaoMaster(helper.getWritableDatabase());
+        }
+        return daoMaster;
+    }
+
+    /**
+     * 取得DaoSession
+     *
+     * @param context
+     * @return
+     */
+    public static DaoSession getDaoSession(Context context) {
+        if (daoSession == null) {
+            if (daoMaster == null) {
+                daoMaster = getDaoMaster(context);
+            }
+            daoSession = daoMaster.newSession();
+        }
+        return daoSession;
+    }
+}
+</code></pre><p>3、完成以上操作后，将版本号加1即可；</p>
+<pre><code>greendao {
+    schemaVersion 2//改版本号为2
+    daoPackage &apos;com.zhangqie.greendao.gen&apos;；
+    targetGenDir &apos;src/main/java&apos;
+}
+</code></pre><p>此时，之前版本存的数据保存下来了，并且新增加了一个字段，只不过字段为空。</p>
+<p>好的，咱们的GreenDao的基本使用和升级就到此为止了，GreenDao征(mo)途(ri)才刚刚开始，猿友们不要松懈，多多撸码才是征途。最后，发张我的近照给大家观(xian)赏(mu)观(xian)赏(mu)</p>
+<center><br><br><img src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3216390431,2469449241&amp;fm=27&amp;gp=0.jpg" alt="image"><br></center>
+
+<p>好的，注意不要舔屏（这是唯一的要求），下一篇见。</p>
+
+            </div>
+
+            <!-- Post Comments -->
+            
+    <!-- 使用 DISQUS_CLICK -->
+<div id="disqus-comment">
+    <div id="disqus_thread"></div>
+
+<!-- add animation -->
+<style>
+	.disqus_click_btn {
+            line-height: 30px;
+            margin: 0;
+            min-width: 50px;
+            padding: 0 14px;
+            display: inline-block;
+            font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+            font-size: 14px;
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 0;
+            overflow: hidden;
+            will-change: box-shadow;
+            transition: box-shadow .2s cubic-bezier(.4, 0, 1, 1), background-color .2s cubic-bezier(.4, 0, .2, 1), color .2s cubic-bezier(.4, 0, .2, 1);
+            outline: 0;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            vertical-align: middle;
+            border: 0;
+            background: rgba(158, 158, 158, .2);
+            box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .2), 0 1px 5px 0 rgba(0, 0, 0, .12);
+            color: #fff;
+            background-color: #7EC0EE;
+            text-shadow: 0
+        }
+</style>
+	
+<div class="btn_click_load" id="disqus_bt"> 
+    <button class="disqus_click_btn">点击查看评论</button>
+</div>
+
+<!--
+<script type="text/javascript">
+$('.btn_click_load').click(function() {
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'http-miccall-tech'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    document.getElementById('disqus_bt').style.display = "none";
+});
+</script>
+-->
+<script type="text/javascript">
+    var disqus_config = function () {
+        this.page.url = 'http://yoursite.com/2017/10/24/GreenDao数据库/';  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = 'http://yoursite.com/2017/10/24/GreenDao数据库/'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+</script>
+
+<script type="text/javascript">
+    $('.btn_click_load').click(function() {  //click to load comments
+        (function() { // DON'T EDIT BELOW THIS LINE
+            var d = document;
+            var s = d.createElement('script');
+            s.src = '//http-miccall-tech.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', + new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+        $('.btn_click_load').css('display','none');
+    });
+</script>
+</div>
+<style>
+    #disqus-comment{
+        background-color: #eee;
+        padding: 2pc;
+    }
+</style>
+
+
+        </div>
+        <!-- Copyright 版权 start -->
+                <div id="copyright">
+            <ul>
+                <li>&copy;Powered By <a href="https://hexo.io/zh-cn/" style="border-bottom: none;">hexo</a></li>
+                <li>Design: <a href="http://miccall.tech " style="border-bottom: none;">miccall</a></li>
+            </ul>
+            
+            	<span id="busuanzi_container_site_pv">2017总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+			
+        </div>
+    </div>
+</body>
+
+
+
+ 	
+</html>
