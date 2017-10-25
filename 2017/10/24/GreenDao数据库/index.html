@@ -156,18 +156,35 @@ public class User {
 DaoMaster daoMaster = new DaoMaster(devOpenHelper.getWritableDatabase());
 DaoSession daoSession = daoMaster.newSession();    
 </code></pre><p>注意：得到这个daoSession对象就可以获取到任意一张表单的Dao类进行增删改查操作了。</p>
+<p>咳咳，在讲GreenDao的增删改查之前，咱们现在整一整GreenDao为我们生成的DaoMaster、DaoSession的概念以及他们的关系，废话不多说，直接上(tou)图(lan)：</p>
+<center><br><br><img src="http://upload-images.jianshu.io/upload_images/949345-3c86d4b472d274c6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image"><br></center>
+
+<p>上图中，DaoMater包含了DevOpenHelper，其中createAllTable(db, false)和dropAllTable(db, ture)也是在DaoMster里面，DaoMaster负责创建DaoSession，<br>DaoSession负责创建和管理每一张表单对应的XyzDao类，XyzDao负责对对应的XyzEntity进行增删改查操作，下面，开始增删改查：</p>
 <p>1.增</p>
 <pre><code>insert
 insertOrReplace
+insertInTx
+insertOrReplaceInTx
 </code></pre><p>insert与insertOrReplace的区别：</p>
 <p>如果数据库中已有要插入的数据，那么上面的插入方法就会失败，可以调用insertOrReplace和insertOrReplaceInTx方法。跟踪源码可以发现，insert最终执行的sql语句是”INSERT INTO …”，而insertOrReplace执行的sql语句是”INSERT OR REPLACE INTO …”。</p>
+<p>insert加上尾缀InTx则是批量插入的方式。</p>
 <p>2.删</p>
 <pre><code>delete
 deleteAll
+deleteByKey （注意：目前版本仅仅支持拥有单个主键的表单使用此方法）
+deleteInTx
+deleteByKeyInTx
 </code></pre><p>3.改</p>
-<pre><code>update
+<pre><code>update  
+updateInTx
 </code></pre><p>4.最重要的就是查了，来一大波干货。。</p>
 <pre><code>在android中进行查询：
+queryRaw
+queryRawCreate
+queryRawCreateListArgs
+以上三个都是原生sql语句查询
+offer 查询的起始位置
+limit 查询的条目数量
 查询所有：List&lt;Son&gt;list=mSonDao.queryBuilder().listLazy();//.list()
 按属性查询：Son nate=mSonDao.queryBuilder().where(SonDao.Properties.Name.eq(&quot;senddi&quot;)).unique();
 匹配符查询：List tomkin=mSonDao.queryBuilder().where(SonDao.Properties.Name.like(&quot;tomkin% &quot;)).list();
@@ -183,7 +200,8 @@ deleteAll
 List data=mSonDao.queryBuilder().where(
 new WhereCondition.StringCondition(&quot;FATHER_UD IN&quot; +
                         &quot;(SELECT _ID FROM FATHER WHERE AGE&lt;45)&quot;)).list();
-</code></pre><h3 id="五、数据库升级"><a href="#五、数据库升级" class="headerlink" title="五、数据库升级"></a>五、数据库升级</h3><p>在这里，我提一点，数据库升级的主要目的是为了保存升级前的数据，比如说，我在表Date中新加了一个CurrentTime字段，为了使以前的Date表单数据能保存下来，同时还要在每一个Date表单新加一个CurrentTime字段，此时，数据库就需要升级。</p>
+</code></pre><p>(⊙v⊙)嗯。。最后再提一点，greenDAO借助SQLiteStatement完成了数据的插入，避免了其他框架利用反射拼装sql语句而造成的执行效率低下的问题，这也是greenDao成为性能之王的主要原因之一。</p>
+<h3 id="五、数据库升级"><a href="#五、数据库升级" class="headerlink" title="五、数据库升级"></a>五、数据库升级</h3><p>在这里，我提一点，数据库升级的主要目的是为了保存升级前的数据，比如说，我在表Date中新加了一个CurrentTime字段，为了使以前的Date表单数据能保存下来，同时还要在每一个Date表单新加一个CurrentTime字段，此时，数据库就需要升级。</p>
 <p>比方说，我现在要加一个字段，升级步骤如下：</p>
 <p>1、需要一个MigrationHelper.java类，StackOverFlow的专家写的，如下：</p>
 <pre><code>/**
