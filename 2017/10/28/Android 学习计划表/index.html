@@ -84,26 +84,34 @@
 </nav>
 
         <div id="main" >
-            <div class ="post_page_title_img" style="height: 25rem;background-image: url(https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1508150108601&amp;di=4f334ec2c40cbd95158a15fb786485f4&amp;imgtype=0&amp;src=http%3A%2F%2Fstatic.open-open.com%2Flib%2FuploadImg%2F20170220%2F20170220110034_423.jpg);background-position: center; background-repeat:no-repeat; background-size:cover;-moz-background-size:cover;overflow:hidden;" >
-                <a href="#" style="padding: 4rem 4rem 2rem 4rem ;"><h2 >Rxjava学习笔记 (二)(操作符)</h2></a>
+            <div class ="post_page_title_img" style="height: 25rem;background-image: url(https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&amp;quality=100&amp;size=b4000_4000&amp;sec=1509203128&amp;di=f3b93a236df4171106cd7f20758050b2&amp;src=http://file.fwjia.com:88/d/file/2013-08-11/5e284a16ee087bff402683dfc4045fbb.jpg);background-position: center; background-repeat:no-repeat; background-size:cover;-moz-background-size:cover;overflow:hidden;" >
+                <a href="#" style="padding: 4rem 4rem 2rem 4rem ;"><h2 >Android 学习计划表</h2></a>
             </div>
             <!-- Post -->
             <div class="typo" style="padding: 3rem;">
                 <hr>
-<h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>使用操作符的好处？</p>
-<p>将一系列的操作用操作符链接起来就可以完成复杂的逻辑，代码被分解成一系列可以组合的片段，这就是响应式函数编程的魅力。</p>
-<p>操作符就是为了解决对Observable对象的变换的问题，操作符用于在Observable和最终的Subscriber之间修改Observable发出的事件。RxJava提供了很多很有用的操作符，下面，我们一一对一些常见的操作符来分析。</p>
-<center><br><br><img src="http://biaoqingbao.xin/wp-content/uploads/2017/07/1548.jpg" alt="image"><br></center>
-
-
-
-<h3 id="一、flatmap操作符"><a href="#一、flatmap操作符" class="headerlink" title="一、flatmap操作符"></a>一、flatmap操作符</h3><h4 id="作用："><a href="#作用：" class="headerlink" title="作用："></a>作用：</h4><p>把Observable产生的结果转换成多个Observable，然后把这多个Observable“扁平化”成一个Observable，并依次提交产生的结果给订阅者。<br>flatMap操作符通过传入一个函数作为参数转换源Observable，在这个函数中，你可以自定义转换规则，最后在这个函数中返回一个新的Observable，然后flatMap操作符通过合并这些Observable结合成一个Observable，并依次提交结果给订阅者。</p>
-<h4 id="原理："><a href="#原理：" class="headerlink" title="原理："></a>原理：</h4><p>将传入的事件对象转换成一个Observable对象，<br>这时不会直接发送这个Observable, 而是将这个Observable激活让它自己开始发送事件，<br>每一个创建出来的Observable发送的事件，都被汇入同一个Observable，这个Observable负责将这些事件统一交给Subscriber的回调方法。</p>
-<h3 id="二、map操作符"><a href="#二、map操作符" class="headerlink" title="二、map操作符"></a>二、map操作符</h3><h4 id="作用"><a href="#作用" class="headerlink" title="作用:"></a>作用:</h4><p>map操作符是把源Observable产生的结果，通过映射规则转换成另一个结果集，并提交给订阅者进行处理。</p>
-<h3 id="三、filter操作符"><a href="#三、filter操作符" class="headerlink" title="三、filter操作符"></a>三、filter操作符</h3><h4 id="作用：-1"><a href="#作用：-1" class="headerlink" title="作用："></a>作用：</h4><p>filter操作符是对源Observable产生的结果按照指定条件进行过滤，只有满足条件的结果才会提交给订阅者。</p>
-<h3 id="四、doOnNext操作符"><a href="#四、doOnNext操作符" class="headerlink" title="四、doOnNext操作符"></a>四、doOnNext操作符</h3><h4 id="作用：-2"><a href="#作用：-2" class="headerlink" title="作用："></a>作用：</h4><p>doOnNext()允许我们在每次输出一个元素之前做一些额外的事情，比如这里的保存标题。</p>
-<h4 id="五、take操作符"><a href="#五、take操作符" class="headerlink" title="五、take操作符"></a>五、take操作符</h4><h4 id="作用：-3"><a href="#作用：-3" class="headerlink" title="作用："></a>作用：</h4><p>take()输出最多指定数量的结果。</p>
-<h4 id="六、concat与merge操作符"><a href="#六、concat与merge操作符" class="headerlink" title="六、concat与merge操作符"></a>六、concat与merge操作符</h4><h4 id="区别："><a href="#区别：" class="headerlink" title="区别："></a>区别：</h4><p>concat是按被观察者的执行顺序合并的，而merge是按被观察者发送事件的时间顺序合并的。</p>
+<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>一份学习计划表是很重要的，要想仰望星空，就必须脚踏实地的打好地基，一份好的学习计划表能够更好地催促自己去完善Android的各个技术方面。</p>
+<p>该份学习计划旨在列出本年度需要攻克的Android知识和截止攻克时间。</p>
+<h4 id="要学习的知识点："><a href="#要学习的知识点：" class="headerlink" title="要学习的知识点："></a>要学习的知识点：</h4><p>1、YoKey Fragment全解析系列</p>
+<p><a href="http://www.jianshu.com/p/d9143a92ad94" target="_blank" rel="external">Fragment全解析系列链接</a></p>
+<p>2、rxjava2 官方核心及最常用操作符案例各个实现，并上传Github</p>
+<p><a href="http://reactivex.io/documentation/operators.html#alphabetical" target="_blank" rel="external">官方Rxjava操作符列表</a></p>
+<p><a href="http://note.youdao.com/" target="_blank" rel="external">手把手教你使用Rxjava 2.0</a></p>
+<p>3、dagger2</p>
+<p><a href="http://blog.csdn.net/qq_17766199/article/details/50606011" target="_blank" rel="external">Dagger2使用攻略</a></p>
+<p>4、kotlin系统入门与进阶视频学习</p>
+<p><a href="http://coding.imooc.com/class/108.html" target="_blank" rel="external">慕课网kotlin视频学习地址</a></p>
+<p><a href="https://kotlinlang.org/docs/reference/basic-syntax.html" target="_blank" rel="external">kotlin官方学习文档</a></p>
+<p>5、跟上扔物线的 HenCoder Android开发进阶更新进度。</p>
+<p><a href="http://hencoder.com/ui-1-1/" target="_blank" rel="external">HenCoder链接</a></p>
+<p>6、Android NDK </p>
+<p><a href="https://blog.piasy.com/2017/08/26/NDK-Start-Guide/" target="_blank" rel="external">link</a></p>
+<p>7、Android官方培训课程中文版</p>
+<p><a href="http://hukai.me/android-training-course-in-chinese/index.html" target="_blank" rel="external">Android官方培训课程中文版链接</a></p>
+<p>8、Gityuan个人博客关于Android系统源代码的分析</p>
+<p><a href="http://gityuan.com/" target="_blank" rel="external">链接</a></p>
+<p>（学习排序按顺序来）</p>
+<p>计划12月31号前搞定1-6点，7,8点尽量吃点，12月31日会发布对应得年度总结博文，校验下自己的学习效果，希望大家在大家的共同见证下成长。</p>
 
             </div>
 
@@ -166,8 +174,8 @@ $('.btn_click_load').click(function() {
 -->
 <script type="text/javascript">
     var disqus_config = function () {
-        this.page.url = 'http://yoursite.com/2017/10/09/Rxjava 学习笔记(二)(操作符)/';  // Replace PAGE_URL with your page's canonical URL variable
-        this.page.identifier = 'http://yoursite.com/2017/10/09/Rxjava 学习笔记(二)(操作符)/'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+        this.page.url = 'http://yoursite.com/2017/10/28/Android 学习计划表/';  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = 'http://yoursite.com/2017/10/28/Android 学习计划表/'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
     };
 </script>
 
