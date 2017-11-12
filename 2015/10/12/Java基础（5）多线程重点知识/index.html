@@ -1,0 +1,306 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<link rel="bookmark"  type="image/x-icon"  href="/img/logo_miccall.png"/>
+	 <link rel="shortcut icon" href="/img/logo_miccall.png">
+	
+			
+    <title>
+    Deep into Android
+    </title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="/css/mic_main.css" />
+    <link rel="stylesheet" href="/css/dropdownMenu.css" />
+    
+    	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+	
+    <noscript>
+        <link rel="stylesheet" href="/css/noscript.css" />
+    </noscript>
+
+			    <script src="/js/jquery.min.js"></script>
+    <script src="/js/jquery.scrollex.min.js"></script>
+    <script src="/js/jquery.scrolly.min.js"></script>
+    <script src="/js/skel.min.js"></script>
+    <script src="/js/util.js"></script>
+    <script src="/js/main.js"></script>
+	
+</head>
+    
+		
+<!-- Layouts -->
+
+
+
+<!--  代码渲染  -->
+<link rel="stylesheet" href="/css/prism_coy.css" />
+<link rel="stylesheet" href="/css/typo.css" />
+<!-- 文章页 -->
+<body class="is-loading">
+    <!-- Wrapper 外包 s-->
+    <div id="wrapper" class="fade-in">
+        <!-- Intro 头部显示 s -->
+        <!-- Intro 头部显示 e -->
+        <!-- Header 头部logo start -->
+        <header id="header">
+    <a href="/" class="logo">JsonChao</a>
+</header>
+        <!-- Nav 导航条 start -->
+        <nav id="nav" class="special" >
+            <ul class="menu links" >
+			<!-- Homepage  主页  --> 
+			<li >
+	            <a href="/" rel="nofollow">主页</a>
+	        </li>
+			<!-- categories_name  分类   --> 
+	        
+	        <li class="active">
+	            <a href="#s1">分类</a>
+	                    <ul class="submenu">
+	                        <li>
+	                        <a class="category-link" href="/categories/kotlin/">kotlin</a></li><li><a class="category-link" href="/categories/rxjava/">rxjava</a></li><li><a class="category-link" href="/categories/sdk开发/">sdk开发</a></li><li><a class="category-link" href="/categories/学习计划/">学习计划</a></li><li><a class="category-link" href="/categories/安卓基础/">安卓基础</a>
+	                    </ul>
+	        </li>
+	        
+	        <!-- archives  归档   --> 
+	        
+	        
+		        <!-- Pages 自定义   -->
+		        
+
+
+            </ul>
+            <!-- icons 图标   -->
+			<ul class="icons">
+		            
+		                <li><a href="https://github.com/JsonChao" class="icon fa-github"><span class="label">GitHub</span></a></li>
+		            
+		            
+		            
+		            
+			</ul>
+</nav>
+
+        <div id="main" >
+            <div class ="post_page_title_img" style="height: 25rem;background-image: url(https://d2j3coy501s4ze.cloudfront.net/images/23085/700/a25facb2c5df7d0a74fc1c69bb234abe0e7163b1_58c917a405256.jpeg);background-position: center; background-repeat:no-repeat; background-size:cover;-moz-background-size:cover;overflow:hidden;" >
+                <a href="#" style="padding: 4rem 4rem 2rem 4rem ;"><h2 >Java基础（5）面向对象</h2></a>
+            </div>
+            <!-- Post -->
+            <div class="typo" style="padding: 3rem;">
+                <hr>
+<p>Hello，这是java的第五堂课</p>
+<p>1、可变参数:必须写在参数列表的最后</p>
+<pre><code>public static int add(int b,int... a)//把传递过来的数据封装到数组中
+{
+    int sum =0;
+    for(int i=0;i&lt;a.length;i++)
+    {
+       sum = sum+a[i];
+    }
+    return sum;
+}
+</code></pre><p>2、每个 Java 应用程序都有一个 Runtime 类实例,通过该类的实例可以得到运行时相关的信息</p>
+<pre><code>Runtime runtime = Runtime.getRuntime();
+runtime.exec(&quot;notepad C:\\Users\\qq\\Desktop\\gp04.txt&quot;);
+long size = runtime.maxMemory();
+System.out.println(size/1024/1024);
+</code></pre><p>3、多线程一定能提高效率吗？</p>
+<p>不一定能提高效率，但是能合理的使用cpu资源，最大的好处就是能够实现在一个应用中相同功能或不同功能的同时执行</p>
+<p>4、每个对象都可以被回收—被回收的功能定义在Object类中</p>
+<p>5、创建线程的第一种方式：</p>
+<pre><code>1：创建一个继承了Thread类的子类
+2: 重写Thread类中的run方法
+         创建线程是为了执行任务，任务代码需要有存储位置
+         run方法就是这个存储位置
+3: 创建子类的对象，实际就是创建线程
+4：启动线程
+</code></pre><p>6、线程任务和线程是绑定在一起的,使用该类创建的对象只能执行固定的任务</p>
+<p>7、子线程的名字默认是：Thread-编号(编号从0开始)</p>
+<p>主线程默认的名字:main</p>
+<p>8、为了让四个线程共享50张票，所以把票修饰为static的</p>
+<p>9、创建线程的第二种方式：</p>
+<pre><code>1：定义一个类实现Runnable接口
+2: 该类重写Runnable接口中的 run方法
+3：创建实现了Runnable接口的子类的对象
+4: 创建 Thread类的对象，其实就是在创建线程
+5: 把实现了Runnable接口的子类的对象作为参数传递给Thread类的构造方法
+</code></pre><p>创建线程第二种方式的特点：</p>
+<pre><code>1:线程任务和线程对象进行了分离，线程执行什么任务不再重要，只要是实现了Runnable接口的子类对象，就可以作为参数传递给Thread的构造方法
+2:实现 Runnable接口的同时，还可以继承父类
+</code></pre><p>10、程序出现了线程安全问题：<br>    打印了0,-1,-2等错票</p>
+<p>出现问题的原因：</p>
+<pre><code>1：操作了共享数据
+2: 操作共享数据的语句有多条，一个线程得到cpu，执行了操作共享数据的多条语句的一部分时，还没有全部执行完cpu就被抢走了
+</code></pre><p>解决问题的方式：一个线程得到cpu，执行操作共享数据的多条语句时，其它线程不能参与执行，只有当该线程把所有操作共享数据的语句全部执行，其它线程才能参与执行</p>
+<p>java提供的解决方式：</p>
+<pre><code>同步代码
+synchronized(对象)
+{
+    需要被同步的代码(操作共享数据的语句)
+}
+</code></pre><p>11、同步函数使用的锁是？this</p>
+<p>12、静态同步函数使用的锁是什么？静态进内存的时候是没有对象的，但是肯定有其所属类的字节码文件，属于Class类型的对象。所以静态同步函数使用的锁是其所属类的字节码文件</p>
+<p>13、单例设计模式中懒汉式并发访问的安全问题</p>
+<pre><code>class Single
+{
+    private static final Single s = new Single();
+
+    private Single(){}
+
+    public static Single getInstance()
+    {
+        return s;
+    }
+}
+class Single2
+{
+    private static Single2 s;
+    private Single2(){}
+    public static Single2 getInstance()
+    {
+        if(s==null)//至少从第三个线程开始就不用判断锁了
+        {
+            synchronized(Single2.class)//1  2
+            {
+                if(s==null)
+                    //----&gt;
+                    s = new Single2();
+            }
+        }
+        return s;
+    }
+}
+</code></pre><p>14、线程间的通信:多个线程执行的任务不同，但是操作的数据相同</p>
+<p>15、为什么wait(),notify(),notifyAll()定义在Object类中？</p>
+<p>因为这些方法必须用在同步中，同步中才有锁，而锁是任意的对象，任意的对象都可以调用的方法只能定义在Object 中</p>
+<pre><code>try{res.wait();}catch(InterruptedException e){}//等待的线程会放弃锁
+</code></pre><p>16、jdk1.5多线程的实现方式</p>
+<p>jdk1.5之前对锁的操作是隐式的</p>
+<pre><code>synchronized(对象)//获取锁
+{
+
+}//释放锁
+</code></pre><p>jdk1.5对锁的操作是显式的</p>
+<p>17、有一个单独的接口来描述锁,这个接口就是Lock,所以把锁面向对象了，使用Lock的子类ReentrantLock替代同步代码块</p>
+<pre><code>1:创建ReentranLock类的对象，就相当于创建了一把锁
+2:把需要同步的代码放在 lock()和unlock()之间
+</code></pre><p>使用Lock的子类ReentrantLock替代同步代码块之后，出现了IllegalMonitorStateException异常，原因是wait(),notifyAll()这些方法必须用在同步中，而同步没有了造成的有一个Condition接口，是对await(),signal(),signalAll()这些方法的描述<br>所以这些唤醒等待方法也被面向对象了，但是这些方法的使用必须指明锁，所以通过Lock的newCondition()方法来得到一个和锁绑定的Codition对象,从而间接的指明锁</p>
+<p>17、线程的停止：stop()方法已经过时，所以只能是线程的任务代码执行完，线程才能停止，但是通常任务代码中都有<br>循环，所以只要让循环停下来就能让线程停止</p>
+<p>18、在任务（同步）代码中定义一个changeFlag的方法，能够把标记改为相反的值,然后在主线程中设定要循环的次数</p>
+<pre><code>t1.interrupt();//结束线程的等待状态，让线程可以重新去争抢cpu, 从而就能执行任务代码了
+</code></pre><p>19、守护线程：看成后台线程，依赖于前台线程，当前台线程全部结束时，即使守护线程的任务代码没执行完，也会停止</p>
+<pre><code>t2.setDaemon(true);//把t2线程设置为守护线程,,在启动之前设置为守护线程
+</code></pre><p>20、join: 让线程加入运行</p>
+<pre><code>t1.join();
+</code></pre><p>21、线程池：可以创建线程的一种对象</p>
+<p>创建有固定个数线程的线程池对象,当任务数量和线程数量相同时，任务被同时执行，当任务数量大于线程数量时，多出来的任务会等待线程池中已有的线程空闲的时候执行</p>
+<pre><code>ExecutorService es = Executors.newFixedThreadPool(2);
+</code></pre><p>22、使用匿名内部类创建线程</p>
+
+            </div>
+
+            <!-- Post Comments -->
+            
+    <!-- 使用 DISQUS_CLICK -->
+<div id="disqus-comment">
+    <div id="disqus_thread"></div>
+
+<!-- add animation -->
+<style>
+	.disqus_click_btn {
+            line-height: 30px;
+            margin: 0;
+            min-width: 50px;
+            padding: 0 14px;
+            display: inline-block;
+            font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+            font-size: 14px;
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 0;
+            overflow: hidden;
+            will-change: box-shadow;
+            transition: box-shadow .2s cubic-bezier(.4, 0, 1, 1), background-color .2s cubic-bezier(.4, 0, .2, 1), color .2s cubic-bezier(.4, 0, .2, 1);
+            outline: 0;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            vertical-align: middle;
+            border: 0;
+            background: rgba(158, 158, 158, .2);
+            box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .2), 0 1px 5px 0 rgba(0, 0, 0, .12);
+            color: #fff;
+            background-color: #7EC0EE;
+            text-shadow: 0
+        }
+</style>
+	
+<div class="btn_click_load" id="disqus_bt"> 
+    <button class="disqus_click_btn">点击查看评论</button>
+</div>
+
+<!--
+<script type="text/javascript">
+$('.btn_click_load').click(function() {
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'http-miccall-tech'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    document.getElementById('disqus_bt').style.display = "none";
+});
+</script>
+-->
+<script type="text/javascript">
+    var disqus_config = function () {
+        this.page.url = 'http://yoursite.com/2015/10/12/Java基础（5）多线程重点知识/';  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = 'http://yoursite.com/2015/10/12/Java基础（5）多线程重点知识/'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+</script>
+
+<script type="text/javascript">
+    $('.btn_click_load').click(function() {  //click to load comments
+        (function() { // DON'T EDIT BELOW THIS LINE
+            var d = document;
+            var s = d.createElement('script');
+            s.src = '//http-miccall-tech.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', + new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+        $('.btn_click_load').css('display','none');
+    });
+</script>
+</div>
+<style>
+    #disqus-comment{
+        background-color: #eee;
+        padding: 2pc;
+    }
+</style>
+
+
+        </div>
+        <!-- Copyright 版权 start -->
+                <div id="copyright">
+            <ul>
+                <li>&copy;Powered By <a href="https://hexo.io/zh-cn/" style="border-bottom: none;">hexo</a></li>
+                <li>Design: <a href="http://miccall.tech " style="border-bottom: none;">miccall</a></li>
+            </ul>
+            
+            	<span id="busuanzi_container_site_pv">2017总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+			
+        </div>
+    </div>
+</body>
+
+
+
+ 	
+</html>

@@ -1,0 +1,278 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<link rel="bookmark"  type="image/x-icon"  href="/img/logo_miccall.png"/>
+	 <link rel="shortcut icon" href="/img/logo_miccall.png">
+	
+			
+    <title>
+    Deep into Android
+    </title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="/css/mic_main.css" />
+    <link rel="stylesheet" href="/css/dropdownMenu.css" />
+    
+    	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+	
+    <noscript>
+        <link rel="stylesheet" href="/css/noscript.css" />
+    </noscript>
+
+			    <script src="/js/jquery.min.js"></script>
+    <script src="/js/jquery.scrollex.min.js"></script>
+    <script src="/js/jquery.scrolly.min.js"></script>
+    <script src="/js/skel.min.js"></script>
+    <script src="/js/util.js"></script>
+    <script src="/js/main.js"></script>
+	
+</head>
+    
+		
+<!-- Layouts -->
+
+
+
+<!--  代码渲染  -->
+<link rel="stylesheet" href="/css/prism_coy.css" />
+<link rel="stylesheet" href="/css/typo.css" />
+<!-- 文章页 -->
+<body class="is-loading">
+    <!-- Wrapper 外包 s-->
+    <div id="wrapper" class="fade-in">
+        <!-- Intro 头部显示 s -->
+        <!-- Intro 头部显示 e -->
+        <!-- Header 头部logo start -->
+        <header id="header">
+    <a href="/" class="logo">JsonChao</a>
+</header>
+        <!-- Nav 导航条 start -->
+        <nav id="nav" class="special" >
+            <ul class="menu links" >
+			<!-- Homepage  主页  --> 
+			<li >
+	            <a href="/" rel="nofollow">主页</a>
+	        </li>
+			<!-- categories_name  分类   --> 
+	        
+	        <li class="active">
+	            <a href="#s1">分类</a>
+	                    <ul class="submenu">
+	                        <li>
+	                        <a class="category-link" href="/categories/kotlin/">kotlin</a></li><li><a class="category-link" href="/categories/rxjava/">rxjava</a></li><li><a class="category-link" href="/categories/sdk开发/">sdk开发</a></li><li><a class="category-link" href="/categories/学习计划/">学习计划</a></li><li><a class="category-link" href="/categories/安卓基础/">安卓基础</a>
+	                    </ul>
+	        </li>
+	        
+	        <!-- archives  归档   --> 
+	        
+	        
+		        <!-- Pages 自定义   -->
+		        
+
+
+            </ul>
+            <!-- icons 图标   -->
+			<ul class="icons">
+		            
+		                <li><a href="https://github.com/JsonChao" class="icon fa-github"><span class="label">GitHub</span></a></li>
+		            
+		            
+		            
+		            
+			</ul>
+</nav>
+
+        <div id="main" >
+            <div class ="post_page_title_img" style="height: 25rem;background-image: url(http://img.ltn.com.tw/Upload/liveNews/BigPic/600_phpkcqmRr.jpg);background-position: center; background-repeat:no-repeat; background-size:cover;-moz-background-size:cover;overflow:hidden;" >
+                <a href="#" style="padding: 4rem 4rem 2rem 4rem ;"><h2 >Java基础（1）基本数据类型</h2></a>
+            </div>
+            <!-- Post -->
+            <div class="typo" style="padding: 3rem;">
+                <hr>
+<p>Hello,这是java的第一堂课。</p>
+<p>1、数据类型是有级别高低之分的：</p>
+<pre><code>byte,short,char---&gt;int----&gt;long---&gt;float---&gt;double
+</code></pre><p>2、自动类型转换—-从低级别的到高级别的数据类型</p>
+<pre><code>double sum = s+b+a+d;
+</code></pre><p>3、自动类型转换：从高级别到低级别</p>
+<pre><code>byte  num = 127;
+</code></pre><p>4、强制类型转换—从高级别到低级别</p>
+<pre><code>num = (byte)(num+10);//00000000 00000000 00000000  10001001---&gt;10001001  01110110 01110111==119
+</code></pre><p>5、windows平台下的换行是\r\n</p>
+<p>6、Linux,Unix平台下的换行是\n</p>
+<p>7、字符串和任何类型的数据相连接，最后都是字符串</p>
+<p>8、求模（取余数）结果的正负由被除数决定,也就是第一个数</p>
+<pre><code>System.out.println(-5%-2);
+</code></pre><p>9、&amp;&amp;:短路与，如果左边的表达式为false，那么不再计算右边的表达式了</p>
+<p>&amp;:如果左边的表达式为false，那么还会计算右边的表达式</p>
+<p>||:短路或，如果左边的表达式为true，那么不再计算右边的表达式了</p>
+<p>|:如果左边的表达式为true，那么还会计算右边的表达式</p>
+<p>10、最有效率的方式算出2乘以8等于几？<br>2*8   2&lt;&lt;3</p>
+<p>11、对两个整数变量的值进行互换(不需要第三方变量)</p>
+<pre><code>a = a^b;
+b = a^b;//a^b^b
+a = a^b;//a^a^b
+</code></pre><p>12、witch(a)<br>表达式的值必须是：byte,short,int,char,枚举(jdk1.5),字符串（jdk1.7）</p>
+<p>13、当表达式的值是布尔类型或者是某一个范围中的数值，那么只能使用if循环,循环结束后，循环中的变量如果不需要使用，那么使用for循环，否则使用while()或do{}while()</p>
+<p>14、计算正整数各位数的和</p>
+<pre><code>while(num!=0)
+    {
+        sum = sum+num%10;
+        num = num/10;
+    }
+</code></pre><p>15、break结束的是它所在的循环，</p>
+<p>16、return结束的是当前所在的代码块</p>
+<p>17、一个函数没有返回值也可以使用return </p>
+<pre><code>public static void fun(int a)
+{
+    if(a&gt;10)
+        return;//直接结束函数调用
+    else
+        System.out.println(a);
+}
+</code></pre><p>18、重载和返回值类型无关</p>
+<p>19、JVM在执行程序时，把内存分为5块：栈，堆，方法区，本地方法区，寄存器</p>
+<p>栈：存储的是局部变量(在函数，语句中定义的变量),是先进后出的</p>
+<p>局部变量的作用域结束了就会立刻释放内存</p>
+<p>堆：存储的是实体（对象，数组），都是可以存储多个数据的</p>
+<p>1:在堆中开辟内存的有默认值<br>2:有内存首地址<br>3:垃圾回收机制</p>
+<pre><code>int[] arr = new int[]{3,4,5,6,7,89};
+int[] a = {23,45,56,78,0};//简化版
+</code></pre><p>20、十进制转二进制</p>
+<pre><code>int num = 6;
+int[] arr = new int[32];
+int index = 0;
+while(num!=0)
+{
+    arr[index++] = num%2;
+    num = num/2;
+}
+for(index--;index&gt;=0;index--)
+{
+    System.out.print(arr[index]);
+}
+</code></pre><p>21、十进制转任何进制</p>
+<pre><code>public static void toAny(int num,int base,int off)
+{
+    char[] ch = 
+    {&apos;0&apos;,&apos;1&apos;,&apos;2&apos;,&apos;3&apos;,&apos;4&apos;,&apos;5&apos;,&apos;6&apos;,&apos;7&apos;,&apos;8&apos;,&apos;9&apos;,&apos;a&apos;,&apos;b&apos;,&apos;c&apos;,&apos;d&apos;,&apos;e&apos;,&apos;f&apos;};
+    char[] arr = new char[32];
+    int index = arr.length;
+    while(num!=0)
+    {
+        int n = num&amp;base;
+        arr[--index] = ch[n];
+        num = num&gt;&gt;&gt;off;
+    }
+    for(;index &lt; arr.length;index++)
+    {
+        System.out.print(arr[index]);
+    }
+}
+</code></pre>
+            </div>
+
+            <!-- Post Comments -->
+            
+    <!-- 使用 DISQUS_CLICK -->
+<div id="disqus-comment">
+    <div id="disqus_thread"></div>
+
+<!-- add animation -->
+<style>
+	.disqus_click_btn {
+            line-height: 30px;
+            margin: 0;
+            min-width: 50px;
+            padding: 0 14px;
+            display: inline-block;
+            font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+            font-size: 14px;
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 0;
+            overflow: hidden;
+            will-change: box-shadow;
+            transition: box-shadow .2s cubic-bezier(.4, 0, 1, 1), background-color .2s cubic-bezier(.4, 0, .2, 1), color .2s cubic-bezier(.4, 0, .2, 1);
+            outline: 0;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            vertical-align: middle;
+            border: 0;
+            background: rgba(158, 158, 158, .2);
+            box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .2), 0 1px 5px 0 rgba(0, 0, 0, .12);
+            color: #fff;
+            background-color: #7EC0EE;
+            text-shadow: 0
+        }
+</style>
+	
+<div class="btn_click_load" id="disqus_bt"> 
+    <button class="disqus_click_btn">点击查看评论</button>
+</div>
+
+<!--
+<script type="text/javascript">
+$('.btn_click_load').click(function() {
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'http-miccall-tech'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    document.getElementById('disqus_bt').style.display = "none";
+});
+</script>
+-->
+<script type="text/javascript">
+    var disqus_config = function () {
+        this.page.url = 'http://yoursite.com/2015/09/16/Java基础（1）基本数据类型/';  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = 'http://yoursite.com/2015/09/16/Java基础（1）基本数据类型/'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+</script>
+
+<script type="text/javascript">
+    $('.btn_click_load').click(function() {  //click to load comments
+        (function() { // DON'T EDIT BELOW THIS LINE
+            var d = document;
+            var s = d.createElement('script');
+            s.src = '//http-miccall-tech.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', + new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+        $('.btn_click_load').css('display','none');
+    });
+</script>
+</div>
+<style>
+    #disqus-comment{
+        background-color: #eee;
+        padding: 2pc;
+    }
+</style>
+
+
+        </div>
+        <!-- Copyright 版权 start -->
+                <div id="copyright">
+            <ul>
+                <li>&copy;Powered By <a href="https://hexo.io/zh-cn/" style="border-bottom: none;">hexo</a></li>
+                <li>Design: <a href="http://miccall.tech " style="border-bottom: none;">miccall</a></li>
+            </ul>
+            
+            	<span id="busuanzi_container_site_pv">2017总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+			
+        </div>
+    </div>
+</body>
+
+
+
+ 	
+</html>

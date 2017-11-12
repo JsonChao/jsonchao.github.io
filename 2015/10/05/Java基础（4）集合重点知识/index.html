@@ -1,0 +1,291 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<link rel="bookmark"  type="image/x-icon"  href="/img/logo_miccall.png"/>
+	 <link rel="shortcut icon" href="/img/logo_miccall.png">
+	
+			
+    <title>
+    Deep into Android
+    </title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="/css/mic_main.css" />
+    <link rel="stylesheet" href="/css/dropdownMenu.css" />
+    
+    	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+	
+    <noscript>
+        <link rel="stylesheet" href="/css/noscript.css" />
+    </noscript>
+
+			    <script src="/js/jquery.min.js"></script>
+    <script src="/js/jquery.scrollex.min.js"></script>
+    <script src="/js/jquery.scrolly.min.js"></script>
+    <script src="/js/skel.min.js"></script>
+    <script src="/js/util.js"></script>
+    <script src="/js/main.js"></script>
+	
+</head>
+    
+		
+<!-- Layouts -->
+
+
+
+<!--  代码渲染  -->
+<link rel="stylesheet" href="/css/prism_coy.css" />
+<link rel="stylesheet" href="/css/typo.css" />
+<!-- 文章页 -->
+<body class="is-loading">
+    <!-- Wrapper 外包 s-->
+    <div id="wrapper" class="fade-in">
+        <!-- Intro 头部显示 s -->
+        <!-- Intro 头部显示 e -->
+        <!-- Header 头部logo start -->
+        <header id="header">
+    <a href="/" class="logo">JsonChao</a>
+</header>
+        <!-- Nav 导航条 start -->
+        <nav id="nav" class="special" >
+            <ul class="menu links" >
+			<!-- Homepage  主页  --> 
+			<li >
+	            <a href="/" rel="nofollow">主页</a>
+	        </li>
+			<!-- categories_name  分类   --> 
+	        
+	        <li class="active">
+	            <a href="#s1">分类</a>
+	                    <ul class="submenu">
+	                        <li>
+	                        <a class="category-link" href="/categories/kotlin/">kotlin</a></li><li><a class="category-link" href="/categories/rxjava/">rxjava</a></li><li><a class="category-link" href="/categories/sdk开发/">sdk开发</a></li><li><a class="category-link" href="/categories/学习计划/">学习计划</a></li><li><a class="category-link" href="/categories/安卓基础/">安卓基础</a>
+	                    </ul>
+	        </li>
+	        
+	        <!-- archives  归档   --> 
+	        
+	        
+		        <!-- Pages 自定义   -->
+		        
+
+
+            </ul>
+            <!-- icons 图标   -->
+			<ul class="icons">
+		            
+		                <li><a href="https://github.com/JsonChao" class="icon fa-github"><span class="label">GitHub</span></a></li>
+		            
+		            
+		            
+		            
+			</ul>
+</nav>
+
+        <div id="main" >
+            <div class ="post_page_title_img" style="height: 25rem;background-image: url(http://www.1adh.com/2016/201609131/20160000-0002.JPG);background-position: center; background-repeat:no-repeat; background-size:cover;-moz-background-size:cover;overflow:hidden;" >
+                <a href="#" style="padding: 4rem 4rem 2rem 4rem ;"><h2 >Java基础（4）面向对象</h2></a>
+            </div>
+            <!-- Post -->
+            <div class="typo" style="padding: 3rem;">
+                <hr>
+<p>Hello，这是java的第四堂课</p>
+<p>1、集合变数组：</p>
+<pre><code>Object[] toArray()
+</code></pre><p>2、iterator()方法返回的是实现了Iterator接口的内部类对象，而内部类中提供了hasNext()和next()方法，从而实现集合的遍历，在遍历集合的过程中使用集合对集合中的对象进行添加，删除，修改会发生ConcurrentModificationException异常</p>
+<pre><code>Enumeration enume = v.elements();
+    while(enume.hasMoreElements())
+    {
+        System.out.println(enume.nextElement());
+    }
+</code></pre><p>3、LinkedList中的特有方法:</p>
+<pre><code>addFirst()
+addLast()
+
+getFirst()//获取的对象不存在，则会异常.NoSuchElementException
+getLast()  //获取的对象不存在，则会异常.NoSuchElementException
+
+removeFirst()//删除的对象不存在，会异常NoSuchElementException
+removeLast()
+
+从jdk1.6开始出现的功能
+offerFirst()
+offerLast()
+
+peekFirst()//获取的对象不存在，返回null，不会异常
+peekLast()
+
+pollFirst()///删除的对象不存在,不会异常，返回null
+pollLast()
+</code></pre><p>4、哈希值相同不一定是同一个对象,同一个对象的哈希值肯定相同</p>
+<p>5、TreeSet:底层使用的数据结构是二叉树，是线程不安全的</p>
+<p>6、对集合中的对象进行排序的第一种方式:集合中的对象所属的类实现了Comparable接口中<br>的int compareTo(Object obj)方法,保证对象唯一的方式就是：compareTo方法的返回值为0</p>
+<p>第二种方式：自定义一种排序方式(即自定义一个排序类)，该方式(类)要实现 Comparator接口中的<br>int compare(Object obj1,Object obj2)方法,把这种排序方式作为参数传递给<br>集合的构造方法</p>
+<p>注意：当排序的主要条件相等时，还需要指定排序的次要条件</p>
+<p>7、TreeSet因为 String类实现了Comparable接口中的int compareTo()方法，所以集合是依据该方法的返回值来判断谁大谁小的</p>
+<pre><code>TreeSet&lt;Student&gt; ts1 = new TreeSet&lt;Student&gt;();
+        ts1.add(new Student(&quot;lisi&quot;,23));//TreeSet在添加的时候就进行了比较,排序
+        ts1.add(new Student(&quot;zhangsan&quot;,22));
+        ts1.add(new Student(&quot;wangwu&quot;,27));
+</code></pre><p>8、TreeSet(Collection&lt;? extends Person&gt; c) </p>
+<pre><code>TreeSet&lt;Person&gt;  ts = new TreeSet&lt;Person&gt;(ts1);
+</code></pre><p>9、HashMap:底层使用的数据结构是哈希表，线程不安全的，可以存储null键，null值</p>
+<p>TreeMap:底层使用的数据结构是二叉树，线程不安全的</p>
+<p>10、Map的获取功能</p>
+<pre><code>Set&lt;K&gt; keySet() 
+Set&lt;Map.Entry&lt;K,V&gt;&gt; entrySet() 
+返回的是上一次添加的值
+</code></pre><p>11、sop(map.put(“name”,”lisi”));//第一次添加返回值为null</p>
+<p>12、Map中没有Iterator迭代器,有以下两种方式转为Set并使用Set中的Iterator</p>
+<pre><code>Set&lt;Map.Entry&lt;String,String&gt;&gt; en = map.entrySet();
+Iterator&lt;Map.Entry&lt;String,String&gt; ite = en.iterator();
+while(ite.hasNext())
+{
+    Map.Entry&lt;String,String&gt; entry = ite.next();
+    String key = entry.getKey();
+    String value = entry.getValue();
+    System.out.println(key+&quot;=&quot;+value);
+}
+Set&lt;String&gt; set = map.keySet();
+Iterator&lt;String&gt; ite = set.iterator();
+while(ite.hasNext())
+{
+    String key = ite.next();
+    String value = map.get(key);
+    System.out.println(key+&quot;=&quot;+value);
+}
+</code></pre><p>13、根据键来排序的,排序的方式和 TreeSet一样</p>
+<pre><code>TreeMap&lt;Student,String&gt;  tm = new TreeMap&lt;Student,String&gt;(new ComByName());
+</code></pre><p>自定义的排序方式优先 </p>
+<p>14、把数组中的数据转成字符串</p>
+<pre><code>String ss = Arrays.toString(arr);
+</code></pre><p>15、把数组转成集合</p>
+<pre><code>String[] array ={&quot;haha&quot;,&quot;hehe&quot;,&quot;xixi&quot;};
+List list = Arrays.asList(array)
+</code></pre><p>16、数组转成的集合不允许进行添加，删除操作，因为数组的长度是固定的</p>
+<pre><code>list.add(&quot;huhu&quot;);//UnsupportedOperationException
+list.remove(&quot;haha&quot;);//UnsupportedOperationException
+int[] b = {1,2,3};
+List list2 = Arrays.asList(b);
+System.out.println(list2.size());//1因为集合添加的是引用类型的对象，因为数组是引用类型的，所以把整个数组作为一个对象添加到集合中
+</code></pre><p>17、集合转数组 </p>
+<pre><code>&lt;T&gt; T[] toArray(T[] a)
+</code></pre><p>18、数组的长度大于需要的长度，会直接使用该数组，数组的长度小于需要的长度，会创建一个新的数组，所以最好传递一个长度正好的数组</p>
+<pre><code>String[] arr = list.toArray(new String[list.size()]);
+</code></pre><p>19、为什么集合转数组?</p>
+<p>因为数组的长度是固定的，当不允许用户对数据随意的添加删除时，可以集合转数组</p>
+<p>20、根据集合中的对象所属的类自身具备的排序方式进行排序</p>
+<pre><code>Collections.sort(list);
+</code></pre><p>21、根据自定义的排序方式对集合中的对象进行排序</p>
+<pre><code>Collections.sort(list,new ComByLength());
+</code></pre><p>22、按照集合中对象自身具备的排序方式的相反的方式进行排序</p>
+<pre><code>Collections.sort(list,Collections.reverseOrder());
+</code></pre><p>23、倒序集合中的对象</p>
+<pre><code>Collections.reverse(list);
+</code></pre>
+            </div>
+
+            <!-- Post Comments -->
+            
+    <!-- 使用 DISQUS_CLICK -->
+<div id="disqus-comment">
+    <div id="disqus_thread"></div>
+
+<!-- add animation -->
+<style>
+	.disqus_click_btn {
+            line-height: 30px;
+            margin: 0;
+            min-width: 50px;
+            padding: 0 14px;
+            display: inline-block;
+            font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+            font-size: 14px;
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 0;
+            overflow: hidden;
+            will-change: box-shadow;
+            transition: box-shadow .2s cubic-bezier(.4, 0, 1, 1), background-color .2s cubic-bezier(.4, 0, .2, 1), color .2s cubic-bezier(.4, 0, .2, 1);
+            outline: 0;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            vertical-align: middle;
+            border: 0;
+            background: rgba(158, 158, 158, .2);
+            box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .2), 0 1px 5px 0 rgba(0, 0, 0, .12);
+            color: #fff;
+            background-color: #7EC0EE;
+            text-shadow: 0
+        }
+</style>
+	
+<div class="btn_click_load" id="disqus_bt"> 
+    <button class="disqus_click_btn">点击查看评论</button>
+</div>
+
+<!--
+<script type="text/javascript">
+$('.btn_click_load').click(function() {
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'http-miccall-tech'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    document.getElementById('disqus_bt').style.display = "none";
+});
+</script>
+-->
+<script type="text/javascript">
+    var disqus_config = function () {
+        this.page.url = 'http://yoursite.com/2015/10/05/Java基础（4）集合重点知识/';  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = 'http://yoursite.com/2015/10/05/Java基础（4）集合重点知识/'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+</script>
+
+<script type="text/javascript">
+    $('.btn_click_load').click(function() {  //click to load comments
+        (function() { // DON'T EDIT BELOW THIS LINE
+            var d = document;
+            var s = d.createElement('script');
+            s.src = '//http-miccall-tech.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', + new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+        $('.btn_click_load').css('display','none');
+    });
+</script>
+</div>
+<style>
+    #disqus-comment{
+        background-color: #eee;
+        padding: 2pc;
+    }
+</style>
+
+
+        </div>
+        <!-- Copyright 版权 start -->
+                <div id="copyright">
+            <ul>
+                <li>&copy;Powered By <a href="https://hexo.io/zh-cn/" style="border-bottom: none;">hexo</a></li>
+                <li>Design: <a href="http://miccall.tech " style="border-bottom: none;">miccall</a></li>
+            </ul>
+            
+            	<span id="busuanzi_container_site_pv">2017总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+			
+        </div>
+    </div>
+</body>
+
+
+
+ 	
+</html>

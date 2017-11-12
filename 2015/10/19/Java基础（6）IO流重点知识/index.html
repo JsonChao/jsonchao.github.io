@@ -1,0 +1,360 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<link rel="bookmark"  type="image/x-icon"  href="/img/logo_miccall.png"/>
+	 <link rel="shortcut icon" href="/img/logo_miccall.png">
+	
+			
+    <title>
+    Deep into Android
+    </title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="/css/mic_main.css" />
+    <link rel="stylesheet" href="/css/dropdownMenu.css" />
+    
+    	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+	
+    <noscript>
+        <link rel="stylesheet" href="/css/noscript.css" />
+    </noscript>
+
+			    <script src="/js/jquery.min.js"></script>
+    <script src="/js/jquery.scrollex.min.js"></script>
+    <script src="/js/jquery.scrolly.min.js"></script>
+    <script src="/js/skel.min.js"></script>
+    <script src="/js/util.js"></script>
+    <script src="/js/main.js"></script>
+	
+</head>
+    
+		
+<!-- Layouts -->
+
+
+
+<!--  代码渲染  -->
+<link rel="stylesheet" href="/css/prism_coy.css" />
+<link rel="stylesheet" href="/css/typo.css" />
+<!-- 文章页 -->
+<body class="is-loading">
+    <!-- Wrapper 外包 s-->
+    <div id="wrapper" class="fade-in">
+        <!-- Intro 头部显示 s -->
+        <!-- Intro 头部显示 e -->
+        <!-- Header 头部logo start -->
+        <header id="header">
+    <a href="/" class="logo">JsonChao</a>
+</header>
+        <!-- Nav 导航条 start -->
+        <nav id="nav" class="special" >
+            <ul class="menu links" >
+			<!-- Homepage  主页  --> 
+			<li >
+	            <a href="/" rel="nofollow">主页</a>
+	        </li>
+			<!-- categories_name  分类   --> 
+	        
+	        <li class="active">
+	            <a href="#s1">分类</a>
+	                    <ul class="submenu">
+	                        <li>
+	                        <a class="category-link" href="/categories/kotlin/">kotlin</a></li><li><a class="category-link" href="/categories/rxjava/">rxjava</a></li><li><a class="category-link" href="/categories/sdk开发/">sdk开发</a></li><li><a class="category-link" href="/categories/学习计划/">学习计划</a></li><li><a class="category-link" href="/categories/安卓基础/">安卓基础</a>
+	                    </ul>
+	        </li>
+	        
+	        <!-- archives  归档   --> 
+	        
+	        
+		        <!-- Pages 自定义   -->
+		        
+
+
+            </ul>
+            <!-- icons 图标   -->
+			<ul class="icons">
+		            
+		                <li><a href="https://github.com/JsonChao" class="icon fa-github"><span class="label">GitHub</span></a></li>
+		            
+		            
+		            
+		            
+			</ul>
+</nav>
+
+        <div id="main" >
+            <div class ="post_page_title_img" style="height: 25rem;background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLElcwkCtZ92XJ7SloVjw8Qwx6uO0JloxG0LD8vW9u590BUG15);background-position: center; background-repeat:no-repeat; background-size:cover;-moz-background-size:cover;overflow:hidden;" >
+                <a href="#" style="padding: 4rem 4rem 2rem 4rem ;"><h2 >Java基础（6）面向对象</h2></a>
+            </div>
+            <!-- Post -->
+            <div class="typo" style="padding: 3rem;">
+                <hr>
+<p>Hello，这是java的第六堂课</p>
+<p>1、IO流:(Input Output)处理设备之间的数据传输</p>
+<p>字节流可以操作任何类型的数据：文本，音频，视频，图片<br>字符流：只能操作文本类型的数据，基于字节流的，在字节流的基础上融入了编码ASCII,ISO8859-1,gbk,gb2312,utf-8</p>
+<p>2、设备：硬盘，键盘，控制台，内存，网络</p>
+<p>最常用的设备是硬盘</p>
+<p>数据没有写入到文件，写入到流内部的的一个数组，这个数组是一个字节数组，因为要查编码表</p>
+<pre><code>fw.write(&quot;abcdef&quot;);//把内部缓冲中的数据写入到文件
+    fw.flush();
+fw.write(&quot;gh&quot;);//刷完之后可以继续写
+fw.close();//关闭此流，同时会刷新流中的数据
+fw = new FileWriter(&quot;k:\\temp.txt&quot;);//因为该路径不存在，所以文件输出流对象创建失败
+</code></pre><p>3、文件的续写</p>
+<pre><code>FileWriter fw = new FileWriter(&quot;temp.txt&quot;,true);
+//获取换行符
+final String SEPARATOR = System.getProperty(&quot;line.separator&quot;);
+fw.write(SEPARATOR);
+//write写出
+//reader读入
+</code></pre><p>4、使用一次读一个字符的功能读取,返回的是字符的编码</p>
+<p>读到文件末尾时返回-1<br>使用数组读取文件–返回的是 每次读取的字符的个数</p>
+<p>5、字符流的缓冲区：只是为了提高读或写的效率，不具备读或写的功能，不能单独使用，需要结合着读流或写流使用</p>
+<p>字符流的缓冲读取流：<br>BufferedReader，提供了一个一次读取一行的功能 readLine()</p>
+<p>字符流的缓冲写入流: BufferedWriter:提供了一个跨平台的写入换行的功能 newLine()</p>
+<pre><code>bw.close();//关闭缓冲流就是关闭写入流
+while((line = br.readLine())!=null)//返回的一行不包含换行符
+</code></pre><p>6、装饰设计模式的特点：</p>
+<pre><code>1：简化了继承体系，使原有体系变简单了
+2: 装饰类在原有功能上提供的增强功能，所以还属于原有体系 
+</code></pre><p>7、</p>
+<pre><code>LineNumberReader lnr = new LineNumberReader(new FileReade(&quot;fis.txt&quot;));
+    String num = null;
+    lnr.setLineNumber(49);//设置文件第一行文字的初始行数
+    while((num = lnr.readLine())!=null)
+    {
+        System.out.println(lnr.getLineNumber()+&quot;:&quot;+num);
+    }
+
+lnr.close();
+</code></pre><p>8、FileReader:  </p>
+<pre><code>int read()
+int read(char[] arr)
+</code></pre><p>FileWriter:  </p>
+<pre><code>write(String ss) //没有写入到目的地
+
+BufferedReader: readLine()
+BufferedWriter: newLine()
+</code></pre><p>9、字节流：</p>
+<pre><code>FileInputStream
+FileOutputStream
+
+fos.write(&quot;abc&quot;.getBytes());//直接把数据写入到目的地
+int num = fis.available();//得到的是文件的总大小
+InputStream in=System.in;//标准字节输入流对象，是已经和键盘绑定好的字节输入流对象
+int num = System.in.read();//阻塞式方法，只要用户没有输入会一直等待
+
+InputStreamReader：把字节流转成字符流
+OutputStreamWriter:
+
+BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.in));
+BufferedReader br = new BufferedReader(new InputStreamReader
+(System.out));
+        int num;//局部变量如果刚开始没有初始值，只要不使用它就不会出错，如果接下来对它赋值了也能正常使用
+        while((num = fis.read())!=-1)
+        {
+            fos.write(num);
+        }
+</code></pre><p>10、</p>
+<pre><code>System.setIn(new FileInputStream(&quot;temp.txt&quot;));//改变标准的输入    //System.setOut(new PrintStream(&quot;gp10.txt&quot;));//改变标准的输出    
+</code></pre><p>11、什么时候用转换流？</p>
+<pre><code>1:键盘输入数据
+2：设置编码的时候
+OutputStreamWriter  osw = new OutputStreamWriter(new FileOutputStream(&quot;utf.txt&quot;),&quot;utf-8&quot;);
+</code></pre><p>12、当遇到一个IO问题是，该怎么考虑?</p>
+<pre><code>1:是否有源和目的
+  有源:Reader  InputStream
+  有目的: Writer OutputStream
+2:是不是文本
+  是文本：   Reader Writer
+  不是文本: InputStream OutputStream
+3:根据第二部确定的体系，进一步的确定操作的是哪个设备
+  源：键盘，硬盘，内存，网络
+  目的：控制台，硬盘，内存，网络
+</code></pre><p>13、File:把文件或文件夹面向对象的封装类</p>
+<pre><code>file.createNewFile();//创建文件
+file.mkdir();//创建文件夹
+file.mkdirs();//创建多级目录 aa\\bb\\cc\\dd
+sop(file.isFile());//判断是不是文件
+sop(file.isDirectory());//判断是不是文件夹
+sop(file.length());//得到文件大小
+</code></pre><p>14、列出可用的文件系统根目录：</p>
+<pre><code>File[] roots = File.listRoots();
+/*列出指定目录下的所有的文件和文件夹
+File dir = new File(&quot;e:\\gp1123\\day11&quot;);
+String[] contents = dir.list();
+for(String ss:contents)
+{
+    sop(ss);
+}*/
+//列出指定目录下的所有的文件和文件夹
+File dir = new File(&quot;e:\\gp1123\\day11&quot;);
+File[]  files = dir.listFiles();
+</code></pre><p>15、递归：函数自己调用自己</p>
+<pre><code>注意：1:内存溢出 2: 要有结束条件
+
+Properties:继承了HashTable,HashTable实现了 Map接口,所以Properties是一个集合类,是一个可以和流结合使用的集合类，存储的必须是属性类型的键值对，而且键值对都是字符串类型的，所以没有使用泛型
+
+pro.stringPropertyNames();//得到所有键的集合在内存中做的修改
+pro.setProperty(&quot;name&quot;,&quot;zhangsan&quot;);//得到所有的系统属性集
+Properties pro = System.getProperties()//使用读取流对象读取文件，把读取出的键值对存到集合中
+pro.load(fr);//把集合中的属性信息写入到文件
+pro.store(fw,&quot;haha&quot;);
+</code></pre><p>16、打印流:PrintStream:字节输出流，具备了字节输出流的基本功能，增加了打印功能</p>
+<pre><code>可以操作的目的：
+1:File类型的文件
+2:字符串类型的文件
+3:字节输出流
+
+ps.println(353);//按照数据的原样显示，也就是数据的表现形式，内部使用了 String.valueOf()
+ps.write(String.valueOf(353).getBytes());
+</code></pre><p>17、PrintWriter:字符打印流，字符输出流的基本功能都具备了，增加了打印功能</p>
+<pre><code>可以操作的目的：
+1:File类型的文件
+2:字符串类型的文件
+3:字节输出流
+4:字符输出流                       
+PrintWriter pw = new PrintWriter(System.out,true);//自动刷新
+</code></pre><p>18、</p>
+<pre><code>Enumeration&lt;FileInputStream&gt; en = Collections.enumeration(list);
+SequenceInputStream sis = new SequenceInputStream(en);
+</code></pre><p>19、序列化：把对象进行持久存储<br>oos.writeObject(new Person(“李四”,23));</p>
+<p>反序列化：把存储的对象从设备中读出,对象是依赖于其所属的类的</p>
+<pre><code>Person   person =(Person)ois.readObject();
+class Person implements Serializable//要被序列化的对象所属的类必须实现Serializable接口
+static final long serialVersionUID = 42L;//显示声明序列号
+public transient String name;//瞬态  不参与序列化
+</code></pre><p>20、RandomAccessFile:只能访问文件,不属于IO体系,内部既有字节输入流，也有字节输出流,内部有一个字节数组，可以通过指针操作该数组，所以可以随机</p>
+<pre><code>在&quot;rw&quot;模式下，文件不存在会自动创建 
+RandomAccessFile  random = new RandomAccessFile(&quot;random.txt&quot;,&quot;rw&quot;);
+//默认从文件开头写入
+random.write(&quot;刘能&quot;.getBytes());
+random.writeInt(56);
+//获取指针指向的位置
+long index = random.getFilePointer();
+//设置指针的位置
+random.seek(16);
+</code></pre><p>21、DataInputStream,DataOutputStream:操作基本数据类型的流类</p>
+<p>22、内存流:</p>
+<pre><code>ByteArrayInputStream:从内存中读   
+ByteArrayInputStream(byte[] buf) 
+ByteArrayOutputStream:向内存中写   
+ByteArrayOutputStream() 
+该流类内部有一个字节数组,数据被写入该字节数组了
+</code></pre><p>23、编码： 有好事儿，速回。—-&gt;电报文</p>
+<pre><code>byte[] getBytes() 
+          使用平台的默认字符集将此 String 编码为 byte 序列，并将结果存储到一个新的 byte 数组中。
+byte[] getBytes(Charset charset) 
+          使用给定的 charset 将此 String 编码到 byte 序列，并将结果存储到新的 byte 数组。 
+解码：  电报文----&gt;有好事儿，速回.
+         String(byte[] bytes) 
+          通过使用平台的默认字符集解码指定的 byte 数组，构造一个新的 String。      
+         String(byte[] bytes, Charset charset) 
+          通过使用指定的 charset 解码指定的 byte 数组，构造一个新的 String。
+</code></pre>
+            </div>
+
+            <!-- Post Comments -->
+            
+    <!-- 使用 DISQUS_CLICK -->
+<div id="disqus-comment">
+    <div id="disqus_thread"></div>
+
+<!-- add animation -->
+<style>
+	.disqus_click_btn {
+            line-height: 30px;
+            margin: 0;
+            min-width: 50px;
+            padding: 0 14px;
+            display: inline-block;
+            font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+            font-size: 14px;
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 0;
+            overflow: hidden;
+            will-change: box-shadow;
+            transition: box-shadow .2s cubic-bezier(.4, 0, 1, 1), background-color .2s cubic-bezier(.4, 0, .2, 1), color .2s cubic-bezier(.4, 0, .2, 1);
+            outline: 0;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            vertical-align: middle;
+            border: 0;
+            background: rgba(158, 158, 158, .2);
+            box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .2), 0 1px 5px 0 rgba(0, 0, 0, .12);
+            color: #fff;
+            background-color: #7EC0EE;
+            text-shadow: 0
+        }
+</style>
+	
+<div class="btn_click_load" id="disqus_bt"> 
+    <button class="disqus_click_btn">点击查看评论</button>
+</div>
+
+<!--
+<script type="text/javascript">
+$('.btn_click_load').click(function() {
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'http-miccall-tech'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    document.getElementById('disqus_bt').style.display = "none";
+});
+</script>
+-->
+<script type="text/javascript">
+    var disqus_config = function () {
+        this.page.url = 'http://yoursite.com/2015/10/19/Java基础（6）IO流重点知识/';  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = 'http://yoursite.com/2015/10/19/Java基础（6）IO流重点知识/'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+</script>
+
+<script type="text/javascript">
+    $('.btn_click_load').click(function() {  //click to load comments
+        (function() { // DON'T EDIT BELOW THIS LINE
+            var d = document;
+            var s = d.createElement('script');
+            s.src = '//http-miccall-tech.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', + new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+        $('.btn_click_load').css('display','none');
+    });
+</script>
+</div>
+<style>
+    #disqus-comment{
+        background-color: #eee;
+        padding: 2pc;
+    }
+</style>
+
+
+        </div>
+        <!-- Copyright 版权 start -->
+                <div id="copyright">
+            <ul>
+                <li>&copy;Powered By <a href="https://hexo.io/zh-cn/" style="border-bottom: none;">hexo</a></li>
+                <li>Design: <a href="http://miccall.tech " style="border-bottom: none;">miccall</a></li>
+            </ul>
+            
+            	<span id="busuanzi_container_site_pv">2017总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+			
+        </div>
+    </div>
+</body>
+
+
+
+ 	
+</html>

@@ -1,0 +1,297 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<link rel="bookmark"  type="image/x-icon"  href="/img/logo_miccall.png"/>
+	 <link rel="shortcut icon" href="/img/logo_miccall.png">
+	
+			
+    <title>
+    Deep into Android
+    </title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="/css/mic_main.css" />
+    <link rel="stylesheet" href="/css/dropdownMenu.css" />
+    
+    	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+	
+    <noscript>
+        <link rel="stylesheet" href="/css/noscript.css" />
+    </noscript>
+
+			    <script src="/js/jquery.min.js"></script>
+    <script src="/js/jquery.scrollex.min.js"></script>
+    <script src="/js/jquery.scrolly.min.js"></script>
+    <script src="/js/skel.min.js"></script>
+    <script src="/js/util.js"></script>
+    <script src="/js/main.js"></script>
+	
+</head>
+    
+		
+<!-- Layouts -->
+
+
+
+<!--  代码渲染  -->
+<link rel="stylesheet" href="/css/prism_coy.css" />
+<link rel="stylesheet" href="/css/typo.css" />
+<!-- 文章页 -->
+<body class="is-loading">
+    <!-- Wrapper 外包 s-->
+    <div id="wrapper" class="fade-in">
+        <!-- Intro 头部显示 s -->
+        <!-- Intro 头部显示 e -->
+        <!-- Header 头部logo start -->
+        <header id="header">
+    <a href="/" class="logo">JsonChao</a>
+</header>
+        <!-- Nav 导航条 start -->
+        <nav id="nav" class="special" >
+            <ul class="menu links" >
+			<!-- Homepage  主页  --> 
+			<li >
+	            <a href="/" rel="nofollow">主页</a>
+	        </li>
+			<!-- categories_name  分类   --> 
+	        
+	        <li class="active">
+	            <a href="#s1">分类</a>
+	                    <ul class="submenu">
+	                        <li>
+	                        <a class="category-link" href="/categories/kotlin/">kotlin</a></li><li><a class="category-link" href="/categories/rxjava/">rxjava</a></li><li><a class="category-link" href="/categories/sdk开发/">sdk开发</a></li><li><a class="category-link" href="/categories/学习计划/">学习计划</a></li><li><a class="category-link" href="/categories/安卓基础/">安卓基础</a>
+	                    </ul>
+	        </li>
+	        
+	        <!-- archives  归档   --> 
+	        
+	        
+		        <!-- Pages 自定义   -->
+		        
+
+
+            </ul>
+            <!-- icons 图标   -->
+			<ul class="icons">
+		            
+		                <li><a href="https://github.com/JsonChao" class="icon fa-github"><span class="label">GitHub</span></a></li>
+		            
+		            
+		            
+		            
+			</ul>
+</nav>
+
+        <div id="main" >
+            <div class ="post_page_title_img" style="height: 25rem;background-image: url(http://i9.download.fd.pchome.net/t_960x600/g1/M00/08/1B/oYYBAFOijEGIbj-FAA3dax-qAPMAABnnwD1FMwADd2D330.jpg);background-position: center; background-repeat:no-repeat; background-size:cover;-moz-background-size:cover;overflow:hidden;" >
+                <a href="#" style="padding: 4rem 4rem 2rem 4rem ;"><h2 >Java高级之网络编程，正则表达式，反射</h2></a>
+            </div>
+            <!-- Post -->
+            <div class="typo" style="padding: 3rem;">
+                <hr>
+<p>Hello，这是java高级的第一堂课</p>
+<p>1、得到发送方的ip地址</p>
+<pre><code>InetAddress address = packet.getAddress();//从接收方的数据包对象中获取发送方的IP地址对象
+String ip = address.getHostAddress();
+
+Udp中获取ip地址的格式
+String ip = packet.getAddress.getHostName();
+Tcp中获取ip地址的格式
+String ip = s.getInetAddress.getHostName();
+</code></pre><p>2、在网络编程中,与本地相关的流才需要关闭</p>
+<p>3、正则表达式：专门针对字符串的</p>
+<pre><code>正则表达式针对字符串的常用操作： 
+1:匹配: 实际用的是String类中的 boolean matches(String regex)方法
+2:切割: 实际用的是 String类中的 Sring[] split(String regex) 
+3:替换: 实际使用的是 String replaceAll(String regex, String replacement) 
+4:获取:
+Pattern:把字符串形式的正则表达式编译成Pattern类型的对象
+Matcher:从指定的字符串中查找符合正则规则的内容
+String ss = &quot;lisi****zhangsan&amp;&amp;&amp;&amp;&amp;wangwu##########liunengaa&quot;;
+String regex = &quot;(.)\\1+&quot;;
+String ss = &quot;我我..我我..我.我要...要要...要要...要学学....学学学...编编...编编..编程...程程...程程..程.程&quot;;
+ss = ss.replaceAll(&quot;\\.+&quot;,&quot;&quot;);
+System.out.println(ss);
+ss = ss.replaceAll(&quot;(.)\\1+&quot;,&quot;$1&quot;);//$1代表前面括号里面的所有内容
+</code></pre><p>4、反射:动态获取类（字节码文件Person.class）,并对其成员进行运行动态获取字节码文件的方法</p>
+<pre><code>1:使用Object类提供的Class.getClass()方法，这种方法需要对象
+2:每种数据类型都有一个静态的class属性,这个属性返回的这种数据类型所属字节码文件对象int.class   Person.class
+3:使用 Class提供的 forName()方法
+只需要提供一个字符串，这个字符串由 包名+类名 构成
+
+m.invoke(obj, null);//方法对象由该方法所属的类对象唤醒,并传入该方法对应的实参
+</code></pre><p>1、get方式和post方式的比较：</p>
+<pre><code>1:以get方式提交的数据在请求头中
+       以post方式提交的数据在请求体中  
+2:以get方式提交的数据显示在地址栏
+  以post方式提交的数据不显示在地址栏
+3: get方式不适合提交数据量大的
+   post方式适合提交数据量大的  
+4: get方式不适合提交敏感信息
+   post方式适合提交敏感信息   
+</code></pre><p>6、和服务器端进行交互的方式：</p>
+<pre><code>1：在地址栏直接数据地址------gets
+2:  超链接----get
+3: 表单----get,post
+</code></pre><p>如果使用的服务器是tomacat,  因为tomacat默认使用的 编码是iso8859-1,所以提交的数据如果有中文，那么tomacat<br>肯定会用iso8859-1进行解码，那么必然会乱码，所以<br>服务器端必须处理，如果请求服务器的方式是get方式，那么<br>服务器端使用再编码再解码的方式解决，如果请求服务器的方式<br>是post, 那么服务器端可以使用再编码再解码解决，也可以使用<br>服务器端提供的一个方式  request.setCharacterEncoding()解决</p>
+<p>7、Servlet（小服务程序）是运行在服务器端的一个用Java编写的小程序，或者说是一个Java类。</p>
+<pre><code>Servlet是由容器(tomcat服务器)来创建对象的，
+容器会根据用户的请求方式是get还是post去调用doGet()或goPost()方法
+
+容器怎么找到Servlet的?
+
+容器怎么找到Servlet的?
+根据地址栏中的路径去 WebRoot--WEB-INF---web.xml找到相应的包名类名
+
+多个客户端请求同一个Servlet,是不是给每个客户端都创建一个Servlet对象?
+每个Servlet只创建一个对象，处理所有的客户端请求
+一次运行，到处服务
+每个Servlet只创建一个对象,怎么区分每个客户端的？
+每个客户端都会有不同的HttpServletRequest和HttpServletResponse对象     HttpServletRequest:代表的是客户端的请求，封装了客户端的信息
+HttpServletResponse:代表的是服务器端对客户端的响应，设置服务器端的 *信息使用该对象
+因为doGet()方法是容器调用的，所以HttpServletRequest和 HttpServletResponse对象也是容器创建的
+
+Servlet的生命周期：
+1：容器实例化Servlet
+2:容器调用Servlet实例的init()方法，进行初始化
+3:当有客户端请求该servlet时，容器会调用实例的service()方法
+service()方法会根据用户的请求方式去调用doGet()或dPost()方法
+4:当实例被销毁时，容器会调用实例的destroy()方法
+初始化方法，是第一个被容器调用的方法,这个方法在servlet的整个生命周期中只被调用一次init()
+
+多个客户端请求同一个Servlet,是不是给每个客户端都创建一个Servlet对象?
+每个Servlet只创建一个对象，处理所有的客户端请求
+一次运行，到处服务
+每个Servlet只创建一个对象,怎么区分每个客户端的？
+每个客户端都会有不同的HttpServletRequest和HttpServletResponse对象     HttpServletRequest:代表的是客户端的请求，封装了客户端的信息
+HttpServletResponse:代表的是服务器端对客户端的响应，设置服务器端的 *信息使用该对象
+因为doGet()方法是容器调用的，所以HttpServletRequest和 HttpServletResponse对象也是容器创建的
+
+Servlet的生命周期：
+1：容器实例化Servlet
+2:容器调用Servlet实例的init()方法，进行初始化
+3:当有客户端请求该servlet时，容器会调用实例的service()方法
+service()方法会根据用户的请求方式去调用doGet()或doPost()方法
+4:当实例被销毁时，容器会调用实例的destroy()方法
+初始化方法，是第一个被容器调用的方法,这个方法在servlet的整个生命周期中只被调用一次init()
+</code></pre><p>8、使用Gson解析json 字符串</p>
+<p>关键是实体类提取正确了<br>键对应的是一个对象，直接提取成类，键对应的是数组，提取成集合</p>
+<pre><code>1:实体类的成员变量名必须和json 字符串中的键保持一致
+2:如果提取成内部类，内部类必须是静态的
+</code></pre><p>fastjson解析类型有四种</p>
+<pre><code>1: JavaBean       JSON.parseObject(String json,Class claz)
+2:List&lt;JavaBean&gt;  JSON.parseArray(String json,Class claz)
+3:List&lt;String&gt;  JSON.parseArray(String json,String.class)
+4:List&lt;Map&lt;String,Object&gt;&gt;  JSON.parseObject(String json,new    TypeReference&lt;List&lt;Map&lt;String,Object&gt;&gt;&gt;(){}.getType())
+</code></pre><p> 9、把数据组织成username=哈哈&amp;psw=123格式(编码表格实体，参数类型）</p>
+<pre><code>UrlEncodedFormEntity entity = new UrlEncodedFormEntity(list, encode);
+//该类用于把上传的文件和提交的参数组织成需要的格式
+（组织两种或两种以上实体)
+MultipartEntity entity = new MultipartEntity();    
+</code></pre>
+            </div>
+
+            <!-- Post Comments -->
+            
+    <!-- 使用 DISQUS_CLICK -->
+<div id="disqus-comment">
+    <div id="disqus_thread"></div>
+
+<!-- add animation -->
+<style>
+	.disqus_click_btn {
+            line-height: 30px;
+            margin: 0;
+            min-width: 50px;
+            padding: 0 14px;
+            display: inline-block;
+            font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+            font-size: 14px;
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 0;
+            overflow: hidden;
+            will-change: box-shadow;
+            transition: box-shadow .2s cubic-bezier(.4, 0, 1, 1), background-color .2s cubic-bezier(.4, 0, .2, 1), color .2s cubic-bezier(.4, 0, .2, 1);
+            outline: 0;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            vertical-align: middle;
+            border: 0;
+            background: rgba(158, 158, 158, .2);
+            box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .2), 0 1px 5px 0 rgba(0, 0, 0, .12);
+            color: #fff;
+            background-color: #7EC0EE;
+            text-shadow: 0
+        }
+</style>
+	
+<div class="btn_click_load" id="disqus_bt"> 
+    <button class="disqus_click_btn">点击查看评论</button>
+</div>
+
+<!--
+<script type="text/javascript">
+$('.btn_click_load').click(function() {
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'http-miccall-tech'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    document.getElementById('disqus_bt').style.display = "none";
+});
+</script>
+-->
+<script type="text/javascript">
+    var disqus_config = function () {
+        this.page.url = 'http://yoursite.com/2015/10/26/Java高级之网络编程，正则表达式，反射/';  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = 'http://yoursite.com/2015/10/26/Java高级之网络编程，正则表达式，反射/'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+</script>
+
+<script type="text/javascript">
+    $('.btn_click_load').click(function() {  //click to load comments
+        (function() { // DON'T EDIT BELOW THIS LINE
+            var d = document;
+            var s = d.createElement('script');
+            s.src = '//http-miccall-tech.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', + new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+        $('.btn_click_load').css('display','none');
+    });
+</script>
+</div>
+<style>
+    #disqus-comment{
+        background-color: #eee;
+        padding: 2pc;
+    }
+</style>
+
+
+        </div>
+        <!-- Copyright 版权 start -->
+                <div id="copyright">
+            <ul>
+                <li>&copy;Powered By <a href="https://hexo.io/zh-cn/" style="border-bottom: none;">hexo</a></li>
+                <li>Design: <a href="http://miccall.tech " style="border-bottom: none;">miccall</a></li>
+            </ul>
+            
+            	<span id="busuanzi_container_site_pv">2017总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+			
+        </div>
+    </div>
+</body>
+
+
+
+ 	
+</html>
