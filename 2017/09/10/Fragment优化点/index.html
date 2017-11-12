@@ -1,0 +1,344 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<link rel="bookmark"  type="image/x-icon"  href="/img/logo_miccall.png"/>
+	 <link rel="shortcut icon" href="/img/logo_miccall.png">
+	
+			
+    <title>
+    Deep into Android
+    </title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="/css/mic_main.css" />
+    <link rel="stylesheet" href="/css/dropdownMenu.css" />
+    
+    	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+	
+    <noscript>
+        <link rel="stylesheet" href="/css/noscript.css" />
+    </noscript>
+
+			    <script src="/js/jquery.min.js"></script>
+    <script src="/js/jquery.scrollex.min.js"></script>
+    <script src="/js/jquery.scrolly.min.js"></script>
+    <script src="/js/skel.min.js"></script>
+    <script src="/js/util.js"></script>
+    <script src="/js/main.js"></script>
+	
+</head>
+    
+		
+<!-- Layouts -->
+
+
+
+<!--  代码渲染  -->
+<link rel="stylesheet" href="/css/prism_coy.css" />
+<link rel="stylesheet" href="/css/typo.css" />
+<!-- 文章页 -->
+<body class="is-loading">
+    <!-- Wrapper 外包 s-->
+    <div id="wrapper" class="fade-in">
+        <!-- Intro 头部显示 s -->
+        <!-- Intro 头部显示 e -->
+        <!-- Header 头部logo start -->
+        <header id="header">
+    <a href="/" class="logo">JsonChao</a>
+</header>
+        <!-- Nav 导航条 start -->
+        <nav id="nav" class="special" >
+            <ul class="menu links" >
+			<!-- Homepage  主页  --> 
+			<li >
+	            <a href="/" rel="nofollow">主页</a>
+	        </li>
+			<!-- categories_name  分类   --> 
+	        
+	        <li class="active">
+	            <a href="#s1">分类</a>
+	                    <ul class="submenu">
+	                        <li>
+	                        <a class="category-link" href="/categories/kotlin/">kotlin</a></li><li><a class="category-link" href="/categories/rxjava/">rxjava</a></li><li><a class="category-link" href="/categories/sdk开发/">sdk开发</a></li><li><a class="category-link" href="/categories/学习计划/">学习计划</a></li><li><a class="category-link" href="/categories/安卓基础/">安卓基础</a>
+	                    </ul>
+	        </li>
+	        
+	        <!-- archives  归档   --> 
+	        
+	        
+		        <!-- Pages 自定义   -->
+		        
+
+
+            </ul>
+            <!-- icons 图标   -->
+			<ul class="icons">
+		            
+		                <li><a href="https://github.com/JsonChao" class="icon fa-github"><span class="label">GitHub</span></a></li>
+		            
+		            
+		            
+		            
+			</ul>
+</nav>
+
+        <div id="main" >
+            <div class ="post_page_title_img" style="height: 25rem;background-image: url(http://img.cache.pdawo.com/uploads/20130702/btyf3hvktry.jpg);background-position: center; background-repeat:no-repeat; background-size:cover;-moz-background-size:cover;overflow:hidden;" >
+                <a href="#" style="padding: 4rem 4rem 2rem 4rem ;"><h2 >Fragment优化点</h2></a>
+            </div>
+            <!-- Post -->
+            <div class="typo" style="padding: 3rem;">
+                <hr>
+<h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><h3 id="优化点"><a href="#优化点" class="headerlink" title="优化点"></a>优化点</h3><p>1.我们可以在Fragment的onAttach()中通过getArguments()获得传进来的参数，并在之后使用这些参数。</p>
+<p>2.如果要获取Activity对象，不建议调用getActivity()，而是在onAttach()中将Context对象强转为Activity对象。</p>
+<p>3.addToBackStack(“fname”)是可选的。FragmentManager拥有回退栈（BackStack），类似于Activity的任务栈，如果添加了该语句，就把该事务加入回退栈，当用户点击返回按钮，会回退该事务（回退指的是如果事务是add(frag1)，那么回退操作就是remove(frag1)）；如果没添加该语句，用户点击返回按钮会直接销毁Activity。</p>
+<p>4.Fragment有一个常见的问题，即Fragment重叠问题，这是由于Fragment被系统杀掉，并重新初始化时再次将fragment加入activity，因此通过在外围加if语句能判断此时是否是被系统杀掉并重新初始化的情况。</p>
+<p>5.Fragment有个常见的异常：Can not perform this action after onSaveInstanceState</p>
+<p>该异常出现的原因是：commit()在onSaveInstanceState()后调用。首先，onSaveInstanceState()在onPause()之后，onStop()之前调用。onRestoreInstanceState()在onStart()之后，onResume()之前。</p>
+<p>因此避免出现该异常的方案有：</p>
+<p>不要把Fragment事务放在异步线程的回调中，比如不要把Fragment事务放在AsyncTask的onPostExecute()，因此onPostExecute()可能会在onSaveInstanceState()之后执行。<br>逼不得已时使用commitAllowingStateLoss()。</p>
+<p>6.Fragment的onAttach()-&gt;onCreate()-&gt;onCreateView()-&gt;onActivityCreated()-&gt;onStart()都是在Activity的onStart()中调用的。<br>Fragment的onResume()在Activity的onResume()之后调用。</p>
+<p>7.不加addToBackStack()和加addToBackStack()<br>1、当点击F1的按钮，调用replace()替换为F2，且不加addToBackStack()时，F1最后调用了onDestroy()和onDetach()。</p>
+<p>2、当点击F1的按钮，调用replace()替换为F2，且加addToBackStack()时，可以看到，F1被替换时，最后只调到了onDestroyView()，并没有调用onDestroy()和onDetach()。当用户点返回按钮回退事务时，F1会调onCreateView()-&gt;onStart()-&gt;onResume()，因此在Fragment事务中加不加addToBackStack()会影响Fragment的生命周期。</p>
+<p>8.addToBackStack(“”)<br>内部实现为：创建一个BackStackRecord对象，该对象记录了这个事务的全部操作轨迹（这里只做了一次add操作，并且加入回退栈），随后将该对象提交到FragmentManager的执行队列中，等待执行。</p>
+<pre><code>class BackStackRecord extends FragmentTransaction implements FragmentManager.BackStackEntry, Runnable {}
+</code></pre><p>BackStackRecord有三重含义：</p>
+<ol>
+<li><p>继承了FragmentTransaction，即是事务，保存了整个事务的全部操作轨迹。</p>
+</li>
+<li><p>实现了BackStackEntry，作为回退栈的元素，正是因为该类拥有事务全部的操作轨迹，因此在popBackStack()时能回退整个事务。</p>
+</li>
+<li><p>继承了Runnable，即被放入FragmentManager执行队列，等待被执行。</p>
+</li>
+</ol>
+<p>9.popBackStack()，有以下几种变种：</p>
+<p>popBackStack()：将回退栈的栈顶弹出，并回退该事务。</p>
+<p>popBackStack(String name, int flag)：name为addToBackStack(String name)的参数，通过name能找到回退栈的特定元素，flag可以为0或者FragmentManager.POP_BACK_STACK_INCLUSIVE，0表示只弹出该元素以上的所有元素，POP_BACK_STACK_INCLUSIVE表示弹出包含该元素及以上的所有元素。这里说的弹出所有元素包含回退这些事务。</p>
+<p>popBackStack()是异步执行的，是丢到主线程的MessageQueue执行，popBackStackImmediate()是同步版本。</p>
+<p>10.Fragment向Activity传递数据</p>
+<p>基础方法：</p>
+<p>首先，在Fragment中定义接口，并让Activity实现该接口（具体实现省略）：</p>
+<pre><code>public interface OnFragmentInteractionListener {    void onItemClick(String str);  //将str从Fragment传递给Activity}
+</code></pre><p>在Fragment的onAttach()中，将参数Context强转为OnFragmentInteractionListener对象：</p>
+<pre><code>public void onAttach(Context context) {
+    super.onAttach(context);
+        if (context instanceof OnFragmentInteractionListener) {
+        mListener = (OnFragmentInteractionListener) context;
+    } else {
+                throw new RuntimeException(context.toString()
+                + &quot; must implement OnFragmentInteractionListener&quot;);
+    }
+}
+</code></pre><p>并在Fragment合适的地方调用mListener.onItemClick(“fragment”)将”fragment”从Fragment传递给Activity</p>
+<p>注解方式：</p>
+<p>由于通过接口的方式从Fragment向Activity进行数据传递比较麻烦，需要在Fragment中定义interface，并让Activity实现该interface，FABridge(<a href="https://github.com/hongyangAndroid/FABridge)通过注解的形式免去了这些定义。" target="_blank" rel="external">https://github.com/hongyangAndroid/FABridge)通过注解的形式免去了这些定义。</a></p>
+<p>在build.gradle中添加依赖：</p>
+<pre><code>annotationProcessor &apos;com.zhy.fabridge:fabridge-compiler:1.0.0&apos;
+compile &apos;com.zhy.fabridge:fabridge-api:1.0.0&apos;
+</code></pre><p>首先定义方法ID，这里为FAB_ITEM_CLICK，接着在Activity中定义接口：</p>
+<pre><code>    @FCallbackId(id = FAB_ITEM_CLICK)public void onItemClick(String str) {  //方法名任意
+    Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
+}
+</code></pre><p>最后，在Fragment中，通过以下形式调用”ID=FAB_ITEM_CLICK”的方法（该方法可能在Activity中，也可能在任何类中）：</p>
+<pre><code>Fabridge.call(mActivity,FAB_ITEM_CLICK,&quot;data&quot;);  //调用ID对应的方法，&quot;data&quot;为参数值
+</code></pre><p>11.Activity向Fragment传递数据</p>
+<p>Activity向Fragment传递数据比较简单，获取Fragment对象，并调用Fragment的方法即可，比如要将一个字符串传递给Fragment，则在Fragment中定义方法：</p>
+<pre><code>public void setString(String str) { 
+    this.str = str;
+}
+</code></pre><p>并在Activity中调用fragment.setString(“fragment”)即可。</p>
+<p>12.Fragment之间通信</p>
+<pre><code>由于Fragment之间是没有任何依赖关系的，因此如果要进行Fragment之间的通信，建议通过Activity作为中介，不要Fragment之间直接通信。
+</code></pre><p>13.DialogFragment</p>
+<p>DialogFragment是Android 3.0提出的，代替了Dialog，用于实现对话框。他的优点是：即使旋转屏幕，也能保留对话框状态。</p>
+<p>如果要自定义对话框样式，只需要继承DialogFragment，并重写onCreateView()，该方法返回对话框UI。这里我们举个例子，实现进度条样式的圆角对话框。</p>
+<pre><code>public class ProgressDialogFragment extends DialogFragment {    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE); //消除Title区域
+        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));  //将背景变为透明
+        setCancelable(false);  //点击外部不可取消
+        View root = inflater.inflate(R.layout.fragment_progress_dialog, container);
+        return root;
+    }
+     public static ProgressDialogFragment newInstance() {
+        return new ProgressDialogFragment();
+    }
+}
+</code></pre><p>进度条动画我们使用Lottie(<a href="https://github.com/airbnb/lottie-android)实现，Lottie动画从这里(https://www.lottiefiles.com/)找到。使用非常方便，只需要下载JSON动画文件，然后在XML中写入：" target="_blank" rel="external">https://github.com/airbnb/lottie-android)实现，Lottie动画从这里(https://www.lottiefiles.com/)找到。使用非常方便，只需要下载JSON动画文件，然后在XML中写入：</a></p>
+<pre><code>&lt;com.airbnb.lottie.LottieAnimationView
+android:layout_width=&quot;wrap_content&quot;  //大小根据JSON文件确定
+android:layout_height=&quot;wrap_content&quot;
+app:lottie_fileName=&quot;loader_ring.json&quot;   //JSON文件
+app:lottie_loop=&quot;true&quot;    //循环播放
+app:lottie_autoPlay=&quot;true&quot; /&gt;  //自动播放
+</code></pre><p>然后通过下面代码显示对话框：</p>
+<pre><code>ProgressDialogFragment fragment = ProgressDialogFragment.newInstance();
+fragment.show(getSupportFragmentManager(), &quot;tag&quot;);//fragment.dismiss();
+</code></pre><p>为了实现圆角，除了在onCreateView()中把背景设为透明，还需要对UI加入背景：</p>
+<pre><code>&lt;shape xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;&gt;
+    &lt;solid android:color=&quot;#ffffff&quot;/&gt;
+    &lt;corners
+        android:radius=&quot;20dp&quot;/&gt;
+&lt;/shape&gt;
+</code></pre><p>14.ViewPager+Fragment</p>
+<p>默认，ViewPager会缓存当前页相邻的界面，比如当滑动到第2页时，会初始化第1页和第3页的界面（即Fragment对象，且生命周期函数运行到onResume()），可以通过setOffscreenPageLimit(count)设置离线缓存的界面个数。</p>
+<p>15.懒加载</p>
+<p>默认情况，ViewPager会缓存当前页和左右相邻的界面。实现懒加载的主要原因是：用户没进入的界面需要有一系列的网络、数据库等耗资源、耗时的操作，预先做这些数据加载是不必要的。</p>
+<p>这里懒加载的实现思路是：用户不可见的界面，只初始化UI，但是不会做任何数据加载。等滑到该页，才会异步做数据加载并更新UI。</p>
+<p>底部用PagerBottomTabStrip(<a href="https://github.com/tyzlmjj/PagerBottomTabStrip)项目实现，上面是ViewPager，使用FragmentPagerAdapter。" target="_blank" rel="external">https://github.com/tyzlmjj/PagerBottomTabStrip)项目实现，上面是ViewPager，使用FragmentPagerAdapter。</a></p>
+<p>懒加载主要依赖Fragment的setUserVisibleHint(boolean isVisible)方法，当Fragment变为可见时，会调用setUserVisibleHint(true)；当Fragment变为不可见时，会调用setUserVisibleHint(false)，且该方法调用时机：</p>
+<ol>
+<li><p>onAttach()之前，调用setUserVisibleHint(false)。</p>
+</li>
+<li><p>onCreateView()之前，如果该界面为当前页，则调用setUserVisibleHint(true)，否则调用setUserVisibleHint(false)。</p>
+</li>
+<li><p>界面变为可见时，调用setUserVisibleHint(true)。<br>界面变为不可见时，调用setUserVisibleHint(false)。</p>
+</li>
+</ol>
+<p>懒加载Fragment的实现：</p>
+<pre><code>public class LazyFragment extends Fragment {    private View mRootView;
+    private boolean mIsInited;
+    private boolean mIsPrepared;    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        mRootView = inflater.inflate(R.layout.fragment_lazy, container, false);
+        mIsPrepared = true;
+        lazyLoad();
+            return mRootView;
+    }
+
+     public void lazyLoad() {
+        if (getUserVisibleHint() &amp;&amp; mIsPrepared &amp;&amp; !mIsInited) { 
+               //异步初始化，在初始化后显示正常UI
+            loadData();
+        }
+    }
+
+     private void loadData() {
+         new Thread() {
+         public void run() {
+                //1. 加载数据
+                //2. 更新UI
+                //3. mIsInited = true
+            }
+        }.start();
+    }   
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) { 
+           super.setUserVisibleHint(isVisibleToUser);
+            if (isVisibleToUser) {
+            lazyLoad();
+        }
+    }
+
+    public static LazyFragment newInstance() {
+           return new LazyFragment();
+    }
+}
+</code></pre>
+            </div>
+
+            <!-- Post Comments -->
+            
+    <!-- 使用 DISQUS_CLICK -->
+<div id="disqus-comment">
+    <div id="disqus_thread"></div>
+
+<!-- add animation -->
+<style>
+	.disqus_click_btn {
+            line-height: 30px;
+            margin: 0;
+            min-width: 50px;
+            padding: 0 14px;
+            display: inline-block;
+            font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+            font-size: 14px;
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 0;
+            overflow: hidden;
+            will-change: box-shadow;
+            transition: box-shadow .2s cubic-bezier(.4, 0, 1, 1), background-color .2s cubic-bezier(.4, 0, .2, 1), color .2s cubic-bezier(.4, 0, .2, 1);
+            outline: 0;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            vertical-align: middle;
+            border: 0;
+            background: rgba(158, 158, 158, .2);
+            box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .2), 0 1px 5px 0 rgba(0, 0, 0, .12);
+            color: #fff;
+            background-color: #7EC0EE;
+            text-shadow: 0
+        }
+</style>
+	
+<div class="btn_click_load" id="disqus_bt"> 
+    <button class="disqus_click_btn">点击查看评论</button>
+</div>
+
+<!--
+<script type="text/javascript">
+$('.btn_click_load').click(function() {
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'http-miccall-tech'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    document.getElementById('disqus_bt').style.display = "none";
+});
+</script>
+-->
+<script type="text/javascript">
+    var disqus_config = function () {
+        this.page.url = 'http://yoursite.com/2017/09/10/Fragment优化点/';  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = 'http://yoursite.com/2017/09/10/Fragment优化点/'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+</script>
+
+<script type="text/javascript">
+    $('.btn_click_load').click(function() {  //click to load comments
+        (function() { // DON'T EDIT BELOW THIS LINE
+            var d = document;
+            var s = d.createElement('script');
+            s.src = '//http-miccall-tech.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', + new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+        $('.btn_click_load').css('display','none');
+    });
+</script>
+</div>
+<style>
+    #disqus-comment{
+        background-color: #eee;
+        padding: 2pc;
+    }
+</style>
+
+
+        </div>
+        <!-- Copyright 版权 start -->
+                <div id="copyright">
+            <ul>
+                <li>&copy;Powered By <a href="https://hexo.io/zh-cn/" style="border-bottom: none;">hexo</a></li>
+                <li>Design: <a href="http://miccall.tech " style="border-bottom: none;">miccall</a></li>
+            </ul>
+            
+            	<span id="busuanzi_container_site_pv">2017总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+			
+        </div>
+    </div>
+</body>
+
+
+
+ 	
+</html>
