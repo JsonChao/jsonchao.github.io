@@ -1,0 +1,309 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<link rel="bookmark"  type="image/x-icon"  href="/img/logo_miccall.png"/>
+	 <link rel="shortcut icon" href="/img/logo_miccall.png">
+	
+			
+    <title>
+    Deep into Android
+    </title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="/css/mic_main.css" />
+    <link rel="stylesheet" href="/css/dropdownMenu.css" />
+    
+    	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+	
+    <noscript>
+        <link rel="stylesheet" href="/css/noscript.css" />
+    </noscript>
+
+			    <script src="/js/jquery.min.js"></script>
+    <script src="/js/jquery.scrollex.min.js"></script>
+    <script src="/js/jquery.scrolly.min.js"></script>
+    <script src="/js/skel.min.js"></script>
+    <script src="/js/util.js"></script>
+    <script src="/js/main.js"></script>
+	
+</head>
+    
+		
+<!-- Layouts -->
+
+
+
+<!--  代码渲染  -->
+<link rel="stylesheet" href="/css/prism_coy.css" />
+<link rel="stylesheet" href="/css/typo.css" />
+<!-- 文章页 -->
+<body class="is-loading">
+    <!-- Wrapper 外包 s-->
+    <div id="wrapper" class="fade-in">
+        <!-- Intro 头部显示 s -->
+        <!-- Intro 头部显示 e -->
+        <!-- Header 头部logo start -->
+        <header id="header">
+    <a href="/" class="logo">JsonChao</a>
+</header>
+        <!-- Nav 导航条 start -->
+        <nav id="nav" class="special" >
+            <ul class="menu links" >
+			<!-- Homepage  主页  --> 
+			<li >
+	            <a href="/" rel="nofollow">主页</a>
+	        </li>
+			<!-- categories_name  分类   --> 
+	        
+	        <li class="active">
+	            <a href="#s1">分类</a>
+	                    <ul class="submenu">
+	                        <li>
+	                        <a class="category-link" href="/categories/kotlin/">kotlin</a></li><li><a class="category-link" href="/categories/rxjava/">rxjava</a></li><li><a class="category-link" href="/categories/sdk开发/">sdk开发</a></li><li><a class="category-link" href="/categories/学习计划/">学习计划</a></li><li><a class="category-link" href="/categories/安卓基础/">安卓基础</a>
+	                    </ul>
+	        </li>
+	        
+	        <!-- archives  归档   --> 
+	        
+	        
+		        <!-- Pages 自定义   -->
+		        
+
+
+            </ul>
+            <!-- icons 图标   -->
+			<ul class="icons">
+		            
+		                <li><a href="https://github.com/JsonChao" class="icon fa-github"><span class="label">GitHub</span></a></li>
+		            
+		            
+		            
+		            
+			</ul>
+</nav>
+
+        <div id="main" >
+            <div class ="post_page_title_img" style="height: 25rem;background-image: url(http://images2.china.com/travel/zh_cn/love-in-hainan/zzy/cn/11169097/20141224/19139747_2014122409444649047900.jpg);background-position: center; background-repeat:no-repeat; background-size:cover;-moz-background-size:cover;overflow:hidden;" >
+                <a href="#" style="padding: 4rem 4rem 2rem 4rem ;"><h2 >android常用布局及控件的使用</h2></a>
+            </div>
+            <!-- Post -->
+            <div class="typo" style="padding: 3rem;">
+                <hr>
+<p>Hello，这是android基础的第一堂课</p>
+<p>1、layout_gravity:设置的是本视图相对于上一级视图的显示位置</p>
+<pre><code>对于水平方向的线性布局,因为每个视图是按照出现的先后顺序单独占据一列，所以不可以使用layout_gravity
+改变视图在水平方向的位置，比如，left，right,center_horizontal
+对于垂直方向的线性布局,因为每个视图是按照出现的先后顺序单独占据一行，所以不可以使用layout_gravity
+改变视图在垂直方向的位置，比如，top，bottom,center_vertical
+</code></pre><p>2、TextView</p>
+<p>TextView的常用属性</p>
+<pre><code>RGB:每个颜色值是一个一位的16进制的数,最小值是0,最大值是f
+RRGGBB:每个颜色值是一个两位的16进制的数,最小值是00,最大值是ff
+ARGB:A表示透明度A是一个1位的16进制数,A的值是0表示完全透明,A的值是f表示完全不透明
+AARRGGBB:AA表示透明度，AA是一个2位的16进制数,AA的值是00表示完全透明，A的值是ff表示完全不透明
+单行显示文本android:singleLine=&quot;true&quot;
+android:ellipsize:在起始，中间，结束位置显示省略号
+实现跑马灯效果
+首先需要单行显示
+android:singleLine=&quot;true&quot;
+android:ellipsize=&quot;marquee&quot;
+TextView 默认情况下是没有获得焦点的，
+也就是这两个属性android:focusable,android:focusableInTouchMode的默认值是false
+android:focusable:针对按键的
+android:focusableInTouchMode:针对屏幕触摸的
+ndroid:focusable = &quot;true&quot;是android:focusableInTouchMode=&quot;true&quot;有效的前提条件  
+</code></pre><p>3、EditText</p>
+<pre><code>android:inputType:帮助输入法确定显示什么样的键盘
+android:adjustViewBounds:当ImageView的宽高发生变化时，图片按比例缩放,该属性必须结合着android:maxWidth,android:maxHeight这两个属性使用
+</code></pre><p>4、imageview   </p>
+<pre><code>scaleType:设置图片的填充方式
+center:按照原图大小显示，但是当图片的宽高大于ImageView的宽高时，截取图片中间部分显示
+centerCrop:按比例缩放原图，直到等于ImageView的宽高时显示
+centerInside:图片的宽高等于ImageView的宽高时，按照原图大小居中显示，否则将图片缩放至ImageView的大小并居中显示
+fitXY:拉伸图片（不按比例），填充ImageView
+fitStart:按比例拉伸图片，拉伸后图片的高度为ImageView的高度，并显示在ImageView的左边
+fitCenter:按比例拉伸图片，拉伸后图片的高度为ImageView的高度，并显示在ImageView的中间
+fitEnd:按比例拉伸图片，拉伸后图片的高度为ImageView的高度，并显示在ImageView的右边
+</code></pre><p>5、AutoCompleteTextView</p>
+<pre><code>android:completionThreshold:当用户输入几个字符的时候出现自动匹配的数据，默认值是 2
+Resources res = getResources();//得到当前应用的资源对象
+String[] data = res.getStringArray(R.array.datas);//得到资源下的字符串数组
+</code></pre><p>6、Spinner</p>
+<pre><code>泛型是Spinner显示的每个数据项的类型
+适配器是调用数据源中每个对象的toString()方法，把toString()方法的返回值作为数据项显示
+</code></pre><p>7、ActionBar</p>
+<p>在清单文件中加入ActionBar分隔栏:</p>
+<pre><code>&lt;activity
+    android:name=&quot;com.qianfeng.gp10_day30_actionbar1.MainActivity&quot;
+    android:label=&quot;@string/app_name&quot; 
+    android:uiOptions=&quot;splitActionBarWhenNarrow&quot;
+    &gt;
+</code></pre><p>启用应用导航—显示回退到上一个Activity的箭头让导航显示</p>
+<pre><code>getActionBar().setDisplayShowHomeEnabled(true);
+//让该动作项可以被点击---该动作项的id是android.R.id.home
+getActionBar().setDisplayHomeAsUpEnabled(true);
+//ActionBar的自动隐藏和显示
+@Override
+public boolean onTouchEvent(MotionEvent event) {
+    // TODO 处理屏幕触摸事件:按下 移动 抬起
+    if(event.getAction()==MotionEvent.ACTION_UP)
+    {
+        if(getActionBar().isShowing())//判断ActionBar是否显示
+        {
+            getActionBar().hide();//隐藏
+        }
+        else
+            getActionBar().show();
+    }
+    return true;//表示处理当前的触摸事件
+}
+</code></pre><p>8、ActionView的使用:一个动作项使用了布局,当点击该动作项时，会展开，显示布局对象的效果</p>
+<pre><code>先得到显示SearchView的动作项
+MenuItem item = menu.findItem(R.id.action_search);
+//再从动作项中获取SearchView 对象
+search = (SearchView) item.getActionView();
+Intent intent = new Intent(Intent.ACTION_SEND);
+intent.setType(&quot;text/*&quot;);//设置分享内容的类型是文本
+
+1:获取ActionBar,并设置为Tab导航模式
+ActionBar actionBar = getActionBar();
+actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+
+2:当前的Ativity实现TabListener接口
+
+3:创建Tab项，加入到ActionBar
+ActionBar.Tab tab = actionBar.newTab();
+tab.setText(&quot;头条&quot;)
+.setIcon(android.R.drawable.ic_menu_add)
+.setTabListener(this);// 给 tab项添加监听
+
+actionBar.addTab(tab);// 把 tab项加入到actionBar
+</code></pre><p>9、dialog</p>
+<pre><code>创建对话框构建器对象
+使用对话框构建器对象设置对话框的属性
+.setCancelable(false)//点击对话框周围是否退出该对话框
+finish();//退出对话框
+使用构建器的create方法返回对话框对象
+</code></pre><p>10、gridView</p>
+<pre><code>stretchMode:多出来的宽度如何分配
+horizontalSpacing:列间距
+verticalSpacing:行间距
+numColumns:一行有几列
+</code></pre><p>11、ListView</p>
+<p>ListView的高度必须是固定的,否则的话会去计算,在计算的过程中会多次 调用getView()</p>
+<pre><code>&lt;ListView
+    android:id=&quot;@+id/listView&quot;
+    android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;match_parent&quot;
+    /&gt;
+</code></pre><p>ListView分页</p>
+<pre><code>public static final String path = &quot;http://192.168.93.212:8080/Web/servlet/PageServlet?pageNum=&quot;;
+private boolean isBottom;//存储是否滑到最底部的值
+private int pageNum = 1;//存储页数的变量
+</code></pre>
+            </div>
+
+            <!-- Post Comments -->
+            
+    <!-- 使用 DISQUS_CLICK -->
+<div id="disqus-comment">
+    <div id="disqus_thread"></div>
+
+<!-- add animation -->
+<style>
+	.disqus_click_btn {
+            line-height: 30px;
+            margin: 0;
+            min-width: 50px;
+            padding: 0 14px;
+            display: inline-block;
+            font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+            font-size: 14px;
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 0;
+            overflow: hidden;
+            will-change: box-shadow;
+            transition: box-shadow .2s cubic-bezier(.4, 0, 1, 1), background-color .2s cubic-bezier(.4, 0, .2, 1), color .2s cubic-bezier(.4, 0, .2, 1);
+            outline: 0;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            vertical-align: middle;
+            border: 0;
+            background: rgba(158, 158, 158, .2);
+            box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .2), 0 1px 5px 0 rgba(0, 0, 0, .12);
+            color: #fff;
+            background-color: #7EC0EE;
+            text-shadow: 0
+        }
+</style>
+	
+<div class="btn_click_load" id="disqus_bt"> 
+    <button class="disqus_click_btn">点击查看评论</button>
+</div>
+
+<!--
+<script type="text/javascript">
+$('.btn_click_load').click(function() {
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'http-miccall-tech'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    document.getElementById('disqus_bt').style.display = "none";
+});
+</script>
+-->
+<script type="text/javascript">
+    var disqus_config = function () {
+        this.page.url = 'http://yoursite.com/2015/11/02/android常用布局及控件的使用/';  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = 'http://yoursite.com/2015/11/02/android常用布局及控件的使用/'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+</script>
+
+<script type="text/javascript">
+    $('.btn_click_load').click(function() {  //click to load comments
+        (function() { // DON'T EDIT BELOW THIS LINE
+            var d = document;
+            var s = d.createElement('script');
+            s.src = '//http-miccall-tech.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', + new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+        $('.btn_click_load').css('display','none');
+    });
+</script>
+</div>
+<style>
+    #disqus-comment{
+        background-color: #eee;
+        padding: 2pc;
+    }
+</style>
+
+
+        </div>
+        <!-- Copyright 版权 start -->
+                <div id="copyright">
+            <ul>
+                <li>&copy;Powered By <a href="https://hexo.io/zh-cn/" style="border-bottom: none;">hexo</a></li>
+                <li>Design: <a href="http://miccall.tech " style="border-bottom: none;">miccall</a></li>
+            </ul>
+            
+            	<span id="busuanzi_container_site_pv">2017总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+			
+        </div>
+    </div>
+</body>
+
+
+
+ 	
+</html>
