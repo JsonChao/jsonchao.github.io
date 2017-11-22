@@ -193,7 +193,7 @@ public int getAlpha() {
   public abstract Object getSystemService(@ServiceName String name);
 </code></pre><p><strong>还可以运行将常量与标志相结合</strong></p>
 <p>在@StringDef(flag=true,{…})多添加一个标志进行综合判断</p>
-<h4 id="代码可访问型注解（这块没看懂，以后回顾的时候解决）"><a href="#代码可访问型注解（这块没看懂，以后回顾的时候解决）" class="headerlink" title="代码可访问型注解（这块没看懂，以后回顾的时候解决）"></a>代码可访问型注解（这块没看懂，以后回顾的时候解决）</h4><p>使用 @VisibleForTesting 和 @Keep 注解可以表示方法、类或字段的可访问性。</p>
+<h4 id="代码可访问型注解"><a href="#代码可访问型注解" class="headerlink" title="代码可访问型注解"></a>代码可访问型注解</h4><p>使用 @VisibleForTesting 和 @Keep 注解可以表示方法、类或字段的可访问性。</p>
 <p>@VisibleForTesting 注解指示一个代码块的可见性是否高于让代码变得可测试所需要的水平。</p>
 <p>@Keep 指出一个方法在被混淆的时候应该被保留。<br>该注解可以确保如果在构建时缩减代码，标注的元素不会移除。它一般会添加到通过反射访问的方法和类中，以阻止编译器将代码视为未使用。</p>
 
