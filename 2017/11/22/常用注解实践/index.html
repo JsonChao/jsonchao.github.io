@@ -1,0 +1,304 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<link rel="bookmark"  type="image/x-icon"  href="/img/logo_miccall.png"/>
+	 <link rel="shortcut icon" href="/img/logo_miccall.png">
+	
+			
+    <title>
+    Deep into Android
+    </title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="/css/mic_main.css" />
+    <link rel="stylesheet" href="/css/dropdownMenu.css" />
+    
+    	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+	
+    <noscript>
+        <link rel="stylesheet" href="/css/noscript.css" />
+    </noscript>
+
+			    <script src="/js/jquery.min.js"></script>
+    <script src="/js/jquery.scrollex.min.js"></script>
+    <script src="/js/jquery.scrolly.min.js"></script>
+    <script src="/js/skel.min.js"></script>
+    <script src="/js/util.js"></script>
+    <script src="/js/main.js"></script>
+	
+</head>
+    
+		
+<!-- Layouts -->
+
+
+
+<!--  代码渲染  -->
+<link rel="stylesheet" href="/css/prism_coy.css" />
+<link rel="stylesheet" href="/css/typo.css" />
+<!-- 文章页 -->
+<body class="is-loading">
+    <!-- Wrapper 外包 s-->
+    <div id="wrapper" class="fade-in">
+        <!-- Intro 头部显示 s -->
+        <!-- Intro 头部显示 e -->
+        <!-- Header 头部logo start -->
+        <header id="header">
+    <a href="/" class="logo">JsonChao</a>
+</header>
+        <!-- Nav 导航条 start -->
+        <nav id="nav" class="special" >
+            <ul class="menu links" >
+			<!-- Homepage  主页  --> 
+			<li >
+	            <a href="/" rel="nofollow">主页</a>
+	        </li>
+			<!-- categories_name  分类   --> 
+	        
+	        <li class="active">
+	            <a href="#s1">分类</a>
+	                    <ul class="submenu">
+	                        <li>
+	                        <a class="category-link" href="/categories/kotlin/">kotlin</a></li><li><a class="category-link" href="/categories/rxjava/">rxjava</a></li><li><a class="category-link" href="/categories/sdk开发/">sdk开发</a></li><li><a class="category-link" href="/categories/学习计划/">学习计划</a></li><li><a class="category-link" href="/categories/安卓基础/">安卓基础</a></li><li><a class="category-link" href="/categories/安卓进阶/">安卓进阶</a>
+	                    </ul>
+	        </li>
+	        
+	        <!-- archives  归档   --> 
+	        
+	        
+		        <!-- Pages 自定义   -->
+		        
+
+
+            </ul>
+            <!-- icons 图标   -->
+			<ul class="icons">
+		            
+		                <li><a href="https://github.com/JsonChao" class="icon fa-github"><span class="label">GitHub</span></a></li>
+		            
+		            
+		            
+		            
+			</ul>
+</nav>
+
+        <div id="main" >
+            <div class ="post_page_title_img" style="height: 25rem;background-image: url(http://down1.cnmo.com/app/a129/daziran1.jpg);background-position: center; background-repeat:no-repeat; background-size:cover;-moz-background-size:cover;overflow:hidden;" >
+                <a href="#" style="padding: 4rem 4rem 2rem 4rem ;"><h2 >注解实践</h2></a>
+            </div>
+            <!-- Post -->
+            <div class="typo" style="padding: 3rem;">
+                <hr>
+<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>本文会提及Android中常用注解的用法，下面先提及java的4个元注解（元注解即是注解的注解）。</p>
+<h5 id="1、-Target"><a href="#1、-Target" class="headerlink" title="1、@Target"></a>1、@Target</h5><p>该注解支持六种元素类型支持，作用是定义注解的作用目标。</p>
+<pre><code>ElementType.TYPE(Class, interface, enum)
+
+ElementType.FIELD(Instance varaible)
+
+ElementType.METHOD
+
+ElementType.PARAMETER
+
+ElementType.CONSTRACTOR
+
+ElementType.LOCAL_VARAIBLE
+
+ElementType.ANNOTATION_TYPE
+
+ElementType.PACKAGE
+
+(Api26以上)
+
+ElementType.TYPE_PARAMETER
+
+ElementType.TYPE_USE
+</code></pre><h5 id="2、-Retention"><a href="#2、-Retention" class="headerlink" title="2、@Retention"></a>2、@Retention</h5><p>该注解支持三种保留策略，作用是定义注解的保留策略。</p>
+<pre><code>RetentionPolicy.SOURCE(定义只保留在源码中)
+
+RetentionPolicy.CLASS(定义注解一直保留到Class字节码文件中)
+
+RetentionPolicy.RUNTIME(定义注解一直保留到运行时期，通过反射获取得到)
+</code></pre><h5 id="3、-Document"><a href="#3、-Document" class="headerlink" title="3、@Document"></a>3、@Document</h5><p>该注解作用是将其定义的注解保留在javadoc文档中。</p>
+<h5 id="4、-Inherited"><a href="#4、-Inherited" class="headerlink" title="4、@Inherited"></a>4、@Inherited</h5><p>该注解作用是允许子类能够继承父类中的该注解。注意：该注解仅限于声明类</p>
+<h5 id="接下来是其他的一些support-annotation"><a href="#接下来是其他的一些support-annotation" class="headerlink" title="接下来是其他的一些support-annotation"></a>接下来是其他的一些support-annotation</h5><h4 id="Nullness-annotation"><a href="#Nullness-annotation" class="headerlink" title="Nullness annotation"></a>Nullness annotation</h4><h5 id="1、-Nullable"><a href="#1、-Nullable" class="headerlink" title="1、@Nullable"></a>1、@Nullable</h5><p>该注解作用指示许方法返回值、参数和变量为空</p>
+<h5 id="2、-NonNull"><a href="#2、-NonNull" class="headerlink" title="2、@NonNull"></a>2、@NonNull</h5><p>该注解作用是指示方法返回值、参数和变量不为空</p>
+<h4 id="Resource-annotation"><a href="#Resource-annotation" class="headerlink" title="Resource annotation"></a>Resource annotation</h4><h5 id="1、-StringRes"><a href="#1、-StringRes" class="headerlink" title="1、@StringRes"></a>1、@StringRes</h5><p>表明是一个字符串资源</p>
+<h5 id="2、-DrawableRes"><a href="#2、-DrawableRes" class="headerlink" title="2、@DrawableRes"></a>2、@DrawableRes</h5><p>表明是一个图片资源</p>
+<h5 id="3、-DimenRes"><a href="#3、-DimenRes" class="headerlink" title="3、@DimenRes"></a>3、@DimenRes</h5><p>表明是一个尺寸资源</p>
+<h5 id="4、-InterpolatorRes"><a href="#4、-InterpolatorRes" class="headerlink" title="4、@InterpolatorRes"></a>4、@InterpolatorRes</h5><p>表明是一个插值器资源</p>
+<h5 id="5、-ColorRes和-ColorInt"><a href="#5、-ColorRes和-ColorInt" class="headerlink" title="5、@ColorRes和@ColorInt"></a>5、@ColorRes和@ColorInt</h5><p>表明是一个颜色资源，建议用@ColorInt，因为@ColorRes不能把颜色整形（RRGGBB或者AARRGGBB）识别为颜色资源）。</p>
+<h5 id="6、-AnyRes"><a href="#6、-AnyRes" class="headerlink" title="6、@AnyRes"></a>6、@AnyRes</h5><p>表明是一个任意类型的R资源</p>
+<h4 id="Thread-annotation"><a href="#Thread-annotation" class="headerlink" title="Thread annotation"></a>Thread annotation</h4><h5 id="1、-MainThread和-UiThread"><a href="#1、-MainThread和-UiThread" class="headerlink" title="1、@MainThread和@UiThread"></a>1、@MainThread和@UiThread</h5><p>表明是在主线程,正常情况下，两者相等，但是系统应用在不同线程上有多个视图时，两者不相等，此时，@UiThread标注与应用的视图层次结构相关联的方法，使用@MainThread仅用于标注与应用生命周期相关联的方法。</p>
+<h5 id="2、-WorkerThread"><a href="#2、-WorkerThread" class="headerlink" title="2、@WorkerThread"></a>2、@WorkerThread</h5><p>表明是在工作线程</p>
+<h5 id="3、-BinderThread"><a href="#3、-BinderThread" class="headerlink" title="3、@BinderThread"></a>3、@BinderThread</h5><p>表明是在Binder线程</p>
+<h5 id="4、-AnyThread"><a href="#4、-AnyThread" class="headerlink" title="4、@AnyThread"></a>4、@AnyThread</h5><p>表明是在任意线程</p>
+<h4 id="Value-constraint-annotation"><a href="#Value-constraint-annotation" class="headerlink" title="Value constraint annotation"></a>Value constraint annotation</h4><h5 id="1、-IntRange"><a href="#1、-IntRange" class="headerlink" title="1、@IntRange"></a>1、@IntRange</h5><p>指定一个整形范围的值 </p>
+<pre><code>@IntRange（from = 0，to = 255）
+</code></pre><h5 id="2、-FloatRange"><a href="#2、-FloatRange" class="headerlink" title="2、@FloatRange"></a>2、@FloatRange</h5><p>指定一个浮点型范围的值 </p>
+<pre><code>@FloatRange（from = 0.0，to = 1.0)
+</code></pre><h5 id="3、-Size"><a href="#3、-Size" class="headerlink" title="3、@Size"></a>3、@Size</h5><p>检查集合和数组的大小或者字符串的长度</p>
+<p>@Size（1）可以作为一个非空判断</p>
+<p>@Size（3）指定大小或长度为3</p>
+<p>@Size（min = 1）指定最小值为1</p>
+<p>@Size（max = 10）指定最大值为10</p>
+<p>@Size（mutiple = 2）指定大小或长度为2的倍数</p>
+<h4 id="Permission-annotation"><a href="#Permission-annotation" class="headerlink" title="Permission annotation"></a>Permission annotation</h4><h5 id="RequiresPermission"><a href="#RequiresPermission" class="headerlink" title="@RequiresPermission"></a>@RequiresPermission</h5><p>验证方法调用方的权限</p>
+<p>检查有效权限列表中是否有某个权限用anyOf属性，<br>检查是否有一组有效权限用allOf属性。</p>
+<p>此外，它还可定义</p>
+<p><strong>Intent权限</strong></p>
+<p>@RequiresPermission(android.Manifest.permission.BLUETOOTH)<br>public static final String ACTION_REQUEST_DISCOVERABLE =<br>            “android.bluetooth.adapter.action.REQUEST_DISCOVERABLE”;</p>
+<p>对于单独读写权限的内容提供者权限</p>
+<p>@RequiresPermission.Read(@RequiresPermission(READ_HISTORY_BOOKMARKS))<br>@RequiresPermission.Write(@RequiresPermission(WRITE_HISTORY_BOOKMARKS))<br>public static final Uri BOOKMARKS_URI = Uri.parse(“content://browser/bookmarks”);</p>
+<p><strong>间接权限</strong></p>
+<p>对于权限依赖于方法参数所需的权限，可使用@RequiresPermission对参数使用间接权限。</p>
+<pre><code>startActivity(@RequiresPermission Intent intent)
+</code></pre><p>对传入的new Intent(Intent.Action_CALL)会在使用该startActivity时进行间接权限检测，检测得权限为Manifest.permission.CALL_PHONE。</p>
+<p>此外，@RequiresPermission可以替换为@RequiresPermission.Read或者@RequiresPermission.Write，但是不能与其共存。</p>
+<h4 id="Retured-value-annotation"><a href="#Retured-value-annotation" class="headerlink" title="Retured value annotation"></a>Retured value annotation</h4><h5 id="CheckResult"><a href="#CheckResult" class="headerlink" title="@CheckResult"></a>@CheckResult</h5><p>验证方法实际使用的是方法的结果还是返回值。</p>
+<p>此外还可指定额外的建议方法</p>
+<pre><code>@CheckResult（suggest=&quot;#enforcePermission(String,int,int,String)&quot;）
+public abstart int requirePermission(...)
+</code></pre><h4 id="CallSuper-annotation"><a href="#CallSuper-annotation" class="headerlink" title="CallSuper annotation"></a>CallSuper annotation</h4><p>用于验证子类方法是否会实现基类方法的超类实现</p>
+<pre><code>@CallSuper
+public void onCreate(Bundle saveInstanceState)
+</code></pre><h4 id="TypeDef-annotation"><a href="#TypeDef-annotation" class="headerlink" title="TypeDef annotation"></a>TypeDef annotation</h4><h5 id="IntDef"><a href="#IntDef" class="headerlink" title="@IntDef"></a>@IntDef</h5><p>用于强制使用已定义的整形</p>
+<pre><code>@Retention(SOURCE)
+  @IntDef({NAVIGATION_MODE_STANDARD, NAVIGATION_MODE_LIST, NAVIGATION_MODE_TABS})
+  public @interface NavigationMode {}
+  public static final int NAVIGATION_MODE_STANDARD = 0;
+  public static final int NAVIGATION_MODE_LIST = 1;
+  public static final int NAVIGATION_MODE_TABS = 2;
+  ...
+  public abstract void setNavigationMode(@NavigationMode int mode);
+  @NavigationMode
+  public abstract int getNavigationMode();
+</code></pre><h5 id="IntRange"><a href="#IntRange" class="headerlink" title="@IntRange"></a>@IntRange</h5><p>用于强制使用已定义的整形范围</p>
+<pre><code>@IntRange(from=0,to=255)
+public int getAlpha() {
+      ...
+}
+</code></pre><h5 id="StringDef"><a href="#StringDef" class="headerlink" title="@StringDef"></a>@StringDef</h5><p>用于强制使用已定义的字符串</p>
+<pre><code>@Retention(SOURCE)
+  @StringDef({
+     POWER_SERVICE,
+     WINDOW_SERVICE,
+     LAYOUT_INFLATER_SERVICE
+  })
+  public @interface ServiceName {}
+  public static final String POWER_SERVICE = &quot;power&quot;;
+  public static final String WINDOW_SERVICE = &quot;window&quot;;
+  public static final String LAYOUT_INFLATER_SERVICE = &quot;layout_inflater&quot;;
+  ...
+  public abstract Object getSystemService(@ServiceName String name);
+</code></pre><p><strong>还可以运行将常量与标志相结合</strong></p>
+<p>在@StringDef(flag=true,{…})多添加一个标志进行综合判断</p>
+<h4 id="代码可访问型注解（这块没看懂，以后回顾的时候解决）"><a href="#代码可访问型注解（这块没看懂，以后回顾的时候解决）" class="headerlink" title="代码可访问型注解（这块没看懂，以后回顾的时候解决）"></a>代码可访问型注解（这块没看懂，以后回顾的时候解决）</h4><p>使用 @VisibleForTesting 和 @Keep 注解可以表示方法、类或字段的可访问性。</p>
+<p>@VisibleForTesting 注解指示一个代码块的可见性是否高于让代码变得可测试所需要的水平。</p>
+<p>@Keep 指出一个方法在被混淆的时候应该被保留。<br>该注解可以确保如果在构建时缩减代码，标注的元素不会移除。它一般会添加到通过反射访问的方法和类中，以阻止编译器将代码视为未使用。</p>
+
+            </div>
+
+            <!-- Post Comments -->
+            
+    <!-- 使用 DISQUS_CLICK -->
+<div id="disqus-comment">
+    <div id="disqus_thread"></div>
+
+<!-- add animation -->
+<style>
+	.disqus_click_btn {
+            line-height: 30px;
+            margin: 0;
+            min-width: 50px;
+            padding: 0 14px;
+            display: inline-block;
+            font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+            font-size: 14px;
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 0;
+            overflow: hidden;
+            will-change: box-shadow;
+            transition: box-shadow .2s cubic-bezier(.4, 0, 1, 1), background-color .2s cubic-bezier(.4, 0, .2, 1), color .2s cubic-bezier(.4, 0, .2, 1);
+            outline: 0;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            vertical-align: middle;
+            border: 0;
+            background: rgba(158, 158, 158, .2);
+            box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .2), 0 1px 5px 0 rgba(0, 0, 0, .12);
+            color: #fff;
+            background-color: #7EC0EE;
+            text-shadow: 0
+        }
+</style>
+	
+<div class="btn_click_load" id="disqus_bt"> 
+    <button class="disqus_click_btn">点击查看评论</button>
+</div>
+
+<!--
+<script type="text/javascript">
+$('.btn_click_load').click(function() {
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'http-miccall-tech'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    document.getElementById('disqus_bt').style.display = "none";
+});
+</script>
+-->
+<script type="text/javascript">
+    var disqus_config = function () {
+        this.page.url = 'http://yoursite.com/2017/11/22/常用注解实践/';  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = 'http://yoursite.com/2017/11/22/常用注解实践/'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+</script>
+
+<script type="text/javascript">
+    $('.btn_click_load').click(function() {  //click to load comments
+        (function() { // DON'T EDIT BELOW THIS LINE
+            var d = document;
+            var s = d.createElement('script');
+            s.src = '//http-miccall-tech.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', + new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+        $('.btn_click_load').css('display','none');
+    });
+</script>
+</div>
+<style>
+    #disqus-comment{
+        background-color: #eee;
+        padding: 2pc;
+    }
+</style>
+
+
+        </div>
+        <!-- Copyright 版权 start -->
+                <div id="copyright">
+            <ul>
+                <li>&copy;Powered By <a href="https://hexo.io/zh-cn/" style="border-bottom: none;">hexo</a></li>
+                <li>Design: <a href="http://miccall.tech " style="border-bottom: none;">miccall</a></li>
+            </ul>
+            
+            	<span id="busuanzi_container_site_pv">2017总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+			
+        </div>
+    </div>
+</body>
+
+
+
+ 	
+</html>
