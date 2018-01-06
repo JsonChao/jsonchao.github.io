@@ -84,40 +84,46 @@
 </nav>
 
         <div id="main" >
-            <div class ="post_page_title_img" style="height: 25rem;background-image: url(http://img.mweb.com.tw/thumb/181/1000x1000/03%25E6%2588%25BF%25E9%2596%2593%25E4%25BB%258B%25E7%25B4%25B9/06%25E5%259C%2592%25E5%258D%2580%25E7%25BE%258E%25E6%2599%25AF/%25E5%25A4%2595%25E9%2599%25BD/5.jpg);background-position: center; background-repeat:no-repeat; background-size:cover;-moz-background-size:cover;overflow:hidden;" >
-                <a href="#" style="padding: 4rem 4rem 2rem 4rem ;"><h2 >Java基础（3）常用类及注意点</h2></a>
+            <div class ="post_page_title_img" style="height: 25rem;background-image: url(http://uploads.oh100.com/allimg/1707/96-1FF6142433.jpg);background-position: center; background-repeat:no-repeat; background-size:cover;-moz-background-size:cover;overflow:hidden;" >
+                <a href="#" style="padding: 4rem 4rem 2rem 4rem ;"><h2 >2018必学的顶尖Android技术（译）（作者：Amit Shekhar）</h2></a>
             </div>
             <!-- Post -->
             <div class="typo" style="padding: 3rem;">
                 <hr>
-<p>Hello，这是java的第三堂课</p>
-<p>1、局部内部类:如果局部内部类使用了其所在函数的局部变量，那么该局部变量必须是final的</p>
-<p>2、throws后边跟的是异常类，throw后边跟的是异常类对象</p>
-<p>3、字符串是常量；它们的值在创建之后不能更改</p>
-<p>4、String这个类重写了 Object类中的 boolean equals(Object obj),比较的是字符串内容</p>
-<p>5、将字符串转成字节数组</p>
-<pre><code>byte[] getBytes()
-</code></pre><p>6、切割: </p>
-<pre><code>String[] split(String)//括号里的String为按照什么样的格式切割
+<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>这是对国外优质文章系列的译文首篇，旨在帮助国内Android开发者掌握国际第一手开发资料，提升国内Android开发者的整体水平。</p>
+<p>本文的作者是Amit Shekhar，印度顶尖技术机构Mindorks的Android大神，接下来呈现干货。</p>
+<p>本文发布于<a href="https://medium.com/" target="_blank" rel="external">Medium</a>（时间：2018/01/01）</p>
+<p>这是原文地址：<br><a href="https://medium.com/mindorks/top-android-tech-to-learn-in-2018-c5bed9be4316" target="_blank" rel="external">Top Android Tech To Learn In 2018</a></p>
+<h3 id="开篇"><a href="#开篇" class="headerlink" title="开篇"></a>开篇</h3><center><br><br><img src="https://cdn-images-1.medium.com/max/1000/1*02MysJpqLzIT40Ma6175pg.png" alt="image"><br><br></center>
 
-String str = ss.replace(&apos;l&apos;,&apos;w&apos;);//返回一个新的字符串，原有的字符串没有改变
-</code></pre><p>7、将基本数据类型转换成字符串</p>
-<pre><code>String.valueOf()//括号里面的为要转换的基本数据类型
-</code></pre><p>8、jdk升级的原因：</p>
-<pre><code>1：简化书写
-2：提高安全性
-3：提高效率
-</code></pre><p>9、</p>
-<pre><code>StringBuffer sb1 = sb.append(false);//添加完之后还返回原容器
-</code></pre><p>10、其它进制转十进制</p>
-<pre><code>Integer.parseInt(String,int);
-</code></pre><p>11、一个数在字节允许的范围内(-128—127)，如果之前已经定义过，那么再使用时就直接使用已有的</p>
-<p>12、把Date类型的时间值转成long类型的</p>
-<pre><code>Date d = new Date();
-long shijian = d.getTime();
-</code></pre><p>13、得到一个DateFormat类型的实例</p>
-<pre><code>DateFormat  df = DateFormat.getDateTimeInstance();
-</code></pre>
+
+<center><br><br>#### 2018来了，祝福所有人<br><br></center>
+
+<h4 id="一、Kotlin"><a href="#一、Kotlin" class="headerlink" title="一、Kotlin"></a>一、Kotlin</h4><p>我们大多数的人已经开始去学习和使用Kotlin。去年，谷歌官方将Kotlin作为Android开发的第一类语言，这使得它以一种极快的速率普及于广大开发者之中。为了让我们不要被甩在后面，开始学习和在我们的app中使用它。今年，预期它将会被广大开发者所使用。</p>
+<p>下面是一些很棒的链接：</p>
+<ul>
+<li><p><a href="https://blog.mindorks.com/a-complete-guide-to-learn-kotlin-for-android-development-b1e5d23cc2d8" target="_blank" rel="external">一个将Kotlin应用于Android开发的完备指导</a></p>
+</li>
+<li><p><a href="http://kotlinlang.org/docs/reference/coding-conventions.html" target="_blank" rel="external">Kotlin官方指导</a></p>
+</li>
+</ul>
+<h4 id="二、Flutter"><a href="#二、Flutter" class="headerlink" title="二、Flutter"></a>二、Flutter</h4><p><a href="https://flutter.io" target="_blank" rel="external">Flutter</a>是一个帮助开发者和设计者去高效率地建立一个移动端app的新的移动端app SDK。</p>
+<p>它能够很容易并且快速地建立一个移动端app。就像React Native，它也提供了rective-style的视图。它通过避免使用JavaScript Bridge以及通过将Dart作为编译语言来改善性能。Dart由于被提前编译进本机（Native）代码而被使用在多个平台上。编译成本机代码也能够改善app的启动时间。</p>
+<p>让我们看看Flutter在2018年的成长，它将会备受关注。</p>
+<h4 id="三、Android-Architecture-Component"><a href="#三、Android-Architecture-Component" class="headerlink" title="三、Android Architecture Component"></a>三、Android Architecture Component</h4><p><a href="https://developer.android.com/topic/libraries/architecture/index.html" target="_blank" rel="external">Android架构组件</a>是一些库的集合，它能够帮助你构建出健壮、可测试、稳定的app，它们可以被用来管理你的Ui组件生命周期和处理数据持久化存储。</p>
+<p>我们中的大多数人已经开始学习了<a href="https://developer.android.com/topic/libraries/architecture/index.html" target="_blank" rel="external">Android架构组件</a>。</p>
+<p>今年它将被大量的开发者所接受。</p>
+<p>2017年以使用MVP,MVVM,Rxjava,Dagger2的趋势开始，并以使用Kotlin和Android架构组件的趋势结束。</p>
+<p>下面是一些很棒的链接：</p>
+<p><a href="https://blog.mindorks.com/essential-guide-for-designing-your-android-app-architecture-mvp-part-1-74efaf1cda40" target="_blank" rel="external">学习MVP</a></p>
+<p><a href="https://mindorks.com/course/android-mvp-introduction" target="_blank" rel="external">以一种简单的方式学习MVP架构</a></p>
+<p><a href="https://github.com/MindorksOpenSource/android-mvvm-architecture" target="_blank" rel="external">基于MVVM架构的项目</a></p>
+<p><a href="https://blog.mindorks.com/a-complete-guide-to-learn-rxjava-b55c0cea3631" target="_blank" rel="external">学习Rxjava完全指南</a></p>
+<p><a href="https://blog.mindorks.com/a-complete-guide-to-learn-dagger-2-b4c7a570d99c" target="_blank" rel="external">学习Dagger2完全指南</a></p>
+<p>快乐学习：)</p>
+<p>想要更多，并且学更多</p>
+<p>在<a href="https://blog.mindorks.com" target="_blank" rel="external">blog.mindorks.com</a>查看Android的所有顶级文章。</p>
+
             </div>
 
             <!-- Post Comments -->
@@ -179,8 +185,8 @@ $('.btn_click_load').click(function() {
 -->
 <script type="text/javascript">
     var disqus_config = function () {
-        this.page.url = 'http://yoursite.com/2015/09/28/Java基础（3）常用类及注意点/';  // Replace PAGE_URL with your page's canonical URL variable
-        this.page.identifier = 'http://yoursite.com/2015/09/28/Java基础（3）常用类及注意点/'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+        this.page.url = 'http://yoursite.com/2018/01/06/2018必学的顶尖Android技术（译）（作者：Amit Shekhar）/';  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = 'http://yoursite.com/2018/01/06/2018必学的顶尖Android技术（译）（作者：Amit Shekhar）/'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
     };
 </script>
 

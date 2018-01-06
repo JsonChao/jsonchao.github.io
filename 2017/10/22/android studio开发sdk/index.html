@@ -60,7 +60,7 @@
 	            <a href="#s1">分类</a>
 	                    <ul class="submenu">
 	                        <li>
-	                        <a class="category-link" href="/categories/kotlin/">kotlin</a></li><li><a class="category-link" href="/categories/rxjava/">rxjava</a></li><li><a class="category-link" href="/categories/sdk开发/">sdk开发</a></li><li><a class="category-link" href="/categories/学习计划/">学习计划</a></li><li><a class="category-link" href="/categories/安卓基础/">安卓基础</a></li><li><a class="category-link" href="/categories/安卓进阶/">安卓进阶</a>
+	                        <a class="category-link" href="/categories/rxjava/">rxjava</a></li><li><a class="category-link" href="/categories/学习计划/">学习计划</a></li><li><a class="category-link" href="/categories/安卓基础/">安卓基础</a></li><li><a class="category-link" href="/categories/安卓进阶/">安卓进阶</a>
 	                    </ul>
 	        </li>
 	        
@@ -103,6 +103,18 @@
 <p>2.右键点击jar文件，并点击弹出菜单中的“Add As Library”，将jar文件作为类库添加到项目中；   </p>
 <p>3.选择指定的类库。</p>
 <p>注：如果不执行2、3步，jar文件将不起作用，并且不能使用import语句引用。</p>
+<p>如果要将引入的第三方包也一起打包进来，需要使用ant工具打包。</p>
+<p>使用 ANT 工具实现 将两个或多个.jar文件合并成一个.jar文件<br>Apache Ant是一个基于Java的生成工具。据最初的创始人James Duncan Davidson的介绍，这个工具的名称是another neat tool(另一个整洁的工具)的首字母的缩写。</p>
+<p>1.下载ant并配置环境变量。（如果环境变量不会配置的话，建议出门右拐）</p>
+<p>2.在cmd命令行输入ant，检测是否配置成功。<br>如果出现如下内容，说明安装成功：<br>Buildfile: build.xml does not exist!<br>Build failed<br>注意：因为ant默认运行build.xml文件，这个文件需要我们创建。<br>如果不想命名为build.xml，运行时可以使用 ant -buildfile test.xml 命令指明要运行的构建文件。</p>
+<p>3.编辑build.xml文件（命名可以随意）</p>
+<p>&lt;?xml version=”1.0” encoding=”utf-8”?&gt;</p>
+<project name="hosa" 不用改="" ,注意：这里的所有注释在="" build.xml文件中="" 都不要有="" 是我为了给你们看解释写的="" basedir="H:\soft\jar" 生成的jar存放的位置，并且将要合并的所有.jar文件也放在该目录下="" default="makeSuperJar">               //不用改<br><br>    <target name="makeSuperJar" 不用改="" description="description">        //不用改<br><br>        <jar destfile="standingbanlanceFB.jar">                  //合并后的jar文件的名称<br>         <zipfileset src="avoscloud-sdk-v3.14.5.jar">           // <zipfileset>标签的都是要参与合并的子jar包<br>        <zipfileset src="fastjson.jar"><br>        <zipfileset src="okhttp-2.6.0-leancloud.jar"><br>         <zipfileset src="standingbanlance.jar"><br>          <zipfileset src="okio-1.6.0-leancloud.jar"><br>         </zipfileset></zipfileset></zipfileset></zipfileset></zipfileset></zipfileset></jar><br>    </target><br><br></project>
+
+<p>4.命令执行合并操作</p>
+<pre><code>ant -buildfile D:\Ant\apache-ant-1.10.1\build.xml
+</code></pre><p>注意：D:\Ant\apache-ant-1.10.1\build.xml为xml文件路径</p>
+<p>5.打开build.xml文件，即可看到合并后的jar文件。</p>
 <h3 id="四、引用so文件"><a href="#四、引用so文件" class="headerlink" title="四、引用so文件"></a>四、引用so文件</h3><p>1.在“src/main”目录中新建名为“jniLibs”的目录；</p>
 <p>2.将so文件复制、粘贴到“jniLibs”目录内。</p>
 <p>注：如果没有引用so文件，可能会在程序执行的时候加载类库失败，有类似如下的DEBUG提示：<br>java.lang.UnsatisfiedLinkError: Couldn’t load library xxxx from loader dalvik.system.PathClassLoader</p>
