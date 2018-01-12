@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="java," />
+  <meta name="keywords" content="插件化," />
 
 
 
@@ -79,17 +79,17 @@
 
 
 
-<meta name="description" content="Hello，这是java的第三堂课 1、局部内部类:如果局部内部类使用了其所在函数的局部变量，那么该局部变量必须是final的 2、throws后边跟的是异常类，throw后边跟的是异常类对象 3、字符串是常量；它们的值在创建之后不能更改 4、String这个类重写了 Object类中的 boolean equals(Object obj),比较的是字符串内容 5、将字符串转成字节数组 byte">
-<meta name="keywords" content="java">
+<meta name="description" content="简介2012年，Android插件化技术诞生，从最初只支持动态加载Activity到完全模拟app运行时的沙箱系统，历经了快6年的时间，本文，旨在从全方面的角度解析Android插件化技术。 实现Android插件化需要解决的问题插件中代码的加载和主工程的相互调用 插件中资源的加载和主工程的相互调用 Android四大组件的生命周期管理 Android插件化的发展历程第一代：dynamic-lo">
+<meta name="keywords" content="插件化">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Java基础（3）常用类及注意点">
-<meta property="og:url" content="http://yoursite.com/2015/09/28/Java基础（3）常用类及注意点/index.html">
+<meta property="og:title" content="Android 插件化">
+<meta property="og:url" content="http://yoursite.com/2018/01/12/Android 插件化/index.html">
 <meta property="og:site_name" content="Deep into Android">
-<meta property="og:description" content="Hello，这是java的第三堂课 1、局部内部类:如果局部内部类使用了其所在函数的局部变量，那么该局部变量必须是final的 2、throws后边跟的是异常类，throw后边跟的是异常类对象 3、字符串是常量；它们的值在创建之后不能更改 4、String这个类重写了 Object类中的 boolean equals(Object obj),比较的是字符串内容 5、将字符串转成字节数组 byte">
-<meta property="og:updated_time" content="2017-11-12T09:31:23.798Z">
+<meta property="og:description" content="简介2012年，Android插件化技术诞生，从最初只支持动态加载Activity到完全模拟app运行时的沙箱系统，历经了快6年的时间，本文，旨在从全方面的角度解析Android插件化技术。 实现Android插件化需要解决的问题插件中代码的加载和主工程的相互调用 插件中资源的加载和主工程的相互调用 Android四大组件的生命周期管理 Android插件化的发展历程第一代：dynamic-lo">
+<meta property="og:updated_time" content="2018-01-12T12:35:00.082Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Java基础（3）常用类及注意点">
-<meta name="twitter:description" content="Hello，这是java的第三堂课 1、局部内部类:如果局部内部类使用了其所在函数的局部变量，那么该局部变量必须是final的 2、throws后边跟的是异常类，throw后边跟的是异常类对象 3、字符串是常量；它们的值在创建之后不能更改 4、String这个类重写了 Object类中的 boolean equals(Object obj),比较的是字符串内容 5、将字符串转成字节数组 byte">
+<meta name="twitter:title" content="Android 插件化">
+<meta name="twitter:description" content="简介2012年，Android插件化技术诞生，从最初只支持动态加载Activity到完全模拟app运行时的沙箱系统，历经了快6年的时间，本文，旨在从全方面的角度解析Android插件化技术。 实现Android插件化需要解决的问题插件中代码的加载和主工程的相互调用 插件中资源的加载和主工程的相互调用 Android四大组件的生命周期管理 Android插件化的发展历程第一代：dynamic-lo">
 
 
 
@@ -119,13 +119,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2015/09/28/Java基础（3）常用类及注意点/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/01/12/Android 插件化/"/>
 
 
 
 
 
-  <title>Java基础（3）常用类及注意点 | Deep into Android</title>
+  <title>Android 插件化 | Deep into Android</title>
   
 
 
@@ -242,7 +242,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/09/28/Java基础（3）常用类及注意点/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/12/Android 插件化/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="JsonChao">
@@ -259,7 +259,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Java基础（3）常用类及注意点</h1>
+          <h1 class="post-title" itemprop="name headline">Android 插件化</h1>
         
 
         <div class="post-meta">
@@ -271,8 +271,8 @@
               
                 <span class="post-meta-item-text">Veröffentlicht am</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2015-09-28T19:08:00+08:00">
-                2015-09-28
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-01-12T16:34:00+08:00">
+                2018-01-12
               </time>
             
 
@@ -294,8 +294,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/安卓基础/" itemprop="url" rel="index">
-                    <span itemprop="name">安卓基础</span>
+                  <a href="/categories/安卓进阶/" itemprop="url" rel="index">
+                    <span itemprop="name">安卓进阶</span>
                   </a>
                 </span>
 
@@ -311,7 +311,7 @@
 
           
           
-             <span id="/2015/09/28/Java基础（3）常用类及注意点/" class="leancloud_visitors" data-flag-title="Java基础（3）常用类及注意点">
+             <span id="/2018/01/12/Android 插件化/" class="leancloud_visitors" data-flag-title="Android 插件化">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -343,33 +343,82 @@
 
       
         <hr>
-<p>Hello，这是java的第三堂课</p>
-<p>1、局部内部类:如果局部内部类使用了其所在函数的局部变量，那么该局部变量必须是final的</p>
-<p>2、throws后边跟的是异常类，throw后边跟的是异常类对象</p>
-<p>3、字符串是常量；它们的值在创建之后不能更改</p>
-<p>4、String这个类重写了 Object类中的 boolean equals(Object obj),比较的是字符串内容</p>
-<p>5、将字符串转成字节数组</p>
-<pre><code>byte[] getBytes()
-</code></pre><p>6、切割: </p>
-<pre><code>String[] split(String)//括号里的String为按照什么样的格式切割
+<h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>2012年，Android插件化技术诞生，从最初只支持动态加载Activity到完全模拟app运行时的沙箱系统，历经了快6年的时间，本文，旨在从全方面的角度解析Android插件化技术。</p>
+<h4 id="实现Android插件化需要解决的问题"><a href="#实现Android插件化需要解决的问题" class="headerlink" title="实现Android插件化需要解决的问题"></a>实现Android插件化需要解决的问题</h4><pre><code>插件中代码的加载和主工程的相互调用
+插件中资源的加载和主工程的相互调用
+Android四大组件的生命周期管理
+</code></pre><h4 id="Android插件化的发展历程"><a href="#Android插件化的发展历程" class="headerlink" title="Android插件化的发展历程"></a>Android插件化的发展历程</h4><p>第一代：dynamic-load-apk和DroidPlugin</p>
+<pre><code>dynamic-load-apk:
+早期使用ProxyActivity的代理技术，由ProxyActivity去控制插件Activity的生命周期。
+缺点：
+每一个Activity都必须继承插件Activity，处理Context时必须小心。
 
-String str = ss.replace(&apos;l&apos;,&apos;w&apos;);//返回一个新的字符串，原有的字符串没有改变
-</code></pre><p>7、将基本数据类型转换成字符串</p>
-<pre><code>String.valueOf()//括号里面的为要转换的基本数据类型
-</code></pre><p>8、jdk升级的原因：</p>
-<pre><code>1：简化书写
-2：提高安全性
-3：提高效率
-</code></pre><p>9、</p>
-<pre><code>StringBuffer sb1 = sb.append(false);//添加完之后还返回原容器
-</code></pre><p>10、其它进制转十进制</p>
-<pre><code>Integer.parseInt(String,int);
-</code></pre><p>11、一个数在字节允许的范围内(-128—127)，如果之前已经定义过，那么再使用时就直接使用已有的</p>
-<p>12、把Date类型的时间值转成long类型的</p>
-<pre><code>Date d = new Date();
-long shijian = d.getTime();
-</code></pre><p>13、得到一个DateFormat类型的实例</p>
-<pre><code>DateFormat  df = DateFormat.getDateTimeInstance();
+DroidPlugin：
+通过hook系统服务的方式启动插件Activity，来达到和使用普通方式开发app的效果。
+缺点：
+过多的hook系统服务，这一过程十分复杂且不够稳定。
+</code></pre><p>第二代：VirtulApk、Small、RePlugin</p>
+<pre><code>原理：实现原理上都选择尽量少的hook，通过在manifest上预埋一些组件实现四大组件的插件化。其中Small更形成了一个跨平台、组件化的框架。
+</code></pre><p>第三代：VirtulApp、Atlas</p>
+<pre><code>VirtulApp：
+能够完全模拟app的运行环境，能够实现免安装应用和双开技术。
+Atlas：
+阿里出品，号称是一个容器化框架，结合了组件化和热更新技术。
+</code></pre><h4 id="Android插件化的实现原理"><a href="#Android插件化的实现原理" class="headerlink" title="Android插件化的实现原理"></a>Android插件化的实现原理</h4><p>一、类加载</p>
+<p>1.外部apk中的类加载</p>
+<pre><code>Android中有两种类加载器，DexClassLoader和PathClassLoader，它们都继承于BaseDexClassLoader。
+
+两者的区别：DexClassLoader多了一个optimizedDirectory的路径参数，这个目录必须是内部存储路径，用于缓存系统创建的Dex文件。
+
+所以我们可以使用DexClassLoader去加载外部Apk中的类。
+</code></pre><p>2.双亲委托机制</p>
+<pre><code>ClassLoader调用loadClass方法加载类采用了双亲委托机制来避免重复加载类。
+首先，ClassLoader会查看自身已经加载的类中是否已经存在此类，如不存在，然后，则会使用父类来加载此类，如不能成功加载，则会使用自身重载于BaseDexClassLoader的findClass()方法来加载此类。
+
+DexClass的DexPathList在DexClass的构造器中生成，findClass()方法则是从DexPathList下面找出对应的DexFile，循环DexElements，通过dexElement.dexFile取出对应的DexFile，再通过DexFile.loadClassBinaryName()加载对应的类。
+</code></pre><p>二、单DexClassLoader和多DexClassLoader</p>
+<p>作用：使用插件DexClassLoader加载出需要的类。</p>
+<p>1.多DexClassLoader（Replugin）</p>
+<pre><code>通过每一个插件的DexClassLoader加载出自身所需要的类，当每一个插件需要加载相同的类库时，可采用该类库的不同版本来使用。
+</code></pre><p>2.单DexClassLoader（Small）</p>
+<pre><code>通过把每一个插件的pathList（DexFile）合并到主app的DexClassLoader上，来使各个插件和主app直接能够相互调用类和方法，并且各个插件中相同的功能可以抽取出来作为一个Common插件供其它插件使用。
+</code></pre><p>3.互相调用</p>
+<p>插件调用主工程</p>
+<pre><code>在ClassLoader构造时指定主工程的DexClassLoader为父加载器即可直接调用主工程中的类和方法。
+</code></pre><p>主工程调用插件</p>
+<pre><code>如果是多DexClassLoader的情况，则需要通过插件的DexClassLoader加载对应的类并反射调用其方法。此种情况，主工程一般会在一个统一的地方对访问插件中的类和方法做一些访问权限的管理及配置。
+
+如果是单DexClassLoader的情况，则可以直接调用插件中的类和方法。但是当多个插件引用的库的版本不同时，会出现错误，因此，建议采用Gradle版本依赖管理统一处理主工程及各个插件的库依赖。
+</code></pre><p>三、资源加载</p>
+<p>Android通过Resource来加载资源，只要有插件apk，就可以使用assertManager.addAssertPath（apkPath）的方式来生成assertManager，再使用其new出对应的Resource对象即可。</p>
+<p>注意：由于AssertManager并不是Public，所以需要通过反射的方式去调用它。并且由于一些Rom对Resource的处理，所以，需要兼容处理。</p>
+<p>1.资源路径的处理</p>
+<p>有2种处理方式：</p>
+<pre><code>合并式：利用assertManager.addAssetPath()将主工程和各个插件的apk路径一起加入。
+优势：资源共用。
+逆势：需要处理资源id冲突。
+
+独立式：主工程和插件都生成各自独立的Resource。
+优势：不需要处理资源id冲突。
+逆势：各个插件需要通过某些方式去获取其它插件的Resource。
+</code></pre><p>2.Context的处理</p>
+<pre><code>1.创建主工程的Resource
+2.hook主工程的Resource
+3.将activity与Resource关联
+</code></pre><p>3.资源冲突</p>
+<pre><code>产生的原因：由于主工程和各个插件引用的Resource id重复产生的冲突。
+解决思路：Android中的资源在系统中是以8位16进制0XPPTTRRRR的方式存在，其中PP即是资源区分的区域（Android系统只用它来区分系统资源和应用资源），只要让每一个插件的PP段取不同的值即可解决资源id冲突的问题。
+具体解决方式：
+1.修改aapt源码，编译期修改PP段。
+2.修改Resource的arsc文件，其中的每一条都包含了资源id和映射路径。
+</code></pre><h4 id="四大组件支持（Activity）"><a href="#四大组件支持（Activity）" class="headerlink" title="四大组件支持（Activity）"></a>四大组件支持（Activity）</h4><pre><code>Activity的处理最为复杂，有两种处理方式：
+1.ProxyActivity的方式。
+2.预埋StubActivity，hook系统启动Activity的过程。
+
+原理：VirtualAPK通过替换了系统的Instrumentation，hook了Activity的启动和创建，省去了手动管理插件Activity生命周期的繁琐，让插件Activity像正常的Activity一样被系统管理，并且插件Activity在开发时和常规一样，即能独立运行又能作为插件被主工程调用。
+</code></pre><h4 id="Android插件化的发展方向"><a href="#Android插件化的发展方向" class="headerlink" title="Android插件化的发展方向"></a>Android插件化的发展方向</h4><pre><code>Android插件化方向主要有2个方向：
+1.结合组件化技术，成为一个大中型app的基础框架。
+2.完全模拟app运行环境的沙盒系统。
 </code></pre>
       
     </div>
@@ -387,7 +436,7 @@ long shijian = d.getTime();
       
         <div class="post-tags">
           
-            <a href="/tags/java/" rel="tag"># java</a>
+            <a href="/tags/插件化/" rel="tag"># 插件化</a>
           
         </div>
       
@@ -400,8 +449,8 @@ long shijian = d.getTime();
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/09/21/Java基础（2）面向对象/" rel="next" title="Java基础（2）面向对象">
-                <i class="fa fa-chevron-left"></i> Java基础（2）面向对象
+              <a href="/2018/01/09/Android自动化测试实践/" rel="next" title="Android自动化测试实践">
+                <i class="fa fa-chevron-left"></i> Android自动化测试实践
               </a>
             
           </div>
@@ -409,10 +458,6 @@ long shijian = d.getTime();
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2015/10/05/Java基础（4）集合重点知识/" rel="prev" title="Java基础（4）集合重点知识">
-                Java基础（4）集合重点知识 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -464,8 +509,17 @@ long shijian = d.getTime();
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Übersicht
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -545,6 +599,22 @@ long shijian = d.getTime();
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#实现Android插件化需要解决的问题"><span class="nav-number">1.1.</span> <span class="nav-text">实现Android插件化需要解决的问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Android插件化的发展历程"><span class="nav-number">1.2.</span> <span class="nav-text">Android插件化的发展历程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Android插件化的实现原理"><span class="nav-number">1.3.</span> <span class="nav-text">Android插件化的实现原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#四大组件支持（Activity）"><span class="nav-number">1.4.</span> <span class="nav-text">四大组件支持（Activity）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Android插件化的发展方向"><span class="nav-number">1.5.</span> <span class="nav-text">Android插件化的发展方向</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
