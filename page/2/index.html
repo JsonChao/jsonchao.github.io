@@ -365,37 +365,18 @@
       
         
           
-            <hr>
-<h3 id="一、什么是AAR，与JAR区别"><a href="#一、什么是AAR，与JAR区别" class="headerlink" title="一、什么是AAR，与JAR区别"></a>一、什么是AAR，与JAR区别</h3><p>*.jar：只包含了class文件与清单文件，不包含资源文件，如图片等所有res中的文件。</p>
-<p>*.aar：包含所有资源，class以及res资源文件全部包含。</p>
-<p>如果你只是一个简单的类库那么使用生成的.jar文件即可；如果你的是一个UI库，包含一些自己写的控件布局文件以及字体等资源文件那么就只能使用.aar文件。</p>
-<h3 id="二、AndroidStudio将项目打包成jar包的简单方法"><a href="#二、AndroidStudio将项目打包成jar包的简单方法" class="headerlink" title="二、AndroidStudio将项目打包成jar包的简单方法"></a>二、AndroidStudio将项目打包成jar包的简单方法</h3><p>在build.gradle文件中，修改下面两个地方：</p>
-<p>（1）apply plugin:’com.android.application’ 改为 apply plugin: ‘com.android.library’ 。</p>
-<p>(2) 将defaultConfig中的applicationID这行注释掉。</p>
-<p>完成上述两个步骤之后，执行rebuild project,就会在app\build\intermediates\bundles\debug下生成classes.jar文件，这个文件就可以提供给其他项目使用，如果需要的话可以手动修改文件名称。</p>
-<center><br><br> <img src="https://yqfile.alicdn.com/ff392acb3913ff27f32cf3851884b1dc8f5e5338.jpeg?_=7059382" alt="image"><br><br></center>
-
-<h3 id="三、引用jar文件"><a href="#三、引用jar文件" class="headerlink" title="三、引用jar文件"></a>三、引用jar文件</h3><p>1.将jar文件复制、粘贴到app的libs目录中；</p>
-<p>2.右键点击jar文件，并点击弹出菜单中的“Add As Library”，将jar文件作为类库添加到项目中；   </p>
-<p>3.选择指定的类库。</p>
-<p>注：如果不执行2、3步，jar文件将不起作用，并且不能使用import语句引用。</p>
-<p>如果要将引入的第三方包也一起打包进来，需要使用ant工具打包。</p>
-<p>使用 ANT 工具实现 将两个或多个.jar文件合并成一个.jar文件<br>Apache Ant是一个基于Java的生成工具。据最初的创始人James Duncan Davidson的介绍，这个工具的名称是another neat tool(另一个整洁的工具)的首字母的缩写。</p>
-<p>1.下载ant并配置环境变量。（如果环境变量不会配置的话，建议出门右拐）</p>
-<p>2.在cmd命令行输入ant，检测是否配置成功。<br>如果出现如下内容，说明安装成功：<br>Buildfile: build.xml does not exist!<br>Build failed<br>注意：因为ant默认运行build.xml文件，这个文件需要我们创建。<br>如果不想命名为build.xml，运行时可以使用 ant -buildfile test.xml 命令指明要运行的构建文件。</p>
-<p>3.编辑build.xml文件（命名可以随意）</p>
-<p>&lt;?xml version=”1.0” encoding=”utf-8”?&gt;</p>
-<project name="hosa" 不用改="" ,注意：这里的所有注释在="" build.xml文件中="" 都不要有="" 是我为了给你们看解释写的="" basedir="H:\soft\jar" 生成的jar存放的位置，并且将要合并的所有.jar文件也放在该目录下="" default="makeSuperJar">               //不用改<br><br>    <target name="makeSuperJar" 不用改="" description="description">        //不用改<br><br>        <jar destfile="standingbanlanceFB.jar">                  //合并后的jar文件的名称<br>         <zipfileset src="avoscloud-sdk-v3.14.5.jar">           // <zipfileset>标签的都是要参与合并的子jar包<br>        <zipfileset src="fastjson.jar"><br>        <zipfileset src="okhttp-2.6.0-leancloud.jar"><br>         <zipfileset src="standingbanlance.jar"><br>          <zipfileset src="okio-1.6.0-leancloud.jar"><br>         </zipfileset></zipfileset></zipfileset></zipfileset></zipfileset></zipfileset></jar><br>    </target><br><br></project>
-
-<p>4.命令执行合并操作</p>
-<pre><code>ant -buildfile D:\Ant\apache-ant-1.10.1\build.xml
-</code></pre><p>注意：D:\Ant\apache-ant-1.10.1\build.xml为xml文件路径</p>
-<p>5.打开build.xml文件，即可看到合并后的jar文件。</p>
-<h3 id="四、引用so文件"><a href="#四、引用so文件" class="headerlink" title="四、引用so文件"></a>四、引用so文件</h3><p>1.在“src/main”目录中新建名为“jniLibs”的目录；</p>
-<p>2.将so文件复制、粘贴到“jniLibs”目录内。</p>
-<p>注：如果没有引用so文件，可能会在程序执行的时候加载类库失败，有类似如下的DEBUG提示：<br>java.lang.UnsatisfiedLinkError: Couldn’t load library xxxx from loader dalvik.system.PathClassLoader</p>
-
           
+一、什么是AAR，与JAR区别*.jar：只包含了class文件与清单文件，不包含资源文件，如图片等所有res中的文件。
+*.aar：包含所有资源，class以及res资源文件全部包含。
+如果你只是一个简单的类库那么使用生成的.jar文件即可；如果你的是一个UI库，包含一些自己写的控件布局文件以及
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/10/22/android studio开发sdk/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -546,33 +527,22 @@
       
         
           
-            <hr>
-<h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>在RxJava2.0中，有五种观察者模式：</p>
-<ol>
-<li>Observable/Observer</li>
-<li>Flowable/Subscriber</li>
-<li>Single/SingleObserver</li>
-<li>Completable/CompletableObserver</li>
-<li>Maybe/MaybeObserver<br>后面三种观察者模式差不多，Maybe/MaybeObserver可以说是Single/SingleObserver和Completable/CompletableObserver的复合体。好的，接下来，我们正式开始。。</li>
-</ol>
-<center><br><br><img src="http://biaoqingbao.xin/wp-content/uploads/2016/11/1111.jpg" alt="image"><br></center>
-
-
-
-<h4 id="一、线程制定策略"><a href="#一、线程制定策略" class="headerlink" title="一、线程制定策略"></a>一、线程制定策略</h4><p>多次指定上游的线程只有第一次指定的有效, 也就是说多次调用subscribeOn() 只有第一次的有效, 其余的会被忽略.</p>
-<p>多次指定下游的线程是可以的, 也就是说每调用一次observeOn() , 下游的线程就会切换一次.</p>
-<h4 id="二、Disposable"><a href="#二、Disposable" class="headerlink" title="二、Disposable"></a>二、Disposable</h4><p>rxjava2+retrofit网络请求的过程中，<br>如果在请求的过程中Activity已经退出了, 这个时候如果回到主线程去更新UI, 那么APP肯定就崩溃了, 怎么办呢, 上一节我们说到了Disposable , 说它是个开关, 调用它的dispose()方法时就会切断水管, 使得下游收不到事件, 既然收不到事件, 那么也就不会再去更新UI了. 因此我们可以在Activity中将这个Disposable 保存起来, 当Activity退出时, 切断它即可.<br>那如果有多个Disposable 该怎么办呢, RxJava中已经内置了一个容器==CompositeDisposable==, 每当我们得到一个Disposable时就调用==CompositeDisposable.add()==将它添加到容器中, 在退出的时候, 调用==CompositeDisposable.clear()== 即可切断所有的水管.</p>
-<h4 id="三、上下游流速不均衡的问题"><a href="#三、上下游流速不均衡的问题" class="headerlink" title="三、上下游流速不均衡的问题"></a>三、上下游流速不均衡的问题</h4><p>治理的办法就两种:</p>
-<ul>
-<li><p>一是从数量上进行治理, 减少发送进水缸里的事件</p>
-</li>
-<li><p>二是从速度上进行治理, 减缓事件发送进水缸的速度</p>
-</li>
-</ul>
-<h4 id="四、Flowable"><a href="#四、Flowable" class="headerlink" title="四、Flowable"></a>四、Flowable</h4><p>与Observable有些不同. 首先是创建Flowable的时候增加了一个参数, 这个参数是用来选择背压,也就是出现上下游流速不均衡的时候应该怎么处理的办法，另外的一个区别是在下游的onSubscribe方法中传给我们的不再是Disposable了, 而是Subscription, 它俩有什么区别呢, 首先它们都是上下游中间的一个开关, 之前我们说调用Disposable.dispose()方法可以切断水管, 同样的调用Subscription.cancel()也可以切断水管, 不同的地方在于Subscription增加了一个void request(long n)方法。</p>
-<p>Flowable在设计的时候采用了一种新的思路也就是响应式拉取的方式来更好的解决上下游流速不均衡的问题, 与我们之前所讲的控制数量和控制速度不太一样,所以我们把request当做是一种能力, 当成下游处理事件的能力, 下游能处理几个就告诉上游我要几个, 这样只要上游根据下游的处理能力来决定发送多少事件, 就不会造成一窝蜂的发出一堆事件来, 从而导致OOM. FLowable相比Observable, 在性能方面有些不足, 毕竟FLowable内部为了实现响应式拉取做了更多的操作, 性能有所丢失也是在所难免, 因此单单只是说因为FLowable是新兴产物就盲目的使用也是不对的, 也要具体分场景。</p>
-
           
+简介在RxJava2.0中，有五种观察者模式：
+
+Observable/Observer
+Flowable/Subscriber
+Single/SingleObserver
+Completable/CompletableObserver
+Maybe/MaybeObserver后面三种观察者模式差不
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/10/16/Rxjava2学习笔记/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -723,36 +693,20 @@
       
         
           
-            <hr>
-<h3 id="一、基本数据类型"><a href="#一、基本数据类型" class="headerlink" title="一、基本数据类型"></a>一、基本数据类型</h3><p>1.Boolean相当于java中的boolean和Boolean（综合），其他类型一样。</p>
-<p>2.Float的最小值是-MAX_VALUE。</p>
-<p>3.NAN为不是数的数，与任何数不相等，包括自己。</p>
-<p>4.Char字符对于于java中的Character。</p>
-<p>5.不可隐式转换，必须要加.toLong()这样的转换方法。</p>
-<center><br><br><img src="http://biaoqingbao.xin/wp-content/uploads/2016/11/1068.jpg" alt="image"><br></center>
-
-
-<h3 id="二、类和对象"><a href="#二、类和对象" class="headerlink" title="二、类和对象"></a>二、类和对象</h3><p>所有类的始祖是Any</p>
-<h3 id="三、空类型和智能类型转换"><a href="#三、空类型和智能类型转换" class="headerlink" title="三、空类型和智能类型转换"></a>三、空类型和智能类型转换</h3><p>1.空类型 </p>
-<center><br><br><img src="http://note.youdao.com/yws/public/resource/d368c21bd5f6cb42c7369a008d645bcc/xmlnote/9FA040CDAB40452C9DA2EF9CD2E217F3/10490" alt="image"><br></center>
-
-
-<p>2.智能类型转换</p>
-<center><br><br><img src="http://note.youdao.com/yws/public/resource/d368c21bd5f6cb42c7369a008d645bcc/xmlnote/211BCECC0062459CBD897BE25A8076B4/10487" alt="image"><br></center>
-
-
-
-<h3 id="四、包"><a href="#四、包" class="headerlink" title="四、包"></a>四、包</h3><center><br><br><img src="http://note.youdao.com/yws/public/resource/d368c21bd5f6cb42c7369a008d645bcc/xmlnote/1AF3A44AC01945C6AD9A70E618B98BB0/10494" alt="image"><br></center>
-
-
-<h3 id="五、区间"><a href="#五、区间" class="headerlink" title="五、区间"></a>五、区间</h3><center><br><br><img src="http://note.youdao.com/yws/public/resource/d368c21bd5f6cb42c7369a008d645bcc/xmlnote/364CF56922E2420EA77FE0CAE22A3BB4/10498" alt="image"><br></center>
-
-
-
-<h3 id="六、数组"><a href="#六、数组" class="headerlink" title="六、数组"></a>六、数组</h3><center><br><br><img src="http://note.youdao.com/yws/public/resource/d368c21bd5f6cb42c7369a008d645bcc/xmlnote/D2590F9A46C04EE4A4D76F8C2629499D/10501" alt="image"><br><br><img src="http://note.youdao.com/yws/public/resource/d368c21bd5f6cb42c7369a008d645bcc/xmlnote/42DF4396452E4F168CC5C06A7C54D00E/10503" alt="image"><br><br><img src="http://note.youdao.com/yws/public/resource/d368c21bd5f6cb42c7369a008d645bcc/xmlnote/986D9644A088431D80FA3C00422D9C0E/10505" alt="image"><br></center>
-
-
           
+一、基本数据类型1.Boolean相当于java中的boolean和Boolean（综合），其他类型一样。
+2.Float的最小值是-MAX_VALUE。
+3.NAN为不是数的数，与任何数不相等，包括自己。
+4.Char字符对于于java中的Character。
+5.不可隐式转换，必须要加.toL
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/10/15/Kotlin学习笔记（一）/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -903,23 +857,18 @@
       
         
           
-            <hr>
-<h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>使用操作符的好处？</p>
-<p>将一系列的操作用操作符链接起来就可以完成复杂的逻辑，代码被分解成一系列可以组合的片段，这就是响应式函数编程的魅力。</p>
-<p>操作符就是为了解决对Observable对象的变换的问题，操作符用于在Observable和最终的Subscriber之间修改Observable发出的事件。RxJava提供了很多很有用的操作符，下面，我们一一对一些常见的操作符来分析。</p>
-<center><br><br><img src="http://biaoqingbao.xin/wp-content/uploads/2017/07/1548.jpg" alt="image"><br></center>
-
-
-
-<h3 id="一、flatmap操作符"><a href="#一、flatmap操作符" class="headerlink" title="一、flatmap操作符"></a>一、flatmap操作符</h3><h4 id="作用："><a href="#作用：" class="headerlink" title="作用："></a>作用：</h4><p>把Observable产生的结果转换成多个Observable，然后把这多个Observable“扁平化”成一个Observable，并依次提交产生的结果给订阅者。<br>flatMap操作符通过传入一个函数作为参数转换源Observable，在这个函数中，你可以自定义转换规则，最后在这个函数中返回一个新的Observable，然后flatMap操作符通过合并这些Observable结合成一个Observable，并依次提交结果给订阅者。</p>
-<h4 id="原理："><a href="#原理：" class="headerlink" title="原理："></a>原理：</h4><p>将传入的事件对象转换成一个Observable对象，<br>这时不会直接发送这个Observable, 而是将这个Observable激活让它自己开始发送事件，<br>每一个创建出来的Observable发送的事件，都被汇入同一个Observable，这个Observable负责将这些事件统一交给Subscriber的回调方法。</p>
-<h3 id="二、map操作符"><a href="#二、map操作符" class="headerlink" title="二、map操作符"></a>二、map操作符</h3><h4 id="作用"><a href="#作用" class="headerlink" title="作用:"></a>作用:</h4><p>map操作符是把源Observable产生的结果，通过映射规则转换成另一个结果集，并提交给订阅者进行处理。</p>
-<h3 id="三、filter操作符"><a href="#三、filter操作符" class="headerlink" title="三、filter操作符"></a>三、filter操作符</h3><h4 id="作用：-1"><a href="#作用：-1" class="headerlink" title="作用："></a>作用：</h4><p>filter操作符是对源Observable产生的结果按照指定条件进行过滤，只有满足条件的结果才会提交给订阅者。</p>
-<h3 id="四、doOnNext操作符"><a href="#四、doOnNext操作符" class="headerlink" title="四、doOnNext操作符"></a>四、doOnNext操作符</h3><h4 id="作用：-2"><a href="#作用：-2" class="headerlink" title="作用："></a>作用：</h4><p>doOnNext()允许我们在每次输出一个元素之前做一些额外的事情，比如这里的保存标题。</p>
-<h4 id="五、take操作符"><a href="#五、take操作符" class="headerlink" title="五、take操作符"></a>五、take操作符</h4><h4 id="作用：-3"><a href="#作用：-3" class="headerlink" title="作用："></a>作用：</h4><p>take()输出最多指定数量的结果。</p>
-<h4 id="六、concat与merge操作符"><a href="#六、concat与merge操作符" class="headerlink" title="六、concat与merge操作符"></a>六、concat与merge操作符</h4><h4 id="区别："><a href="#区别：" class="headerlink" title="区别："></a>区别：</h4><p>concat是按被观察者的执行顺序合并的，而merge是按被观察者发送事件的时间顺序合并的。</p>
-
           
+简介使用操作符的好处？
+将一系列的操作用操作符链接起来就可以完成复杂的逻辑，代码被分解成一系列可以组合的片段，这就是响应式函数编程的魅力。
+操作符就是为了解决对Observable对象的变换的问题，操作符用于在Observable和最终的Subscriber之间修改Observable发出的事件。
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/10/09/Rxjava 学习笔记(二)(操作符)/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1070,37 +1019,19 @@
       
         
           
-            <hr>
-<h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>一个==基于事件流响应的异步的库==，在代码逻辑越复杂的情况下，能有效==代替Handler和AsnyckTask==，实现异步代码==简洁==。</p>
-<p>RxJava中添加了普通观察者模式缺失的三个功能：</p>
-<p>RxJava中规定当不再有新的事件发出时，可以调用onCompleted()方法作为标示；</p>
-<p>当事件处理出现异常时框架自动触发onError()方法；</p>
-<p>同时==Observables支持链式调用，从而避免了回调嵌套的问题==。</p>
-<p>用Observable.create()创建了一个新的Observable<integer>，==并为create()方法传入了一个OnSubscribe，OnSubscribe中包含一个call()方法，一旦我们调用subscribe()订阅后就会自动触发call()方法==。call()方法中的参数Subscriber其实就是subscribe()方法中的观察者Observer</integer></p>
-<center><br><br> <img src="http://biaoqingbao.xin/wp-content/uploads/2017/07/1530.jpg" alt="image"><br><br><br></center>
-
-
-<h3 id="一、线程调度器"><a href="#一、线程调度器" class="headerlink" title="一、线程调度器"></a>一、线程调度器</h3><p>==subscribeOn()==: 指定 subscribe() 所发生的线程，即 Observable.OnSubscribe 被激活时所处的线程，或者叫做事件产生的线程。</p>
-<p>==observeOn()==: 指定 Subscriber 所运行在的线程，或者叫做事件消费的线程。</p>
-<p>subscribeOn()的调用切换之前的线程。</p>
-<p>observeOn()的调用切换之后的线程。</p>
-<p>observeOn()之后，不可再调用subscribeOn()切换线程</p>
-<h4 id="常用的线程调度器"><a href="#常用的线程调度器" class="headerlink" title="常用的线程调度器"></a>常用的线程调度器</h4><ul>
-<li><p>Schedulers.io()：I/O 操作（读写文件、读写数据库、网络信息交互等）所使用的 Scheduler。行为模式和 newThread() 差不多，区别在于 io() 的内部实现是是用一个无数量上限的线程池，可以重用空闲的线程，因此多数情况下 io() 比 newThread() 更有效率。不要把计算工作放在 io() 中，可以避免创建不必要的线程。 </p>
-</li>
-<li><p>AndroidSchedulers.mainThread()：它指定的操作将在 Android 主线程运行。</p>
-</li>
-</ul>
-<h3 id="二、lift操作符原理"><a href="#二、lift操作符原理" class="headerlink" title="二、lift操作符原理"></a>二、lift操作符原理</h3><p>==lift()== 过程，有点像一种代理机制，通过事件拦截和处理实现事件序列的变换。<br>精简掉细节的话，也可以这么说：在 Observable 执行了 lift(Operator) 方法之后，会返回一个新的 Observable，这个新的 Observable 会像一个代理一样，负责接收原始的 Observable 发出的事件，并在处理后发送给 Subscriber。</p>
-<p>当使用了多个 subscribeOn() 的时候，只有第一个 subscribeOn() 起作用。</p>
-<h3 id="三、doOnSubscribe"><a href="#三、doOnSubscribe" class="headerlink" title="三、doOnSubscribe()"></a>三、doOnSubscribe()</h3><p>与 Subscriber.onStart() 相对应的，有一个方法 Observable.doOnSubscribe() 。它和 Subscriber.onStart() 同样是在 subscribe() 调用后而且在事件发送前执行，但区别在于它可以指定线程。默认情况下， doOnSubscribe() 执行在 subscribe() 发生的线程；而如果在 doOnSubscribe() 之后有 subscribeOn() 的话，它将执行在离它最近的 subscribeOn() 所指定的线程。在 doOnSubscribe()的后面跟一个 subscribeOn() ，就能指定准备工作的线程了。</p>
-<h3 id="四、defer"><a href="#四、defer" class="headerlink" title="四、defer()"></a>四、defer()</h3><p>绝大多数时候Observable.just() 和 Observable.from() 能够帮助你从遗留代码中创建 Observable 对象。<br>如果oldMethod()足够快是没有什么问题的，但是如果很慢呢？调用oldMethod()将会阻塞住他所在的线程。<br>为了解决这个问题，可以参考我一直使用的方法–使用defer()来包装缓慢的代码：</p>
-<blockquote>
-<p>private Object slowBlockingMethod() { … }</p>
-<p>public Observable<object> newMethod() {<br>    return Observable.defer(() -&gt; Observable.just(slowBlockingMethod()));<br>}</object></p>
-</blockquote>
-
           
+简介一个==基于事件流响应的异步的库==，在代码逻辑越复杂的情况下，能有效==代替Handler和AsnyckTask==，实现异步代码==简洁==。
+RxJava中添加了普通观察者模式缺失的三个功能：
+RxJava中规定当不再有新的事件发出时，可以调用onCompleted()方法作为标示；
+当
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/10/02/Rxjava学习笔记 (一)(简介)/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1251,155 +1182,18 @@
       
         
           
-            <hr>
-<h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><h3 id="优化点"><a href="#优化点" class="headerlink" title="优化点"></a>优化点</h3><p>1.我们可以在Fragment的onAttach()中通过getArguments()获得传进来的参数，并在之后使用这些参数。</p>
-<p>2.如果要获取Activity对象，不建议调用getActivity()，而是在onAttach()中将Context对象强转为Activity对象。</p>
-<p>3.addToBackStack(“fname”)是可选的。FragmentManager拥有回退栈（BackStack），类似于Activity的任务栈，如果添加了该语句，就把该事务加入回退栈，当用户点击返回按钮，会回退该事务（回退指的是如果事务是add(frag1)，那么回退操作就是remove(frag1)）；如果没添加该语句，用户点击返回按钮会直接销毁Activity。</p>
-<p>4.Fragment有一个常见的问题，即Fragment重叠问题，这是由于Fragment被系统杀掉，并重新初始化时再次将fragment加入activity，因此通过在外围加if语句能判断此时是否是被系统杀掉并重新初始化的情况。</p>
-<p>5.Fragment有个常见的异常：Can not perform this action after onSaveInstanceState</p>
-<p>该异常出现的原因是：commit()在onSaveInstanceState()后调用。首先，onSaveInstanceState()在onPause()之后，onStop()之前调用。onRestoreInstanceState()在onStart()之后，onResume()之前。</p>
-<p>因此避免出现该异常的方案有：</p>
-<p>不要把Fragment事务放在异步线程的回调中，比如不要把Fragment事务放在AsyncTask的onPostExecute()，因此onPostExecute()可能会在onSaveInstanceState()之后执行。<br>逼不得已时使用commitAllowingStateLoss()。</p>
-<p>6.Fragment的onAttach()-&gt;onCreate()-&gt;onCreateView()-&gt;onActivityCreated()-&gt;onStart()都是在Activity的onStart()中调用的。<br>Fragment的onResume()在Activity的onResume()之后调用。</p>
-<p>7.不加addToBackStack()和加addToBackStack()<br>1、当点击F1的按钮，调用replace()替换为F2，且不加addToBackStack()时，F1最后调用了onDestroy()和onDetach()。</p>
-<p>2、当点击F1的按钮，调用replace()替换为F2，且加addToBackStack()时，可以看到，F1被替换时，最后只调到了onDestroyView()，并没有调用onDestroy()和onDetach()。当用户点返回按钮回退事务时，F1会调onCreateView()-&gt;onStart()-&gt;onResume()，因此在Fragment事务中加不加addToBackStack()会影响Fragment的生命周期。</p>
-<p>8.addToBackStack(“”)<br>内部实现为：创建一个BackStackRecord对象，该对象记录了这个事务的全部操作轨迹（这里只做了一次add操作，并且加入回退栈），随后将该对象提交到FragmentManager的执行队列中，等待执行。</p>
-<pre><code>class BackStackRecord extends FragmentTransaction implements FragmentManager.BackStackEntry, Runnable {}
-</code></pre><p>BackStackRecord有三重含义：</p>
-<ol>
-<li><p>继承了FragmentTransaction，即是事务，保存了整个事务的全部操作轨迹。</p>
-</li>
-<li><p>实现了BackStackEntry，作为回退栈的元素，正是因为该类拥有事务全部的操作轨迹，因此在popBackStack()时能回退整个事务。</p>
-</li>
-<li><p>继承了Runnable，即被放入FragmentManager执行队列，等待被执行。</p>
-</li>
-</ol>
-<p>9.popBackStack()，有以下几种变种：</p>
-<p>popBackStack()：将回退栈的栈顶弹出，并回退该事务。</p>
-<p>popBackStack(String name, int flag)：name为addToBackStack(String name)的参数，通过name能找到回退栈的特定元素，flag可以为0或者FragmentManager.POP_BACK_STACK_INCLUSIVE，0表示只弹出该元素以上的所有元素，POP_BACK_STACK_INCLUSIVE表示弹出包含该元素及以上的所有元素。这里说的弹出所有元素包含回退这些事务。</p>
-<p>popBackStack()是异步执行的，是丢到主线程的MessageQueue执行，popBackStackImmediate()是同步版本。</p>
-<p>10.Fragment向Activity传递数据</p>
-<p>基础方法：</p>
-<p>首先，在Fragment中定义接口，并让Activity实现该接口（具体实现省略）：</p>
-<pre><code>public interface OnFragmentInteractionListener {    void onItemClick(String str);  //将str从Fragment传递给Activity}
-</code></pre><p>在Fragment的onAttach()中，将参数Context强转为OnFragmentInteractionListener对象：</p>
-<pre><code>public void onAttach(Context context) {
-    super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-        mListener = (OnFragmentInteractionListener) context;
-    } else {
-                throw new RuntimeException(context.toString()
-                + &quot; must implement OnFragmentInteractionListener&quot;);
-    }
-}
-</code></pre><p>并在Fragment合适的地方调用mListener.onItemClick(“fragment”)将”fragment”从Fragment传递给Activity</p>
-<p>注解方式：</p>
-<p>由于通过接口的方式从Fragment向Activity进行数据传递比较麻烦，需要在Fragment中定义interface，并让Activity实现该interface，FABridge(<a href="https://github.com/hongyangAndroid/FABridge)通过注解的形式免去了这些定义。" target="_blank" rel="external">https://github.com/hongyangAndroid/FABridge)通过注解的形式免去了这些定义。</a></p>
-<p>在build.gradle中添加依赖：</p>
-<pre><code>annotationProcessor &apos;com.zhy.fabridge:fabridge-compiler:1.0.0&apos;
-compile &apos;com.zhy.fabridge:fabridge-api:1.0.0&apos;
-</code></pre><p>首先定义方法ID，这里为FAB_ITEM_CLICK，接着在Activity中定义接口：</p>
-<pre><code>    @FCallbackId(id = FAB_ITEM_CLICK)public void onItemClick(String str) {  //方法名任意
-    Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
-}
-</code></pre><p>最后，在Fragment中，通过以下形式调用”ID=FAB_ITEM_CLICK”的方法（该方法可能在Activity中，也可能在任何类中）：</p>
-<pre><code>Fabridge.call(mActivity,FAB_ITEM_CLICK,&quot;data&quot;);  //调用ID对应的方法，&quot;data&quot;为参数值
-</code></pre><p>11.Activity向Fragment传递数据</p>
-<p>Activity向Fragment传递数据比较简单，获取Fragment对象，并调用Fragment的方法即可，比如要将一个字符串传递给Fragment，则在Fragment中定义方法：</p>
-<pre><code>public void setString(String str) { 
-    this.str = str;
-}
-</code></pre><p>并在Activity中调用fragment.setString(“fragment”)即可。</p>
-<p>12.Fragment之间通信</p>
-<pre><code>由于Fragment之间是没有任何依赖关系的，因此如果要进行Fragment之间的通信，建议通过Activity作为中介，不要Fragment之间直接通信。
-</code></pre><p>13.DialogFragment</p>
-<p>DialogFragment是Android 3.0提出的，代替了Dialog，用于实现对话框。他的优点是：即使旋转屏幕，也能保留对话框状态。</p>
-<p>如果要自定义对话框样式，只需要继承DialogFragment，并重写onCreateView()，该方法返回对话框UI。这里我们举个例子，实现进度条样式的圆角对话框。</p>
-<pre><code>public class ProgressDialogFragment extends DialogFragment {    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE); //消除Title区域
-        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));  //将背景变为透明
-        setCancelable(false);  //点击外部不可取消
-        View root = inflater.inflate(R.layout.fragment_progress_dialog, container);
-        return root;
-    }
-     public static ProgressDialogFragment newInstance() {
-        return new ProgressDialogFragment();
-    }
-}
-</code></pre><p>进度条动画我们使用Lottie(<a href="https://github.com/airbnb/lottie-android)实现，Lottie动画从这里(https://www.lottiefiles.com/)找到。使用非常方便，只需要下载JSON动画文件，然后在XML中写入：" target="_blank" rel="external">https://github.com/airbnb/lottie-android)实现，Lottie动画从这里(https://www.lottiefiles.com/)找到。使用非常方便，只需要下载JSON动画文件，然后在XML中写入：</a></p>
-<pre><code>&lt;com.airbnb.lottie.LottieAnimationView
-android:layout_width=&quot;wrap_content&quot;  //大小根据JSON文件确定
-android:layout_height=&quot;wrap_content&quot;
-app:lottie_fileName=&quot;loader_ring.json&quot;   //JSON文件
-app:lottie_loop=&quot;true&quot;    //循环播放
-app:lottie_autoPlay=&quot;true&quot; /&gt;  //自动播放
-</code></pre><p>然后通过下面代码显示对话框：</p>
-<pre><code>ProgressDialogFragment fragment = ProgressDialogFragment.newInstance();
-fragment.show(getSupportFragmentManager(), &quot;tag&quot;);//fragment.dismiss();
-</code></pre><p>为了实现圆角，除了在onCreateView()中把背景设为透明，还需要对UI加入背景：</p>
-<pre><code>&lt;shape xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;&gt;
-    &lt;solid android:color=&quot;#ffffff&quot;/&gt;
-    &lt;corners
-        android:radius=&quot;20dp&quot;/&gt;
-&lt;/shape&gt;
-</code></pre><p>14.ViewPager+Fragment</p>
-<p>默认，ViewPager会缓存当前页相邻的界面，比如当滑动到第2页时，会初始化第1页和第3页的界面（即Fragment对象，且生命周期函数运行到onResume()），可以通过setOffscreenPageLimit(count)设置离线缓存的界面个数。</p>
-<p>15.懒加载</p>
-<p>默认情况，ViewPager会缓存当前页和左右相邻的界面。实现懒加载的主要原因是：用户没进入的界面需要有一系列的网络、数据库等耗资源、耗时的操作，预先做这些数据加载是不必要的。</p>
-<p>这里懒加载的实现思路是：用户不可见的界面，只初始化UI，但是不会做任何数据加载。等滑到该页，才会异步做数据加载并更新UI。</p>
-<p>底部用PagerBottomTabStrip(<a href="https://github.com/tyzlmjj/PagerBottomTabStrip)项目实现，上面是ViewPager，使用FragmentPagerAdapter。" target="_blank" rel="external">https://github.com/tyzlmjj/PagerBottomTabStrip)项目实现，上面是ViewPager，使用FragmentPagerAdapter。</a></p>
-<p>懒加载主要依赖Fragment的setUserVisibleHint(boolean isVisible)方法，当Fragment变为可见时，会调用setUserVisibleHint(true)；当Fragment变为不可见时，会调用setUserVisibleHint(false)，且该方法调用时机：</p>
-<ol>
-<li><p>onAttach()之前，调用setUserVisibleHint(false)。</p>
-</li>
-<li><p>onCreateView()之前，如果该界面为当前页，则调用setUserVisibleHint(true)，否则调用setUserVisibleHint(false)。</p>
-</li>
-<li><p>界面变为可见时，调用setUserVisibleHint(true)。<br>界面变为不可见时，调用setUserVisibleHint(false)。</p>
-</li>
-</ol>
-<p>懒加载Fragment的实现：</p>
-<pre><code>public class LazyFragment extends Fragment {    private View mRootView;
-    private boolean mIsInited;
-    private boolean mIsPrepared;    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mRootView = inflater.inflate(R.layout.fragment_lazy, container, false);
-        mIsPrepared = true;
-        lazyLoad();
-            return mRootView;
-    }
-
-     public void lazyLoad() {
-        if (getUserVisibleHint() &amp;&amp; mIsPrepared &amp;&amp; !mIsInited) { 
-               //异步初始化，在初始化后显示正常UI
-            loadData();
-        }
-    }
-
-     private void loadData() {
-         new Thread() {
-         public void run() {
-                //1. 加载数据
-                //2. 更新UI
-                //3. mIsInited = true
-            }
-        }.start();
-    }   
-
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) { 
-           super.setUserVisibleHint(isVisibleToUser);
-            if (isVisibleToUser) {
-            lazyLoad();
-        }
-    }
-
-    public static LazyFragment newInstance() {
-           return new LazyFragment();
-    }
-}
-</code></pre>
           
+简介优化点1.我们可以在Fragment的onAttach()中通过getArguments()获得传进来的参数，并在之后使用这些参数。
+2.如果要获取Activity对象，不建议调用getActivity()，而是在onAttach()中将Context对象强转为Activity对象。
+3.ad
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/09/10/Fragment优化点/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1550,62 +1344,20 @@ fragment.show(getSupportFragmentManager(), &quot;tag&quot;);//fragment.dismiss()
       
         
           
-            <hr>
-<p>1、通知栏的构建</p>
-<pre><code>//(Compat表示向下兼容)
+          
+1、通知栏的构建
+//(Compat表示向下兼容)
 NotificationManagerCompat nm = NotificationManagerCompat.from(context);
 //构建消息通知(通过内部工厂类build构建消息通知栏)
-NotificationCompat.Builder notification = new NotificationCompat.Builder(context);
-//1(标题),3(内容),5(小图标)位置属性必须要填写
-//2(大图标),4(信息),6(设置时间)
-//1.标题
-notification.setContentTitle(&quot;网络改变&quot;);
-//2.大图标
-//BitmapFactory(将不同的数据源(byte[],文件路径,资源地址,InputStream)转换成实际的图像)
-Bitmap bm = BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher);
-//notification.setLargeIcon(bm);
-//3.内容
-notification.setContentText(&quot;当前情况--&gt;&quot; + netWorkName);
-//4.信息
-notification.setContentInfo(&quot;4&quot;);
-//5.小图标
-notification.setSmallIcon(R.mipmap.ic_launcher);
-//6.时间(系统时间ms)
-notification.setWhen(System.currentTimeMillis());
-//注意:可以通过PendingIntent的方式进行跳转(方法:setContentIntent)
-</code></pre><p>2、PedingIntent和Intent的区别</p>
-<pre><code>1.PedingIntent是具有延时性的Intent,可以长时间的保留,具有中间过程(可以重新设置,可以取消)
-所以notification使用PedingIntent,让跳转的Intent可以长时间保留
-设置跳转界面
-第四个参数:FLAG表示行为方式
-1.FLAG_ONE_SHOT 使用一次就不能再使用了
-2.FLAG_NO_CREATE 取消了PedingIntent不会再创建
-3.FLAG_CANCEL_CURRENT:重新写Intent条件将不会有任何效果,还是第一次设置的Intent条件
-4.FLAG_UPDATE_CURRENT:重写的Intent条件将会替换原来的Intent条件
-Intent intent1 = new Intent(context, MainActivity.class);
-改变该Activity在栈的行为方式
-Component组件名称(只用显式调用)
-Action 行为
-Category 类别
-Data 限制数据格式 (Type)多媒体内容比较多,type结合使用
-extra 传递数据
-flag 栈的行为方式
-intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);//启动的界面放在独立的任务栈
-PendingIntent pendingIntent = PendingIntent.getActivity(context,0,intent1,PendingIntent.FLAG_UPDATE_CURRENT);
-notification.setContentIntent(pendingIntent);
-</code></pre><p>3、自定义View</p>
-<pre><code>第一个参数:包名
-第二个参数:R.layout的布局文件(使用自定义的布局)前面的属性都会没有效果
-RemoteViews views = new RemoteViews(context.getPackageName(),R.layout.notification_view);
-notification.setContent(views);
-//发布消息(id可以为消息通知栏的取消做准备)
-nm.notify(1, notification.build());
-//取消
-nm.cancel(2);
-//取消所有的消息通知栏
-nm.cancelAll();
-</code></pre>
-          
+NotificationCompat.Bu
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2015/12/12/Notification的使用/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1756,54 +1508,22 @@ nm.cancelAll();
       
         
           
-            <hr>
-<p>Hello，这是android基础的第六堂课</p>
-<p>1、该方法用于创建系统菜单</p>
-<pre><code>@Override
+          
+Hello，这是android基础的第六堂课
+1、该方法用于创建系统菜单
+@Override
 public boolean onCreateOptionsMenu(Menu menu) {
     setIconEnable(menu,true);
 
-    //根据菜单项的xml文件生成菜单项的对象，再把菜单项对象加到 菜单对象中
-    //菜单对象是由系统创建的，由参数menu接收
-    getMenuInflater().inflate(R.menu.main, menu);
-    return true;
-}
-</code></pre><p>2、为系统菜单项添加图标 </p>
-<pre><code>//enable为true时，菜单添加图标有效，enable为false时无效。4.0+系统默认无效  
-private void setIconEnable(Menu menu, boolean enable)  
-{  
-    try   
-    {  
-        Class&lt;?&gt; clazz = Class.forName(&quot;com.android.internal.view.menu.MenuBuilder&quot;);  
-        Method m = clazz.getDeclaredMethod(&quot;setOptionalIconsVisible&quot;, boolean.class);  
-        m.setAccessible(true); 
-        //MenuBuilder实现Menu接口，创建菜单时，传进来的menu其实就是MenuBuilder对象(java的多态特征)  
-        m.invoke(menu, enable);  
-
-    } catch (Exception e)   
-    {  
-            e.printStackTrace();  
-    }  
-} 
-</code></pre><p>3、用来定义菜单项的xml文件</p>
-<pre><code>//一个item就是一个菜单项
-//一个item 还可以是一个动作项
-//showAsAction 用来设置是否作为动作项
-//orderInCatgory:用来设置菜单项排列的先后顺序
-//当点击按钮时显示弹出菜单
-@SuppressLint(&quot;NewApi&quot;)
-public void showMenus(View v)
-{
-    //创建弹出菜单
-    //第二参数用来指定弹出菜单显示的参考位置
-    PopupMenu pop = new PopupMenu(this, v);
-
-    //给菜单添加菜单项
-    getMenuInflater().inflate(R.menu.main, pop.getMenu());
-......
- pop.show();//显示菜单
-</code></pre>
-          
+    //根据菜单项的xml文件生成菜单项的
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2015/11/30/Android菜单（系统菜单，上下文菜单，弹出菜单）/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1954,44 +1674,17 @@ public void showMenus(View v)
       
         
           
-            <hr>
-<p>Hello，这是android基础的第五堂课</p>
-<p>1、显式意图—明确指明了要启动的Activity<br>    Intent intent = new Intent(this,TargetActivity.class);<br>    //显示意图的第二种方式<br>    //Intent intent = new Intent();<br>    //intent.setClass(this, TargetActivity.class);<br>    //intent.setClassName(this, “com.qianfeng.gp10_day25_intent1.TargetActivity”);<br>    //intent.setClassName(“com.qianfeng.gp10_day25_intent1”,”com.qianfeng.gp10_day25_intent1.TargetActivity”);</p>
-<pre><code>//显示意图的第三种方式
-//Intent intent = new Intent();
-//ComponentName com = new ComponentName(this, TargetActivity.class);
-//ComponentName com = new ComponentName(this, &quot;com.qianfeng.gp10_day25_intent1.TargetActivity&quot;);
-//ComponentName com = new ComponentName(&quot;com.qianfeng.gp10_day25_intent1&quot;,&quot;com.qianfeng.gp10_day25_intent1.TargetActivity&quot;);
-//intent.setComponent(com);
-
-startActivity(intent);
-</code></pre><p>2、隐式匹配的最低配置：一个action,一个category,而且category必须是android.intent.category.DEFAULT</p>
-<pre><code>&lt;activity android:name=&quot;.TargetActivity&quot;&gt;
-    &lt;intent-filter &gt;
-        &lt;action  android:name=&quot;haha.hehe.heihei&quot;/&gt;
-        &lt;action  android:name=&quot;com.qianfeng.gp10_day25_intent1.TargetActivity&quot;/&gt;
-        &lt;category android:name=&quot;com.qianfeng.gp10&quot;/&gt;
-        &lt;category android:name=&quot;android.intent.category.DEFAULT&quot;/&gt;
-    &lt;/intent-filter&gt;
-&lt;/activity&gt;
- 当有多个匹配的activity时，会列出所有匹配的，让用户选择
-&lt;activity android:name=&quot;.ThirdActivity&quot;&gt;
-    &lt;intent-filter &gt;
-        &lt;action android:name=&quot;haha.hehe.heihei&quot;/&gt;
-        &lt;category android:name=&quot;com.qianfeng.gp10&quot;/&gt;
-        &lt;category android:name=&quot;android.intent.category.DEFAULT&quot;/&gt;
-    &lt;/intent-filter&gt;
-
-&lt;/activity&gt;
-</code></pre><p>3、隐式意图—通过Action和Category来指明要启动的Activity</p>
-<pre><code>Intent intent = new Intent();
-
-intent.setAction(&quot;haha.hehe.heihei&quot;);
-intent.addCategory(&quot;com.qianfeng.gp10&quot;);
-
-startActivity(intent);//默认加入了 category:android.intent.category.DEFAULT 
-</code></pre>
           
+Hello，这是android基础的第五堂课
+1、显式意图—明确指明了要启动的Activity    Intent intent = new Intent(this,TargetActivity.class);    //显示意图的第二种方式    //Intent intent = new In
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2015/11/23/显示意图及隐式意图/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -2142,37 +1835,18 @@ startActivity(intent);//默认加入了 category:android.intent.category.DEFAULT
       
         
           
-            <hr>
-<p>Hello，这是android基础的第四堂课</p>
-<p>1、任务和回退栈</p>
-<p>private static final String TAG = “AActivity”;<br>Log.i(TAG, “AActivity is created   hashCode:”+this.hashCode()+” taskId:”+getTaskId());</p>
-<p>2、LaunchMode(启动模式)</p>
-<pre><code>SingleTop
-SingleTask
-SingleInstance
-//在清单文件中注册时指明LaunchMode
-&lt;activity android:name=&quot;.BActivity&quot; android:launchMode=&quot;singleTop&quot;/&gt;
-&lt;activity android:name=&quot;.CActivity&quot; android:launchMode=&quot;singleTop&quot;/&gt;
-
-任务由多个相关联的已经被启动的Activity构成
-一个任务对应一个回退栈
-同一个任务中的Activity位于同一个回退栈中
-回退栈中的Activity是按照启动的先后顺序入栈的
-回退栈中的Activity的顺序是不可以改变的
-回退栈中的Activity都出栈了，那么任务也不存在了
-Activity的启动模式：默认是standard,每次使用intent启动一个Activity，都会创建一个新的实例
-SingleTop:一个Activity已经存在实例，并且位于栈顶，而且启动模式是SingleTop的，那么再次启动该Activity时，不会创建新的实例，直接使用栈顶的
-一个Activity已经存在实例，但不位于栈顶,即使启动模式是SingleTop的，那么再次启动该Activity时，还会创建新的实例，调用已经存在的Activity实例时会自动执行回调方法
- @Override
-protected void onNewIntent(Intent intent) {
-    // TODO Auto-generated method stub
-    super.onNewIntent(intent);
-    Log.i(TAG, &quot;CActivity的启动模式是 SingleTop,已经位于栈顶，不会创建新的实例&quot;);
-}
-SingleTask:只有一个实例，允许相关联的 Acitivty和它位于同一个任务中，当已经存在该Activity的实例，再次启动时，直接使用已有的，会把其之上的所有的Activity实例销毁
-SingleInstance:只有一个实例，不允许相关联的 Acitivty和它位于同一个任务中，自己单独在一个任务中，当已经存在该Activity的实例，再次启动时，直接使用已有的
-</code></pre>
           
+Hello，这是android基础的第四堂课
+1、任务和回退栈
+private static final String TAG = “AActivity”;Log.i(TAG, “AActivity is created   hashCode:”+this.hashCode()+” taskId:
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2015/11/16/Activity任务+回退栈及其启动模式/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>

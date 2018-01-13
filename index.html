@@ -365,85 +365,18 @@
       
         
           
-            <hr>
-<h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>2012年，Android插件化技术诞生，从最初只支持动态加载Activity到完全模拟app运行时的沙箱系统，历经了快6年的时间，本文，旨在从全方面的角度解析Android插件化技术。</p>
-<h4 id="实现Android插件化需要解决的问题"><a href="#实现Android插件化需要解决的问题" class="headerlink" title="实现Android插件化需要解决的问题"></a>实现Android插件化需要解决的问题</h4><pre><code>插件中代码的加载和主工程的相互调用
-插件中资源的加载和主工程的相互调用
-Android四大组件的生命周期管理
-</code></pre><h4 id="Android插件化的发展历程"><a href="#Android插件化的发展历程" class="headerlink" title="Android插件化的发展历程"></a>Android插件化的发展历程</h4><p>第一代：dynamic-load-apk和DroidPlugin</p>
-<pre><code>dynamic-load-apk:
-早期使用ProxyActivity的代理技术，由ProxyActivity去控制插件Activity的生命周期。
-缺点：
-每一个Activity都必须继承插件Activity，处理Context时必须小心。
-
-DroidPlugin：
-通过hook系统服务的方式启动插件Activity，来达到和使用普通方式开发app的效果。
-缺点：
-过多的hook系统服务，这一过程十分复杂且不够稳定。
-</code></pre><p>第二代：VirtulApk、Small、RePlugin</p>
-<pre><code>原理：实现原理上都选择尽量少的hook，通过在manifest上预埋一些组件实现四大组件的插件化。其中Small更形成了一个跨平台、组件化的框架。
-</code></pre><p>第三代：VirtulApp、Atlas</p>
-<pre><code>VirtulApp：
-能够完全模拟app的运行环境，能够实现免安装应用和双开技术。
-Atlas：
-阿里出品，号称是一个容器化框架，结合了组件化和热更新技术。
-</code></pre><h4 id="Android插件化的实现原理"><a href="#Android插件化的实现原理" class="headerlink" title="Android插件化的实现原理"></a>Android插件化的实现原理</h4><p>一、类加载</p>
-<p>1.外部apk中的类加载</p>
-<pre><code>Android中有两种类加载器，DexClassLoader和PathClassLoader，它们都继承于BaseDexClassLoader。
-
-两者的区别：DexClassLoader多了一个optimizedDirectory的路径参数，这个目录必须是内部存储路径，用于缓存系统创建的Dex文件。
-
-所以我们可以使用DexClassLoader去加载外部Apk中的类。
-</code></pre><p>2.双亲委托机制</p>
-<pre><code>ClassLoader调用loadClass方法加载类采用了双亲委托机制来避免重复加载类。
-首先，ClassLoader会查看自身已经加载的类中是否已经存在此类，如不存在，然后，则会使用父类来加载此类，如不能成功加载，则会使用自身重载于BaseDexClassLoader的findClass()方法来加载此类。
-
-DexClass的DexPathList在DexClass的构造器中生成，findClass()方法则是从DexPathList下面找出对应的DexFile，循环DexElements，通过dexElement.dexFile取出对应的DexFile，再通过DexFile.loadClassBinaryName()加载对应的类。
-</code></pre><p>二、单DexClassLoader和多DexClassLoader</p>
-<p>作用：使用插件DexClassLoader加载出需要的类。</p>
-<p>1.多DexClassLoader（Replugin）</p>
-<pre><code>通过每一个插件的DexClassLoader加载出自身所需要的类，当每一个插件需要加载相同的类库时，可采用该类库的不同版本来使用。
-</code></pre><p>2.单DexClassLoader（Small）</p>
-<pre><code>通过把每一个插件的pathList（DexFile）合并到主app的DexClassLoader上，来使各个插件和主app直接能够相互调用类和方法，并且各个插件中相同的功能可以抽取出来作为一个Common插件供其它插件使用。
-</code></pre><p>3.互相调用</p>
-<p>插件调用主工程</p>
-<pre><code>在ClassLoader构造时指定主工程的DexClassLoader为父加载器即可直接调用主工程中的类和方法。
-</code></pre><p>主工程调用插件</p>
-<pre><code>如果是多DexClassLoader的情况，则需要通过插件的DexClassLoader加载对应的类并反射调用其方法。此种情况，主工程一般会在一个统一的地方对访问插件中的类和方法做一些访问权限的管理及配置。
-
-如果是单DexClassLoader的情况，则可以直接调用插件中的类和方法。但是当多个插件引用的库的版本不同时，会出现错误，因此，建议采用Gradle版本依赖管理统一处理主工程及各个插件的库依赖。
-</code></pre><p>三、资源加载</p>
-<p>Android通过Resource来加载资源，只要有插件apk，就可以使用assertManager.addAssertPath（apkPath）的方式来生成assertManager，再使用其new出对应的Resource对象即可。</p>
-<p>注意：由于AssertManager并不是Public，所以需要通过反射的方式去调用它。并且由于一些Rom对Resource的处理，所以，需要兼容处理。</p>
-<p>1.资源路径的处理</p>
-<p>有2种处理方式：</p>
-<pre><code>合并式：利用assertManager.addAssetPath()将主工程和各个插件的apk路径一起加入。
-优势：资源共用。
-逆势：需要处理资源id冲突。
-
-独立式：主工程和插件都生成各自独立的Resource。
-优势：不需要处理资源id冲突。
-逆势：各个插件需要通过某些方式去获取其它插件的Resource。
-</code></pre><p>2.Context的处理</p>
-<pre><code>1.创建主工程的Resource
-2.hook主工程的Resource
-3.将activity与Resource关联
-</code></pre><p>3.资源冲突</p>
-<pre><code>产生的原因：由于主工程和各个插件引用的Resource id重复产生的冲突。
-解决思路：Android中的资源在系统中是以8位16进制0XPPTTRRRR的方式存在，其中PP即是资源区分的区域（Android系统只用它来区分系统资源和应用资源），只要让每一个插件的PP段取不同的值即可解决资源id冲突的问题。
-具体解决方式：
-1.修改aapt源码，编译期修改PP段。
-2.修改Resource的arsc文件，其中的每一条都包含了资源id和映射路径。
-</code></pre><h4 id="四大组件支持（Activity）"><a href="#四大组件支持（Activity）" class="headerlink" title="四大组件支持（Activity）"></a>四大组件支持（Activity）</h4><pre><code>Activity的处理最为复杂，有两种处理方式：
-1.ProxyActivity的方式。
-2.预埋StubActivity，hook系统启动Activity的过程。
-
-原理：VirtualAPK通过替换了系统的Instrumentation，hook了Activity的启动和创建，省去了手动管理插件Activity生命周期的繁琐，让插件Activity像正常的Activity一样被系统管理，并且插件Activity在开发时和常规一样，即能独立运行又能作为插件被主工程调用。
-</code></pre><h4 id="Android插件化的发展方向"><a href="#Android插件化的发展方向" class="headerlink" title="Android插件化的发展方向"></a>Android插件化的发展方向</h4><pre><code>Android插件化方向主要有2个方向：
-1.结合组件化技术，成为一个大中型app的基础框架。
-2.完全模拟app运行环境的沙盒系统。
-</code></pre>
           
+简介2012年，Android插件化技术诞生，从最初只支持动态加载Activity到完全模拟app运行时的沙箱系统，历经了快6年的时间，本文，旨在从全方面的角度解析Android插件化技术。
+实现Android插件化需要解决的问题插件中代码的加载和主工程的相互调用
+插件中资源的加载和主工程的相互调
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/01/12/Android 插件化/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -594,74 +527,20 @@ DexClass的DexPathList在DexClass的构造器中生成，findClass()方法则是
       
         
           
-            <hr>
-<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>众所周知，一个好的项目需要不断地打造，而一些有效的测试则是加速这一过程的利器。本篇博文讲解较为全面的介绍Android测试方面的知识。</p>
-<p>Android的测试主要分为三个方面：</p>
-<pre><code>单元测试（Mokito、Junit4）
-UI测试（Espresso、UI Automator）
-额外的：Android testing support library包括AndroidJunitRunner、Espresso、UI Automator
-</code></pre><h4 id="单元测试"><a href="#单元测试" class="headerlink" title="单元测试"></a>单元测试</h4><p>一、使用Junit4进行单元测试</p>
-<p>Android Studio已经自动集成了Junit4测试框架，如下：</p>
-<pre><code>dependencies {
-    ...
-    testImplementation &apos;junit:junit:4.12&apos;
-</code></pre><p>使用Junit4进行单元测试的步骤：</p>
-<pre><code>1.编写测试类。
-2.鼠标右键点击测试类，选择选择Go To-&gt;Test（或者使用快捷键Ctrl+Shift+T）在Test/java/项目测试文件夹/下自动生成测试模板。
-3.使用断言（assertEqual、assertEqualArrayEquals等等)进行单元测试。
-4.右键点击测试类，Run编写好的测试类。
-</code></pre><p>额外的概念：测试驱动开发：编写测试，实现功能使测试通过，然后不断地使用这种方式实现功能的快速迭代开发。</p>
-<p>二、使用Mcokito进行单元测试</p>
-<p>在build.gradle里面添加Mcokito的依赖</p>
-<pre><code>testImplementation &apos;org.mockito:mockito-core:2.7.1&apos;
-</code></pre><p>Mcokito是一个模拟对象工具，它的作用如下：</p>
-<pre><code>1.验证方法调用
-Mockito.when(mockValidator.verifyPassword(&quot;xiaochuang_is_handsome&quot;)).thenReturn(true);//方法调用1次
-Mockito.when(mockValidator.verifyPassword(&quot;xiaochuang_is_handsome&quot;)， Mockito.times(3).thenReturn(true);//方法调用3次
-2.指定Mock对象的某些方法的行为
-Mockito.when(mockObject.targetMethod(args)).thenReturn(desiredReturnValue);（args可以使anyString()）
-</code></pre><h4 id="UI测试"><a href="#UI测试" class="headerlink" title="UI测试"></a>UI测试</h4><p>一、Espresso是属于Android Testing support Library的UI测试框架（适合用于编写白盒自动化测试），也是一种Instrumentation测试方法。</p>
-<p>关于Instrumentation</p>
-<pre><code>Instrumentation是Android系统里面的一套控制方法或者“钩子”,它可以控制单个组件的生命周期，同时可以控制Android如何加载应用程序。
-</code></pre><p>测试步骤：</p>
-<pre><code>1.编写UI交互的测试。
-2.在androidTest/java/项目测试文件/新建Expresso测试类用于测试UI交互。
-3.右键点击测试类，Run编写好的测试类。
-</code></pre><p>涉及到的api：</p>
-<p>视图匹配api</p>
-<pre><code>1.Expresso.onView(Matcher&lt;View&gt; matcher)
-用于获取目标应用中UI组件的引用
-指定搜索条件有以下几种：
- 视图的类名称
- 视图的R.id
- 视图的显示文本
- 视图的内容描述
-</code></pre><p>适配器匹配api</p>
-<pre><code>1.Expresso.onData(Matcher&lt;? extends Object&gt; matcher)
-获取AdapterView视图中的引用以便执行测试
-</code></pre><p>ViewActions（视图操作api）方法</p>
-<pre><code>一段常用测试代码：
-onView(withId(R.id.editText)).perform(typeText(STRING_TO_BE_TYPED), closeSoftKeyboard()); 
-
-onView(withText(&quot;Say hello!&quot;)).perform(click());
-
-String expectedText = &quot;Hello, &quot; + STRING_TO_BE_TYPED + &quot;!&quot;;
-onView(withId(R.id.textView)).check(matches(withText(expectedText)));
-</code></pre><p>更多使用请见：</p>
-<p><a href="https://developer.android.com/training/testing/ui-testing/espresso-testing.html" target="_blank" rel="external">测试单个应用的UI</a></p>
-<h4 id="Android-testing-support-library"><a href="#Android-testing-support-library" class="headerlink" title="Android testing support library"></a>Android testing support library</h4><p>Espresso已经讲到了，接下来还有AndroidJunitRunner和UI Automator。</p>
-<h4 id="AndroidJunitRunner"><a href="#AndroidJunitRunner" class="headerlink" title="AndroidJunitRunner"></a>AndroidJunitRunner</h4><p>AndroidJunitRunner是Android用于兼容Junit4在Android中的使用而创建的单元测试类。</p>
-<p>该单元测试类必须以 @RunWith(AndroidJUnit4.class) 注解作为前缀。除了Junit4提供的测试注解外，还有如下注解：</p>
-<pre><code>1.@RequireDeive
-指定设备仅在物理设备上运行，不允许在模拟器上运行。
-2.@SdkSupress
-禁止给定级别api以下的设备运行（api级别本身不计算在内）。
-3.@SmallTest、@MediumTest、@LargeTest
-指定测试的运行时长和运行频率。
-</code></pre><h4 id="UI-Automator"><a href="#UI-Automator" class="headerlink" title="UI Automator"></a>UI Automator</h4><p>用于跨系统和跨应用的UI测试。此测试应用场景较少，具体使用见：</p>
-<p><a href="https://developer.android.com/training/testing/ui-testing/uiautomator-testing.html" target="_blank" rel="external">测试多个应用的UI</a></p>
-
           
+前言众所周知，一个好的项目需要不断地打造，而一些有效的测试则是加速这一过程的利器。本篇博文讲解较为全面的介绍Android测试方面的知识。
+Android的测试主要分为三个方面：
+单元测试（Mokito、Junit4）
+UI测试（Espresso、UI Automator）
+额外的：Android
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/01/09/Android自动化测试实践/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -812,42 +691,18 @@ onView(withId(R.id.textView)).check(matches(withText(expectedText)));
       
         
           
-            <hr>
-<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>这是对国外优质文章系列的译文首篇，旨在帮助国内Android开发者掌握国际第一手开发资料，提升国内Android开发者的整体水平。</p>
-<p>本文的作者是Amit Shekhar，印度顶尖技术机构Mindorks的Android大神，接下来呈现干货。</p>
-<p>本文发布于<a href="https://medium.com/" target="_blank" rel="external">Medium</a>（时间：2018/01/01）</p>
-<p>这是原文地址：<br><a href="https://medium.com/mindorks/top-android-tech-to-learn-in-2018-c5bed9be4316" target="_blank" rel="external">Top Android Tech To Learn In 2018</a></p>
-<h3 id="开篇"><a href="#开篇" class="headerlink" title="开篇"></a>开篇</h3><center><br><br><img src="https://cdn-images-1.medium.com/max/1000/1*02MysJpqLzIT40Ma6175pg.png" alt="image"><br><br></center>
-
-
-<center><br><br>#### 2018来了，祝福所有人<br><br></center>
-
-<h4 id="一、Kotlin"><a href="#一、Kotlin" class="headerlink" title="一、Kotlin"></a>一、Kotlin</h4><p>我们大多数的人已经开始去学习和使用Kotlin。去年，谷歌官方将Kotlin作为Android开发的第一类语言，这使得它以一种极快的速率普及于广大开发者之中。为了让我们不要被甩在后面，开始学习和在我们的app中使用它。今年，预期它将会被广大开发者所使用。</p>
-<p>下面是一些很棒的链接：</p>
-<ul>
-<li><p><a href="https://blog.mindorks.com/a-complete-guide-to-learn-kotlin-for-android-development-b1e5d23cc2d8" target="_blank" rel="external">一个将Kotlin应用于Android开发的完备指导</a></p>
-</li>
-<li><p><a href="http://kotlinlang.org/docs/reference/coding-conventions.html" target="_blank" rel="external">Kotlin官方指导</a></p>
-</li>
-</ul>
-<h4 id="二、Flutter"><a href="#二、Flutter" class="headerlink" title="二、Flutter"></a>二、Flutter</h4><p><a href="https://flutter.io" target="_blank" rel="external">Flutter</a>是一个帮助开发者和设计者去高效率地建立一个移动端app的新的移动端app SDK。</p>
-<p>它能够很容易并且快速地建立一个移动端app。就像React Native，它也提供了rective-style的视图。它通过避免使用JavaScript Bridge以及通过将Dart作为编译语言来改善性能。Dart由于被提前编译进本机（Native）代码而被使用在多个平台上。编译成本机代码也能够改善app的启动时间。</p>
-<p>让我们看看Flutter在2018年的成长，它将会备受关注。</p>
-<h4 id="三、Android-Architecture-Component"><a href="#三、Android-Architecture-Component" class="headerlink" title="三、Android Architecture Component"></a>三、Android Architecture Component</h4><p><a href="https://developer.android.com/topic/libraries/architecture/index.html" target="_blank" rel="external">Android架构组件</a>是一些库的集合，它能够帮助你构建出健壮、可测试、稳定的app，它们可以被用来管理你的Ui组件生命周期和处理数据持久化存储。</p>
-<p>我们中的大多数人已经开始学习了<a href="https://developer.android.com/topic/libraries/architecture/index.html" target="_blank" rel="external">Android架构组件</a>。</p>
-<p>今年它将被大量的开发者所接受。</p>
-<p>2017年以使用MVP,MVVM,Rxjava,Dagger2的趋势开始，并以使用Kotlin和Android架构组件的趋势结束。</p>
-<p>下面是一些很棒的链接：</p>
-<p><a href="https://blog.mindorks.com/essential-guide-for-designing-your-android-app-architecture-mvp-part-1-74efaf1cda40" target="_blank" rel="external">学习MVP</a></p>
-<p><a href="https://mindorks.com/course/android-mvp-introduction" target="_blank" rel="external">以一种简单的方式学习MVP架构</a></p>
-<p><a href="https://github.com/MindorksOpenSource/android-mvvm-architecture" target="_blank" rel="external">基于MVVM架构的项目</a></p>
-<p><a href="https://blog.mindorks.com/a-complete-guide-to-learn-rxjava-b55c0cea3631" target="_blank" rel="external">学习Rxjava完全指南</a></p>
-<p><a href="https://blog.mindorks.com/a-complete-guide-to-learn-dagger-2-b4c7a570d99c" target="_blank" rel="external">学习Dagger2完全指南</a></p>
-<p>快乐学习：)</p>
-<p>想要更多，并且学更多</p>
-<p>在<a href="https://blog.mindorks.com" target="_blank" rel="external">blog.mindorks.com</a>查看Android的所有顶级文章。</p>
-
           
+前言这是对国外优质文章系列的译文首篇，旨在帮助国内Android开发者掌握国际第一手开发资料，提升国内Android开发者的整体水平。
+本文的作者是Amit Shekhar，印度顶尖技术机构Mindorks的Android大神，接下来呈现干货。
+本文发布于Medium（时间：2018/01/01）
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/01/06/2018必学的顶尖Android技术（译）（作者：Amit Shekhar）/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -998,122 +853,17 @@ onView(withId(R.id.textView)).check(matches(withText(expectedText)));
       
         
           
-            <hr>
-<h3 id="前言（全网唯一、最全面，最干货的技术渠道总结，成为Android资深工程师必备）"><a href="#前言（全网唯一、最全面，最干货的技术渠道总结，成为Android资深工程师必备）" class="headerlink" title="前言（全网唯一、最全面，最干货的技术渠道总结，成为Android资深工程师必备）"></a>前言（全网唯一、最全面，最干货的技术渠道总结，成为Android资深工程师必备）</h3><p>最近扫阅了国内外大部分的Android技术网站，特定总结一下很棒的干货，本文旨在总结自身的android学习渠道来源，分类如下：</p>
-<h4 id="一、技术公众号：一些经过检测，确属干货的技术（android为主）公众号-注：搜索公众号名称关注即可"><a href="#一、技术公众号：一些经过检测，确属干货的技术（android为主）公众号-注：搜索公众号名称关注即可" class="headerlink" title="一、技术公众号：一些经过检测，确属干货的技术（android为主）公众号 (注：搜索公众号名称关注即可)"></a>一、技术公众号：一些经过检测，确属干货的技术（android为主）公众号 (注：搜索公众号名称关注即可)</h4><h5 id="Android为主"><a href="#Android为主" class="headerlink" title="Android为主"></a>Android为主</h5><p>鸿洋</p>
-<p>玉刚说</p>
-<p>HenCoder</p>
-<p>刘望舒</p>
-<p>ASCE1885</p>
-<p>code小生</p>
-<p>承香墨影</p>
-<p>安卓笔记侠</p>
-<p>伯特说</p>
-<p>CodeKK</p>
-<p>安卓杂货铺</p>
-<p>安卓进化论</p>
-<p>Android那些事</p>
-<p>吴小龙同学</p>
-<p>何俊林</p>
-<p>技术视界</p>
-<h5 id="涉及其它技术的公众号（提升眼界的精品文章，不得不读）"><a href="#涉及其它技术的公众号（提升眼界的精品文章，不得不读）" class="headerlink" title="涉及其它技术的公众号（提升眼界的精品文章，不得不读）"></a>涉及其它技术的公众号（提升眼界的精品文章，不得不读）</h5><p>阿里技术</p>
-<p>InfoQ</p>
-<p>互联网学术</p>
-<p>谷歌开发者</p>
-<p>码农翻身</p>
-<p><img src="https://user-gold-cdn.xitu.io/2018/1/5/160c40e8dd13ceb6?w=880&amp;h=544&amp;f=png&amp;s=99737" alt="image"></p>
-<h4 id="二、国内技术网站：目前为止，必须知道的技术干货网站"><a href="#二、国内技术网站：目前为止，必须知道的技术干货网站" class="headerlink" title="二、国内技术网站：目前为止，必须知道的技术干货网站"></a>二、国内技术网站：目前为止，必须知道的技术干货网站</h4><p><a href="https://juejin.im/timeline" target="_blank" rel="external">掘金（大神云集，最新技术获取渠道，与国外最新技术渠道相通）</a></p>
-<p><a href="http://www.wanandroid.com/" target="_blank" rel="external">玩Android（鸿洋大神搭建的个人技术网站）</a></p>
-<p><a href="http://hencoder.com/" target="_blank" rel="external">Hencoder（扔物线给高级android工程师的进阶手册）</a> </p>
-<p><a href="https://diycode.cc/" target="_blank" rel="external">Diycode</a></p>
-<p><a href="http://www.androidweekly.cn/" target="_blank" rel="external">Android开发技术周报</a></p>
-<p><a href="http://gank.io/" target="_blank" rel="external">gank.io</a></p>
-<p><a href="https://www.ctolib.com/android/" target="_blank" rel="external">CTOLib码库（android）</a></p>
-<p><a href="https://gank.io/post/" target="_blank" rel="external">匠心写作</a></p>
-<p><a href="http://www.jcodecraeer.com/" target="_blank" rel="external">泡在网上的日子</a></p>
-<p><a href="https://developers.googleblog.cn" target="_blank" rel="external">谷歌开发者中文博客</a></p>
-<p><a href="https://xiaozhuanlan.com/" target="_blank" rel="external">小专栏</a></p>
-<p><a href="https://list.youku.com/albumlist/show/id_51314721.html" target="_blank" rel="external">谷歌开发者中文视频网站</a> </p>
-<p><img src="https://user-gold-cdn.xitu.io/2018/1/5/160c40ee9f378a6b?w=1079&amp;h=705&amp;f=png&amp;s=311790" alt="image"></p>
-<h4 id="三、国外技术网站："><a href="#三、国外技术网站：" class="headerlink" title="三、国外技术网站："></a>三、国外技术网站：</h4><p><a href="https://github.com/xitu/gold-miner/blob/master/android.md" target="_blank" rel="external">Github</a></p>
-<p><a href="https://stackoverflow.com/" target="_blank" rel="external">StackOverFlow</a></p>
-<p><a href="https://developer.android.com/index.html?hl=zh-cn" target="_blank" rel="external">Android developer</a></p>
-<p><a href="https://medium.com/" target="_blank" rel="external">Medium（新兴的国外技术论坛，干货聚集地)</a></p>
-<p><a href="https://blog.mindorks.com/" target="_blank" rel="external">Mindorks （一家位于印度的顶级Android技术学习网站） </a></p>
-<p><a href="http://fragmentedpodcast.com/" target="_blank" rel="external">Fragmented （Donn Felker and Kaushik Gopal 搭建的android播客网站）</a></p>
-<p><a href="https://academy.realm.io/cn/section/android/" target="_blank" rel="external">Realm （Realm android 学习网站）</a></p>
-<p><a href="https://www.bignerdranch.com/blog/categories/android/" target="_blank" rel="external">Big Nerd Ranch (android)</a> </p>
-<p><a href="http://tapadoo.com/" target="_blank" rel="external">Tapadoo （国外顶尖团队技术学习网站）</a></p>
-<p><a href="https://www.bignerdranch.com/blog/categories/android/" target="_blank" rel="external">Rxjava site （rxjava 官方操作符文档）</a></p>
-<p><a href="https://kotlinlang.org/docs/reference/" target="_blank" rel="external">Kotlin site</a> </p>
-<p><a href="https://material.io/components/android/" target="_blank" rel="external">Material Component （material design 组件的官方学习网站）</a></p>
-<p><img src="https://user-gold-cdn.xitu.io/2018/1/5/160c40f2b3cdd9b5?w=1463&amp;h=495&amp;f=png&amp;s=157702" alt="image"></p>
-<h4 id="四、国内Android大神的个人技术博客"><a href="#四、国内Android大神的个人技术博客" class="headerlink" title="四、国内Android大神的个人技术博客"></a>四、国内Android大神的个人技术博客</h4><p><a href="http://www.trinea.cn/" target="_blank" rel="external">Trinea blog</a> </p>
-<p><a href="http://stormzhang.com/" target="_blank" rel="external">stromzhang blog</a> </p>
-<p><a href="http://www.hensen.site" target="_blank" rel="external">Hensen blog</a> </p>
-<p><a href="http://liuwangshu.cn/" target="_blank" rel="external">刘望舒 blog </a></p>
-<p><a href="https://zhuanlan.zhihu.com/baron" target="_blank" rel="external">张磊 blog </a></p>
-<p><a href="https://kymjs.com/" target="_blank" rel="external">张涛 blog</a> </p>
-<p><a href="https://blog.piasy.com/" target="_blank" rel="external">Piasy blog</a> </p>
-<p><a href="https://wangli0.github.io/" target="_blank" rel="external">Limitles blog </a></p>
-<p><a href="https://pqpo.me/" target="_blank" rel="external">pqpo blog </a></p>
-<p><a href="http://gudong.name/" target="_blank" rel="external">咕咚blog </a></p>
-<p><a href="https://www.liaohuqiu.net/cn/" target="_blank" rel="external">Jessyan blog</a> </p>
-<p><a href="http://blog.lmj.wiki/" target="_blank" rel="external">ANLY blog </a></p>
-<p><a href="https://unclechen.github.io/" target="_blank" rel="external">UncleChen blog</a> </p>
-<p><a href="https://www.liaohuqiu.net/cn/" target="_blank" rel="external">Srain blog</a> </p>
-<p><a href="http://glanwang.com/" target="_blank" rel="external">Glan Wang blog </a></p>
-<p><a href="http://www.easydone.cn/" target="_blank" rel="external">Ailurus blog </a></p>
-<p><a href="http://blog.zhaiyifan.cn/" target="_blank" rel="external">markzhai blog</a> </p>
-<p><a href="http://tangpj.com/archives/" target="_blank" rel="external">Tang blog</a> </p>
-<p><a href="http://weishu.me/archives/" target="_blank" rel="external">Weishu blog</a> </p>
-<p><a href="http://huangjunbin.com/" target="_blank" rel="external">黄俊彬 blog</a> </p>
-<p><a href="http://droidyue.com/" target="_blank" rel="external">技术小黑屋 </a></p>
-<p><a href="http://iluhcm.com/" target="_blank" rel="external">Xing blog </a></p>
-<p><a href="http://www.gcssloop.com/#blog" target="_blank" rel="external">gcsslop blog</a> </p>
-<p><a href="http://yifeng.studio/" target="_blank" rel="external">亦枫 blog</a> </p>
-<p><a href="http://cdevlab.top/" target="_blank" rel="external">cdevlab blog </a></p>
-<p><a href="http://wensibo.top/" target="_blank" rel="external">温斯渤 blog</a> </p>
-<p><a href="http://kaedea.com/" target="_blank" rel="external">晓枫 blog </a></p>
-<p><a href="http://androidperformance.com/" target="_blank" rel="external">高建武 blog </a></p>
-<p><a href="http://yydcdut.com/" target="_blank" rel="external">yydcdut blog</a> </p>
-<p><a href="http://gityuan.com/" target="_blank" rel="external">gityuan blog</a> </p>
-<p><a href="http://www.lightskystreet.com/" target="_blank" rel="external">lightSky blog </a></p>
-<p><a href="https://list.youku.com/albumlist/show/id_51314721.html" target="_blank" rel="external">drakeet blog </a></p>
-<p><a href="https://kyleduo.com/" target="_blank" rel="external">kyleduo blog </a></p>
-<p><a href="http://imxie.itscoder.com/" target="_blank" rel="external">im xie blog </a></p>
-<p><a href="https://kotlinlang.org/docs/reference/" target="_blank" rel="external">Blankj 简书 blog</a> </p>
-<p><a href="https://www.jianshu.com/u/1d8042233f67" target="_blank" rel="external">拉丁吴 简书 blog </a></p>
-<p><a href="https://www.zhihu.com/people/hev1n/posts" target="_blank" rel="external">Hevin 知乎 blog </a></p>
-<p><img src="https://user-gold-cdn.xitu.io/2018/1/5/160c40f63db5d8df?w=1349&amp;h=592&amp;f=png&amp;s=441900" alt="image"></p>
-<h4 id="五、国外Android牛人的个人技术博客"><a href="#五、国外Android牛人的个人技术博客" class="headerlink" title="五、国外Android牛人的个人技术博客"></a>五、国外Android牛人的个人技术博客</h4><p><a href="https://android-developers.googleblog.com/" target="_blank" rel="external">Android developers blog </a></p>
-<p><a href="https://plus.google.com/collection/sLR0p" target="_blank" rel="external">Google+ android developers blog</a> </p>
-<p><a href="https://chris.banes.me/" target="_blank" rel="external">Chris Banes blog </a>()</p>
-<p><a href="http://blog.danlew.net/" target="_blank" rel="external">Dan lew </a></p>
-<p><a href="https://frogermcs.github.io/" target="_blank" rel="external">froger_mcs blog </a></p>
-<p><img src="https://user-gold-cdn.xitu.io/2018/1/5/160c40f807ef44a4?w=1196&amp;h=547&amp;f=png&amp;s=107337" alt="image"></p>
-<h4 id="六、其它"><a href="#六、其它" class="headerlink" title="六、其它"></a>六、其它</h4><p><a href="https://kyleduo.com/" target="_blank" rel="external">Lingvis （英语学习Web端）</a></p>
-<p><a href="https://leetcode.com/problemset/algorithms/" target="_blank" rel="external">Leetcode (算法高手必经之路) </a></p>
-<p><a href="https://material.io/components/android/" target="_blank" rel="external">Android 进阶路线图 </a></p>
-<p><a href="http://md.aclickall.com/" target="_blank" rel="external">Md2ALL (微信公众号md编写优化)</a> </p>
-<p><a href="https://android-arsenal.com/" target="_blank" rel="external">Android 开源项目搜集库 </a></p>
-<p><a href="https://android.googlesource.com/" target="_blank" rel="external">Google android 源码 git 仓库 </a></p>
-<p><a href="https://gradle.org/" target="_blank" rel="external">Gradle 官网 （Gradle建立多平台文档）</a></p>
-<p><a href="https://account.jetbrains.com/login" target="_blank" rel="external">JetBrains 官网</a> </p>
-<p><a href="https://www.lottiefiles.com/" target="_blank" rel="external">Lottiefiels （lottie动画js文件）</a></p>
-<p><a href="https://www.guardsquare.com/en/dexguard" target="_blank" rel="external">加密APP软件：DexGuard </a></p>
-<p><a href="https://coderpad.io/" target="_blank" rel="external">CoderPad （能编写多语言的web端）</a></p>
-<p>原型设计：</p>
-<p><a href="https://modao.cc/" target="_blank" rel="external">墨刀 </a></p>
-<p><a href="https://www.sketchapp.com/" target="_blank" rel="external">Sketch</a> </p>
-<p>UI设计：</p>
-<p><a href="https://huaban.com/" target="_blank" rel="external">花瓣</a></p>
-<p>免费的Icon图标:</p>
-<p><a href="https://icons8.com/" target="_blank" rel="external"> Icons8 </a></p>
-<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>以上没给出链接的（似乎能给的都给了—— ——），都能在Google上搜到，学习渠道很多，关键是要选对自己想要的，2018加油！！</p>
-<p><img src="https://user-gold-cdn.xitu.io/2018/1/5/160c40faeaeba165?w=198&amp;h=197&amp;f=jpeg&amp;s=6717" alt="image"></p>
-
           
+前言（全网唯一、最全面，最干货的技术渠道总结，成为Android资深工程师必备）最近扫阅了国内外大部分的Android技术网站，特定总结一下很棒的干货，本文旨在总结自身的android学习渠道来源，分类如下：
+一、技术公众号：一些经过检测，确属干货的技术（android为主）公众号 (注：搜索公众
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/01/04/Android 学习渠道分享/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1264,19 +1014,18 @@ onView(withId(R.id.textView)).check(matches(withText(expectedText)));
       
         
           
-            <hr>
-<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>不知不觉，2017年就过去了，记得在10月末的时候定下了<a href="https://jsonchao.github.io/2017/10/28/Android%20%E5%AD%A6%E4%B9%A0%E8%AE%A1%E5%88%92%E8%A1%A8/" target="_blank" rel="external">Android学习计划表</a>,截止到今天为止，</p>
-<p>第1（Fragment全解析系列），2（Rxjava操作符系列），3（dagger22注解快速开发系列）点勉强达标，但是离熟练掌握和精通还有很大的差距。</p>
-<p>第4（Kotlin实战），5（Hencoder系列课程）点进度严重滞后，的确，这2部分需要掌握的内容的确很多，希望在2018上半年能吃透kotlin，跟上Hencoder的进度。</p>
-<p>因为没有合理的安排学习任务，导致后续的6，7，8点几乎没有涉及到，对于2018上半年的学习安排，确实需要对Android的知识架构逐渐升入，稳打稳扎才是正途，因此，下面先旨在列出2018上半年攻克的点，后续再出博文安排具体计划。</p>
-<h4 id="一、10本不得不深入学习的书（1是android官方培训，2是电子文档，3-10自己买的纸质书）"><a href="#一、10本不得不深入学习的书（1是android官方培训，2是电子文档，3-10自己买的纸质书）" class="headerlink" title="一、10本不得不深入学习的书（1是android官方培训，2是电子文档，3-10自己买的纸质书）"></a>一、10本不得不深入学习的书（1是android官方培训，2是电子文档，3-10自己买的纸质书）</h4><p>1.Android官方API Guides + 指定培训。（精）<br>2.第一行代码（2版）（快）<br>3.从小工到专家（精）<br>4.Android进阶之光（精）<br>5.Kotlin实战（精）<br>6.Android开发艺术探索（精）<br>7.Android高级进阶（精）<br>8.Android源码设计模式解析与实战（精）<br>9.重构，改善既有代码的设计（精）<br>10.Android性能优化实践（精）</p>
-<h4 id="二、深入android必须掌握的点"><a href="#二、深入android必须掌握的点" class="headerlink" title="二、深入android必须掌握的点"></a>二、深入android必须掌握的点</h4><p>下面列的1-14点旨在构建自己的知识体系，对android学习循序渐进</p>
-<p>1.计算机基础</p>
-<p>2.java基础<br>3.java网络编程<br>4.java并发编程<br>5.java JVM<br>5.其余java高级系列（IO，反射，泛型，注解，集合框架）<br>6.java面向对象6大原则和设计模式<br>7.数据结构和算法<br>8.重要java类源码解析<br>9.kotlin</p>
-<p>10.android基础<br>11.android进阶<br>12.android高新技术（rx系列、dagger2、android官方架构组件、组件化、插件化、热更新）<br>13.android系统源码解析<br>14.android优秀三方库源码解析</p>
-<h4 id="三、算法：每天一道-Leetcode，-星期天总结复习前6天的算法题，温故而知新。"><a href="#三、算法：每天一道-Leetcode，-星期天总结复习前6天的算法题，温故而知新。" class="headerlink" title="三、算法：每天一道 Leetcode， 星期天总结复习前6天的算法题，温故而知新。"></a>三、算法：每天一道 Leetcode， 星期天总结复习前6天的算法题，温故而知新。</h4><h4 id="四、英语：要想第一时间掌握最新的技术，跟上时代的潮流，英语必须掌握，因此，使用零碎时间学习英语是最好的，每天上下班坐地铁和公交可以用耳机听英语听力，起床和睡觉时花5-10分钟扫描20个单词。"><a href="#四、英语：要想第一时间掌握最新的技术，跟上时代的潮流，英语必须掌握，因此，使用零碎时间学习英语是最好的，每天上下班坐地铁和公交可以用耳机听英语听力，起床和睡觉时花5-10分钟扫描20个单词。" class="headerlink" title="四、英语：要想第一时间掌握最新的技术，跟上时代的潮流，英语必须掌握，因此，使用零碎时间学习英语是最好的，每天上下班坐地铁和公交可以用耳机听英语听力，起床和睡觉时花5-10分钟扫描20个单词。"></a>四、英语：要想第一时间掌握最新的技术，跟上时代的潮流，英语必须掌握，因此，使用零碎时间学习英语是最好的，每天上下班坐地铁和公交可以用耳机听英语听力，起床和睡觉时花5-10分钟扫描20个单词。</h4><h4 id="五、整理自己的android学习渠道，后续会发相关学习渠道分享（绝对干货，全网唯一，最全面的学习渠道）。"><a href="#五、整理自己的android学习渠道，后续会发相关学习渠道分享（绝对干货，全网唯一，最全面的学习渠道）。" class="headerlink" title="五、整理自己的android学习渠道，后续会发相关学习渠道分享（绝对干货，全网唯一，最全面的学习渠道）。"></a>五、整理自己的android学习渠道，后续会发相关学习渠道分享（绝对干货，全网唯一，最全面的学习渠道）。</h4><h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>2017，没想到这么快就过去了，这一年，android水平并没有自己想象的那么进步那么快，付出的努力还不够，希望明年的此刻，至少能说一句，我已经拼劲全力了，最后，祝大家也能成为真正的Android高手。</p>
-
           
+前言不知不觉，2017年就过去了，记得在10月末的时候定下了Android学习计划表,截止到今天为止，
+第1（Fragment全解析系列），2（Rxjava操作符系列），3（dagger22注解快速开发系列）点勉强达标，但是离熟练掌握和精通还有很大的差距。
+第4（Kotlin实战），5（Henco
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/12/31/2017 年末总结/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1427,48 +1176,19 @@ onView(withId(R.id.textView)).check(matches(withText(expectedText)));
       
         
           
-            <hr>
-<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>毫无疑问，快捷键用的好，能够大大提升成长（zhuangbi）的速度，下面是本人呕心沥血总结的Android Stduio开发必会快捷键。</p>
-<p>1.for fori foreach / .if (一系列的前缀、后缀代码编辑快捷键，很多，不举例了)</p>
-<p>2.搜索类快捷键</p>
-<p>Shift + Shift 全局搜索</p>
-<p>Ctrl + Shift + F 全局详情搜索</p>
-<p>Ctrl + Shift + A<br>全局搜索Android Studio 工具、快捷键（英文牛逼的效率大大提升）</p>
-<p>Ctrl + N 全局搜索类文件</p>
-<p>Ctrl + F 文件内全局搜索</p>
-<p>3.查看类层级 Ctrl + H</p>
-<p>4.对比同一个类文件 右击类文件Tab，选择Spilt Vertically</p>
-<p>5.方法、XML文件、Style抽取, rename</p>
-<p>Keymap -&gt; Main menu -&gt; Refactor -&gt; Extract -&gt; Method、Style、Layout 设置快捷键</p>
-<p>6.剪切板 Ctrl + Shift + V</p>
-<p>7.Ctrl + R 文件内全局替换</p>
-<p>8.Ctrl + Shift + R 工程（任意）全局替换</p>
-<p>9.从布局调到对应的Activity，从Activity调到对应的布局 Ctrl + Alt + Home</p>
-<p>10.回到上一个编辑的地方 Ctrl + Alt + &lt;- / -&gt; 方向键</p>
-<p>11.使代码上线移动（可选中多行移动）Ctrl + Shift + 向上键/向下键</p>
-<p>12.大小写切换 Ctrl + Shift + U</p>
-<p>13.同时修改多行代码 按住Alt，移动鼠标左键</p>
-<p>14.打开Generate图形工具栏 Alt + Insert</p>
-<p>15.标记需要实现和修复的代码块 输入todo进行设置</p>
-<p>16.Json结构 ==&gt; Json字符串</p>
-<p>举个例子，</p>
-<p>String s = “”；</p>
-<p>鼠标选择双引号的位置，使用Alt + Enter，选择Inject language or reference，选择Json（Json File），再使用Alt + Enter，选择Edit JSON Fragment，下方弹出JSON Fragment编辑界面，输入：</p>
-<pre><code>{
-  &quot;id&quot;:1,
-  &quot;age&quot;:18,
-  &quot;name&quot;:&quot;quchao&quot;,
-  &quot;skills&quot;:{
-    &quot;android&quot;:true,
-    &quot;javascript&quot;:true,
-    &quot;ios&quot;:false
-  }
-}
-</code></pre><p>得到：</p>
-<p> String s = “{\n” +<br>                “  \”id\”:1,\n” +<br>                “  \”age\”:18,\n” +<br>                “  \”name\”:\”quchao\”,\n” +<br>                “  \”skills\”:{\n” +<br>                “    \”android\”:true,\n” +<br>                “    \”javascript\”:true,\n” +<br>                “    \”ios\”:false\n” +<br>                “  }\n” +<br>                “}”</p>
-<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>似乎还有一些神通广大的快捷键，比如用的最多的Alt + Enter,时不时按一下，总会有惊喜放送。虽然Android Studio上的快捷键有很多，但是本文仅在指出开发者必须要知道的快捷键。</p>
-
           
+前言毫无疑问，快捷键用的好，能够大大提升成长（zhuangbi）的速度，下面是本人呕心沥血总结的Android Stduio开发必会快捷键。
+1.for fori foreach / .if (一系列的前缀、后缀代码编辑快捷键，很多，不举例了)
+2.搜索类快捷键
+Shift + Shift 全局搜
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/12/09/Android Studio 极速开发必须知道的快捷键/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1619,115 +1339,20 @@ onView(withId(R.id.textView)).check(matches(withText(expectedText)));
       
         
           
-            <hr>
-<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>本文会提及Android中常用注解的用法，下面先提及java的4个元注解（元注解即是注解的注解）。</p>
-<h5 id="1、-Target"><a href="#1、-Target" class="headerlink" title="1、@Target"></a>1、@Target</h5><p>该注解支持六种元素类型支持，作用是定义注解的作用目标。</p>
-<pre><code>ElementType.TYPE(Class, interface, enum)
-
-ElementType.FIELD(Instance varaible)
-
-ElementType.METHOD
-
-ElementType.PARAMETER
-
-ElementType.CONSTRACTOR
-
-ElementType.LOCAL_VARAIBLE
-
-ElementType.ANNOTATION_TYPE
-
-ElementType.PACKAGE
-
-(Api26以上)
-
-ElementType.TYPE_PARAMETER
-
-ElementType.TYPE_USE
-</code></pre><h5 id="2、-Retention"><a href="#2、-Retention" class="headerlink" title="2、@Retention"></a>2、@Retention</h5><p>该注解支持三种保留策略，作用是定义注解的保留策略。</p>
-<pre><code>RetentionPolicy.SOURCE(定义只保留在源码中)
-
-RetentionPolicy.CLASS(定义注解一直保留到Class字节码文件中)
-
-RetentionPolicy.RUNTIME(定义注解一直保留到运行时期，通过反射获取得到)
-</code></pre><h5 id="3、-Document"><a href="#3、-Document" class="headerlink" title="3、@Document"></a>3、@Document</h5><p>该注解作用是将其定义的注解保留在javadoc文档中。</p>
-<h5 id="4、-Inherited"><a href="#4、-Inherited" class="headerlink" title="4、@Inherited"></a>4、@Inherited</h5><p>该注解作用是允许子类能够继承父类中的该注解。注意：该注解仅限于声明类</p>
-<h5 id="接下来是其他的一些support-annotation"><a href="#接下来是其他的一些support-annotation" class="headerlink" title="接下来是其他的一些support-annotation"></a>接下来是其他的一些support-annotation</h5><h4 id="Nullness-annotation"><a href="#Nullness-annotation" class="headerlink" title="Nullness annotation"></a>Nullness annotation</h4><h5 id="1、-Nullable"><a href="#1、-Nullable" class="headerlink" title="1、@Nullable"></a>1、@Nullable</h5><p>该注解作用指示许方法返回值、参数和变量为空</p>
-<h5 id="2、-NonNull"><a href="#2、-NonNull" class="headerlink" title="2、@NonNull"></a>2、@NonNull</h5><p>该注解作用是指示方法返回值、参数和变量不为空</p>
-<h4 id="Resource-annotation"><a href="#Resource-annotation" class="headerlink" title="Resource annotation"></a>Resource annotation</h4><h5 id="1、-StringRes"><a href="#1、-StringRes" class="headerlink" title="1、@StringRes"></a>1、@StringRes</h5><p>表明是一个字符串资源</p>
-<h5 id="2、-DrawableRes"><a href="#2、-DrawableRes" class="headerlink" title="2、@DrawableRes"></a>2、@DrawableRes</h5><p>表明是一个图片资源</p>
-<h5 id="3、-DimenRes"><a href="#3、-DimenRes" class="headerlink" title="3、@DimenRes"></a>3、@DimenRes</h5><p>表明是一个尺寸资源</p>
-<h5 id="4、-InterpolatorRes"><a href="#4、-InterpolatorRes" class="headerlink" title="4、@InterpolatorRes"></a>4、@InterpolatorRes</h5><p>表明是一个插值器资源</p>
-<h5 id="5、-ColorRes和-ColorInt"><a href="#5、-ColorRes和-ColorInt" class="headerlink" title="5、@ColorRes和@ColorInt"></a>5、@ColorRes和@ColorInt</h5><p>表明是一个颜色资源，建议用@ColorInt，因为@ColorRes不能把颜色整形（RRGGBB或者AARRGGBB）识别为颜色资源）。</p>
-<h5 id="6、-AnyRes"><a href="#6、-AnyRes" class="headerlink" title="6、@AnyRes"></a>6、@AnyRes</h5><p>表明是一个任意类型的R资源</p>
-<h4 id="Thread-annotation"><a href="#Thread-annotation" class="headerlink" title="Thread annotation"></a>Thread annotation</h4><h5 id="1、-MainThread和-UiThread"><a href="#1、-MainThread和-UiThread" class="headerlink" title="1、@MainThread和@UiThread"></a>1、@MainThread和@UiThread</h5><p>表明是在主线程,正常情况下，两者相等，但是系统应用在不同线程上有多个视图时，两者不相等，此时，@UiThread标注与应用的视图层次结构相关联的方法，使用@MainThread仅用于标注与应用生命周期相关联的方法。</p>
-<h5 id="2、-WorkerThread"><a href="#2、-WorkerThread" class="headerlink" title="2、@WorkerThread"></a>2、@WorkerThread</h5><p>表明是在工作线程</p>
-<h5 id="3、-BinderThread"><a href="#3、-BinderThread" class="headerlink" title="3、@BinderThread"></a>3、@BinderThread</h5><p>表明是在Binder线程</p>
-<h5 id="4、-AnyThread"><a href="#4、-AnyThread" class="headerlink" title="4、@AnyThread"></a>4、@AnyThread</h5><p>表明是在任意线程</p>
-<h4 id="Value-constraint-annotation"><a href="#Value-constraint-annotation" class="headerlink" title="Value constraint annotation"></a>Value constraint annotation</h4><h5 id="1、-IntRange"><a href="#1、-IntRange" class="headerlink" title="1、@IntRange"></a>1、@IntRange</h5><p>指定一个整形范围的值 </p>
-<pre><code>@IntRange（from = 0，to = 255）
-</code></pre><h5 id="2、-FloatRange"><a href="#2、-FloatRange" class="headerlink" title="2、@FloatRange"></a>2、@FloatRange</h5><p>指定一个浮点型范围的值 </p>
-<pre><code>@FloatRange（from = 0.0，to = 1.0)
-</code></pre><h5 id="3、-Size"><a href="#3、-Size" class="headerlink" title="3、@Size"></a>3、@Size</h5><p>检查集合和数组的大小或者字符串的长度</p>
-<p>@Size（1）可以作为一个非空判断</p>
-<p>@Size（3）指定大小或长度为3</p>
-<p>@Size（min = 1）指定最小值为1</p>
-<p>@Size（max = 10）指定最大值为10</p>
-<p>@Size（mutiple = 2）指定大小或长度为2的倍数</p>
-<h4 id="Permission-annotation"><a href="#Permission-annotation" class="headerlink" title="Permission annotation"></a>Permission annotation</h4><h5 id="RequiresPermission"><a href="#RequiresPermission" class="headerlink" title="@RequiresPermission"></a>@RequiresPermission</h5><p>验证方法调用方的权限</p>
-<p>检查有效权限列表中是否有某个权限用anyOf属性，<br>检查是否有一组有效权限用allOf属性。</p>
-<p>此外，它还可定义</p>
-<p><strong>Intent权限</strong></p>
-<p>@RequiresPermission(android.Manifest.permission.BLUETOOTH)<br>public static final String ACTION_REQUEST_DISCOVERABLE =<br>            “android.bluetooth.adapter.action.REQUEST_DISCOVERABLE”;</p>
-<p>对于单独读写权限的内容提供者权限</p>
-<p>@RequiresPermission.Read(@RequiresPermission(READ_HISTORY_BOOKMARKS))<br>@RequiresPermission.Write(@RequiresPermission(WRITE_HISTORY_BOOKMARKS))<br>public static final Uri BOOKMARKS_URI = Uri.parse(“content://browser/bookmarks”);</p>
-<p><strong>间接权限</strong></p>
-<p>对于权限依赖于方法参数所需的权限，可使用@RequiresPermission对参数使用间接权限。</p>
-<pre><code>startActivity(@RequiresPermission Intent intent)
-</code></pre><p>对传入的new Intent(Intent.Action_CALL)会在使用该startActivity时进行间接权限检测，检测得权限为Manifest.permission.CALL_PHONE。</p>
-<p>此外，@RequiresPermission可以替换为@RequiresPermission.Read或者@RequiresPermission.Write，但是不能与其共存。</p>
-<h4 id="Retured-value-annotation"><a href="#Retured-value-annotation" class="headerlink" title="Retured value annotation"></a>Retured value annotation</h4><h5 id="CheckResult"><a href="#CheckResult" class="headerlink" title="@CheckResult"></a>@CheckResult</h5><p>验证方法实际使用的是方法的结果还是返回值。</p>
-<p>此外还可指定额外的建议方法</p>
-<pre><code>@CheckResult（suggest=&quot;#enforcePermission(String,int,int,String)&quot;）
-public abstart int requirePermission(...)
-</code></pre><h4 id="CallSuper-annotation"><a href="#CallSuper-annotation" class="headerlink" title="CallSuper annotation"></a>CallSuper annotation</h4><p>用于验证子类方法是否会实现基类方法的超类实现</p>
-<pre><code>@CallSuper
-public void onCreate(Bundle saveInstanceState)
-</code></pre><h4 id="TypeDef-annotation"><a href="#TypeDef-annotation" class="headerlink" title="TypeDef annotation"></a>TypeDef annotation</h4><h5 id="IntDef"><a href="#IntDef" class="headerlink" title="@IntDef"></a>@IntDef</h5><p>用于强制使用已定义的整形</p>
-<pre><code>@Retention(SOURCE)
-  @IntDef({NAVIGATION_MODE_STANDARD, NAVIGATION_MODE_LIST, NAVIGATION_MODE_TABS})
-  public @interface NavigationMode {}
-  public static final int NAVIGATION_MODE_STANDARD = 0;
-  public static final int NAVIGATION_MODE_LIST = 1;
-  public static final int NAVIGATION_MODE_TABS = 2;
-  ...
-  public abstract void setNavigationMode(@NavigationMode int mode);
-  @NavigationMode
-  public abstract int getNavigationMode();
-</code></pre><h5 id="IntRange"><a href="#IntRange" class="headerlink" title="@IntRange"></a>@IntRange</h5><p>用于强制使用已定义的整形范围</p>
-<pre><code>@IntRange(from=0,to=255)
-public int getAlpha() {
-      ...
-}
-</code></pre><h5 id="StringDef"><a href="#StringDef" class="headerlink" title="@StringDef"></a>@StringDef</h5><p>用于强制使用已定义的字符串</p>
-<pre><code>@Retention(SOURCE)
-  @StringDef({
-     POWER_SERVICE,
-     WINDOW_SERVICE,
-     LAYOUT_INFLATER_SERVICE
-  })
-  public @interface ServiceName {}
-  public static final String POWER_SERVICE = &quot;power&quot;;
-  public static final String WINDOW_SERVICE = &quot;window&quot;;
-  public static final String LAYOUT_INFLATER_SERVICE = &quot;layout_inflater&quot;;
-  ...
-  public abstract Object getSystemService(@ServiceName String name);
-</code></pre><p><strong>还可以运行将常量与标志相结合</strong></p>
-<p>在@StringDef(flag=true,{…})多添加一个标志进行综合判断</p>
-<h4 id="代码可访问型注解"><a href="#代码可访问型注解" class="headerlink" title="代码可访问型注解"></a>代码可访问型注解</h4><p>使用 @VisibleForTesting 和 @Keep 注解可以表示方法、类或字段的可访问性。</p>
-<p>@VisibleForTesting 注解指示一个代码块的可见性是否高于让代码变得可测试所需要的水平。</p>
-<p>@Keep 指出一个方法在被混淆的时候应该被保留。<br>该注解可以确保如果在构建时缩减代码，标注的元素不会移除。它一般会添加到通过反射访问的方法和类中，以阻止编译器将代码视为未使用。</p>
-
           
+前言本文会提及Android中常用注解的用法，下面先提及java的4个元注解（元注解即是注解的注解）。
+1、@Target该注解支持六种元素类型支持，作用是定义注解的作用目标。
+ElementType.TYPE(Class, interface, enum)
+
+ElementType.FIELD(
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/11/22/常用注解实践/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1878,27 +1503,22 @@ public int getAlpha() {
       
         
           
-            <hr>
-<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>最近做项目时，涉及到了配置信息本地的数据存储，众所周知，android的数据存储方式有如下五种：</p>
-<pre><code>1.SharePreference
+          
+前言最近做项目时，涉及到了配置信息本地的数据存储，众所周知，android的数据存储方式有如下五种：
+1.SharePreference
 2.文件存储
 3.SQL数据库存储
 4.ContentProvider存储
 5.网络存储
-</code></pre><p>对于本地一些配置信息的存储，我们一般是使用SharePreference保存在本地的shared_prefs下的配置xml文件中，恩。。这个没有毛病，但是，你不觉得对于每一个配置信息都要设置对应的常量key而感觉到麻烦吗，也许3，4个，可以，但是如果我要保存10个按钮的状态呢，在这里，我建议换一种方式，使用实体类来保存。下面来说说它需要满足的条件：</p>
-<h5 id="1、初始化配置界面需要从网络拉取数据，并保存在本地配置实体中"><a href="#1、初始化配置界面需要从网络拉取数据，并保存在本地配置实体中" class="headerlink" title="1、初始化配置界面需要从网络拉取数据，并保存在本地配置实体中"></a>1、初始化配置界面需要从网络拉取数据，并保存在本地配置实体中</h5><p>原因：避免应用被杀掉后本地实体对象被回收，所以需要满足这种模式。</p>
-<h5 id="2、登录后要获取对应的配置数据，保存在本地配置实体中"><a href="#2、登录后要获取对应的配置数据，保存在本地配置实体中" class="headerlink" title="2、登录后要获取对应的配置数据，保存在本地配置实体中"></a>2、登录后要获取对应的配置数据，保存在本地配置实体中</h5><p>而且，可以把它跟网络请求结合起来，我们可以这样：</p>
-<pre><code>//数据上传服务器
-McoBandPresenter.getInstance().getMcoBandPrefEntity().setSedentaryReminder(getSedentaryIntData(checkedItem));
-McoBandPresenter.getInstance().uploadMcoBandPrefToServer();
-</code></pre><p>其中McoBandPrefEntity就是我们对应的实体类，它就保存在对应的McoBandPresenter中，在登录和界面初始化之后我们就得到本地存储的完整McoBandPrefEntity实体存储类了，此时，我们改变了一项sedentary配置信息，要把它同步到服务器，就是这样的：</p>
-<pre><code>McoBandPresenter.getInstance().getMcoBandPrefEntity().setSedentaryReminder(getSedentaryIntData(checkedItem));
-</code></pre><p>这一行代码就把对应的sedentary信息存储在本地的McoBandPrefEntity实体类了，最后一句，就是上传网络的操作，来看看它里面发生了什么，废话不多说，上代码：</p>
-<pre><code>String json = JsonUtil.toJson(mcoBandPrefEntity);
-McoBandModel.getInstance().postMcoBandPref(json.toString());
-</code></pre><p>可以看到，在McoBandPresenter里面，我们用配置好的mcoBandPrefEntity转换为json字符串，并发起了网络请求，恩恩，相信看到这里，大家都明白了吧，下期再见~~</p>
-
-          
+对于本地一些配置信息的存储，我们一般是使用SharePreferenc
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/11/03/Android 本地配置信息存储/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -2049,31 +1669,19 @@ McoBandModel.getInstance().postMcoBandPref(json.toString());
       
         
           
-            <hr>
-<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>一份学习计划表是很重要的，要想仰望星空，就必须脚踏实地的打好地基，一份好的学习计划表能够更好地催促自己去完善Android的各个技术方面。</p>
-<p>该份学习计划旨在列出本年度需要攻克的Android知识和截止攻克时间。</p>
-<h4 id="要学习的知识点："><a href="#要学习的知识点：" class="headerlink" title="要学习的知识点："></a>要学习的知识点：</h4><p>1、YoKey Fragment全解析系列</p>
-<p><a href="http://www.jianshu.com/p/d9143a92ad94" target="_blank" rel="external">Fragment全解析系列链接</a></p>
-<p>2、rxjava2 官方核心及最常用操作符案例各个实现，并上传Github</p>
-<p><a href="http://reactivex.io/documentation/operators.html#alphabetical" target="_blank" rel="external">官方Rxjava操作符列表</a></p>
-<p><a href="http://www.jianshu.com/p/d149043d103a" target="_blank" rel="external">手把手教你使用Rxjava 2.0</a></p>
-<p>3、dagger2</p>
-<p><a href="http://blog.csdn.net/qq_17766199/article/details/50606011" target="_blank" rel="external">Dagger2使用攻略</a></p>
-<p>4、kotlin系统入门与进阶视频学习</p>
-<p><a href="http://coding.imooc.com/class/108.html" target="_blank" rel="external">慕课网kotlin视频学习地址</a></p>
-<p><a href="https://kotlinlang.org/docs/reference/basic-syntax.html" target="_blank" rel="external">kotlin官方学习文档</a></p>
-<p>5、跟上扔物线的 HenCoder Android开发进阶更新进度。</p>
-<p><a href="http://hencoder.com/ui-1-1/" target="_blank" rel="external">HenCoder链接</a></p>
-<p>6、Android NDK </p>
-<p><a href="https://blog.piasy.com/2017/08/26/NDK-Start-Guide/" target="_blank" rel="external">link</a></p>
-<p>7、Android官方培训课程中文版</p>
-<p><a href="http://hukai.me/android-training-course-in-chinese/index.html" target="_blank" rel="external">Android官方培训课程中文版链接</a></p>
-<p>8、Gityuan个人博客关于Android系统源代码的分析</p>
-<p><a href="http://gityuan.com/" target="_blank" rel="external">链接</a></p>
-<p>（学习排序按顺序来）</p>
-<p>计划12月31号前搞定1-6点，7,8点尽量吃点，12月31日会发布对应得年度总结博文，校验下自己的学习效果，希望大家在大家的共同见证下成长。</p>
-
           
+前言一份学习计划表是很重要的，要想仰望星空，就必须脚踏实地的打好地基，一份好的学习计划表能够更好地催促自己去完善Android的各个技术方面。
+该份学习计划旨在列出本年度需要攻克的Android知识和截止攻克时间。
+要学习的知识点：1、YoKey Fragment全解析系列
+Fragment全解析
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/10/28/Android 学习计划表/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -2224,332 +1832,19 @@ McoBandModel.getInstance().postMcoBandPref(json.toString());
       
         
           
-            <hr>
-<p>这段时间在将公司的sql数据库使用第三方的开源数据库替代，综合比较了各个热门的数据库之后，最终还是敲定了greendao，原因不多说，综合性能之王，当然，realm和DBFlow也不错。后续会出相关的文章介绍一下，接下来，就让我们回归正题</p>
-<center><br><br><img src="http://biaoqingbao.xin/wp-content/uploads/2017/07/1548.jpg" alt="image"><br></center>
-
-<p>先给大家灌输点==洪(dou)荒(bi)之力==，好的，正式开始。。</p>
-<h3 id="一、GreenDao和Realm对比。"><a href="#一、GreenDao和Realm对比。" class="headerlink" title="一、GreenDao和Realm对比。"></a>一、GreenDao和Realm对比。</h3><p>在数据量较小的情况下，GreenDao和Realm相差无几，在数据量超过1000条时，GreenDao在删除方面优势很大，Realm在插入和查询方面优势很大，因此，要看需求选择相应的数据库。</p>
-<h3 id="二、GreenDao配置"><a href="#二、GreenDao配置" class="headerlink" title="二、GreenDao配置"></a>二、GreenDao配置</h3><pre><code>apply plugin: &apos;com.android.application&apos;  
-apply plugin: &apos;org.greenrobot.greendao&apos;  
-
-buildscript {  
-    repositories {  
-        mavenCentral()  
-    }  
-    dependencies {  
-        classpath &apos;org.greenrobot:greendao-gradle-plugin:3.0.0&apos;  
-    }  
-}  
-
-greendao {  
-    schemaVersion 1  
-    daoPackage &apos;com.example.anonymous.greendao&apos;  
-    targetGenDir &apos;src/main/java&apos;  
-}  
-
-android {  
-    compileSdkVersion 25  
-    buildToolsVersion &quot;25.0.2&quot;  
-    defaultConfig {  
-        applicationId &quot;com.example.anonymous.realmdemo&quot;  
-        minSdkVersion 15  
-        targetSdkVersion 25  
-        versionCode 1  
-        versionName &quot;1.0&quot;  
-        testInstrumentationRunner &quot;android.support.test.runner.AndroidJUnitRunner&quot;  
-    }  
-    buildTypes {  
-        release {  
-            minifyEnabled false  
-            proguardFiles getDefaultProguardFile(&apos;proguard-android.txt&apos;), &apos;proguard-rules.pro&apos;  
-        }  
-    }  
-}  
-
-dependencies {  
-    compile fileTree(dir: &apos;libs&apos;, include: [&apos;*.jar&apos;])  
-    compile &apos;com.android.support:appcompat-v7:25.0.1&apos;  
-    compile&apos;org.greenrobot:greendao:3.0.1&apos;  
-    compile&apos;org.greenrobot:greendao-generator:3.0.0&apos;  
-}  
-</code></pre><p>注意：buildscript是在工程的根build.gradle下配置的。</p>
-<h3 id="三、编写实体类，对应的是数据库的每一张表"><a href="#三、编写实体类，对应的是数据库的每一张表" class="headerlink" title="三、编写实体类，对应的是数据库的每一张表"></a>三、编写实体类，对应的是数据库的每一张表</h3><pre><code>@Entity  
-public class User {  
-    @Id  
-    private Long id;  
-    private String name;  
-} 
-</code></pre><p>@Entity：将我们的java普通类变为一个能够被greenDAO识别的数据库类型的实体类</p>
-<p>@Id：通过这个注解标记的字段必须是Long类型的，这个字段在数据库中表示它就是主键，并且它默认就是自增的</p>
-<p>然后，点击Make Project（Ctrl + F9），然后GreenDao为你生成了3个类和一些代码，<br>DaoMaster、DaoSession、与User实体对应的UserDao以及User实体类的一些新增代码。<br>其中这三个生成的类的位置是在你app的build.gradle中daoPackage字段指明的位置，如果没有设置这个字段值，默认是在User对应的包下生成的。<br>注意：如果第二次定义一个实体Age类，点击Make Project，只会生成对应的AgeDao。</p>
-<p>好，忙活了这么久，终于可以办正事了，不急，先祝贺一下咱们把扯蛋的配置弄完了</p>
-<center><br><br><img src="http://ww4.sinaimg.cn/mw690/e2b067a1gw1ebfkgjoxdzg206804ox6p.gif" alt="image"><br></center>
-
-
-<h3 id="四、GreenDao增删改查"><a href="#四、GreenDao增删改查" class="headerlink" title="四、GreenDao增删改查"></a>四、GreenDao增删改查</h3><pre><code>DaoMaster.DevOpenHelper devOpenHelper = new DaoMaster.DevOpenHelper(MyApplication.getContext(), &quot;my-db&quot;, null);   
-DaoMaster daoMaster = new DaoMaster(devOpenHelper.getWritableDatabase());
-DaoSession daoSession = daoMaster.newSession();    
-</code></pre><p>注意：得到这个daoSession对象就可以获取到任意一张表单的Dao类进行增删改查操作了。</p>
-<p>咳咳，在讲GreenDao的增删改查之前，咱们现在整一整GreenDao为我们生成的DaoMaster、DaoSession的概念以及他们的关系，废话不多说，直接上(tou)图(lan)：</p>
-<center><br><br><img src="http://upload-images.jianshu.io/upload_images/949345-3c86d4b472d274c6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image"><br></center>
-
-<p>上图中，DaoMater包含了DevOpenHelper，其中createAllTable(db, false)和dropAllTable(db, ture)也是在DaoMster里面，DaoMaster负责创建DaoSession，<br>DaoSession负责创建和管理每一张表单对应的XyzDao类，XyzDao负责对对应的XyzEntity进行增删改查操作，下面，开始增删改查：</p>
-<p>1.增</p>
-<pre><code>insert
-insertOrReplace
-insertInTx
-insertOrReplaceInTx
-</code></pre><p>insert与insertOrReplace的区别：</p>
-<p>如果数据库中已有要插入的数据，那么上面的插入方法就会失败，可以调用insertOrReplace和insertOrReplaceInTx方法。跟踪源码可以发现，insert最终执行的sql语句是”INSERT INTO …”，而insertOrReplace执行的sql语句是”INSERT OR REPLACE INTO …”。</p>
-<p>insert加上尾缀InTx则是批量插入的方式。</p>
-<p>2.删</p>
-<pre><code>delete
-deleteAll
-deleteByKey （注意：目前版本仅仅支持拥有单个主键的表单使用此方法）
-deleteInTx
-deleteByKeyInTx
-</code></pre><p>3.改</p>
-<pre><code>update  
-updateInTx
-</code></pre><p>4.最重要的就是查了，来一大波干货。。</p>
-<pre><code>在android中进行查询：
-queryRaw
-queryRawCreate
-queryRawCreateListArgs
-以上三个都是原生sql语句查询
-offer 查询的起始位置
-limit 查询的条目数量
-查询所有：List&lt;Son&gt;list=mSonDao.queryBuilder().listLazy();//.list()
-按属性查询：Son nate=mSonDao.queryBuilder().where(SonDao.Properties.Name.eq(&quot;senddi&quot;)).unique();
-匹配符查询：List tomkin=mSonDao.queryBuilder().where(SonDao.Properties.Name.like(&quot;tomkin% &quot;)).list();
-范围（区间）查询：List sons=mSonDao.queryBuilder().where(SonDao.Properties.Age.between(20,30)).list();
-范围（大于）查询：List data=mSonDao.queryBuilder().where(SonDao.Properties.Age.gt(18)).list();
-范围（小于）查询：List data=mSonDao.queryBuilder().where(SonDao.Properties.Age.lt(19)).list();
-范围（不等于）查询：List data=mSonDao.queryBuilder().where(SonDao.Properties.Age.notEq(19)).list();
-范围（大于等于）查询：List data=mSonDao.queryBuilder().where(SonDao.Properties.Age.ge(19)).list();
-升序查询：List&lt;Son&gt; data=mSonDao.queryBuilder().orderAsc(SonDao.Properties.Age).list();
-降序查询：List&lt;Son&gt; data=mSonDao.queryBuilder().orderDesc(SonDao.Properties.Age).list();
-
-与原始的SQL语句结合：（年龄在45岁一下的父亲的ID）
-List data=mSonDao.queryBuilder().where(
-new WhereCondition.StringCondition(&quot;FATHER_UD IN&quot; +
-                        &quot;(SELECT _ID FROM FATHER WHERE AGE&lt;45)&quot;)).list();
-</code></pre><p>(⊙v⊙)嗯。。最后再提一点，greenDAO借助SQLiteStatement完成了数据的插入，避免了其他框架利用反射拼装sql语句而造成的执行效率低下的问题，这也是greenDao成为性能之王的主要原因之一。</p>
-<h3 id="五、数据库升级"><a href="#五、数据库升级" class="headerlink" title="五、数据库升级"></a>五、数据库升级</h3><p>在这里，我提一点，数据库升级的主要目的是为了保存升级前的数据，比如说，我在表Date中新加了一个CurrentTime字段，为了使以前的Date表单数据能保存下来，同时还要在每一个Date表单新加一个CurrentTime字段，此时，数据库就需要升级。</p>
-<p>比方说，我现在要加一个字段，升级步骤如下：</p>
-<p>1、需要一个MigrationHelper.java类，StackOverFlow的专家写的，如下：</p>
-<pre><code>/**
-* Created by pokawa on 18/05/15
-*/
-
-public class MigrationHelper {
-
-    private static final String CONVERSION_CLASS_NOT_FOUND_EXCEPTION = &quot;MIGRATION HELPER - CLASS DOESN&apos;T MATCH WITH THE CURRENT PARAMETERS&quot;;
-    private static MigrationHelper instance;
-
-    public static MigrationHelper getInstance() {
-        if(instance == null) {
-            instance = new MigrationHelper();
-        }
-        return instance;
-    }
-
-    public void migrate(SQLiteDatabase db, Class&lt;? extends AbstractDao&lt;?, ?&gt;&gt;... daoClasses) {
-        generateTempTables(db, daoClasses);
-        DaoMaster.dropAllTables(new StandardDatabase(db), true);
-        DaoMaster.createAllTables(new StandardDatabase(db), false);
-        restoreData(db, daoClasses);
-    }
-
-    private void generateTempTables(SQLiteDatabase db, Class&lt;? extends AbstractDao&lt;?, ?&gt;&gt;... daoClasses) {
-        for(int i = 0; i &lt; daoClasses.length; i++) {
-            DaoConfig daoConfig = new DaoConfig(new StandardDatabase(db), daoClasses[i]);
-
-            String divider = &quot;&quot;;
-            String tableName = daoConfig.tablename;
-            String tempTableName = daoConfig.tablename.concat(&quot;_TEMP&quot;);
-            ArrayList&lt;String&gt; properties = new ArrayList&lt;&gt;();
-
-            StringBuilder createTableStringBuilder = new StringBuilder();
-
-            createTableStringBuilder.append(&quot;CREATE TABLE &quot;).append(tempTableName).append(&quot; (&quot;);
-
-            for(int j = 0; j &lt; daoConfig.properties.length; j++) {
-                String columnName = daoConfig.properties[j].columnName;
-
-                if(getColumns(db, tableName).contains(columnName)) {
-                    properties.add(columnName);
-
-                    String type = null;
-
-                    try {
-                        type = getTypeByClass(daoConfig.properties[j].type);
-                    } catch (Exception exception) {
-//                        Crashlytics.logException(exception);
-                    }
-
-                    createTableStringBuilder.append(divider).append(columnName).append(&quot; &quot;).append(type);
-
-                    if(daoConfig.properties[j].primaryKey) {
-                        createTableStringBuilder.append(&quot; PRIMARY KEY&quot;);
-                    }
-
-                    divider = &quot;,&quot;;
-                }
-            }
-            createTableStringBuilder.append(&quot;);&quot;);
-
-            db.execSQL(createTableStringBuilder.toString());
-
-            StringBuilder insertTableStringBuilder = new StringBuilder();
-
-            insertTableStringBuilder.append(&quot;INSERT INTO &quot;).append(tempTableName).append(&quot; (&quot;);
-            insertTableStringBuilder.append(TextUtils.join(&quot;,&quot;, properties));
-            insertTableStringBuilder.append(&quot;) SELECT &quot;);
-            insertTableStringBuilder.append(TextUtils.join(&quot;,&quot;, properties));
-            insertTableStringBuilder.append(&quot; FROM &quot;).append(tableName).append(&quot;;&quot;);
-
-            db.execSQL(insertTableStringBuilder.toString());
-        }
-    }
-
-    private void restoreData(SQLiteDatabase db, Class&lt;? extends AbstractDao&lt;?, ?&gt;&gt;... daoClasses) {
-        for(int i = 0; i &lt; daoClasses.length; i++) {
-            DaoConfig daoConfig = new DaoConfig(new StandardDatabase(db), daoClasses[i]);
-
-            String tableName = daoConfig.tablename;
-            String tempTableName = daoConfig.tablename.concat(&quot;_TEMP&quot;);
-            ArrayList&lt;String&gt; properties = new ArrayList();
-
-            for (int j = 0; j &lt; daoConfig.properties.length; j++) {
-                String columnName = daoConfig.properties[j].columnName;
-
-                if(getColumns(db, tempTableName).contains(columnName)) {
-                    properties.add(columnName);
-                }
-            }
-
-            StringBuilder insertTableStringBuilder = new StringBuilder();
-
-            insertTableStringBuilder.append(&quot;INSERT INTO &quot;).append(tableName).append(&quot; (&quot;);
-            insertTableStringBuilder.append(TextUtils.join(&quot;,&quot;, properties));
-            insertTableStringBuilder.append(&quot;) SELECT &quot;);
-            insertTableStringBuilder.append(TextUtils.join(&quot;,&quot;, properties));
-            insertTableStringBuilder.append(&quot; FROM &quot;).append(tempTableName).append(&quot;;&quot;);
-
-            StringBuilder dropTableStringBuilder = new StringBuilder();
-
-            dropTableStringBuilder.append(&quot;DROP TABLE &quot;).append(tempTableName);
-
-            db.execSQL(insertTableStringBuilder.toString());
-            db.execSQL(dropTableStringBuilder.toString());
-        }
-    }
-
-    private String getTypeByClass(Class&lt;?&gt; type) throws Exception {
-        if(type.equals(String.class)) {
-            return &quot;TEXT&quot;;
-        }
-        if(type.equals(Long.class) || type.equals(Integer.class) || type.equals(long.class)) {
-            return &quot;INTEGER&quot;;
-        }
-        if(type.equals(Boolean.class)) {
-            return &quot;BOOLEAN&quot;;
-        }
-
-        Exception exception = new Exception(CONVERSION_CLASS_NOT_FOUND_EXCEPTION.concat(&quot; - Class: &quot;).concat(type.toString()));
-//        Crashlytics.logException(exception);
-        throw exception;
-    }
-
-    private static List&lt;String&gt; getColumns(SQLiteDatabase db, String tableName) {
-        List&lt;String&gt; columns = new ArrayList&lt;&gt;();
-        Cursor cursor = null;
-        try {
-            cursor = db.rawQuery(&quot;SELECT * FROM &quot; + tableName + &quot; limit 1&quot;, null);
-            if (cursor != null) {
-                columns = new ArrayList&lt;&gt;(Arrays.asList(cursor.getColumnNames()));
-            }
-        } catch (Exception e) {
-            Log.v(tableName, e.getMessage(), e);
-            e.printStackTrace();
-        } finally {
-            if (cursor != null)
-                cursor.close();
-        }
-        return columns;
-    }
-}
-</code></pre><p>2、实现DaoMaster.OpenHelper，用MigrationHelper类对数据库进行升级，对应的类如下：</p>
-<pre><code>public class Helper extends DaoMaster.OpenHelper{
-
-    private static DaoMaster daoMaster;
-    private static DaoSession daoSession;
-
-    public static final String DBNAME = &quot;greendao.db&quot;;
-
-    public Helper(Context context){
-        super(context,DBNAME,null);
-    }
-
-
-    @Override
-    public void onUpgrade(Database db, int oldVersion, int newVersion) {
-        super.onUpgrade(db, oldVersion, newVersion);
-        Log.i(&quot;version&quot;, oldVersion + &quot;---先前和更新之后的版本---&quot; + newVersion);
-        if (oldVersion &lt; newVersion) {
-            Log.i(&quot;version&quot;, oldVersion + &quot;---先前和更新之后的版本---&quot; + newVersion);
-            MigrationHelper.getInstance().migrate(db, UserDao.class);
-            //更改过的实体类(新增的不用加)   更新UserDao文件 可以添加多个  XXDao.class 文件
-//             MigrationHelper.getInstance().migrate(db, UserDao.class,XXDao.class);
-        }
-    }
-
-    /**
-     * 取得DaoMaster
-     *
-     * @param context
-     * @return
-     */
-    public static DaoMaster getDaoMaster(Context context) {
-        if (daoMaster == null) {
-            DaoMaster.OpenHelper helper = new DaoMaster.DevOpenHelper(context,
-                    DBNAME, null);
-            daoMaster = new DaoMaster(helper.getWritableDatabase());
-        }
-        return daoMaster;
-    }
-
-    /**
-     * 取得DaoSession
-     *
-     * @param context
-     * @return
-     */
-    public static DaoSession getDaoSession(Context context) {
-        if (daoSession == null) {
-            if (daoMaster == null) {
-                daoMaster = getDaoMaster(context);
-            }
-            daoSession = daoMaster.newSession();
-        }
-        return daoSession;
-    }
-}
-</code></pre><p>3、完成以上操作后，将版本号加1即可；</p>
-<pre><code>greendao {
-    schemaVersion 2//改版本号为2
-    daoPackage &apos;com.zhangqie.greendao.gen&apos;；
-    targetGenDir &apos;src/main/java&apos;
-}
-</code></pre><p>此时，之前版本存的数据保存下来了，并且新增加了一个字段，只不过字段为空。</p>
-<p>好的，咱们的GreenDao的基本使用和升级就到此为止了，GreenDao征(mo)途(ri)才刚刚开始，猿友们不要松懈，多多撸码才是正途。最后，发张我的近照给大家观(xian)赏(mu)观(xian)赏(mu)</p>
-<center><br><br><img src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3216390431,2469449241&amp;fm=27&amp;gp=0.jpg" alt="image"><br></center>
-
-<p>好的，注意不要舔屏（这是唯一的要求），下一篇见。</p>
-
           
+这段时间在将公司的sql数据库使用第三方的开源数据库替代，综合比较了各个热门的数据库之后，最终还是敲定了greendao，原因不多说，综合性能之王，当然，realm和DBFlow也不错。后续会出相关的文章介绍一下，接下来，就让我们回归正题
+
+
+先给大家灌输点==洪(dou)荒(bi)之力==，好的
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/10/24/GreenDao数据库/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
