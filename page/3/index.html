@@ -106,9 +106,9 @@
       author: 'Author'
     },
     algolia: {
-      applicationID: '',
-      apiKey: '',
-      indexName: '',
+      applicationID: '2JGM8QNUKR',
+      apiKey: 'ad3d08277d479825f7ef759beadbce0d',
+      indexName: 'dicovery',
       hits: {"per_page":10},
       labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
     }
@@ -184,7 +184,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
-            Home
+            Accueil
           </a>
         </li>
       
@@ -194,7 +194,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
             
-            About
+            A propos
           </a>
         </li>
       
@@ -230,9 +230,47 @@
       
 
       
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            recherche
+          </a>
+        </li>
+      
     </ul>
   
 
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
   
 </nav>
 
@@ -290,7 +328,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">Posté le</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2015-11-09T22:36:00+08:00">
                 2015-11-09
@@ -376,7 +414,7 @@ Intent intent = new Intent(this,TargetActivity.class);
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2015/11/09/Activity传值得三种方式/#more" rel="contents">
-              Read more &raquo;
+              Lire la suite &raquo;
             </a>
           </div>
           <!--/noindex-->
@@ -455,7 +493,7 @@ Intent intent = new Intent(this,TargetActivity.class);
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">Posté le</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2015-11-02T21:58:00+08:00">
                 2015-11-02
@@ -539,7 +577,7 @@ Hello，这是android基础的第一堂课
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2015/11/02/android常用布局及控件的使用/#more" rel="contents">
-              Read more &raquo;
+              Lire la suite &raquo;
             </a>
           </div>
           <!--/noindex-->
@@ -618,7 +656,7 @@ Hello，这是android基础的第一堂课
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">Posté le</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2015-10-26T19:18:00+08:00">
                 2015-10-26
@@ -704,7 +742,7 @@ Udp中获取ip地
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2015/10/26/Java高级之网络编程，正则表达式，反射/#more" rel="contents">
-              Read more &raquo;
+              Lire la suite &raquo;
             </a>
           </div>
           <!--/noindex-->
@@ -783,7 +821,7 @@ Udp中获取ip地
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">Posté le</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2015-10-19T21:18:00+08:00">
                 2015-10-19
@@ -867,7 +905,7 @@ Hello，这是java的第六堂课
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2015/10/19/Java基础（6）IO流重点知识/#more" rel="contents">
-              Read more &raquo;
+              Lire la suite &raquo;
             </a>
           </div>
           <!--/noindex-->
@@ -946,7 +984,7 @@ Hello，这是java的第六堂课
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">Posté le</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2015-10-12T22:08:00+08:00">
                 2015-10-12
@@ -1033,7 +1071,7 @@ public static int add(int b,int... a)//把传递过来的数据封装到数组�
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2015/10/12/Java基础（5）多线程重点知识/#more" rel="contents">
-              Read more &raquo;
+              Lire la suite &raquo;
             </a>
           </div>
           <!--/noindex-->
@@ -1112,7 +1150,7 @@ public static int add(int b,int... a)//把传递过来的数据封装到数组�
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">Posté le</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2015-10-05T21:08:00+08:00">
                 2015-10-05
@@ -1196,7 +1234,7 @@ Object[] toArray()
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2015/10/05/Java基础（4）集合重点知识/#more" rel="contents">
-              Read more &raquo;
+              Lire la suite &raquo;
             </a>
           </div>
           <!--/noindex-->
@@ -1275,7 +1313,7 @@ Object[] toArray()
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">Posté le</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2015-09-28T19:08:00+08:00">
                 2015-09-28
@@ -1360,7 +1398,7 @@ Hello，这是java的第三堂课
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2015/09/28/Java基础（3）常用类及注意点/#more" rel="contents">
-              Read more &raquo;
+              Lire la suite &raquo;
             </a>
           </div>
           <!--/noindex-->
@@ -1439,7 +1477,7 @@ Hello，这是java的第三堂课
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">Posté le</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2015-09-21T15:08:00+08:00">
                 2015-09-21
@@ -1527,7 +1565,7 @@ Hello，这是java的第二堂课
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2015/09/21/Java基础（2）面向对象/#more" rel="contents">
-              Read more &raquo;
+              Lire la suite &raquo;
             </a>
           </div>
           <!--/noindex-->
@@ -1606,7 +1644,7 @@ Hello，这是java的第二堂课
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">Posté le</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2015-09-16T15:08:00+08:00">
                 2015-09-16
@@ -1692,7 +1730,7 @@ double sum = s+b+a+d;
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2015/09/16/Java基础（1）基本数据类型/#more" rel="contents">
-              Read more &raquo;
+              Lire la suite &raquo;
             </a>
           </div>
           <!--/noindex-->
@@ -1784,7 +1822,7 @@ double sum = s+b+a+d;
                 <a href="/archives/">
               
                   <span class="site-state-item-count">29</span>
-                  <span class="site-state-item-name">posts</span>
+                  <span class="site-state-item-name">articles</span>
                 </a>
               </div>
             
@@ -1876,7 +1914,7 @@ double sum = s+b+a+d;
 
 
 
-  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+  <div class="theme-info">Thème &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
 
 
 
@@ -2025,6 +2063,19 @@ double sum = s+b+a+d;
   
 
 
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.4"></script>
 
 
 

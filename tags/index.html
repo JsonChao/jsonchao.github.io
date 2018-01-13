@@ -107,9 +107,9 @@
       author: 'Author'
     },
     algolia: {
-      applicationID: '',
-      apiKey: '',
-      indexName: '',
+      applicationID: '2JGM8QNUKR',
+      apiKey: 'ad3d08277d479825f7ef759beadbce0d',
+      indexName: 'dicovery',
       hits: {"per_page":10},
       labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
     }
@@ -184,7 +184,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
-            Home
+            Accueil
           </a>
         </li>
       
@@ -194,7 +194,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
             
-            About
+            A propos
           </a>
         </li>
       
@@ -230,9 +230,47 @@
       
 
       
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            recherche
+          </a>
+        </li>
+      
     </ul>
   
 
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
   
 </nav>
 
@@ -268,7 +306,7 @@
         
           <div class="tag-cloud">
             <div class="tag-cloud-title">
-                15 tags in total
+                15 tags au total
             </div>
             <div class="tag-cloud-tags">
               <a href="/tags/Android测试/" style="font-size: 12px; color: #ccc">Android测试</a> <a href="/tags/GreenDao笔记/" style="font-size: 12px; color: #ccc">GreenDao笔记</a> <a href="/tags/Rxjava笔记/" style="font-size: 18px; color: #8e8e8e">Rxjava笔记</a> <a href="/tags/fragment/" style="font-size: 12px; color: #ccc">fragment</a> <a href="/tags/java/" style="font-size: 30px; color: #111">java</a> <a href="/tags/kotlin笔记/" style="font-size: 12px; color: #ccc">kotlin笔记</a> <a href="/tags/优质译文/" style="font-size: 12px; color: #ccc">优质译文</a> <a href="/tags/学习方式/" style="font-size: 12px; color: #ccc">学习方式</a> <a href="/tags/学习方法/" style="font-size: 12px; color: #ccc">学习方法</a> <a href="/tags/安卓基础/" style="font-size: 24px; color: #4f4f4f">安卓基础</a> <a href="/tags/年末总结/" style="font-size: 12px; color: #ccc">年末总结</a> <a href="/tags/快捷键/" style="font-size: 12px; color: #ccc">快捷键</a> <a href="/tags/插件化/" style="font-size: 12px; color: #ccc">插件化</a> <a href="/tags/数据存储/" style="font-size: 12px; color: #ccc">数据存储</a> <a href="/tags/注解/" style="font-size: 12px; color: #ccc">注解</a>
@@ -341,7 +379,7 @@
                 <a href="/archives/">
               
                   <span class="site-state-item-count">29</span>
-                  <span class="site-state-item-name">posts</span>
+                  <span class="site-state-item-name">articles</span>
                 </a>
               </div>
             
@@ -433,7 +471,7 @@
 
 
 
-  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+  <div class="theme-info">Thème &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
 
 
 
@@ -590,6 +628,19 @@
   
 
 
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.4"></script>
 
 
 
