@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="fragment," />
+  <meta name="keywords" content="安卓基础," />
 
 
 
@@ -82,14 +82,14 @@
 
 
 <meta name="description" content="简介优化点1.我们可以在Fragment的onAttach()中通过getArguments()获得传进来的参数，并在之后使用这些参数。 2.如果要获取Activity对象，不建议调用getActivity()，而是在onAttach()中将Context对象强转为Activity对象。 3.addToBackStack(“fname”)是可选的。FragmentManager拥有回退栈（Bac">
-<meta name="keywords" content="fragment">
+<meta name="keywords" content="安卓基础">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Fragment优化点">
 <meta property="og:url" content="http://yoursite.com/2017/09/10/Fragment优化点/index.html">
 <meta property="og:site_name" content="Deep into Android">
 <meta property="og:description" content="简介优化点1.我们可以在Fragment的onAttach()中通过getArguments()获得传进来的参数，并在之后使用这些参数。 2.如果要获取Activity对象，不建议调用getActivity()，而是在onAttach()中将Context对象强转为Activity对象。 3.addToBackStack(“fname”)是可选的。FragmentManager拥有回退栈（Bac">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2017-11-12T04:50:47.082Z">
+<meta property="og:updated_time" content="2018-02-04T09:01:02.126Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Fragment优化点">
 <meta name="twitter:description" content="简介优化点1.我们可以在Fragment的onAttach()中通过getArguments()获得传进来的参数，并在之后使用这些参数。 2.如果要获取Activity对象，不建议调用getActivity()，而是在onAttach()中将Context对象强转为Activity对象。 3.addToBackStack(“fname”)是可选的。FragmentManager拥有回退栈（Bac">
@@ -429,7 +429,7 @@
 <pre><code>class BackStackRecord extends FragmentTransaction implements FragmentManager.BackStackEntry, Runnable {}
 </code></pre><p>BackStackRecord有三重含义：</p>
 <ol>
-<li><p>继承了FragmentTransaction，即是事务，保存了整个事务的全部操作轨迹。</p>
+<li><p>继承了FragmentTransaction，即事务，保存了整个事务的全部操作轨迹。</p>
 </li>
 <li><p>实现了BackStackEntry，作为回退栈的元素，正是因为该类拥有事务全部的操作轨迹，因此在popBackStack()时能回退整个事务。</p>
 </li>
@@ -442,9 +442,8 @@
 <p>popBackStack()是异步执行的，是丢到主线程的MessageQueue执行，popBackStackImmediate()是同步版本。</p>
 <p>10.Fragment向Activity传递数据</p>
 <p>基础方法：</p>
-<p>首先，在Fragment中定义接口，并让Activity实现该接口（具体实现省略）：</p>
-<pre><code>public interface OnFragmentInteractionListener {    void onItemClick(String str);  //将str从Fragment传递给Activity}
-</code></pre><p>在Fragment的onAttach()中，将参数Context强转为OnFragmentInteractionListener对象：</p>
+<p>首先，在Fragment中定义接口，并让Activity实现该接口（具体实现省略）：<br>    public interface OnFragmentInteractionListener {    void onItemClick(String str);  //将str从Fragment传递给Activity}</p>
+<p>在Fragment的onAttach()中，将参数Context强转为OnFragmentInteractionListener对象：</p>
 <pre><code>public void onAttach(Context context) {
     super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
@@ -560,7 +559,14 @@ fragment.show(getSupportFragmentManager(), &quot;tag&quot;);//fragment.dismiss()
            return new LazyFragment();
     }
 }
-</code></pre>
+</code></pre><h3 id="额外的补充"><a href="#额外的补充" class="headerlink" title="额外的补充"></a>额外的补充</h3><p>1.add(),show(),hide(),replace()</p>
+<p>在大部分情况下，应使用show(),hide()，避免fragment重复加载。<br>注意：当fragment中需要显示大量图片时，建议使用replace()。</p>
+<p>2.onHiddenChanged()</p>
+<p>当使用add()+hide(),show()跳转到新的fragment时，旧的fragment不会回调onStop(),但是会回调onHiddenChanged(),而新的fragment则不会回调onHiddenChanged()。</p>
+<p>3.FragmentManager</p>
+<p>在当前activity时，使用getSupportFragmentManager()是获取的FragmentActivity的FragmentManager。</p>
+<p>在fragment时，使用getSupportFragmentManager()是获取的父类Fragment的FragmentManager，如果没有父类，则获取所属Activity的FragmentManager，而getChildFragmentManager是获取的自己的FragmentManager。</p>
+
       
     </div>
     
@@ -601,7 +607,7 @@ fragment.show(getSupportFragmentManager(), &quot;tag&quot;);//fragment.dismiss()
       
         <div class="post-tags">
           
-            <a href="/tags/fragment/" rel="tag"># fragment</a>
+            <a href="/tags/安卓基础/" rel="tag"># 安卓基础</a>
           
         </div>
       
@@ -733,7 +739,7 @@ fragment.show(getSupportFragmentManager(), &quot;tag&quot;);//fragment.dismiss()
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-count">13</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -867,7 +873,7 @@ fragment.show(getSupportFragmentManager(), &quot;tag&quot;);//fragment.dismiss()
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#优化点"><span class="nav-number">2.</span> <span class="nav-text">优化点</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#优化点"><span class="nav-number">2.</span> <span class="nav-text">优化点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#额外的补充"><span class="nav-number">3.</span> <span class="nav-text">额外的补充</span></a></li></ol></div>
             
 
           </div>
