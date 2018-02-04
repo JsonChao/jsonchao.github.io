@@ -1,0 +1,1229 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="学习方法," />
+
+
+
+
+
+  <link rel="alternate" href="/rss2.xml" title="Deep into Android" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="前言（全网唯一、最全面，最干货的技术渠道总结，成为Android资深工程师必备）最近扫阅了国内外大部分的Android技术网站，特定总结一下很棒的干货，本文旨在总结自身的android学习渠道来源，分类如下： 一、技术公众号：一些经过检测，确属干货的技术（android为主）公众号 (注：搜索公众号名称关注即可)Android为主鸿洋 玉刚说 HenCoder 刘望舒 ASCE1885 code">
+<meta name="keywords" content="学习方法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android 学习渠道分享">
+<meta property="og:url" content="http://yoursite.com/2018/01/04/Android 学习渠道分享/index.html">
+<meta property="og:site_name" content="Deep into Android">
+<meta property="og:description" content="前言（全网唯一、最全面，最干货的技术渠道总结，成为Android资深工程师必备）最近扫阅了国内外大部分的Android技术网站，特定总结一下很棒的干货，本文旨在总结自身的android学习渠道来源，分类如下： 一、技术公众号：一些经过检测，确属干货的技术（android为主）公众号 (注：搜索公众号名称关注即可)Android为主鸿洋 玉刚说 HenCoder 刘望舒 ASCE1885 code">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/1/5/160c40e8dd13ceb6?w=880&h=544&f=png&s=99737">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/1/5/160c40ee9f378a6b?w=1079&h=705&f=png&s=311790">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/1/5/160c40f2b3cdd9b5?w=1463&h=495&f=png&s=157702">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/1/5/160c40f63db5d8df?w=1349&h=592&f=png&s=441900">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/1/5/160c40f807ef44a4?w=1196&h=547&f=png&s=107337">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/1/5/160c40faeaeba165?w=198&h=197&f=jpeg&s=6717">
+<meta property="og:updated_time" content="2018-01-05T04:25:04.278Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android 学习渠道分享">
+<meta name="twitter:description" content="前言（全网唯一、最全面，最干货的技术渠道总结，成为Android资深工程师必备）最近扫阅了国内外大部分的Android技术网站，特定总结一下很棒的干货，本文旨在总结自身的android学习渠道来源，分类如下： 一、技术公众号：一些经过检测，确属干货的技术（android为主）公众号 (注：搜索公众号名称关注即可)Android为主鸿洋 玉刚说 HenCoder 刘望舒 ASCE1885 code">
+<meta name="twitter:image" content="https://user-gold-cdn.xitu.io/2018/1/5/160c40e8dd13ceb6?w=880&h=544&f=png&s=99737">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":0,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '2JGM8QNUKR',
+      apiKey: 'ad3d08277d479825f7ef759beadbce0d',
+      indexName: 'dicovery',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/01/04/Android 学习渠道分享/"/>
+
+
+
+
+
+  <title>Android 学习渠道分享 | Deep into Android</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Deep into Android</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            Über
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Kategorien
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-knowledgehierarchy">
+          <a href="/knowledgehierarchy/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-android"></i> <br />
+            
+            Knowledge Hierarchy
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Suche
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/04/Android 学习渠道分享/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JsonChao">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Deep into Android">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Android 学习渠道分享</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-01-04T21:17:00+08:00">
+                2018-01-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">in</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/学习计划/" itemprop="url" rel="index">
+                    <span itemprop="name">学习计划</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/01/04/Android 学习渠道分享/" class="leancloud_visitors" data-flag-title="Android 学习渠道分享">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">Visitors&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <hr>
+<h3 id="前言（全网唯一、最全面，最干货的技术渠道总结，成为Android资深工程师必备）"><a href="#前言（全网唯一、最全面，最干货的技术渠道总结，成为Android资深工程师必备）" class="headerlink" title="前言（全网唯一、最全面，最干货的技术渠道总结，成为Android资深工程师必备）"></a>前言（全网唯一、最全面，最干货的技术渠道总结，成为Android资深工程师必备）</h3><p>最近扫阅了国内外大部分的Android技术网站，特定总结一下很棒的干货，本文旨在总结自身的android学习渠道来源，分类如下：</p>
+<h4 id="一、技术公众号：一些经过检测，确属干货的技术（android为主）公众号-注：搜索公众号名称关注即可"><a href="#一、技术公众号：一些经过检测，确属干货的技术（android为主）公众号-注：搜索公众号名称关注即可" class="headerlink" title="一、技术公众号：一些经过检测，确属干货的技术（android为主）公众号 (注：搜索公众号名称关注即可)"></a>一、技术公众号：一些经过检测，确属干货的技术（android为主）公众号 (注：搜索公众号名称关注即可)</h4><h5 id="Android为主"><a href="#Android为主" class="headerlink" title="Android为主"></a>Android为主</h5><p>鸿洋</p>
+<p>玉刚说</p>
+<p>HenCoder</p>
+<p>刘望舒</p>
+<p>ASCE1885</p>
+<p>code小生</p>
+<p>承香墨影</p>
+<p>安卓笔记侠</p>
+<p>伯特说</p>
+<p>CodeKK</p>
+<p>安卓杂货铺</p>
+<p>安卓进化论</p>
+<p>Android那些事</p>
+<p>吴小龙同学</p>
+<p>何俊林</p>
+<p>技术视界</p>
+<h5 id="涉及其它技术的公众号（提升眼界的精品文章，不得不读）"><a href="#涉及其它技术的公众号（提升眼界的精品文章，不得不读）" class="headerlink" title="涉及其它技术的公众号（提升眼界的精品文章，不得不读）"></a>涉及其它技术的公众号（提升眼界的精品文章，不得不读）</h5><p>阿里技术</p>
+<p>InfoQ</p>
+<p>互联网学术</p>
+<p>谷歌开发者</p>
+<p>码农翻身</p>
+<p><img src="https://user-gold-cdn.xitu.io/2018/1/5/160c40e8dd13ceb6?w=880&amp;h=544&amp;f=png&amp;s=99737" alt="image"></p>
+<h4 id="二、国内技术网站：目前为止，必须知道的技术干货网站"><a href="#二、国内技术网站：目前为止，必须知道的技术干货网站" class="headerlink" title="二、国内技术网站：目前为止，必须知道的技术干货网站"></a>二、国内技术网站：目前为止，必须知道的技术干货网站</h4><p><a href="https://juejin.im/timeline" target="_blank" rel="external">掘金（大神云集，最新技术获取渠道，与国外最新技术渠道相通）</a></p>
+<p><a href="http://www.wanandroid.com/" target="_blank" rel="external">玩Android（鸿洋大神搭建的个人技术网站）</a></p>
+<p><a href="http://hencoder.com/" target="_blank" rel="external">Hencoder（扔物线给高级android工程师的进阶手册）</a> </p>
+<p><a href="https://diycode.cc/" target="_blank" rel="external">Diycode</a></p>
+<p><a href="http://www.androidweekly.cn/" target="_blank" rel="external">Android开发技术周报</a></p>
+<p><a href="http://gank.io/" target="_blank" rel="external">gank.io</a></p>
+<p><a href="https://www.ctolib.com/android/" target="_blank" rel="external">CTOLib码库（android）</a></p>
+<p><a href="https://gank.io/post/" target="_blank" rel="external">匠心写作</a></p>
+<p><a href="http://www.jcodecraeer.com/" target="_blank" rel="external">泡在网上的日子</a></p>
+<p><a href="https://developers.googleblog.cn" target="_blank" rel="external">谷歌开发者中文博客</a></p>
+<p><a href="https://xiaozhuanlan.com/" target="_blank" rel="external">小专栏</a></p>
+<p><a href="https://list.youku.com/albumlist/show/id_51314721.html" target="_blank" rel="external">谷歌开发者中文视频网站</a> </p>
+<p><img src="https://user-gold-cdn.xitu.io/2018/1/5/160c40ee9f378a6b?w=1079&amp;h=705&amp;f=png&amp;s=311790" alt="image"></p>
+<h4 id="三、国外技术网站："><a href="#三、国外技术网站：" class="headerlink" title="三、国外技术网站："></a>三、国外技术网站：</h4><p><a href="https://github.com/xitu/gold-miner/blob/master/android.md" target="_blank" rel="external">Github</a></p>
+<p><a href="https://stackoverflow.com/" target="_blank" rel="external">StackOverFlow</a></p>
+<p><a href="https://developer.android.com/index.html?hl=zh-cn" target="_blank" rel="external">Android developer</a></p>
+<p><a href="https://medium.com/" target="_blank" rel="external">Medium（新兴的国外技术论坛，干货聚集地)</a></p>
+<p><a href="https://blog.mindorks.com/" target="_blank" rel="external">Mindorks （一家位于印度的顶级Android技术学习网站） </a></p>
+<p><a href="http://fragmentedpodcast.com/" target="_blank" rel="external">Fragmented （Donn Felker and Kaushik Gopal 搭建的android播客网站）</a></p>
+<p><a href="https://academy.realm.io/cn/section/android/" target="_blank" rel="external">Realm （Realm android 学习网站）</a></p>
+<p><a href="https://www.bignerdranch.com/blog/categories/android/" target="_blank" rel="external">Big Nerd Ranch (android)</a> </p>
+<p><a href="http://tapadoo.com/" target="_blank" rel="external">Tapadoo （国外顶尖团队技术学习网站）</a></p>
+<p><a href="https://www.bignerdranch.com/blog/categories/android/" target="_blank" rel="external">Rxjava site （rxjava 官方操作符文档）</a></p>
+<p><a href="https://kotlinlang.org/docs/reference/" target="_blank" rel="external">Kotlin site</a> </p>
+<p><a href="https://material.io/components/android/" target="_blank" rel="external">Material Component （material design 组件的官方学习网站）</a></p>
+<p><img src="https://user-gold-cdn.xitu.io/2018/1/5/160c40f2b3cdd9b5?w=1463&amp;h=495&amp;f=png&amp;s=157702" alt="image"></p>
+<h4 id="四、国内Android大神的个人技术博客"><a href="#四、国内Android大神的个人技术博客" class="headerlink" title="四、国内Android大神的个人技术博客"></a>四、国内Android大神的个人技术博客</h4><p><a href="http://www.trinea.cn/" target="_blank" rel="external">Trinea blog</a> </p>
+<p><a href="http://stormzhang.com/" target="_blank" rel="external">stromzhang blog</a> </p>
+<p><a href="http://www.hensen.site" target="_blank" rel="external">Hensen blog</a> </p>
+<p><a href="http://liuwangshu.cn/" target="_blank" rel="external">刘望舒 blog </a></p>
+<p><a href="https://zhuanlan.zhihu.com/baron" target="_blank" rel="external">张磊 blog </a></p>
+<p><a href="https://kymjs.com/" target="_blank" rel="external">张涛 blog</a> </p>
+<p><a href="https://blog.piasy.com/" target="_blank" rel="external">Piasy blog</a> </p>
+<p><a href="https://wangli0.github.io/" target="_blank" rel="external">Limitles blog </a></p>
+<p><a href="https://pqpo.me/" target="_blank" rel="external">pqpo blog </a></p>
+<p><a href="http://gudong.name/" target="_blank" rel="external">咕咚blog </a></p>
+<p><a href="https://www.liaohuqiu.net/cn/" target="_blank" rel="external">Jessyan blog</a> </p>
+<p><a href="http://blog.lmj.wiki/" target="_blank" rel="external">ANLY blog </a></p>
+<p><a href="https://unclechen.github.io/" target="_blank" rel="external">UncleChen blog</a> </p>
+<p><a href="https://www.liaohuqiu.net/cn/" target="_blank" rel="external">Srain blog</a> </p>
+<p><a href="http://glanwang.com/" target="_blank" rel="external">Glan Wang blog </a></p>
+<p><a href="http://www.easydone.cn/" target="_blank" rel="external">Ailurus blog </a></p>
+<p><a href="http://blog.zhaiyifan.cn/" target="_blank" rel="external">markzhai blog</a> </p>
+<p><a href="http://tangpj.com/archives/" target="_blank" rel="external">Tang blog</a> </p>
+<p><a href="http://weishu.me/archives/" target="_blank" rel="external">Weishu blog</a> </p>
+<p><a href="http://huangjunbin.com/" target="_blank" rel="external">黄俊彬 blog</a> </p>
+<p><a href="http://droidyue.com/" target="_blank" rel="external">技术小黑屋 </a></p>
+<p><a href="http://iluhcm.com/" target="_blank" rel="external">Xing blog </a></p>
+<p><a href="http://www.gcssloop.com/#blog" target="_blank" rel="external">gcsslop blog</a> </p>
+<p><a href="http://yifeng.studio/" target="_blank" rel="external">亦枫 blog</a> </p>
+<p><a href="http://cdevlab.top/" target="_blank" rel="external">cdevlab blog </a></p>
+<p><a href="http://wensibo.top/" target="_blank" rel="external">温斯渤 blog</a> </p>
+<p><a href="http://kaedea.com/" target="_blank" rel="external">晓枫 blog </a></p>
+<p><a href="http://androidperformance.com/" target="_blank" rel="external">高建武 blog </a></p>
+<p><a href="http://yydcdut.com/" target="_blank" rel="external">yydcdut blog</a> </p>
+<p><a href="http://gityuan.com/" target="_blank" rel="external">gityuan blog</a> </p>
+<p><a href="http://www.lightskystreet.com/" target="_blank" rel="external">lightSky blog </a></p>
+<p><a href="https://list.youku.com/albumlist/show/id_51314721.html" target="_blank" rel="external">drakeet blog </a></p>
+<p><a href="https://kyleduo.com/" target="_blank" rel="external">kyleduo blog </a></p>
+<p><a href="http://imxie.itscoder.com/" target="_blank" rel="external">im xie blog </a></p>
+<p><a href="https://kotlinlang.org/docs/reference/" target="_blank" rel="external">Blankj 简书 blog</a> </p>
+<p><a href="https://www.jianshu.com/u/1d8042233f67" target="_blank" rel="external">拉丁吴 简书 blog </a></p>
+<p><a href="https://www.zhihu.com/people/hev1n/posts" target="_blank" rel="external">Hevin 知乎 blog </a></p>
+<p><img src="https://user-gold-cdn.xitu.io/2018/1/5/160c40f63db5d8df?w=1349&amp;h=592&amp;f=png&amp;s=441900" alt="image"></p>
+<h4 id="五、国外Android牛人的个人技术博客"><a href="#五、国外Android牛人的个人技术博客" class="headerlink" title="五、国外Android牛人的个人技术博客"></a>五、国外Android牛人的个人技术博客</h4><p><a href="https://android-developers.googleblog.com/" target="_blank" rel="external">Android developers blog </a></p>
+<p><a href="https://plus.google.com/collection/sLR0p" target="_blank" rel="external">Google+ android developers blog</a> </p>
+<p><a href="https://chris.banes.me/" target="_blank" rel="external">Chris Banes blog </a>()</p>
+<p><a href="http://blog.danlew.net/" target="_blank" rel="external">Dan lew </a></p>
+<p><a href="https://frogermcs.github.io/" target="_blank" rel="external">froger_mcs blog </a></p>
+<p><img src="https://user-gold-cdn.xitu.io/2018/1/5/160c40f807ef44a4?w=1196&amp;h=547&amp;f=png&amp;s=107337" alt="image"></p>
+<h4 id="六、其它"><a href="#六、其它" class="headerlink" title="六、其它"></a>六、其它</h4><p><a href="https://kyleduo.com/" target="_blank" rel="external">Lingvis （英语学习Web端）</a></p>
+<p><a href="https://leetcode.com/problemset/algorithms/" target="_blank" rel="external">Leetcode (算法高手必经之路) </a></p>
+<p><a href="https://material.io/components/android/" target="_blank" rel="external">Android 进阶路线图 </a></p>
+<p><a href="http://md.aclickall.com/" target="_blank" rel="external">Md2ALL (微信公众号md编写优化)</a> </p>
+<p><a href="https://android-arsenal.com/" target="_blank" rel="external">Android 开源项目搜集库 </a></p>
+<p><a href="https://android.googlesource.com/" target="_blank" rel="external">Google android 源码 git 仓库 </a></p>
+<p><a href="https://gradle.org/" target="_blank" rel="external">Gradle 官网 （Gradle建立多平台文档）</a></p>
+<p><a href="https://account.jetbrains.com/login" target="_blank" rel="external">JetBrains 官网</a> </p>
+<p><a href="https://www.lottiefiles.com/" target="_blank" rel="external">Lottiefiels （lottie动画js文件）</a></p>
+<p><a href="https://www.guardsquare.com/en/dexguard" target="_blank" rel="external">加密APP软件：DexGuard </a></p>
+<p><a href="https://coderpad.io/" target="_blank" rel="external">CoderPad （能编写多语言的web端）</a></p>
+<p>原型设计：</p>
+<p><a href="https://modao.cc/" target="_blank" rel="external">墨刀 </a></p>
+<p><a href="https://www.sketchapp.com/" target="_blank" rel="external">Sketch</a> </p>
+<p>UI设计：</p>
+<p><a href="https://huaban.com/" target="_blank" rel="external">花瓣</a></p>
+<p>免费的Icon图标:</p>
+<p><a href="https://icons8.com/" target="_blank" rel="external"> Icons8 </a></p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>以上没给出链接的（似乎能给的都给了—— ——），都能在Google上搜到，学习渠道很多，关键是要选对自己想要的，2018加油！！</p>
+<p><img src="https://user-gold-cdn.xitu.io/2018/1/5/160c40faeaeba165?w=198&amp;h=197&amp;f=jpeg&amp;s=6717" alt="image"></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.png" alt="JsonChao Alipay"/>
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/学习方法/" rel="tag"># 学习方法</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/31/2017 年末总结/" rel="next" title="2017 年末总结">
+                <i class="fa fa-chevron-left"></i> 2017 年末总结
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/06/2018必学的顶尖Android技术（译）（作者：Amit Shekhar）/" rel="prev" title="2018必学的顶尖Android技术（译）（作者：Amit Shekhar）">
+                2018必学的顶尖Android技术（译）（作者：Amit Shekhar） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="uyan_frame"></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="JsonChao" />
+            
+              <p class="site-author-name" itemprop="name">JsonChao</p>
+              <p class="site-description motion-element" itemprop="description">Persist + Plan = Growing</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-name">Artikel</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">Kategorien</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">Tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/rss2.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/JsonChao" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://mail.google.com/mail/u/0/#inbox" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-globe"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://juejin.im/post/5a4e49706fb9a01cb42c25cf" target="_blank" title="JueJin">
+                      
+                        <i class="fa fa-fw fa-globe"></i>JueJin</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://blog.csdn.net/qq_20798591?ref=toolbar" target="_blank" title="CSDN">
+                      
+                        <i class="fa fa-fw fa-globe"></i>CSDN</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Manito Link
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://hencoder.com/" title="HenCoder" target="_blank">HenCoder</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.trinea.cn/" title="Trinea'blog" target="_blank">Trinea'blog</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://stormzhang.com/" title="stromzhang'blog" target="_blank">stromzhang'blog</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.hensen.site/" title="Hensen'blog" target="_blank">Hensen'blog</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://liuwangshu.cn/" title="刘望舒'blog" target="_blank">刘望舒'blog</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://zhuanlan.zhihu.com/baron/" title="张磊'blog" target="_blank">张磊'blog</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://kymjs.com/" title="张涛'blog" target="_blank">张涛'blog</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://blog.piasy.com/" title="Piasy'blog" target="_blank">Piasy'blog</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://blog.lmj.wiki/" title="ANLY'blog" target="_blank">ANLY'blog</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://glanwang.com/" title="Glan Wang'blog" target="_blank">Glan Wang'blog</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://huangjunbin.com/" title="黄俊彬'blog" target="_blank">黄俊彬'blog</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://droidyue.com/" title="技术小黑屋'blog" target="_blank">技术小黑屋'blog</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://gityuan.com/" title="gityuan'blog" target="_blank">gityuan'blog</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.gcssloop.com/#blog" title="gcsslop'blog" target="_blank">gcsslop'blog</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言（全网唯一、最全面，最干货的技术渠道总结，成为Android资深工程师必备）"><span class="nav-number">1.</span> <span class="nav-text">前言（全网唯一、最全面，最干货的技术渠道总结，成为Android资深工程师必备）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#一、技术公众号：一些经过检测，确属干货的技术（android为主）公众号-注：搜索公众号名称关注即可"><span class="nav-number">1.1.</span> <span class="nav-text">一、技术公众号：一些经过检测，确属干货的技术（android为主）公众号 (注：搜索公众号名称关注即可)</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Android为主"><span class="nav-number">1.1.1.</span> <span class="nav-text">Android为主</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#涉及其它技术的公众号（提升眼界的精品文章，不得不读）"><span class="nav-number">1.1.2.</span> <span class="nav-text">涉及其它技术的公众号（提升眼界的精品文章，不得不读）</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二、国内技术网站：目前为止，必须知道的技术干货网站"><span class="nav-number">1.2.</span> <span class="nav-text">二、国内技术网站：目前为止，必须知道的技术干货网站</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#三、国外技术网站："><span class="nav-number">1.3.</span> <span class="nav-text">三、国外技术网站：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#四、国内Android大神的个人技术博客"><span class="nav-number">1.4.</span> <span class="nav-text">四、国内Android大神的个人技术博客</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#五、国外Android牛人的个人技术博客"><span class="nav-number">1.5.</span> <span class="nav-text">五、国外Android牛人的个人技术博客</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#六、其它"><span class="nav-number">1.6.</span> <span class="nav-text">六、其它</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#总结"><span class="nav-number">1.7.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">JsonChao</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Erstellt mit  <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+    
+
+    
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2155025"></script>
+      <!-- UY END -->
+    
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+   
+   
+     
+   
+   
+  
+      <!-- 来必力City版安装代码 -->
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zMzg1Mi8xMDQwNQ==">
+	<script type="text/javascript">
+   (function(d, s) {
+       var j, e = d.getElementsByTagName(s)[0];
+
+       if (typeof LivereTower === 'function') { return; }
+
+       j = d.createElement(s);
+       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+       j.async = true;
+
+       e.parentNode.insertBefore(j, e);
+   })(document, 'script');
+	</script>
+<noscript> 为正常使用来必力评论功能请激活JavaScript</noscript>
+</div>
+<!-- City版安装代码已完成 -->
+   
+ 
+
+   
+   
+     
+   
+   
+  
+      <!-- 来必力City版安装代码 -->
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zMzg1Mi8xMDQwNQ==">
+	<script type="text/javascript">
+   (function(d, s) {
+       var j, e = d.getElementsByTagName(s)[0];
+
+       if (typeof LivereTower === 'function') { return; }
+
+       j = d.createElement(s);
+       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+       j.async = true;
+
+       e.parentNode.insertBefore(j, e);
+   })(document, 'script');
+	</script>
+<noscript> 为正常使用来必力评论功能请激活JavaScript</noscript>
+</div>
+<!-- City版安装代码已完成 -->
+   
+ 
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("2wtHdVd6zid7kU6YQKIqsHU5-gzGzoHsz", "eLibBRhSAsSoX1JbTMJH6ka3");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

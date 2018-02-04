@@ -1,0 +1,1215 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="注解," />
+
+
+
+
+
+  <link rel="alternate" href="/rss2.xml" title="Deep into Android" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="前言本文会提及Android中常用注解的用法，下面先提及java的4个元注解（元注解即是注解的注解）。 1、@Target该注解支持六种元素类型支持，作用是定义注解的作用目标。 ElementType.TYPE(Class, interface, enum)  ElementType.FIELD(Instance varaible)  ElementType.METHOD  ElementTyp">
+<meta name="keywords" content="注解">
+<meta property="og:type" content="article">
+<meta property="og:title" content="注解实践">
+<meta property="og:url" content="http://yoursite.com/2017/11/22/常用注解实践/index.html">
+<meta property="og:site_name" content="Deep into Android">
+<meta property="og:description" content="前言本文会提及Android中常用注解的用法，下面先提及java的4个元注解（元注解即是注解的注解）。 1、@Target该注解支持六种元素类型支持，作用是定义注解的作用目标。 ElementType.TYPE(Class, interface, enum)  ElementType.FIELD(Instance varaible)  ElementType.METHOD  ElementTyp">
+<meta property="og:updated_time" content="2017-11-22T14:39:33.689Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="注解实践">
+<meta name="twitter:description" content="前言本文会提及Android中常用注解的用法，下面先提及java的4个元注解（元注解即是注解的注解）。 1、@Target该注解支持六种元素类型支持，作用是定义注解的作用目标。 ElementType.TYPE(Class, interface, enum)  ElementType.FIELD(Instance varaible)  ElementType.METHOD  ElementTyp">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":0,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '2JGM8QNUKR',
+      apiKey: 'ad3d08277d479825f7ef759beadbce0d',
+      indexName: 'dicovery',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/11/22/常用注解实践/"/>
+
+
+
+
+
+  <title>注解实践 | Deep into Android</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Deep into Android</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            Über
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Kategorien
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-knowledgehierarchy">
+          <a href="/knowledgehierarchy/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-android"></i> <br />
+            
+            Knowledge Hierarchy
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Suche
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/22/常用注解实践/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JsonChao">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Deep into Android">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">注解实践</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-11-22T21:17:00+08:00">
+                2017-11-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">in</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/安卓进阶/" itemprop="url" rel="index">
+                    <span itemprop="name">安卓进阶</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/11/22/常用注解实践/" class="leancloud_visitors" data-flag-title="注解实践">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">Visitors&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <hr>
+<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>本文会提及Android中常用注解的用法，下面先提及java的4个元注解（元注解即是注解的注解）。</p>
+<h5 id="1、-Target"><a href="#1、-Target" class="headerlink" title="1、@Target"></a>1、@Target</h5><p>该注解支持六种元素类型支持，作用是定义注解的作用目标。</p>
+<pre><code>ElementType.TYPE(Class, interface, enum)
+
+ElementType.FIELD(Instance varaible)
+
+ElementType.METHOD
+
+ElementType.PARAMETER
+
+ElementType.CONSTRACTOR
+
+ElementType.LOCAL_VARAIBLE
+
+ElementType.ANNOTATION_TYPE
+
+ElementType.PACKAGE
+
+(Api26以上)
+
+ElementType.TYPE_PARAMETER
+
+ElementType.TYPE_USE
+</code></pre><h5 id="2、-Retention"><a href="#2、-Retention" class="headerlink" title="2、@Retention"></a>2、@Retention</h5><p>该注解支持三种保留策略，作用是定义注解的保留策略。</p>
+<pre><code>RetentionPolicy.SOURCE(定义只保留在源码中)
+
+RetentionPolicy.CLASS(定义注解一直保留到Class字节码文件中)
+
+RetentionPolicy.RUNTIME(定义注解一直保留到运行时期，通过反射获取得到)
+</code></pre><h5 id="3、-Document"><a href="#3、-Document" class="headerlink" title="3、@Document"></a>3、@Document</h5><p>该注解作用是将其定义的注解保留在javadoc文档中。</p>
+<h5 id="4、-Inherited"><a href="#4、-Inherited" class="headerlink" title="4、@Inherited"></a>4、@Inherited</h5><p>该注解作用是允许子类能够继承父类中的该注解。注意：该注解仅限于声明类</p>
+<h5 id="接下来是其他的一些support-annotation"><a href="#接下来是其他的一些support-annotation" class="headerlink" title="接下来是其他的一些support-annotation"></a>接下来是其他的一些support-annotation</h5><h4 id="Nullness-annotation"><a href="#Nullness-annotation" class="headerlink" title="Nullness annotation"></a>Nullness annotation</h4><h5 id="1、-Nullable"><a href="#1、-Nullable" class="headerlink" title="1、@Nullable"></a>1、@Nullable</h5><p>该注解作用指示许方法返回值、参数和变量为空</p>
+<h5 id="2、-NonNull"><a href="#2、-NonNull" class="headerlink" title="2、@NonNull"></a>2、@NonNull</h5><p>该注解作用是指示方法返回值、参数和变量不为空</p>
+<h4 id="Resource-annotation"><a href="#Resource-annotation" class="headerlink" title="Resource annotation"></a>Resource annotation</h4><h5 id="1、-StringRes"><a href="#1、-StringRes" class="headerlink" title="1、@StringRes"></a>1、@StringRes</h5><p>表明是一个字符串资源</p>
+<h5 id="2、-DrawableRes"><a href="#2、-DrawableRes" class="headerlink" title="2、@DrawableRes"></a>2、@DrawableRes</h5><p>表明是一个图片资源</p>
+<h5 id="3、-DimenRes"><a href="#3、-DimenRes" class="headerlink" title="3、@DimenRes"></a>3、@DimenRes</h5><p>表明是一个尺寸资源</p>
+<h5 id="4、-InterpolatorRes"><a href="#4、-InterpolatorRes" class="headerlink" title="4、@InterpolatorRes"></a>4、@InterpolatorRes</h5><p>表明是一个插值器资源</p>
+<h5 id="5、-ColorRes和-ColorInt"><a href="#5、-ColorRes和-ColorInt" class="headerlink" title="5、@ColorRes和@ColorInt"></a>5、@ColorRes和@ColorInt</h5><p>表明是一个颜色资源，建议用@ColorInt，因为@ColorRes不能把颜色整形（RRGGBB或者AARRGGBB）识别为颜色资源）。</p>
+<h5 id="6、-AnyRes"><a href="#6、-AnyRes" class="headerlink" title="6、@AnyRes"></a>6、@AnyRes</h5><p>表明是一个任意类型的R资源</p>
+<h4 id="Thread-annotation"><a href="#Thread-annotation" class="headerlink" title="Thread annotation"></a>Thread annotation</h4><h5 id="1、-MainThread和-UiThread"><a href="#1、-MainThread和-UiThread" class="headerlink" title="1、@MainThread和@UiThread"></a>1、@MainThread和@UiThread</h5><p>表明是在主线程,正常情况下，两者相等，但是系统应用在不同线程上有多个视图时，两者不相等，此时，@UiThread标注与应用的视图层次结构相关联的方法，使用@MainThread仅用于标注与应用生命周期相关联的方法。</p>
+<h5 id="2、-WorkerThread"><a href="#2、-WorkerThread" class="headerlink" title="2、@WorkerThread"></a>2、@WorkerThread</h5><p>表明是在工作线程</p>
+<h5 id="3、-BinderThread"><a href="#3、-BinderThread" class="headerlink" title="3、@BinderThread"></a>3、@BinderThread</h5><p>表明是在Binder线程</p>
+<h5 id="4、-AnyThread"><a href="#4、-AnyThread" class="headerlink" title="4、@AnyThread"></a>4、@AnyThread</h5><p>表明是在任意线程</p>
+<h4 id="Value-constraint-annotation"><a href="#Value-constraint-annotation" class="headerlink" title="Value constraint annotation"></a>Value constraint annotation</h4><h5 id="1、-IntRange"><a href="#1、-IntRange" class="headerlink" title="1、@IntRange"></a>1、@IntRange</h5><p>指定一个整形范围的值 </p>
+<pre><code>@IntRange（from = 0，to = 255）
+</code></pre><h5 id="2、-FloatRange"><a href="#2、-FloatRange" class="headerlink" title="2、@FloatRange"></a>2、@FloatRange</h5><p>指定一个浮点型范围的值 </p>
+<pre><code>@FloatRange（from = 0.0，to = 1.0)
+</code></pre><h5 id="3、-Size"><a href="#3、-Size" class="headerlink" title="3、@Size"></a>3、@Size</h5><p>检查集合和数组的大小或者字符串的长度</p>
+<p>@Size（1）可以作为一个非空判断</p>
+<p>@Size（3）指定大小或长度为3</p>
+<p>@Size（min = 1）指定最小值为1</p>
+<p>@Size（max = 10）指定最大值为10</p>
+<p>@Size（mutiple = 2）指定大小或长度为2的倍数</p>
+<h4 id="Permission-annotation"><a href="#Permission-annotation" class="headerlink" title="Permission annotation"></a>Permission annotation</h4><h5 id="RequiresPermission"><a href="#RequiresPermission" class="headerlink" title="@RequiresPermission"></a>@RequiresPermission</h5><p>验证方法调用方的权限</p>
+<p>检查有效权限列表中是否有某个权限用anyOf属性，<br>检查是否有一组有效权限用allOf属性。</p>
+<p>此外，它还可定义</p>
+<p><strong>Intent权限</strong></p>
+<p>@RequiresPermission(android.Manifest.permission.BLUETOOTH)<br>public static final String ACTION_REQUEST_DISCOVERABLE =<br>            “android.bluetooth.adapter.action.REQUEST_DISCOVERABLE”;</p>
+<p>对于单独读写权限的内容提供者权限</p>
+<p>@RequiresPermission.Read(@RequiresPermission(READ_HISTORY_BOOKMARKS))<br>@RequiresPermission.Write(@RequiresPermission(WRITE_HISTORY_BOOKMARKS))<br>public static final Uri BOOKMARKS_URI = Uri.parse(“content://browser/bookmarks”);</p>
+<p><strong>间接权限</strong></p>
+<p>对于权限依赖于方法参数所需的权限，可使用@RequiresPermission对参数使用间接权限。</p>
+<pre><code>startActivity(@RequiresPermission Intent intent)
+</code></pre><p>对传入的new Intent(Intent.Action_CALL)会在使用该startActivity时进行间接权限检测，检测得权限为Manifest.permission.CALL_PHONE。</p>
+<p>此外，@RequiresPermission可以替换为@RequiresPermission.Read或者@RequiresPermission.Write，但是不能与其共存。</p>
+<h4 id="Retured-value-annotation"><a href="#Retured-value-annotation" class="headerlink" title="Retured value annotation"></a>Retured value annotation</h4><h5 id="CheckResult"><a href="#CheckResult" class="headerlink" title="@CheckResult"></a>@CheckResult</h5><p>验证方法实际使用的是方法的结果还是返回值。</p>
+<p>此外还可指定额外的建议方法</p>
+<pre><code>@CheckResult（suggest=&quot;#enforcePermission(String,int,int,String)&quot;）
+public abstart int requirePermission(...)
+</code></pre><h4 id="CallSuper-annotation"><a href="#CallSuper-annotation" class="headerlink" title="CallSuper annotation"></a>CallSuper annotation</h4><p>用于验证子类方法是否会实现基类方法的超类实现</p>
+<pre><code>@CallSuper
+public void onCreate(Bundle saveInstanceState)
+</code></pre><h4 id="TypeDef-annotation"><a href="#TypeDef-annotation" class="headerlink" title="TypeDef annotation"></a>TypeDef annotation</h4><h5 id="IntDef"><a href="#IntDef" class="headerlink" title="@IntDef"></a>@IntDef</h5><p>用于强制使用已定义的整形</p>
+<pre><code>@Retention(SOURCE)
+  @IntDef({NAVIGATION_MODE_STANDARD, NAVIGATION_MODE_LIST, NAVIGATION_MODE_TABS})
+  public @interface NavigationMode {}
+  public static final int NAVIGATION_MODE_STANDARD = 0;
+  public static final int NAVIGATION_MODE_LIST = 1;
+  public static final int NAVIGATION_MODE_TABS = 2;
+  ...
+  public abstract void setNavigationMode(@NavigationMode int mode);
+  @NavigationMode
+  public abstract int getNavigationMode();
+</code></pre><h5 id="IntRange"><a href="#IntRange" class="headerlink" title="@IntRange"></a>@IntRange</h5><p>用于强制使用已定义的整形范围</p>
+<pre><code>@IntRange(from=0,to=255)
+public int getAlpha() {
+      ...
+}
+</code></pre><h5 id="StringDef"><a href="#StringDef" class="headerlink" title="@StringDef"></a>@StringDef</h5><p>用于强制使用已定义的字符串</p>
+<pre><code>@Retention(SOURCE)
+  @StringDef({
+     POWER_SERVICE,
+     WINDOW_SERVICE,
+     LAYOUT_INFLATER_SERVICE
+  })
+  public @interface ServiceName {}
+  public static final String POWER_SERVICE = &quot;power&quot;;
+  public static final String WINDOW_SERVICE = &quot;window&quot;;
+  public static final String LAYOUT_INFLATER_SERVICE = &quot;layout_inflater&quot;;
+  ...
+  public abstract Object getSystemService(@ServiceName String name);
+</code></pre><p><strong>还可以运行将常量与标志相结合</strong></p>
+<p>在@StringDef(flag=true,{…})多添加一个标志进行综合判断</p>
+<h4 id="代码可访问型注解"><a href="#代码可访问型注解" class="headerlink" title="代码可访问型注解"></a>代码可访问型注解</h4><p>使用 @VisibleForTesting 和 @Keep 注解可以表示方法、类或字段的可访问性。</p>
+<p>@VisibleForTesting 注解指示一个代码块的可见性是否高于让代码变得可测试所需要的水平。</p>
+<p>@Keep 指出一个方法在被混淆的时候应该被保留。<br>该注解可以确保如果在构建时缩减代码，标注的元素不会移除。它一般会添加到通过反射访问的方法和类中，以阻止编译器将代码视为未使用。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.png" alt="JsonChao Alipay"/>
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/注解/" rel="tag"># 注解</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/11/03/Android 本地配置信息存储/" rel="next" title="Android 本地配置信息存储">
+                <i class="fa fa-chevron-left"></i> Android 本地配置信息存储
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/12/09/Android Studio 极速开发必须知道的快捷键/" rel="prev" title="Android Studio 极速开发必须知道的快捷键">
+                Android Studio 极速开发必须知道的快捷键 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="uyan_frame"></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="JsonChao" />
+            
+              <p class="site-author-name" itemprop="name">JsonChao</p>
+              <p class="site-description motion-element" itemprop="description">Persist + Plan = Growing</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-name">Artikel</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">Kategorien</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">Tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/rss2.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/JsonChao" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://mail.google.com/mail/u/0/#inbox" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-globe"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://juejin.im/post/5a4e49706fb9a01cb42c25cf" target="_blank" title="JueJin">
+                      
+                        <i class="fa fa-fw fa-globe"></i>JueJin</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://blog.csdn.net/qq_20798591?ref=toolbar" target="_blank" title="CSDN">
+                      
+                        <i class="fa fa-fw fa-globe"></i>CSDN</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Manito Link
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://hencoder.com/" title="HenCoder" target="_blank">HenCoder</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.trinea.cn/" title="Trinea'blog" target="_blank">Trinea'blog</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://stormzhang.com/" title="stromzhang'blog" target="_blank">stromzhang'blog</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.hensen.site/" title="Hensen'blog" target="_blank">Hensen'blog</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://liuwangshu.cn/" title="刘望舒'blog" target="_blank">刘望舒'blog</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://zhuanlan.zhihu.com/baron/" title="张磊'blog" target="_blank">张磊'blog</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://kymjs.com/" title="张涛'blog" target="_blank">张涛'blog</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://blog.piasy.com/" title="Piasy'blog" target="_blank">Piasy'blog</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://blog.lmj.wiki/" title="ANLY'blog" target="_blank">ANLY'blog</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://glanwang.com/" title="Glan Wang'blog" target="_blank">Glan Wang'blog</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://huangjunbin.com/" title="黄俊彬'blog" target="_blank">黄俊彬'blog</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://droidyue.com/" title="技术小黑屋'blog" target="_blank">技术小黑屋'blog</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://gityuan.com/" title="gityuan'blog" target="_blank">gityuan'blog</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.gcssloop.com/#blog" title="gcsslop'blog" target="_blank">gcsslop'blog</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1、-Target"><span class="nav-number">1.0.1.</span> <span class="nav-text">1、@Target</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2、-Retention"><span class="nav-number">1.0.2.</span> <span class="nav-text">2、@Retention</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3、-Document"><span class="nav-number">1.0.3.</span> <span class="nav-text">3、@Document</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4、-Inherited"><span class="nav-number">1.0.4.</span> <span class="nav-text">4、@Inherited</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#接下来是其他的一些support-annotation"><span class="nav-number">1.0.5.</span> <span class="nav-text">接下来是其他的一些support-annotation</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Nullness-annotation"><span class="nav-number">1.1.</span> <span class="nav-text">Nullness annotation</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1、-Nullable"><span class="nav-number">1.1.1.</span> <span class="nav-text">1、@Nullable</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2、-NonNull"><span class="nav-number">1.1.2.</span> <span class="nav-text">2、@NonNull</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Resource-annotation"><span class="nav-number">1.2.</span> <span class="nav-text">Resource annotation</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1、-StringRes"><span class="nav-number">1.2.1.</span> <span class="nav-text">1、@StringRes</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2、-DrawableRes"><span class="nav-number">1.2.2.</span> <span class="nav-text">2、@DrawableRes</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3、-DimenRes"><span class="nav-number">1.2.3.</span> <span class="nav-text">3、@DimenRes</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4、-InterpolatorRes"><span class="nav-number">1.2.4.</span> <span class="nav-text">4、@InterpolatorRes</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5、-ColorRes和-ColorInt"><span class="nav-number">1.2.5.</span> <span class="nav-text">5、@ColorRes和@ColorInt</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#6、-AnyRes"><span class="nav-number">1.2.6.</span> <span class="nav-text">6、@AnyRes</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Thread-annotation"><span class="nav-number">1.3.</span> <span class="nav-text">Thread annotation</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1、-MainThread和-UiThread"><span class="nav-number">1.3.1.</span> <span class="nav-text">1、@MainThread和@UiThread</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2、-WorkerThread"><span class="nav-number">1.3.2.</span> <span class="nav-text">2、@WorkerThread</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3、-BinderThread"><span class="nav-number">1.3.3.</span> <span class="nav-text">3、@BinderThread</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4、-AnyThread"><span class="nav-number">1.3.4.</span> <span class="nav-text">4、@AnyThread</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Value-constraint-annotation"><span class="nav-number">1.4.</span> <span class="nav-text">Value constraint annotation</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1、-IntRange"><span class="nav-number">1.4.1.</span> <span class="nav-text">1、@IntRange</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2、-FloatRange"><span class="nav-number">1.4.2.</span> <span class="nav-text">2、@FloatRange</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3、-Size"><span class="nav-number">1.4.3.</span> <span class="nav-text">3、@Size</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Permission-annotation"><span class="nav-number">1.5.</span> <span class="nav-text">Permission annotation</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#RequiresPermission"><span class="nav-number">1.5.1.</span> <span class="nav-text">@RequiresPermission</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Retured-value-annotation"><span class="nav-number">1.6.</span> <span class="nav-text">Retured value annotation</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#CheckResult"><span class="nav-number">1.6.1.</span> <span class="nav-text">@CheckResult</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CallSuper-annotation"><span class="nav-number">1.7.</span> <span class="nav-text">CallSuper annotation</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#TypeDef-annotation"><span class="nav-number">1.8.</span> <span class="nav-text">TypeDef annotation</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#IntDef"><span class="nav-number">1.8.1.</span> <span class="nav-text">@IntDef</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#IntRange"><span class="nav-number">1.8.2.</span> <span class="nav-text">@IntRange</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#StringDef"><span class="nav-number">1.8.3.</span> <span class="nav-text">@StringDef</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#代码可访问型注解"><span class="nav-number">1.9.</span> <span class="nav-text">代码可访问型注解</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">JsonChao</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Erstellt mit  <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+    
+
+    
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2155025"></script>
+      <!-- UY END -->
+    
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+   
+   
+     
+   
+   
+  
+      <!-- 来必力City版安装代码 -->
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zMzg1Mi8xMDQwNQ==">
+	<script type="text/javascript">
+   (function(d, s) {
+       var j, e = d.getElementsByTagName(s)[0];
+
+       if (typeof LivereTower === 'function') { return; }
+
+       j = d.createElement(s);
+       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+       j.async = true;
+
+       e.parentNode.insertBefore(j, e);
+   })(document, 'script');
+	</script>
+<noscript> 为正常使用来必力评论功能请激活JavaScript</noscript>
+</div>
+<!-- City版安装代码已完成 -->
+   
+ 
+
+   
+   
+     
+   
+   
+  
+      <!-- 来必力City版安装代码 -->
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zMzg1Mi8xMDQwNQ==">
+	<script type="text/javascript">
+   (function(d, s) {
+       var j, e = d.getElementsByTagName(s)[0];
+
+       if (typeof LivereTower === 'function') { return; }
+
+       j = d.createElement(s);
+       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+       j.async = true;
+
+       e.parentNode.insertBefore(j, e);
+   })(document, 'script');
+	</script>
+<noscript> 为正常使用来必力评论功能请激活JavaScript</noscript>
+</div>
+<!-- City版安装代码已完成 -->
+   
+ 
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("2wtHdVd6zid7kU6YQKIqsHU5-gzGzoHsz", "eLibBRhSAsSoX1JbTMJH6ka3");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
