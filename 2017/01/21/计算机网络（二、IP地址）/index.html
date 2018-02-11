@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Rxjava笔记," />
+  <meta name="keywords" content="计算机网络," />
 
 
 
@@ -81,20 +81,18 @@
 
 
 
-<meta name="description" content="简介一个==基于事件流响应的异步的库==，在代码逻辑越复杂的情况下，能有效==代替Handler和AsnyckTask==，实现异步代码==简洁==。 RxJava中添加了普通观察者模式缺失的三个功能： RxJava中规定当不再有新的事件发出时，可以调用onCompleted()方法作为标示； 当事件处理出现异常时框架自动触发onError()方法； 同时==Observables支持链式调用，">
-<meta name="keywords" content="Rxjava笔记">
+<meta name="description" content="前言成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样。简介这是计算机网络的第二部分——IP地址。  what(IP地址是什么？) IP地址全称为Internet Protocol Address，是分配给网络上使用IP的设备的标签。它由网络号(包括子网号)和主机号组成，分为IPv4和IPv6两大类。  why(为什么使用它？) 给连接网络的每一台设">
+<meta name="keywords" content="计算机网络">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Rxjava学习笔记 (一)(简介)">
-<meta property="og:url" content="http://yoursite.com/2017/10/02/Rxjava学习笔记 (一)(简介)/index.html">
+<meta property="og:title" content="计算机网络（二、IP地址）">
+<meta property="og:url" content="http://yoursite.com/2017/01/21/计算机网络（二、IP地址）/index.html">
 <meta property="og:site_name" content="Deep into Android">
-<meta property="og:description" content="简介一个==基于事件流响应的异步的库==，在代码逻辑越复杂的情况下，能有效==代替Handler和AsnyckTask==，实现异步代码==简洁==。 RxJava中添加了普通观察者模式缺失的三个功能： RxJava中规定当不再有新的事件发出时，可以调用onCompleted()方法作为标示； 当事件处理出现异常时框架自动触发onError()方法； 同时==Observables支持链式调用，">
+<meta property="og:description" content="前言成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样。简介这是计算机网络的第二部分——IP地址。  what(IP地址是什么？) IP地址全称为Internet Protocol Address，是分配给网络上使用IP的设备的标签。它由网络号(包括子网号)和主机号组成，分为IPv4和IPv6两大类。  why(为什么使用它？) 给连接网络的每一台设">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="http://biaoqingbao.xin/wp-content/uploads/2017/07/1530.jpg">
-<meta property="og:updated_time" content="2017-10-22T15:43:43.732Z">
+<meta property="og:updated_time" content="2018-02-11T12:09:00.303Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Rxjava学习笔记 (一)(简介)">
-<meta name="twitter:description" content="简介一个==基于事件流响应的异步的库==，在代码逻辑越复杂的情况下，能有效==代替Handler和AsnyckTask==，实现异步代码==简洁==。 RxJava中添加了普通观察者模式缺失的三个功能： RxJava中规定当不再有新的事件发出时，可以调用onCompleted()方法作为标示； 当事件处理出现异常时框架自动触发onError()方法； 同时==Observables支持链式调用，">
-<meta name="twitter:image" content="http://biaoqingbao.xin/wp-content/uploads/2017/07/1530.jpg">
+<meta name="twitter:title" content="计算机网络（二、IP地址）">
+<meta name="twitter:description" content="前言成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样。简介这是计算机网络的第二部分——IP地址。  what(IP地址是什么？) IP地址全称为Internet Protocol Address，是分配给网络上使用IP的设备的标签。它由网络号(包括子网号)和主机号组成，分为IPv4和IPv6两大类。  why(为什么使用它？) 给连接网络的每一台设">
 
 
 
@@ -124,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/10/02/Rxjava学习笔记 (一)(简介)/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/01/21/计算机网络（二、IP地址）/"/>
 
 
 
 
 
-  <title>Rxjava学习笔记 (一)(简介) | Deep into Android</title>
+  <title>计算机网络（二、IP地址） | Deep into Android</title>
   
 
 
@@ -315,7 +313,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/02/Rxjava学习笔记 (一)(简介)/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/01/21/计算机网络（二、IP地址）/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="JsonChao">
@@ -332,7 +330,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Rxjava学习笔记 (一)(简介)</h1>
+          <h1 class="post-title" itemprop="name headline">计算机网络（二、IP地址）</h1>
         
 
         <div class="post-meta">
@@ -344,8 +342,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-10-02T17:00:00+08:00">
-                2017-10-02
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-01-21T19:20:00+08:00">
+                2017-01-21
               </time>
             
 
@@ -367,8 +365,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/rxjava/" itemprop="url" rel="index">
-                    <span itemprop="name">rxjava</span>
+                  <a href="/categories/计算机网络/" itemprop="url" rel="index">
+                    <span itemprop="name">计算机网络</span>
                   </a>
                 </span>
 
@@ -384,7 +382,7 @@
 
           
           
-             <span id="/2017/10/02/Rxjava学习笔记 (一)(简介)/" class="leancloud_visitors" data-flag-title="Rxjava学习笔记 (一)(简介)">
+             <span id="/2017/01/21/计算机网络（二、IP地址）/" class="leancloud_visitors" data-flag-title="计算机网络（二、IP地址）">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -421,35 +419,56 @@
 
       
         <hr>
-<h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>一个==基于事件流响应的异步的库==，在代码逻辑越复杂的情况下，能有效==代替Handler和AsnyckTask==，实现异步代码==简洁==。</p>
-<p>RxJava中添加了普通观察者模式缺失的三个功能：</p>
-<p>RxJava中规定当不再有新的事件发出时，可以调用onCompleted()方法作为标示；</p>
-<p>当事件处理出现异常时框架自动触发onError()方法；</p>
-<p>同时==Observables支持链式调用，从而避免了回调嵌套的问题==。</p>
-<p>用Observable.create()创建了一个新的Observable<integer>，==并为create()方法传入了一个OnSubscribe，OnSubscribe中包含一个call()方法，一旦我们调用subscribe()订阅后就会自动触发call()方法==。call()方法中的参数Subscriber其实就是subscribe()方法中的观察者Observer</integer></p>
-<center><br><br> <img src="http://biaoqingbao.xin/wp-content/uploads/2017/07/1530.jpg" alt="image"><br><br><br></center>
+<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><h4 id="成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样。"><a href="#成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样。" class="headerlink" title="成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样。"></a>成为一名优秀的Android开发，需要一份完备的<a href="https://jsonchao.github.io/knowledgehierarchy/" target="_blank" rel="external">知识体系</a>，在这里，让我们一起成长为自己所想的那样。</h4><h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><pre><code>这是计算机网络的第二部分——IP地址。
 
+what(IP地址是什么？)
+IP地址全称为Internet Protocol Address，是分配给网络上使用IP的设备的标签。它由网络号(包括子网号)和主机号组成，分为IPv4和IPv6两大类。
 
-<h3 id="一、线程调度器"><a href="#一、线程调度器" class="headerlink" title="一、线程调度器"></a>一、线程调度器</h3><p>==subscribeOn()==: 指定 subscribe() 所发生的线程，即 Observable.OnSubscribe 被激活时所处的线程，或者叫做事件产生的线程。</p>
-<p>==observeOn()==: 指定 Subscriber 所运行在的线程，或者叫做事件消费的线程。</p>
-<p>subscribeOn()的调用切换之前的线程。</p>
-<p>observeOn()的调用切换之后的线程。</p>
-<p>observeOn()之后，不可再调用subscribeOn()切换线程</p>
-<h4 id="常用的线程调度器"><a href="#常用的线程调度器" class="headerlink" title="常用的线程调度器"></a>常用的线程调度器</h4><ul>
-<li><p>Schedulers.io()：I/O 操作（读写文件、读写数据库、网络信息交互等）所使用的 Scheduler。行为模式和 newThread() 差不多，区别在于 io() 的内部实现是是用一个无数量上限的线程池，可以重用空闲的线程，因此多数情况下 io() 比 newThread() 更有效率。不要把计算工作放在 io() 中，可以避免创建不必要的线程。 </p>
-</li>
-<li><p>AndroidSchedulers.mainThread()：它指定的操作将在 Android 主线程运行。</p>
-</li>
-</ul>
-<h3 id="二、lift操作符原理"><a href="#二、lift操作符原理" class="headerlink" title="二、lift操作符原理"></a>二、lift操作符原理</h3><p>==lift()== 过程，有点像一种代理机制，通过事件拦截和处理实现事件序列的变换。<br>精简掉细节的话，也可以这么说：在 Observable 执行了 lift(Operator) 方法之后，会返回一个新的 Observable，这个新的 Observable 会像一个代理一样，负责接收原始的 Observable 发出的事件，并在处理后发送给 Subscriber。</p>
-<p>当使用了多个 subscribeOn() 的时候，只有第一个 subscribeOn() 起作用。</p>
-<h3 id="三、doOnSubscribe"><a href="#三、doOnSubscribe" class="headerlink" title="三、doOnSubscribe()"></a>三、doOnSubscribe()</h3><p>与 Subscriber.onStart() 相对应的，有一个方法 Observable.doOnSubscribe() 。它和 Subscriber.onStart() 同样是在 subscribe() 调用后而且在事件发送前执行，但区别在于它可以指定线程。默认情况下， doOnSubscribe() 执行在 subscribe() 发生的线程；而如果在 doOnSubscribe() 之后有 subscribeOn() 的话，它将执行在离它最近的 subscribeOn() 所指定的线程。在 doOnSubscribe()的后面跟一个 subscribeOn() ，就能指定准备工作的线程了。</p>
-<h3 id="四、defer"><a href="#四、defer" class="headerlink" title="四、defer()"></a>四、defer()</h3><p>绝大多数时候Observable.just() 和 Observable.from() 能够帮助你从遗留代码中创建 Observable 对象。<br>如果oldMethod()足够快是没有什么问题的，但是如果很慢呢？调用oldMethod()将会阻塞住他所在的线程。<br>为了解决这个问题，可以参考我一直使用的方法–使用defer()来包装缓慢的代码：</p>
-<blockquote>
-<p>private Object slowBlockingMethod() { … }</p>
-<p>public Observable<object> newMethod() {<br>    return Observable.defer(() -&gt; Observable.just(slowBlockingMethod()));<br>}</object></p>
-</blockquote>
+why(为什么使用它？)
+给连接网络的每一台设备都贴上一个标签，以作区分。
 
+how(怎么使用它？)
+请看下文。。
+</code></pre><h3 id="IPv4"><a href="#IPv4" class="headerlink" title="IPv4"></a>IPv4</h3><pre><code>IP地址是唯一的，IPv4有2的32次方个地址。
+</code></pre><h4 id="IP地址分类"><a href="#IP地址分类" class="headerlink" title="IP地址分类"></a>IP地址分类</h4><pre><code>按地址范围分：
+
+A类地址(二进位)以0开头，第一个字节作为网络号，地址范围为：0.0.0.0~127.255.255.255;
+B类地址(二进位)以10开头，前两个字节作为网络号，地址范围为：128.0.0.0~191.255.255.255;
+C地址(二进位)以110开头，前三个字节作为网络号，地址范围是：192.0.0.0~223.255.255.255；
+D类地址(二进位)以1110开头，地址范围是224.0.0.0~239.255.255.255；
+E类地址(二进位)以1111开头，地址范围是240.0.0.0~255.255.255.255。
+
+注意：只有A,B,C有网络号和主机号之分。
+
+按功能分：
+
+网络地址：网络地址的主机号全为0，它代表整个网络。
+广播地址：通常称为直接广播地址，区分于受限广播地址。广播地址的主机号全为1，与网络地址主机号相反。向某个网络的广播地址发送消息，该网络的所有主机号都能接收到该消息。
+组播地址：D类地址作为组播地址，负责一对多的通信。
+保留地址：E类地址作为保留地址，供以后使用。
+
+其它特殊的地址：
+
+255.255.255.255：
+该地址指的是受限的广播地址，它只能用于本地网络。直接广播地址能通过某些路由器，而受限的广播地址不能通过路由器。
+0.0.0.0:
+常用于寻找自己的IP地址。(以255.255.255.255为目的地址，向本地范围的服务器发送IP请求分组)
+回环地址：
+127.0.0.0/8被用作回环地址，即本地地址，用的最多的是127.0.0.1。
+A、B、C类私有地址：
+也称为专用地址，不会再全球使用，只具有本地意义。
+A类私有地址：10.0.0.0/8，范围是：10.0.0.0~10.255.255.255。
+B类私有地址：172.16.0.0/12，范围是：172.16.0.0~172.31.255.255。
+C类私有地址：192.168.0.0/16，范围是：192.168.0.0~192.168.255.255。
+
+注意：IP地址后的/8、/12、/16代表网络号位数，后面的主机号为可变的。
+</code></pre><h3 id="IPv6地址"><a href="#IPv6地址" class="headerlink" title="IPv6地址"></a>IPv6地址</h3><pre><code>IPv6的地址长度为2的128次方个地址。通常写作8组每组四个十六机制的形式。
+2001:0DB8:0000:0000:0000:0000:1428:57ab
+当有某组为0000时，可省略为
+2001:0DB8::1428:57ab
+同时每组前面有0时，可省略为
+2001:DB8::1428:57ab
+</code></pre><h4 id="很感谢您阅读这篇文章，希望您能将它分享给您的朋友或技术群，这对我意义重大。"><a href="#很感谢您阅读这篇文章，希望您能将它分享给您的朋友或技术群，这对我意义重大。" class="headerlink" title="很感谢您阅读这篇文章，希望您能将它分享给您的朋友或技术群，这对我意义重大。"></a>很感谢您阅读这篇文章，希望您能将它分享给您的朋友或技术群，这对我意义重大。</h4><h4 id="希望我们能称为朋友，在-Github、掘金上一起分享知识。"><a href="#希望我们能称为朋友，在-Github、掘金上一起分享知识。" class="headerlink" title="希望我们能称为朋友，在 Github、掘金上一起分享知识。"></a>希望我们能称为朋友，在 <a href="https://github.com/JsonChao" target="_blank" rel="external">Github</a>、<a href="https://juejin.im/user/5a3ba9375188252bca050ade" target="_blank" rel="external">掘金</a>上一起分享知识。</h4>
       
     </div>
     
@@ -490,7 +509,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Rxjava笔记/" rel="tag"># Rxjava笔记</a>
+            <a href="/tags/计算机网络/" rel="tag"># 计算机网络</a>
           
         </div>
       
@@ -503,8 +522,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/09/10/Fragment优化点/" rel="next" title="Fragment优化点">
-                <i class="fa fa-chevron-left"></i> Fragment优化点
+              <a href="/2017/01/10/计算机网络（一、网络分层）/" rel="next" title="计算机网络（一、网络分层）">
+                <i class="fa fa-chevron-left"></i> 计算机网络（一、网络分层）
               </a>
             
           </div>
@@ -513,8 +532,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/10/09/Rxjava 学习笔记(二)(操作符)/" rel="prev" title="Rxjava学习笔记 (二)(操作符)">
-                Rxjava学习笔记 (二)(操作符) <i class="fa fa-chevron-right"></i>
+              <a href="/2017/09/10/Fragment优化点/" rel="prev" title="Fragment优化点">
+                Fragment优化点 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -756,7 +775,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一、线程调度器"><span class="nav-number">2.</span> <span class="nav-text">一、线程调度器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#常用的线程调度器"><span class="nav-number">2.1.</span> <span class="nav-text">常用的线程调度器</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、lift操作符原理"><span class="nav-number">3.</span> <span class="nav-text">二、lift操作符原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、doOnSubscribe"><span class="nav-number">4.</span> <span class="nav-text">三、doOnSubscribe()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、defer"><span class="nav-number">5.</span> <span class="nav-text">四、defer()</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样。"><span class="nav-number">1.1.</span> <span class="nav-text">成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样。</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#简介"><span class="nav-number">2.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IPv4"><span class="nav-number">3.</span> <span class="nav-text">IPv4</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#IP地址分类"><span class="nav-number">3.1.</span> <span class="nav-text">IP地址分类</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IPv6地址"><span class="nav-number">4.</span> <span class="nav-text">IPv6地址</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#很感谢您阅读这篇文章，希望您能将它分享给您的朋友或技术群，这对我意义重大。"><span class="nav-number">4.1.</span> <span class="nav-text">很感谢您阅读这篇文章，希望您能将它分享给您的朋友或技术群，这对我意义重大。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#希望我们能称为朋友，在-Github、掘金上一起分享知识。"><span class="nav-number">4.2.</span> <span class="nav-text">希望我们能称为朋友，在 Github、掘金上一起分享知识。</span></a></li></ol></li></ol></div>
             
 
           </div>
