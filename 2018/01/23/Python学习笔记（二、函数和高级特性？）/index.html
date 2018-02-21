@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="Deep into Android">
 <meta property="og:description" content="简介随着人工智能和AI行业的兴起，Python已经成为程序员不得不学的一门编程语言了，本篇，为Python学习第二篇。 函数Python中的函数类似于数学中的函数。 调用函数Python中内置的函数 例如：  计算类函数：abs(x)，max(...)。  数据类型转换函数：int()，str(), bool(), float()。  函数名复制给变量，该变量指向了该函数的地址。因而，具有函数的">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-01-25T13:56:11.372Z">
+<meta property="og:updated_time" content="2018-02-21T05:11:21.472Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python学习笔记（二、函数和高级特性？）">
 <meta name="twitter:description" content="简介随着人工智能和AI行业的兴起，Python已经成为程序员不得不学的一门编程语言了，本篇，为Python学习第二篇。 函数Python中的函数类似于数学中的函数。 调用函数Python中内置的函数 例如：  计算类函数：abs(x)，max(...)。  数据类型转换函数：int()，str(), bool(), float()。  函数名复制给变量，该变量指向了该函数的地址。因而，具有函数的">
@@ -447,7 +447,7 @@ if a &gt; 0:
     pass
 </code></pre><h5 id="参数类型检查"><a href="#参数类型检查" class="headerlink" title="参数类型检查"></a>参数类型检查</h5><pre><code>使用isinstance检测参数类型：
 def myAbs(x):
-    if not (x, (int, float)):
+    if not isinstance (x, (int, float)):
         raise TypeError(&quot;bad opread error&quot;)
     if x &gt;= 0:
         return x
@@ -519,7 +519,7 @@ nums[:]输出该list。
 不管是否有下标，只有能迭代，就能适用迭代器。
 对于dict，迭代的是key，
 迭代value：for i in nums.values()
-迭代key、value fori i in nums.items()
+迭代key、value for i in nums.items()
 1.通过collections的Iterable来判读是否能迭代：
 from collections import Iterable
 isinstance(&apos;abcd&apos;, Iterable)

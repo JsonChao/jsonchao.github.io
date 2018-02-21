@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="Deep into Android">
 <meta property="og:description" content="简介随着人工智能和AI行业的兴起，Python已经成为程序员不得不学的一门编程语言了，本篇，为Python学习初篇。 初识Pythonwhat：python是什么？     它是一门跨平台的高级编程语言，相对其它高级语言（如：C、Java）来说，它封装的功能更完善，能用更少的代码实现同样的功能。     python的作用？     Python的用处很多，它主要使用的领域有：     1.前后">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-01-19T09:22:44.577Z">
+<meta property="og:updated_time" content="2018-02-21T04:53:52.694Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python学习笔记（一、是时候上手Python了）">
 <meta name="twitter:description" content="简介随着人工智能和AI行业的兴起，Python已经成为程序员不得不学的一门编程语言了，本篇，为Python学习初篇。 初识Pythonwhat：python是什么？     它是一门跨平台的高级编程语言，相对其它高级语言（如：C、Java）来说，它封装的功能更完善，能用更少的代码实现同样的功能。     python的作用？     Python的用处很多，它主要使用的领域有：     1.前后">
@@ -456,10 +456,9 @@ print(&quot;hello&quot;, name)
 约定俗成的规则：
 1.#后面为注释；
 2.语句后面加：号结尾时，缩进的语句变为代码块；缩进一般为4个空格=tab键；
-3.不同于java，复制粘贴时，缩进的格式可能复制不过来，需要坚持缩进格式；
+3.不同于java，复制粘贴时，缩进的格式可能复制不过来，需要重起缩进格式；
 4.python程序是大小写敏感的。
-</code></pre><p>注意：python基础是指在具备java基础的条件下的补充。</p>
-<h5 id="数据类型和变量"><a href="#数据类型和变量" class="headerlink" title="数据类型和变量"></a>数据类型和变量</h5><pre><code>1.r&quot;&quot;表示字符串里面的内容默认不转义。
+</code></pre><h5 id="数据类型和变量"><a href="#数据类型和变量" class="headerlink" title="数据类型和变量"></a>数据类型和变量</h5><pre><code>1.r&quot;&quot;表示字符串里面的内容默认不转义。
 2.&apos;&apos;&apos;hello
     I am
     jsonchao&apos;&apos;&apos;为避免加入多个\n的写法。
@@ -472,7 +471,7 @@ print(&quot;hello&quot;, name)
 7.除法：/，//（地板除，值取整）得到的都是浮点数结果，%（取余，结果为整数）。
 8.python的整数没有大小限制，浮点数没有大小限制，但是超过一定值会表示为inf（无限大）。
 </code></pre><h5 id="字符编码和字符串"><a href="#字符编码和字符串" class="headerlink" title="字符编码和字符串"></a>字符编码和字符串</h5><pre><code>字符编码：
-最初的ASCLL编码为1个字节表示一个字符，由于不同国家有不同的编码，为了解决文本显示文本不同语言乱码的问题，国际统一了Unicode编码，一般为2个字节表示一个字符（生僻的中文为4个字节表示一个字符），为了节省Unicode在保存数据和传输数据时字符占用过多字节的问题，后面再储存和传输时会将Unicode转换为UTF-8编码，文本显示时又会转变回Unicode编码。最常用的编码为utf-8。
+最初的ASCLL编码为1个字节表示一个字符，由于不同国家有不同的编码，为了解决文本显示不同语言乱码的问题，国际统一了Unicode编码，一般为2个字节表示一个字符（生僻的中文为4个字节表示一个字符），为了节省Unicode在保存数据和传输数据时字符占用过多字节的问题，后面在储存和传输时会将Unicode转换为UTF-8编码，文本显示时又会转变回Unicode编码。最常用的编码为utf-8。
 
 Python的字符串：
 在最新的Python3中，字符是一Unicode编码的，因此，它能适配多语言。
