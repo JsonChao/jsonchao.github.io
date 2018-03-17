@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="java," />
+  <meta name="keywords" content="计算机网络," />
 
 
 
@@ -81,18 +81,20 @@
 
 
 
-<meta name="description" content="Hello，这是java的第三堂课 1、局部内部类:如果局部内部类使用了其所在函数的局部变量，那么该局部变量必须是final的 2、throws后边跟的是异常类，throw后边跟的是异常类对象 3、字符串是常量；它们的值在创建之后不能更改 4、String这个类重写了 Object类中的 boolean equals(Object obj),比较的是字符串内容 5、将字符串转成字节数组 byte">
-<meta name="keywords" content="java">
+<meta name="description" content="前言成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样。简介最近工作中发现计算机相关基础很薄弱，因此，从本篇博客开始，将会对计算机相关知识进行系统性的学习总结。众所周知，计算机网络的核心就是网络协议。  what（计算机网络协议是什么？） 网络协议是为计算机网络中进行数据交换而建立的规则、标准或者可认为是约定的集合，它同世界各地的语言一样，品类繁多。">
+<meta name="keywords" content="计算机网络">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Java基础（三、常用类及注意点）">
-<meta property="og:url" content="http://yoursite.com/2016/09/28/Java基础（三、常用类及注意点）/index.html">
+<meta property="og:title" content="计算机网络（一、网络分层）">
+<meta property="og:url" content="http://yoursite.com/2017/02/13/计算机网络（一、网络分层）/index.html">
 <meta property="og:site_name" content="Deep into Android">
-<meta property="og:description" content="Hello，这是java的第三堂课 1、局部内部类:如果局部内部类使用了其所在函数的局部变量，那么该局部变量必须是final的 2、throws后边跟的是异常类，throw后边跟的是异常类对象 3、字符串是常量；它们的值在创建之后不能更改 4、String这个类重写了 Object类中的 boolean equals(Object obj),比较的是字符串内容 5、将字符串转成字节数组 byte">
+<meta property="og:description" content="前言成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样。简介最近工作中发现计算机相关基础很薄弱，因此，从本篇博客开始，将会对计算机相关知识进行系统性的学习总结。众所周知，计算机网络的核心就是网络协议。  what（计算机网络协议是什么？） 网络协议是为计算机网络中进行数据交换而建立的规则、标准或者可认为是约定的集合，它同世界各地的语言一样，品类繁多。">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-02-04T12:25:23.537Z">
+<meta property="og:image" content="https://note.youdao.com/yws/public/resource/12ec8de4ff02f0af21b5ce1a93cbf9a9/xmlnote/9F7557F83C3D494A81CD205B13B25D80/19018">
+<meta property="og:updated_time" content="2018-03-17T01:19:30.441Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Java基础（三、常用类及注意点）">
-<meta name="twitter:description" content="Hello，这是java的第三堂课 1、局部内部类:如果局部内部类使用了其所在函数的局部变量，那么该局部变量必须是final的 2、throws后边跟的是异常类，throw后边跟的是异常类对象 3、字符串是常量；它们的值在创建之后不能更改 4、String这个类重写了 Object类中的 boolean equals(Object obj),比较的是字符串内容 5、将字符串转成字节数组 byte">
+<meta name="twitter:title" content="计算机网络（一、网络分层）">
+<meta name="twitter:description" content="前言成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样。简介最近工作中发现计算机相关基础很薄弱，因此，从本篇博客开始，将会对计算机相关知识进行系统性的学习总结。众所周知，计算机网络的核心就是网络协议。  what（计算机网络协议是什么？） 网络协议是为计算机网络中进行数据交换而建立的规则、标准或者可认为是约定的集合，它同世界各地的语言一样，品类繁多。">
+<meta name="twitter:image" content="https://note.youdao.com/yws/public/resource/12ec8de4ff02f0af21b5ce1a93cbf9a9/xmlnote/9F7557F83C3D494A81CD205B13B25D80/19018">
 
 
 
@@ -122,13 +124,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2016/09/28/Java基础（三、常用类及注意点）/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/02/13/计算机网络（一、网络分层）/"/>
 
 
 
 
 
-  <title>Java基础（三、常用类及注意点） | Deep into Android</title>
+  <title>计算机网络（一、网络分层） | Deep into Android</title>
   
 
 
@@ -313,7 +315,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/09/28/Java基础（三、常用类及注意点）/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/02/13/计算机网络（一、网络分层）/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="JsonChao">
@@ -330,7 +332,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Java基础（三、常用类及注意点）</h1>
+          <h1 class="post-title" itemprop="name headline">计算机网络（一、网络分层）</h1>
         
 
         <div class="post-meta">
@@ -342,8 +344,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-09-28T19:08:00+08:00">
-                2016-09-28
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-02-13T18:00:00+08:00">
+                2017-02-13
               </time>
             
 
@@ -365,8 +367,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index">
-                    <span itemprop="name">java</span>
+                  <a href="/categories/计算机网络/" itemprop="url" rel="index">
+                    <span itemprop="name">计算机网络</span>
                   </a>
                 </span>
 
@@ -382,7 +384,7 @@
 
           
           
-             <span id="/2016/09/28/Java基础（三、常用类及注意点）/" class="leancloud_visitors" data-flag-title="Java基础（三、常用类及注意点）">
+             <span id="/2017/02/13/计算机网络（一、网络分层）/" class="leancloud_visitors" data-flag-title="计算机网络（一、网络分层）">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -419,34 +421,86 @@
 
       
         <hr>
-<p>Hello，这是java的第三堂课</p>
-<p>1、局部内部类:如果局部内部类使用了其所在函数的局部变量，那么该局部变量必须是final的</p>
-<p>2、throws后边跟的是异常类，throw后边跟的是异常类对象</p>
-<p>3、字符串是常量；它们的值在创建之后不能更改</p>
-<p>4、String这个类重写了 Object类中的 boolean equals(Object obj),比较的是字符串内容</p>
-<p>5、将字符串转成字节数组</p>
-<pre><code>byte[] getBytes()
-</code></pre><p>6、切割: </p>
-<pre><code>String[] split(String)//括号里的String为按照什么样的格式切割
+<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><h4 id="成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样。"><a href="#成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样。" class="headerlink" title="成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样。"></a>成为一名优秀的Android开发，需要一份完备的<a href="https://jsonchao.github.io/knowledgehierarchy/" target="_blank" rel="external">知识体系</a>，在这里，让我们一起成长为自己所想的那样。</h4><h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><pre><code>最近工作中发现计算机相关基础很薄弱，因此，从本篇博客开始，将会对计算机相关知识进行系统性的学习总结。众所周知，计算机网络的核心就是网络协议。
 
-String str = ss.replace(&apos;l&apos;,&apos;w&apos;);//返回一个新的字符串，原有的字符串没有改变
-</code></pre><p>7、将基本数据类型转换成字符串</p>
-<pre><code>String.valueOf()//括号里面的为要转换的基本数据类型
-</code></pre><p>8、jdk升级的原因：</p>
-<pre><code>1：简化书写
-2：提高安全性
-3：提高效率
-</code></pre><p>9、</p>
-<pre><code>StringBuffer sb1 = sb.append(false);//添加完之后还返回原容器
-</code></pre><p>10、其它进制转十进制</p>
-<pre><code>Integer.parseInt(String,int);
-</code></pre><p>11、一个数在字节允许的范围内(-128—127)，如果之前已经定义过，那么再使用时就直接使用已有的</p>
-<p>12、把Date类型的时间值转成long类型的</p>
-<pre><code>Date d = new Date();
-long shijian = d.getTime();
-</code></pre><p>13、得到一个DateFormat类型的实例</p>
-<pre><code>DateFormat  df = DateFormat.getDateTimeInstance();
-</code></pre>
+what（计算机网络协议是什么？）
+网络协议是为计算机网络中进行数据交换而建立的规则、标准或者可认为是约定的集合，它同世界各地的语言一样，品类繁多。但是，为了让使用不同协议的网络群组进行通信，在1977年到1979年，Arpa公司推出了TCP/IP标准网络协议，现如今，它已经成为了Internet中的“通用语言“（TCP/IP标准网络协议就如世界标准交流语言英语的作用一样）。
+
+why（为什么要使用它？）
+因为不同的用户的数据终端可能采取的字符集的不同的，两者需要通信，就必须遵循一定的标准，这个标准就是网络协议。
+
+how（如何使用它？）
+见下方。。
+</code></pre><h4 id="网络协议分层"><a href="#网络协议分层" class="headerlink" title="网络协议分层"></a>网络协议分层</h4><pre><code>1978年，国际标准化组织(ISO)推出了OSI/RM模型，OSI将网络协议分为7层模型，常见的网络协议分层还有TCP/IP四层模型、TCP/IP五层模型。如下图，依次为TCP/IP四层模型、TCP/IP五层模型、ISO七层模型。
+</code></pre><p><img src="https://note.youdao.com/yws/public/resource/12ec8de4ff02f0af21b5ce1a93cbf9a9/xmlnote/9F7557F83C3D494A81CD205B13B25D80/19018" alt="image"></p>
+<h5 id="1-物理层："><a href="#1-物理层：" class="headerlink" title="1.物理层："></a>1.物理层：</h5><pre><code>what：为传输数据所需的物理链路创建、维持、拆除，而提供具有机械的，电子的，功能的和规范的特性。
+why：因为它能确保原始的数据可在各种物理媒体上传输。
+how：物理层映射的设备有多种，如中继器(放大器)、集线器、光纤等等。
+
+涉及的概念：
+中继器：
+what：一种物理设备，用于放大、增强信号，频率转换及功率增强。
+why：因为它能放大、增强信号，可以转换频率及增强功率，主要应用于增强传输的信息强度，保证信息的到达率。
+how：大部分中继器只有2种功能，AP功能(有线转无线)，中继功能。使用请查看对应中继器的说明书。
+
+集线器：
+what：用于将多条以太网双绞线或光纤集合连接在同一段物理介质的设备。
+why：它是一种多端口的中继器，能够把收到的任何数字信号进行再生和放大。
+how：在集线器内，由于多条数据线路集合在同一物理介质下，因此，会产生信号的碰撞，目前使用交换机取代了集线器。
+</code></pre><h5 id="2-数据链路层"><a href="#2-数据链路层" class="headerlink" title="2.数据链路层"></a>2.数据链路层</h5><pre><code>what：将来自网络层的数据可靠地传输到相邻节点的目标机网络层的特性。
+why：它能给网络层提供可靠的数据传输，将来自网络层的数据组合成块，也就是帧(基本数据单位)。可用于物理地址寻址，流量控制、数据监测和重发等等。
+how：数据链路层映射的设备主要有2种，网桥和交换机。(遵循以太网协议)
+
+涉及到的概念;
+网桥：
+what：一种网络设备，它将网络的多个网段连接起来。
+why：用于网络桥接。
+how：使用请查看对应网桥的说明书。
+
+网络交换机：
+what：一种扩大网络的设备，能为子网提供更多的连接端口，以便连接更多的电脑。
+why：用于扩大网路信号，并且为子网提供更多的连接端口，从而能连接更多的电脑。
+how：网络交换机种类繁多，有2(传统)，3，4，7层交换机，使用请查看对应种类交换机的交互机说明书。
+</code></pre><h5 id="3-网络层"><a href="#3-网络层" class="headerlink" title="3.网络层"></a>3.网络层</h5><pre><code>what：它是一种实现路径选择、路由、逻辑寻址的特性。
+why：实现两个端系统之间数据的透明传送(基本数据单位为IP数据报)。
+how：网络层映射的设备主要为路由器。
+
+涉及到的概念：
+网络层协议(主要)：
+1.IP协议(Internet Protocol 因特网协议)。
+2.ICMP协议(Internet Control Message Protocol 因特网控制报文协议)
+3.ARP协议(Adrress Resolution Protocol 地址解析协议)
+4.RARP协议(Reverse Adrress Resolution Protocol 逆地址解析协议)
+
+路由器：
+what：是一种电讯网络设备，提供路由和转发两种功能。
+why：路由和转发功能可以为寻址提供一定的技术支持。
+how：使用请查看对应种类的路由器。
+
+路由：确定数据包从来源端到目的端的路由路径。
+转发：将数据包从路由器输入端移送到指定的输出端。
+</code></pre><h5 id="4-传输层"><a href="#4-传输层" class="headerlink" title="4.传输层"></a>4.传输层</h5><pre><code>what：它是一种将上层数据分段，提供端到端的可靠地或不可靠的传输的特性。
+why：为数据提供可靠的传输，将数据传送到相应的端口。
+how：使用TCP/UDP协议进行传输。
+
+涉及到的主要概念：
+网关：
+what：转发其它服务器通信数据的服务器。
+why：因为它能提高通信的安全性。
+how：与路由器相似，但不同于路由器的是，网关能在不同的协议之间传输数据，路由器能在不同的网络之间传输数据。
+</code></pre><h5 id="5-会话层"><a href="#5-会话层" class="headerlink" title="5.会话层"></a>5.会话层</h5><pre><code>what：用于管理主机之间的会话进程，负责建立，管理，终止进程之间的会话。
+还利用在数据中插入校验点来实现数据的同步的特性。
+why：它能建立、管理、终止进程之间的会话。
+how：应用于解决网络会议中音频和视频流不同步的问题。解决网络视频中音频和视频要合并或转换时要无缝连接的问题。
+</code></pre><h5 id="6-表示层"><a href="#6-表示层" class="headerlink" title="6.表示层"></a>6.表示层</h5><pre><code>what：它是一个可以对上层数据或信息进行变换的特性。
+why：保证一个主机的应用程序信息可以被另一个主机的应用程序理解。
+how：具体对应为对数据进行加密、压缩、格式转换。
+</code></pre><h5 id="7-应用层"><a href="#7-应用层" class="headerlink" title="7.应用层"></a>7.应用层</h5><pre><code>what：它是一个为操作系统或网络应用程序提供访问网络服务接口的特性。
+why：为操作系统或网络应用程序提供访问网络服务的接口。
+how：映射为各种应用层协议(如HTTP、DNS、SMTP、FTP、Telnet、POP3协议等等)。
+
+注意：会话层、表示层、应用层的数据传输基本单位为报文。
+</code></pre><h4 id="很感谢您阅读这篇文章，希望您能将它分享给您的朋友或技术群，这对我意义重大。"><a href="#很感谢您阅读这篇文章，希望您能将它分享给您的朋友或技术群，这对我意义重大。" class="headerlink" title="很感谢您阅读这篇文章，希望您能将它分享给您的朋友或技术群，这对我意义重大。"></a>很感谢您阅读这篇文章，希望您能将它分享给您的朋友或技术群，这对我意义重大。</h4><h4 id="希望我们能称为朋友，在-Github、掘金上一起分享知识。"><a href="#希望我们能称为朋友，在-Github、掘金上一起分享知识。" class="headerlink" title="希望我们能称为朋友，在 Github、掘金上一起分享知识。"></a>希望我们能称为朋友，在 <a href="https://github.com/JsonChao" target="_blank" rel="external">Github</a>、<a href="https://juejin.im/user/5a3ba9375188252bca050ade" target="_blank" rel="external">掘金</a>上一起分享知识。</h4>
       
     </div>
     
@@ -487,7 +541,7 @@ long shijian = d.getTime();
       
         <div class="post-tags">
           
-            <a href="/tags/java/" rel="tag"># java</a>
+            <a href="/tags/计算机网络/" rel="tag"># 计算机网络</a>
           
         </div>
       
@@ -500,18 +554,14 @@ long shijian = d.getTime();
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/09/21/Java基础（二、面向对象）/" rel="next" title="Java基础（二、面向对象）">
-                <i class="fa fa-chevron-left"></i> Java基础（二、面向对象）
-              </a>
-            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2016/10/05/Java基础（四、集合重点知识）/" rel="prev" title="Java基础（四、集合重点知识）">
-                Java基础（四、集合重点知识） <i class="fa fa-chevron-right"></i>
+              <a href="/2017/02/21/计算机网络（二、IP地址）/" rel="prev" title="计算机网络（二、IP地址）">
+                计算机网络（二、IP地址） <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -568,8 +618,17 @@ long shijian = d.getTime();
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -588,7 +647,7 @@ long shijian = d.getTime();
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-count">20</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -599,7 +658,7 @@ long shijian = d.getTime();
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">categories</span>
                 </a>
               </div>
@@ -610,7 +669,7 @@ long shijian = d.getTime();
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-count">11</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -734,6 +793,22 @@ long shijian = d.getTime();
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样。"><span class="nav-number">1.1.</span> <span class="nav-text">成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样。</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#简介"><span class="nav-number">2.</span> <span class="nav-text">简介</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#网络协议分层"><span class="nav-number">2.1.</span> <span class="nav-text">网络协议分层</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-物理层："><span class="nav-number">2.1.1.</span> <span class="nav-text">1.物理层：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-数据链路层"><span class="nav-number">2.1.2.</span> <span class="nav-text">2.数据链路层</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-网络层"><span class="nav-number">2.1.3.</span> <span class="nav-text">3.网络层</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-传输层"><span class="nav-number">2.1.4.</span> <span class="nav-text">4.传输层</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-会话层"><span class="nav-number">2.1.5.</span> <span class="nav-text">5.会话层</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#6-表示层"><span class="nav-number">2.1.6.</span> <span class="nav-text">6.表示层</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#7-应用层"><span class="nav-number">2.1.7.</span> <span class="nav-text">7.应用层</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#很感谢您阅读这篇文章，希望您能将它分享给您的朋友或技术群，这对我意义重大。"><span class="nav-number">2.2.</span> <span class="nav-text">很感谢您阅读这篇文章，希望您能将它分享给您的朋友或技术群，这对我意义重大。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#希望我们能称为朋友，在-Github、掘金上一起分享知识。"><span class="nav-number">2.3.</span> <span class="nav-text">希望我们能称为朋友，在 Github、掘金上一起分享知识。</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
