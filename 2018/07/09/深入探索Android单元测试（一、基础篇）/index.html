@@ -1,0 +1,1362 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="default">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Android测试," />
+
+
+
+
+
+  <link rel="alternate" href="/rss2.xml" title="Deep into Android" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="前言成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。众所周知，一个好的项目需要不断地打造，而一些有效的测试则是加速这一过程的利器。本篇博文将带你了解并逐步深入Android单元测试。 什么是单元测试？单元测试就是针对类中的某一个方法进行验证是否正确的过程，单元就是指独立的粒子，在Android和Java中大都是指方法。 为什么要进行单元测试？使">
+<meta name="keywords" content="Android测试">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入Android单元测试（一）">
+<meta property="og:url" content="http://yoursite.com/2018/07/09/深入探索Android单元测试（一、基础篇）/index.html">
+<meta property="og:site_name" content="Deep into Android">
+<meta property="og:description" content="前言成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。众所周知，一个好的项目需要不断地打造，而一些有效的测试则是加速这一过程的利器。本篇博文将带你了解并逐步深入Android单元测试。 什么是单元测试？单元测试就是针对类中的某一个方法进行验证是否正确的过程，单元就是指独立的粒子，在Android和Java中大都是指方法。 为什么要进行单元测试？使">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://note.youdao.com/yws/public/resource/12ec8de4ff02f0af21b5ce1a93cbf9a9/xmlnote/FB3057DE2EF643B8902A21D334872F3A/25764">
+<meta property="og:updated_time" content="2018-07-09T15:07:00.385Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="深入Android单元测试（一）">
+<meta name="twitter:description" content="前言成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。众所周知，一个好的项目需要不断地打造，而一些有效的测试则是加速这一过程的利器。本篇博文将带你了解并逐步深入Android单元测试。 什么是单元测试？单元测试就是针对类中的某一个方法进行验证是否正确的过程，单元就是指独立的粒子，在Android和Java中大都是指方法。 为什么要进行单元测试？使">
+<meta name="twitter:image" content="https://note.youdao.com/yws/public/resource/12ec8de4ff02f0af21b5ce1a93cbf9a9/xmlnote/FB3057DE2EF643B8902A21D334872F3A/25764">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":0,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '2JGM8QNUKR',
+      apiKey: 'ad3d08277d479825f7ef759beadbce0d',
+      indexName: 'dicovery',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/07/09/深入探索Android单元测试（一、基础篇）/"/>
+
+
+
+
+
+  <title>深入Android单元测试（一） | Deep into Android</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Deep into Android</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/09/深入探索Android单元测试（一、基础篇）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JsonChao">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Deep into Android">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">深入Android单元测试（一）</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-09T23:06:00+08:00">
+                2018-07-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/安卓进阶/" itemprop="url" rel="index">
+                    <span itemprop="name">安卓进阶</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/07/09/深入探索Android单元测试（一、基础篇）/" class="leancloud_visitors" data-flag-title="深入Android单元测试（一）">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">Visitors&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <hr>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><h4 id="成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样-。"><a href="#成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样-。" class="headerlink" title="成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。"></a>成为一名优秀的Android开发，需要一份完备的<a href="https://github.com/JsonChao/Awesome-Android-Exercise" target="_blank" rel="external">知识体系</a>，在这里，让我们一起成长为自己所想的那样~。</h4><p>众所周知，一个好的项目需要不断地打造，而一些有效的测试则是加速这一过程的利器。本篇博文将带你了解并逐步深入Android单元测试。</p>
+<h3 id="什么是单元测试？"><a href="#什么是单元测试？" class="headerlink" title="什么是单元测试？"></a>什么是单元测试？</h3><p>单元测试就是针对类中的某一个方法进行验证是否正确的过程，单元就是指独立的粒子，在Android和Java中大都是指方法。</p>
+<h3 id="为什么要进行单元测试？"><a href="#为什么要进行单元测试？" class="headerlink" title="为什么要进行单元测试？"></a>为什么要进行单元测试？</h3><p>使用单元测试可以提高开发效率，当项目随着迭代越来越大时，每一次编译、运行、打包、调试需要耗费的时间会随之上升，因此，使用单元测试可以不需这一步骤就可以对单个方法进行功能或逻辑测试。<br>同时，为了能测试每一个细分功能模块，需要将其相关代码抽成相应的方法封装起来，这也在一定程度上改善了代码的设计。因为是单个方法的测试，所以能更快地定位到bug。</p>
+<p>单元测试case需要对这段业务逻辑进行验证。在验证的过程中，开发人员可以深度了解业务流程，同时新人来了看一下项目单元测试就知道哪个逻辑跑了多少函数，需要注意哪些边界——是的，单元测试做的好和文档一样具备业务指导能力。</p>
+<h3 id="Android测试的分类"><a href="#Android测试的分类" class="headerlink" title="Android测试的分类"></a>Android测试的分类</h3><p>Android测试主要分为三个方面：</p>
+<pre><code>单元测试（Junit4、Mockito、PowerMockito、Robolectric）
+UI测试（Espresso、UI Automator）
+压力测试（Monkey）
+</code></pre><h3 id="一、单元测试之基础Junit4"><a href="#一、单元测试之基础Junit4" class="headerlink" title="一、单元测试之基础Junit4"></a>一、单元测试之基础Junit4</h3><h4 id="什么是Junit4？"><a href="#什么是Junit4？" class="headerlink" title="什么是Junit4？"></a>什么是Junit4？</h4><p>Junit4是事实上的Java标准测试库，并且它是JUnit框架有史以来的最大改进，其主要目标便是利用Java5的Annotation特性简化测试用例的编写。</p>
+<h4 id="开始使用Junit4进行单元测试"><a href="#开始使用Junit4进行单元测试" class="headerlink" title="开始使用Junit4进行单元测试"></a>开始使用Junit4进行单元测试</h4><h5 id="1-Android-Studio已经自动集成了Junit4测试框架，如下"><a href="#1-Android-Studio已经自动集成了Junit4测试框架，如下" class="headerlink" title="1.Android Studio已经自动集成了Junit4测试框架，如下"></a>1.Android Studio已经自动集成了Junit4测试框架，如下</h5><pre><code>dependencies {
+    ...
+    testImplementation &apos;junit:junit:4.12&apos;
+}
+</code></pre><h5 id="2-Junit4框架使用时涉及到的重要注解如下"><a href="#2-Junit4框架使用时涉及到的重要注解如下" class="headerlink" title="2.Junit4框架使用时涉及到的重要注解如下"></a>2.Junit4框架使用时涉及到的重要注解如下</h5><pre><code>@Test 指明这是一个测试方法 (@Test注解可以接受2个参数，一个是预期错误expected，一个是超时时间timeout，
+格式如 @Test(expected = IndexOutOfBoundsException.class), @Test（timeout = 1000))
+@Before 在所有测试方法之前执行
+@After 在所有测试方法之后执行
+@BeforeClass 在该类的所有测试方法和@Before方法之前执行 （修饰的方法必须是静态的）
+@AfterClass 在该类的所有测试方法和@After方法之后执行（修饰的方法必须是静态的）
+@Ignore 忽略此单元测试
+</code></pre><p>此外，很多时候，因为某些原因（比如正式代码还没有实现等），我们可能想让JUnit忽略某些方法，让它在跑所有测试方法的时候不要跑这个测试方法。要达到这个目的也很简单，只需要在要被忽略的测试方法前面加上@Ignore就可以了</p>
+<h5 id="3-主要的测试方法——断言"><a href="#3-主要的测试方法——断言" class="headerlink" title="3.主要的测试方法——断言"></a>3.主要的测试方法——断言</h5><pre><code>assertEquals(expected, actual) 判断2个值是否相等，相等则测试通过。
+assertEquals(expected, actual, tolerance) tolerance 偏差值
+</code></pre><p>注意：上面的每一个方法，都有一个重载的方法，可以加一个String类型的参数，表示如果验证失败的话，将用这个字符串作为失败的结果报告。</p>
+<h5 id="4-自定义Junit-Rule——实现TestRule接口并重写apply方法"><a href="#4-自定义Junit-Rule——实现TestRule接口并重写apply方法" class="headerlink" title="4.自定义Junit Rule——实现TestRule接口并重写apply方法"></a>4.自定义Junit Rule——实现TestRule接口并重写apply方法</h5><pre><code>public class JsonChaoRule implements TestRule {
+
+    @Override
+    public Statement apply(final Statement base, final Description description) {
+        Statement repeatStatement =  new Statement() {
+            @Override
+            public void evaluate() throws Throwable {
+                    //测试前的初始化工作
+                    //执行测试方法
+                    base.evaluate();
+                    //测试后的释放资源等工作
+            }
+        };
+        return repeatStatement;
+    }
+}
+</code></pre><p>然后在想要的测试类中使用@Rule注解声明使用JsonChaoRule即可（注意被@Rule注解的变量必须是final的）：</p>
+<pre><code>@Rule
+public final JsonChaoRule repeatRule = new JsonChaoRule();
+</code></pre><h5 id="5-开始上手，使用Junit4进行单元测试"><a href="#5-开始上手，使用Junit4进行单元测试" class="headerlink" title="5.开始上手，使用Junit4进行单元测试"></a>5.开始上手，使用Junit4进行单元测试</h5><pre><code>1.编写测试类。
+2.鼠标右键点击测试类，选择选择Go To-&gt;Test（或者使用快捷键Ctrl+Shift+T，此快捷键可以在方法和测试方法之间来回切换）在Test/java/项目测试文件夹/下自动生成测试模板。
+3.使用断言（assertEqual、assertEqualArrayEquals等等)进行单元测试。
+4.右键点击测试类，Run编写好的测试类。
+</code></pre><h5 id="6-使用Android-Studio自带的Gradle脚本自动化单元测试"><a href="#6-使用Android-Studio自带的Gradle脚本自动化单元测试" class="headerlink" title="6.使用Android Studio自带的Gradle脚本自动化单元测试"></a>6.使用Android Studio自带的Gradle脚本自动化单元测试</h5><p>点击Android Studio中的Gradle projects下的:app/Tasks/verification/test即可同时测试module下所有的测试类（案例），并在module下的build/reports/tests/下生成对应的index.html测试报告。</p>
+<h5 id="7-对Junit4的总结："><a href="#7-对Junit4的总结：" class="headerlink" title="7.对Junit4的总结："></a>7.对Junit4的总结：</h5><pre><code>优点：速度快，支持代码覆盖率等代码质量的检测工具，
+缺点：无法单独对Android UI，一些类进行操作，与原生JAVA有一些差异。
+</code></pre><p>可能涉及到的额外的概念：</p>
+<p>打桩方法：使方法简单快速地返回一个有效的结果。</p>
+<p>测试驱动开发：编写测试，实现功能使测试通过，然后不断地使用这种方式实现功能的快速迭代开发。</p>
+<h3 id="二、单元测试之基础Mockito"><a href="#二、单元测试之基础Mockito" class="headerlink" title="二、单元测试之基础Mockito"></a>二、单元测试之基础Mockito</h3><h4 id="什么是Mockito？"><a href="#什么是Mockito？" class="headerlink" title="什么是Mockito？"></a>什么是Mockito？</h4><p>Mockito 是美味的 Java 单元测试 Mock 框架，mock可以模拟各种各样的对象，从而代替真正的对象做出希望的响应。</p>
+<h4 id="开始使用Mockito进行单元测试"><a href="#开始使用Mockito进行单元测试" class="headerlink" title="开始使用Mockito进行单元测试"></a>开始使用Mockito进行单元测试</h4><h5 id="1-在build-gradle里面添加Mcokito的依赖"><a href="#1-在build-gradle里面添加Mcokito的依赖" class="headerlink" title="1.在build.gradle里面添加Mcokito的依赖"></a>1.在build.gradle里面添加Mcokito的依赖</h5><pre><code>testImplementation &apos;org.mockito:mockito-core:2.7.1&apos;
+</code></pre><h5 id="2-使用mock-方法模拟对象"><a href="#2-使用mock-方法模拟对象" class="headerlink" title="2.使用mock()方法模拟对象"></a>2.使用mock()方法模拟对象</h5><pre><code>Person mPerson = mock(Person.class); 
+</code></pre><h5 id="能量补充站（-vov-）"><a href="#能量补充站（-vov-）" class="headerlink" title="能量补充站（-vov-）"></a>能量补充站（-vov-）</h5><p>在JUnit框架下，case（带@Test注解的那个函数）也是个函数，直接调用这个函数就不是case，和case是无关的，两者并不会相互影响，可以直接调用以减少重复代码。单元测试不应该对某一个条件过度耦合，因此，需要用mock解除耦合，直接mock出网络请求得到的数据，单独验证页面对数据的响应。</p>
+<h5 id="3-验证方法的调用，指定方法的返回值，或者执行特定的动作"><a href="#3-验证方法的调用，指定方法的返回值，或者执行特定的动作" class="headerlink" title="3.验证方法的调用，指定方法的返回值，或者执行特定的动作"></a>3.验证方法的调用，指定方法的返回值，或者执行特定的动作</h5><pre><code>when(iMathUtils.sum(1, 1)).thenReturn(2); 
+doReturn(3).when(iMathUtils).sum(1,1);   
+//给方法设置桩可以设置多次，只会返回最后一次设置的值
+doReturn(2).when(iMathUtils).sum(1,1);
+ //验证方法调用次数
+ //方法调用1次
+Mockito.when(mockValidator.verifyPassword(&quot;xiaochuang_is_handsome&quot;)).thenReturn(true);
+//方法调用3次
+Mockito.when(mockValidator.verifyPassword(&quot;xiaochuang_is_handsome&quot;)， Mockito.times(3).thenReturn(true);
+//verify方法用于验证“模仿对象”的互动或验证发生的某些行为
+verify(mPerson, atLeast(2)).getAge();
+//参数匹配器,用于匹配特定的参数
+any()
+contains()
+argThat()
+when(mPerson.eat(any(String.class))).thenReturn(&quot;米饭&quot;);
+//除了mock()外，spy()也可以模拟对象，spy与mock的唯一区别就是默认行为不一样：spy对象的方法默认调用真实的逻辑，mock对象的方法默认什么都不做，或直接返回默认值
+//如果要保留原来对象的功能，而仅仅修改一个或几个方法的返回值，可以采用spy方法, 无参构造的类初始化也使用spy方法
+Person mPerson = spy(Person.class); 
+//检查入参的mocks是否有任何未经验证的交互
+verifyNoMoreInteractions(iMathUtils);
+</code></pre><h5 id="4-使用Mockito后的思考"><a href="#4-使用Mockito后的思考" class="headerlink" title="4.使用Mockito后的思考"></a>4.使用Mockito后的思考</h5><p>简单的测试会使整体的代码更简单，更可读、更可维护。如果你不能把测试写的很简单，那么请在测试时重构你的代码。    </p>
+<pre><code>优点：丰富强大的方式验证“模仿对象”的互动或验证发生的某些行为
+缺点：Mockito框架不支持mock匿名类、final类、static方法、private方法。
+</code></pre><p>虽然，static方法可以使用wrapper静态类的方式实现mockito的单元测试，但是，毕竟过于繁琐，因此，PowerMockito由此而来。</p>
+<h3 id="三、拯救Mockito于水深火热的PowerMockito"><a href="#三、拯救Mockito于水深火热的PowerMockito" class="headerlink" title="三、拯救Mockito于水深火热的PowerMockito"></a>三、拯救Mockito于水深火热的PowerMockito</h3><h4 id="什么是PowerMockito？"><a href="#什么是PowerMockito？" class="headerlink" title="什么是PowerMockito？"></a>什么是PowerMockito？</h4><p>PowerMockito是一个扩展了Mockito的具有更强大功能的单元测试框架，它支持mock匿名类、final类、static方法、private方法</p>
+<h4 id="开始PowerMockito之旅"><a href="#开始PowerMockito之旅" class="headerlink" title="开始PowerMockito之旅"></a>开始PowerMockito之旅</h4><h5 id="1-在build-gradle里面添加Mcokito的依赖-1"><a href="#1-在build-gradle里面添加Mcokito的依赖-1" class="headerlink" title="1.在build.gradle里面添加Mcokito的依赖"></a>1.在build.gradle里面添加Mcokito的依赖</h5><pre><code>testImplementation &apos;org.powermock:powermock-module-junit4:1.6.5&apos;
+testImplementation &apos;org.powermock:powermock-api-mockito:1.6.5&apos;
+</code></pre><h5 id="2-用PowerMockito来模拟对象"><a href="#2-用PowerMockito来模拟对象" class="headerlink" title="2.用PowerMockito来模拟对象"></a>2.用PowerMockito来模拟对象</h5><pre><code>//使用PowerMock须加注解@PrepareForTest和@RunWith(PowerMockRunner.class)（@PrepareForTest()里写的是对应方法所在的类    ，mockito支持的方法使用PowerMock的形式实现时，可以不加这两个注解）
+@PrepareForTest(T.class)
+@RunWith(PowerMockRunner.class)
+
+//mock含静态方法或字段的类    
+PowerMockito.mockStatic(Banana.class);
+
+//Powermock提供了一个Whitebox的class，可以方便的绕开权限限制，可以get/set private属性，实现注入。也可以调用private方法。也可以处理static的//属性/方法，根据不同需求选择不同参数的方法即可。
+//修改类里面静态字段的值
+Whitebox.setInternalState(Banana.class, &quot;COLOR&quot;, &quot;蓝色&quot;);
+
+//调用类中的真实方法
+PowerMockito.when(banana.getBananaInfo()).thenCallRealMethod();
+
+//验证私有方法是否被调用
+PowerMockito.verifyPrivate(banana, times(1)).invoke(&quot;flavor&quot;);
+
+//忽略调用私有方法
+PowerMockito.suppress(PowerMockito.method(Banana.class, &quot;flavor&quot;));
+
+//修改私有变量
+MemberModifier.field(Banana.class, &quot;fruit&quot;).set(banana, &quot;西瓜&quot;);
+
+//使用PowerMockito mock出来的对象可以直接调用final方法
+Banana banana = PowerMockito.mock(Banana.class);
+
+//whenNew 方法的意思是之后 new 这个对象时，返回某个被 Mock //的对象而不是让真的 new //新的对象。如果构造方法有参数，可以在withNoArguments方法中传入。
+PowerMockito.whenNew(Banana.class).withNoArguments().thenReturn(banana);
+</code></pre><h5 id="3-使用PowerMockRule来代替-RunWith-PowerMockRunner-class-的方式，需要多添加以下依赖："><a href="#3-使用PowerMockRule来代替-RunWith-PowerMockRunner-class-的方式，需要多添加以下依赖：" class="headerlink" title="3.使用PowerMockRule来代替@RunWith(PowerMockRunner.class)的方式，需要多添加以下依赖："></a>3.使用PowerMockRule来代替@RunWith(PowerMockRunner.class)的方式，需要多添加以下依赖：</h5><pre><code>testImplementation &quot;org.powermock:powermock-module-junit4-rule:1.7.4&quot;
+testImplementation &quot;org.powermock:powermock-classloading-xstream:1.7.4&quot;
+</code></pre><p>使用示例如下：</p>
+<pre><code>@Rule
+public PowerMockRule mPowerMockRule = new PowerMockRule();
+</code></pre><h5 id="4-使用Parameterized来进行参数化测试："><a href="#4-使用Parameterized来进行参数化测试：" class="headerlink" title="4.使用Parameterized来进行参数化测试："></a>4.使用Parameterized来进行参数化测试：</h5><p>通过注解@Parameterized.parameters提供一系列数据给构造器中的构造参数或给被注解@Parameterized.parameter注解的public全局变量</p>
+<pre><code>RunWith(Parameterized.class)
+public class ParameterizedTest {
+
+    private int num;
+    private boolean truth;
+
+    public ParameterizedTest(int num, boolean truth) {
+        this.num = num;
+        this.truth = truth;
+    }
+
+    //被此注解注解的方法将把返回的列表数据中的元素对应注入到测试类
+    //的构造函数ParameterizedTest(int num, boolean truth)中
+    @Parameterized.Parameters
+    public static Collection providerTruth() {
+        return Arrays.asList(new Object[][]{
+                {0, true},
+                {1, false},
+                {2, true},
+                {3, false},
+                {4, true},
+                {5, false}
+        });
+    }
+
+//    //也可不使用构造函数注入的方式，使用注解注入public变量的方式
+//    @Parameterized.Parameter
+//    public int num;
+//    //value = 1指定括号里的第二个Boolean值
+//    @Parameterized.Parameter(value = 1)
+//    public boolean truth;
+
+    @Test
+    public void printTest() {
+        Assert.assertEquals(truth, print(num));
+        System.out.println(num);
+    }
+
+    private boolean print(int num) {
+        return num % 2 == 0;
+    }
+
+}
+</code></pre><h3 id="四、能在Java单元测试里面执行Android代码的Robolectric"><a href="#四、能在Java单元测试里面执行Android代码的Robolectric" class="headerlink" title="四、能在Java单元测试里面执行Android代码的Robolectric"></a>四、能在Java单元测试里面执行Android代码的Robolectric</h3><h4 id="什么是Robolectric？"><a href="#什么是Robolectric？" class="headerlink" title="什么是Robolectric？"></a>什么是Robolectric？</h4><p>Robolectric通过一套能运行在JVM上的Android代码，解决了在Java单元测试中很难进行Android单元测试的痛点。</p>
+<h4 id="进入Roboletric的领地"><a href="#进入Roboletric的领地" class="headerlink" title="进入Roboletric的领地"></a>进入Roboletric的领地</h4><h5 id="1-在build-gradle里面添加Robolectric的依赖"><a href="#1-在build-gradle里面添加Robolectric的依赖" class="headerlink" title="1.在build.gradle里面添加Robolectric的依赖"></a>1.在build.gradle里面添加Robolectric的依赖</h5><pre><code>//Robolectric核心
+testImplementation &quot;org.robolectric:robolectric:3.8&quot;
+//支持support-v4
+testImplementation &apos;org.robolectric:shadows-support-v4:3.4-rc2&apos;
+//支持Multidex功能
+testImplementation &quot;org.robolectric:shadows-multidex:3.+&quot; 
+</code></pre><h5 id="2-Robolectric常用用法"><a href="#2-Robolectric常用用法" class="headerlink" title="2.Robolectric常用用法"></a>2.Robolectric常用用法</h5><p>首先给指定的测试类上面进行配置</p>
+<pre><code>@RunWith(RobolectricTestRunner.class)
+//目前Robolectric最高支持sdk版本为23。
+@Config(constants = BuildConfig.class, sdk = 23)
+</code></pre><p>下面是一些常用用法</p>
+<pre><code>//当Robolectric.setupActivity()方法返回的时候，
+//默认会调用Activity的onCreate()、onStart()、onResume()
+mTestActivity = Robolectric.setupActivity(TestActivity.class);
+
+//获取TestActivity对应的影子类，从而能获取其相应的动作或行为
+ShadowActivity shadowActivity = Shadows.shadowOf(mTestActivity);
+Intent intent = shadowActivity.getNextStartedActivity();
+
+//使用ShadowToast类获取展示toast时相应的动作或行为
+Toast latestToast = ShadowToast.getLatestToast();
+Assert.assertNull(latestToast);
+//直接通过ShadowToast简单工厂类获取Toast中的文本
+Assert.assertEquals(&quot;hahaha&quot;, ShadowToast.getTextOfLatestToast());
+
+//使用ShadowAlertDialog类获取展示AlertDialog时相应的
+//动作或行为（暂时只支持app包下的，不支持v7。。。）
+latestAlertDialog = ShadowAlertDialog.getLatestAlertDialog();
+AlertDialog latestAlertDialog = ShadowAlertDialog.getLatestAlertDialog();
+Assert.assertNull(latestAlertDialog);
+
+//使用RuntimeEnvironment.application可以获取到
+//Application，方便我们使用。比如访问资源文件。
+Application application = RuntimeEnvironment.application;
+String appName = application.getString(R.string.app_name);
+Assert.assertEquals(&quot;WanAndroid&quot;, appName);
+
+//也可以直接通过ShadowApplication获取application
+ShadowApplication application = ShadowApplication.getInstance();
+Assert.assertNotNull(application.hasReceiverForIntent(intent));
+</code></pre><p>自定义Shadow类</p>
+<pre><code>@Implements(Person.class)
+public class ShadowPerson {
+
+    @Implementation
+    public String getName() {
+        return &quot;AndroidUT&quot;;
+    }
+
+}
+
+@RunWith(RobolectricTestRunner.class)
+@Config(constants = BuildConfig.class,
+        sdk = 23,
+        shadows = {ShadowPerson.class})
+
+    Person person = new Person();
+    //实际上调用的是ShadowPerson的方法，输出JsonChao
+    Log.d(&quot;test&quot;, person.getName());
+
+    ShadowPerson shadowPerson = Shadow.extract(person);
+    //测试通过
+    Assert.assertEquals(&quot;JsonChao&quot;, shadowPerson.getName());
+
+}
+</code></pre><p>注意：<br>异步测试出现一些问题（比如改变一些编码习惯，比如回调函数不能写成匿名内部类对象，需要定义一个全局变量，并破坏其封装性，即提供一个get方法，供UT调用），解决方案使用Mockito来结合进行测试，将异步转为同步。</p>
+<h5 id="3-Robolectric的优缺点"><a href="#3-Robolectric的优缺点" class="headerlink" title="3.Robolectric的优缺点"></a>3.Robolectric的优缺点</h5><pre><code>优点：支持大部分Android平台依赖类底层的引用与模拟。
+缺点：异步测试有些问题，需要结合一些框架来配合完成更多功能。
+</code></pre><h3 id="五、单元测试覆盖率报告生成值Jacoco"><a href="#五、单元测试覆盖率报告生成值Jacoco" class="headerlink" title="五、单元测试覆盖率报告生成值Jacoco"></a>五、单元测试覆盖率报告生成值Jacoco</h3><h4 id="什么是Jacoco"><a href="#什么是Jacoco" class="headerlink" title="什么是Jacoco"></a>什么是Jacoco</h4><p>Jacoco的全称为Java Code Coverage（Java代码覆盖率），可以生成java的单元测试代码覆盖率报告。</p>
+<h4 id="加入Jacoco到你的单元测试大家族"><a href="#加入Jacoco到你的单元测试大家族" class="headerlink" title="加入Jacoco到你的单元测试大家族"></a>加入Jacoco到你的单元测试大家族</h4><p>在应用Module下加入jacoco.gradle自定义脚本，app.gradle apply from它，同步，即可看到在app的Task下生成了Report目录，Report目录<br>下生成了JacocoTestReport任务。</p>
+<pre><code>apply plugin: &apos;jacoco&apos;
+
+jacoco {
+    toolVersion = &quot;0.7.7.201606060606&quot; //指定jacoco的版本
+    reportsDir = file(&quot;$buildDir/JacocoReport&quot;) //指定jacoco生成报告的文件夹
+}
+
+//依赖于testDebugUnitTest任务
+task jacocoTestReport(type: JacocoReport, dependsOn: &apos;testDebugUnitTest&apos;) {
+    group = &quot;reporting&quot; //指定task的分组
+    reports {
+        xml.enabled = true //开启xml报告
+        html.enabled = true //开启html报告
+    }
+
+    def debugTree = fileTree(dir: &quot;${buildDir}/intermediates/classes/debug&quot;,
+            includes: [&quot;**/*Presenter.*&quot;],
+            excludes: [&quot;*.*&quot;])//指定类文件夹、包含类的规则及排除类的规则，
+            //这里我们生成所有Presenter类的测试报告
+    def mainSrc = &quot;${project.projectDir}/src/main/java&quot; //指定源码目录
+
+    sourceDirectories = files([mainSrc])
+    classDirectories = files([debugTree])
+    executionData = files(&quot;${buildDir}/jacoco/testDebugUnitTest.exec&quot;)//指定报告数据的路径
+}
+</code></pre><p>在Gradle构建板块Gradle.projects下的app/Task/verification下，其中testDebugUnitTest构建任务会生成单元测试结果报告，包含xml及html格式，分别对应test-results和reports文件夹；jacocoTestReport任务会生成单元测试覆盖率报告，结果存放在jacoco和JacocoReport文件夹。</p>
+<p><img src="https://note.youdao.com/yws/public/resource/12ec8de4ff02f0af21b5ce1a93cbf9a9/xmlnote/FB3057DE2EF643B8902A21D334872F3A/25764" alt="image"></p>
+<p>生成的JacocoReport文件夹下的index.html即对应的单元测试覆盖率报告，用浏览器打开后，可以看到覆盖情况被不同的颜色标识出来，其中绿色表示代码被单元测试覆盖到，黄色表示部分覆盖，红色则表示完全没有覆盖到。</p>
+<h3 id="六、单元测试的流程"><a href="#六、单元测试的流程" class="headerlink" title="六、单元测试的流程"></a>六、单元测试的流程</h3><p>要验证程序正确性，必然要给出所有可能的条件（极限编程），并验证其行为或结果，才算是100%覆盖条件。实际项目中，验证边界条件和一般条件就OK了。</p>
+<p>在实际项目中，单元测试对象与页面是一对一的，并不建议跨页面，这样的单元测试藕合度太大，维护困难。<br>需要写完后，看覆盖率，找出单元测试中没有覆盖到的函数分支条件等，然后继续补充单元测试case列表，并在单元测试工程代码中补上case。<br>直到规划的页面中所有逻辑的重要分支、边界条件都被覆盖，该项目的单元测试结束。</p>
+<h5 id="建议（-ovo-）"><a href="#建议（-ovo-）" class="headerlink" title="建议（-ovo-）~"></a>建议（-ovo-）~</h5><p>可以从公司项目小规模使用，形成自己的单元测试风格后，就可以跟大范围地推广了。</p>
+<h4 id="很感谢您阅读这篇文章，希望您能将它分享给您的朋友或技术群，这对我意义重大。"><a href="#很感谢您阅读这篇文章，希望您能将它分享给您的朋友或技术群，这对我意义重大。" class="headerlink" title="很感谢您阅读这篇文章，希望您能将它分享给您的朋友或技术群，这对我意义重大。"></a>很感谢您阅读这篇文章，希望您能将它分享给您的朋友或技术群，这对我意义重大。</h4><h4 id="希望我们能成为朋友，在-Github、掘金上一起分享知识。"><a href="#希望我们能成为朋友，在-Github、掘金上一起分享知识。" class="headerlink" title="希望我们能成为朋友，在 Github、掘金上一起分享知识。"></a>希望我们能成为朋友，在 <a href="https://github.com/JsonChao" target="_blank" rel="external">Github</a>、<a href="https://juejin.im/user/5a3ba9375188252bca050ade" target="_blank" rel="external">掘金</a>上一起分享知识。</h4>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.png" alt="JsonChao Alipay"/>
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android测试/" rel="tag"># Android测试</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/22/Some awesome tips/" rel="next" title="可能会改变你的话">
+                <i class="fa fa-chevron-left"></i> 可能会改变你的话
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div id="lv-container" data-id="city" data-uid="MTAyMC8zMzg1Mi8xMDQwNQ==">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="JsonChao" />
+            
+              <p class="site-author-name" itemprop="name">JsonChao</p>
+              <p class="site-description motion-element" itemprop="description">Persist + Plan = Growing</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/rss2.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/JsonChao" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://mail.google.com/mail/u/0/#inbox" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-globe"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://juejin.im/user/5a3ba9375188252bca050ade" target="_blank" title="JueJin">
+                      
+                        <i class="fa fa-fw fa-globe"></i>JueJin</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Manito Link
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://wanandroid.com/" title="WanAndroid" target="_blank">WanAndroid</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://hencoder.com/" title="HenCoder" target="_blank">HenCoder</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.trinea.cn/" title="Trinea" target="_blank">Trinea</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://stormzhang.com/" title="stromzhang" target="_blank">stromzhang</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.hensen.site/" title="Hensen" target="_blank">Hensen</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://liuwangshu.cn/" title="刘望舒" target="_blank">刘望舒</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://zhuanlan.zhihu.com/baron/" title="张磊" target="_blank">张磊</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://kymjs.com/" title="张涛" target="_blank">张涛</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://blog.piasy.com/" title="Piasy" target="_blank">Piasy</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://blog.lmj.wiki/" title="ANLY" target="_blank">ANLY</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://glanwang.com/" title="Glan" target="_blank">Glan</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://huangjunbin.com/" title="黄俊彬" target="_blank">黄俊彬</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://droidyue.com/" title="技术小黑屋" target="_blank">技术小黑屋</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://gityuan.com/" title="gityuan" target="_blank">gityuan</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.gcssloop.com/#blog" title="gcsslop" target="_blank">gcsslop</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样-。"><span class="nav-number">1.0.1.</span> <span class="nav-text">成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是单元测试？"><span class="nav-number">1.1.</span> <span class="nav-text">什么是单元测试？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#为什么要进行单元测试？"><span class="nav-number">1.2.</span> <span class="nav-text">为什么要进行单元测试？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Android测试的分类"><span class="nav-number">1.3.</span> <span class="nav-text">Android测试的分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一、单元测试之基础Junit4"><span class="nav-number">1.4.</span> <span class="nav-text">一、单元测试之基础Junit4</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#什么是Junit4？"><span class="nav-number">1.4.1.</span> <span class="nav-text">什么是Junit4？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#开始使用Junit4进行单元测试"><span class="nav-number">1.4.2.</span> <span class="nav-text">开始使用Junit4进行单元测试</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-Android-Studio已经自动集成了Junit4测试框架，如下"><span class="nav-number">1.4.2.1.</span> <span class="nav-text">1.Android Studio已经自动集成了Junit4测试框架，如下</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-Junit4框架使用时涉及到的重要注解如下"><span class="nav-number">1.4.2.2.</span> <span class="nav-text">2.Junit4框架使用时涉及到的重要注解如下</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-主要的测试方法——断言"><span class="nav-number">1.4.2.3.</span> <span class="nav-text">3.主要的测试方法——断言</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-自定义Junit-Rule——实现TestRule接口并重写apply方法"><span class="nav-number">1.4.2.4.</span> <span class="nav-text">4.自定义Junit Rule——实现TestRule接口并重写apply方法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-开始上手，使用Junit4进行单元测试"><span class="nav-number">1.4.2.5.</span> <span class="nav-text">5.开始上手，使用Junit4进行单元测试</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#6-使用Android-Studio自带的Gradle脚本自动化单元测试"><span class="nav-number">1.4.2.6.</span> <span class="nav-text">6.使用Android Studio自带的Gradle脚本自动化单元测试</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#7-对Junit4的总结："><span class="nav-number">1.4.2.7.</span> <span class="nav-text">7.对Junit4的总结：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、单元测试之基础Mockito"><span class="nav-number">1.5.</span> <span class="nav-text">二、单元测试之基础Mockito</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#什么是Mockito？"><span class="nav-number">1.5.1.</span> <span class="nav-text">什么是Mockito？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#开始使用Mockito进行单元测试"><span class="nav-number">1.5.2.</span> <span class="nav-text">开始使用Mockito进行单元测试</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-在build-gradle里面添加Mcokito的依赖"><span class="nav-number">1.5.2.1.</span> <span class="nav-text">1.在build.gradle里面添加Mcokito的依赖</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-使用mock-方法模拟对象"><span class="nav-number">1.5.2.2.</span> <span class="nav-text">2.使用mock()方法模拟对象</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#能量补充站（-vov-）"><span class="nav-number">1.5.2.3.</span> <span class="nav-text">能量补充站（-vov-）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-验证方法的调用，指定方法的返回值，或者执行特定的动作"><span class="nav-number">1.5.2.4.</span> <span class="nav-text">3.验证方法的调用，指定方法的返回值，或者执行特定的动作</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-使用Mockito后的思考"><span class="nav-number">1.5.2.5.</span> <span class="nav-text">4.使用Mockito后的思考</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、拯救Mockito于水深火热的PowerMockito"><span class="nav-number">1.6.</span> <span class="nav-text">三、拯救Mockito于水深火热的PowerMockito</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#什么是PowerMockito？"><span class="nav-number">1.6.1.</span> <span class="nav-text">什么是PowerMockito？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#开始PowerMockito之旅"><span class="nav-number">1.6.2.</span> <span class="nav-text">开始PowerMockito之旅</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-在build-gradle里面添加Mcokito的依赖-1"><span class="nav-number">1.6.2.1.</span> <span class="nav-text">1.在build.gradle里面添加Mcokito的依赖</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-用PowerMockito来模拟对象"><span class="nav-number">1.6.2.2.</span> <span class="nav-text">2.用PowerMockito来模拟对象</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-使用PowerMockRule来代替-RunWith-PowerMockRunner-class-的方式，需要多添加以下依赖："><span class="nav-number">1.6.2.3.</span> <span class="nav-text">3.使用PowerMockRule来代替@RunWith(PowerMockRunner.class)的方式，需要多添加以下依赖：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-使用Parameterized来进行参数化测试："><span class="nav-number">1.6.2.4.</span> <span class="nav-text">4.使用Parameterized来进行参数化测试：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、能在Java单元测试里面执行Android代码的Robolectric"><span class="nav-number">1.7.</span> <span class="nav-text">四、能在Java单元测试里面执行Android代码的Robolectric</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#什么是Robolectric？"><span class="nav-number">1.7.1.</span> <span class="nav-text">什么是Robolectric？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#进入Roboletric的领地"><span class="nav-number">1.7.2.</span> <span class="nav-text">进入Roboletric的领地</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-在build-gradle里面添加Robolectric的依赖"><span class="nav-number">1.7.2.1.</span> <span class="nav-text">1.在build.gradle里面添加Robolectric的依赖</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-Robolectric常用用法"><span class="nav-number">1.7.2.2.</span> <span class="nav-text">2.Robolectric常用用法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-Robolectric的优缺点"><span class="nav-number">1.7.2.3.</span> <span class="nav-text">3.Robolectric的优缺点</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五、单元测试覆盖率报告生成值Jacoco"><span class="nav-number">1.8.</span> <span class="nav-text">五、单元测试覆盖率报告生成值Jacoco</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#什么是Jacoco"><span class="nav-number">1.8.1.</span> <span class="nav-text">什么是Jacoco</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#加入Jacoco到你的单元测试大家族"><span class="nav-number">1.8.2.</span> <span class="nav-text">加入Jacoco到你的单元测试大家族</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#六、单元测试的流程"><span class="nav-number">1.9.</span> <span class="nav-text">六、单元测试的流程</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#建议（-ovo-）"><span class="nav-number">1.9.0.1.</span> <span class="nav-text">建议（-ovo-）~</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#很感谢您阅读这篇文章，希望您能将它分享给您的朋友或技术群，这对我意义重大。"><span class="nav-number">1.9.1.</span> <span class="nav-text">很感谢您阅读这篇文章，希望您能将它分享给您的朋友或技术群，这对我意义重大。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#希望我们能成为朋友，在-Github、掘金上一起分享知识。"><span class="nav-number">1.9.2.</span> <span class="nav-text">希望我们能成为朋友，在 Github、掘金上一起分享知识。</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">JsonChao</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+    
+
+    
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2155025"></script>
+      <!-- UY END -->
+    
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+   
+   
+     
+   
+   
+  
+     
+</div>
+<!-- City版安装代码已完成 -->
+   
+ 
+
+   
+     
+   
+  
+       <div id="lv-container" data-id="city" data-uid="MTAyMC8zMzg1Mi8xMDQwNQ==">
+       <script type="text/javascript">
+          (function(d, s) {
+              var j, e = d.getElementsByTagName(s)[0];
+              if (typeof LivereTower === 'function') { return; }
+              j = d.createElement(s);
+              j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+              j.async = true;
+              e.parentNode.insertBefore(j, e);
+          })(document, 'script');
+       </script>
+       <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+       <!-- UY END -->
+   
+ 
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("2wtHdVd6zid7kU6YQKIqsHU5-gzGzoHsz", "eLibBRhSAsSoX1JbTMJH6ka3");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

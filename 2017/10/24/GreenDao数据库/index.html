@@ -81,22 +81,22 @@
 
 
 
-<meta name="description" content="这段时间在将公司的sql数据库使用第三方的开源数据库替代，综合比较了各个热门的数据库之后，最终还是敲定了greendao，原因不多说，综合性能之王，当然，realm和DBFlow也不错。后续会出相关的文章介绍一下，接下来，就让我们回归正题   先给大家灌输点==洪(dou)荒(bi)之力==，好的，正式开始。。 一、GreenDao和Realm对比。在数据量较小的情况下，GreenDao和Rea">
+<meta name="description" content="前言成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。这段时间在将公司的sql数据库使用第三方的开源数据库替代，综合比较了各个热门的数据库之后，最终还是敲定了greendao，原因不多说，综合性能之王，当然，realm和DBFlow也不错。后续会出相关的文章介绍一下，接下来，就让我们回归正题   先给大家灌输点==洪(dou)荒(bi)之力==，">
 <meta name="keywords" content="数据存储">
 <meta property="og:type" content="article">
 <meta property="og:title" content="GreenDao数据库">
 <meta property="og:url" content="http://yoursite.com/2017/10/24/GreenDao数据库/index.html">
 <meta property="og:site_name" content="Deep into Android">
-<meta property="og:description" content="这段时间在将公司的sql数据库使用第三方的开源数据库替代，综合比较了各个热门的数据库之后，最终还是敲定了greendao，原因不多说，综合性能之王，当然，realm和DBFlow也不错。后续会出相关的文章介绍一下，接下来，就让我们回归正题   先给大家灌输点==洪(dou)荒(bi)之力==，好的，正式开始。。 一、GreenDao和Realm对比。在数据量较小的情况下，GreenDao和Rea">
+<meta property="og:description" content="前言成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。这段时间在将公司的sql数据库使用第三方的开源数据库替代，综合比较了各个热门的数据库之后，最终还是敲定了greendao，原因不多说，综合性能之王，当然，realm和DBFlow也不错。后续会出相关的文章介绍一下，接下来，就让我们回归正题   先给大家灌输点==洪(dou)荒(bi)之力==，">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://biaoqingbao.xin/wp-content/uploads/2017/07/1548.jpg">
 <meta property="og:image" content="http://ww4.sinaimg.cn/mw690/e2b067a1gw1ebfkgjoxdzg206804ox6p.gif">
 <meta property="og:image" content="http://upload-images.jianshu.io/upload_images/949345-3c86d4b472d274c6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3216390431,2469449241&fm=27&gp=0.jpg">
-<meta property="og:updated_time" content="2018-02-04T08:57:21.416Z">
+<meta property="og:updated_time" content="2018-07-09T15:04:58.437Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="GreenDao数据库">
-<meta name="twitter:description" content="这段时间在将公司的sql数据库使用第三方的开源数据库替代，综合比较了各个热门的数据库之后，最终还是敲定了greendao，原因不多说，综合性能之王，当然，realm和DBFlow也不错。后续会出相关的文章介绍一下，接下来，就让我们回归正题   先给大家灌输点==洪(dou)荒(bi)之力==，好的，正式开始。。 一、GreenDao和Realm对比。在数据量较小的情况下，GreenDao和Rea">
+<meta name="twitter:description" content="前言成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。这段时间在将公司的sql数据库使用第三方的开源数据库替代，综合比较了各个热门的数据库之后，最终还是敲定了greendao，原因不多说，综合性能之王，当然，realm和DBFlow也不错。后续会出相关的文章介绍一下，接下来，就让我们回归正题   先给大家灌输点==洪(dou)荒(bi)之力==，">
 <meta name="twitter:image" content="http://biaoqingbao.xin/wp-content/uploads/2017/07/1548.jpg">
 
 
@@ -234,16 +234,6 @@
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
             Archives
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-knowledgehierarchy">
-          <a href="/knowledgehierarchy/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-android"></i> <br />
-            
-            Knowledge Hierarchy
           </a>
         </li>
       
@@ -424,23 +414,26 @@
 
       
         <hr>
-<p>这段时间在将公司的sql数据库使用第三方的开源数据库替代，综合比较了各个热门的数据库之后，最终还是敲定了greendao，原因不多说，综合性能之王，当然，realm和DBFlow也不错。后续会出相关的文章介绍一下，接下来，就让我们回归正题</p>
+<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><h4 id="成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样-。"><a href="#成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样-。" class="headerlink" title="成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。"></a>成为一名优秀的Android开发，需要一份完备的<a href="https://github.com/JsonChao/Awesome-Android-Exercise" target="_blank" rel="external">知识体系</a>，在这里，让我们一起成长为自己所想的那样~。</h4><p>这段时间在将公司的sql数据库使用第三方的开源数据库替代，综合比较了各个热门的数据库之后，最终还是敲定了greendao，原因不多说，综合性能之王，当然，realm和DBFlow也不错。后续会出相关的文章介绍一下，接下来，就让我们回归正题</p>
 <center><br><br><img src="http://biaoqingbao.xin/wp-content/uploads/2017/07/1548.jpg" alt="image"><br></center>
 
 <p>先给大家灌输点==洪(dou)荒(bi)之力==，好的，正式开始。。</p>
 <h3 id="一、GreenDao和Realm对比。"><a href="#一、GreenDao和Realm对比。" class="headerlink" title="一、GreenDao和Realm对比。"></a>一、GreenDao和Realm对比。</h3><p>在数据量较小的情况下，GreenDao和Realm相差无几，在数据量超过1000条时，GreenDao在删除方面优势很大，Realm在插入和查询方面优势很大，因此，要看需求选择相应的数据库。</p>
-<h3 id="二、GreenDao配置"><a href="#二、GreenDao配置" class="headerlink" title="二、GreenDao配置"></a>二、GreenDao配置</h3><pre><code>apply plugin: &apos;com.android.application&apos;  
-apply plugin: &apos;org.greenrobot.greendao&apos;  
-
+<h3 id="二、GreenDao配置"><a href="#二、GreenDao配置" class="headerlink" title="二、GreenDao配置"></a>二、GreenDao配置</h3><pre><code>//根build.gradle
 buildscript {  
     repositories {  
         mavenCentral()  
     }  
     dependencies {  
-        classpath &apos;org.greenrobot:greendao-gradle-plugin:3.0.0&apos;  
+        classpath &apos;org.greenrobot:greendao-gradle-plugin:3.0.0&apos;//1
     }  
 }  
 
+//module下build.gradle
+apply plugin: &apos;com.android.application&apos;  
+apply plugin: &apos;org.greenrobot.greendao&apos;//2
+
+//3
 greendao {  
     schemaVersion 1  
     daoPackage &apos;com.example.anonymous.greendao&apos;  
@@ -469,11 +462,11 @@ android {
 dependencies {  
     compile fileTree(dir: &apos;libs&apos;, include: [&apos;*.jar&apos;])  
     compile &apos;com.android.support:appcompat-v7:25.0.1&apos;  
+    //4
     compile&apos;org.greenrobot:greendao:3.0.1&apos;  
     compile&apos;org.greenrobot:greendao-generator:3.0.0&apos;  
 }  
-</code></pre><p>注意：buildscript是在工程的根build.gradle下配置的。</p>
-<h3 id="三、编写实体类，对应的是数据库的每一张表"><a href="#三、编写实体类，对应的是数据库的每一张表" class="headerlink" title="三、编写实体类，对应的是数据库的每一张表"></a>三、编写实体类，对应的是数据库的每一张表</h3><pre><code>@Entity  
+</code></pre><h3 id="三、编写实体类，对应的是数据库的每一张表"><a href="#三、编写实体类，对应的是数据库的每一张表" class="headerlink" title="三、编写实体类，对应的是数据库的每一张表"></a>三、编写实体类，对应的是数据库的每一张表</h3><pre><code>@Entity  
 public class User {  
     @Id  
     private Long id;  
@@ -481,7 +474,7 @@ public class User {
 } 
 </code></pre><p>@Entity：将我们的java普通类变为一个能够被greenDAO识别的数据库类型的实体类</p>
 <p>@Id：通过这个注解标记的字段必须是Long类型的，这个字段在数据库中表示它就是主键，并且它默认就是自增的</p>
-<p>然后，点击Make Project（Ctrl + F9），然后GreenDao为你生成了3个类和一些代码，<br>DaoMaster、DaoSession、与User实体对应的UserDao以及User实体类的一些新增代码。<br>其中这三个生成的类的位置是在你app的build.gradle中daoPackage字段指明的位置，如果没有设置这个字段值，默认是在User对应的包下生成的。<br>注意：如果第二次定义一个实体Age类，点击Make Project，只会生成对应的AgeDao。</p>
+<p>然后，点击Make Project（Ctrl + F9），然后GreenDao为你生成了3个类和一些代码，<br>DaoMaster、DaoSession、与User实体对应的UserDao以及User实体类的构造方法和其字段对应的get、set方法。<br>其中这三个生成的类的位置是在你app的build.gradle中daoPackage字段指明的位置，如果没有设置这个字段值，默认是在User对应的包下生成的。<br>注意：如果第二次定义一个实体Age类，点击Make Project，只会生成对应的AgeDao。</p>
 <p>好，忙活了这么久，终于可以办正事了，不急，先祝贺一下咱们把扯蛋的配置弄完了</p>
 <center><br><br><img src="http://ww4.sinaimg.cn/mw690/e2b067a1gw1ebfkgjoxdzg206804ox6p.gif" alt="image"><br></center>
 
@@ -535,6 +528,14 @@ List data=mSonDao.queryBuilder().where(
 new WhereCondition.StringCondition(&quot;FATHER_UD IN&quot; +
                         &quot;(SELECT _ID FROM FATHER WHERE AGE&lt;45)&quot;)).list();
 </code></pre><p>(⊙v⊙)嗯。。最后再提一点，greenDAO借助SQLiteStatement完成了数据的插入，避免了其他框架利用反射拼装sql语句而造成的执行效率低下的问题，这也是greenDao成为性能之王的主要原因之一。</p>
+<h5 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h5><ul>
+<li>使用了静态代码生成，不通过反射运行时生成代理类，提升了性能</li>
+<li>使用了SQLiteStatement</li>
+<li>同时提供了同步和异步的数据库操作方式</li>
+<li>数据库提供内存缓存，更高效的查询</li>
+<li>基于sqlcipher提供加密数据库</li>
+<li>提供RxJava的API，异步操作更高效</li>
+</ul>
 <h3 id="五、数据库升级"><a href="#五、数据库升级" class="headerlink" title="五、数据库升级"></a>五、数据库升级</h3><p>在这里，我提一点，数据库升级的主要目的是为了保存升级前的数据，比如说，我在表Date中新加了一个CurrentTime字段，为了使以前的Date表单数据能保存下来，同时还要在每一个Date表单新加一个CurrentTime字段，此时，数据库就需要升级。</p>
 <p>比方说，我现在要加一个字段，升级步骤如下：</p>
 <p>1、需要一个MigrationHelper.java类，StackOverFlow的专家写的，如下：</p>
@@ -742,12 +743,12 @@ public class MigrationHelper {
     daoPackage &apos;com.zhangqie.greendao.gen&apos;；
     targetGenDir &apos;src/main/java&apos;
 }
-</code></pre><p>此时，之前版本存的数据保存下来了，并且新增加了一个字段，只不过字段为空。</p>
+</code></pre><p>此时，之前版本存的数据保存下来了，并且新增加了一个字段，只不过字段值为空。</p>
 <p>好的，咱们的GreenDao的基本使用和升级就到此为止了，GreenDao征(mo)途(ri)才刚刚开始，猿友们不要松懈，多多撸码才是正途。最后，发张我的近照给大家观(xian)赏(mu)观(xian)赏(mu)</p>
 <center><br><br><img src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3216390431,2469449241&amp;fm=27&amp;gp=0.jpg" alt="image"><br></center>
 
 <p>好的，注意不要舔屏（这是唯一的要求），下一篇见。</p>
-
+<h4 id="很感谢您阅读这篇文章，希望您能将它分享给您的朋友或技术群，这对我意义重大。"><a href="#很感谢您阅读这篇文章，希望您能将它分享给您的朋友或技术群，这对我意义重大。" class="headerlink" title="很感谢您阅读这篇文章，希望您能将它分享给您的朋友或技术群，这对我意义重大。"></a>很感谢您阅读这篇文章，希望您能将它分享给您的朋友或技术群，这对我意义重大。</h4><h4 id="希望我们能成为朋友，在-Github、掘金上一起分享知识。"><a href="#希望我们能成为朋友，在-Github、掘金上一起分享知识。" class="headerlink" title="希望我们能成为朋友，在 Github、掘金上一起分享知识。"></a>希望我们能成为朋友，在 <a href="https://github.com/JsonChao" target="_blank" rel="external">Github</a>、<a href="https://juejin.im/user/5a3ba9375188252bca050ade" target="_blank" rel="external">掘金</a>上一起分享知识。</h4>
       
     </div>
     
@@ -811,8 +812,8 @@ public class MigrationHelper {
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/10/28/Android 学习计划表/" rel="prev" title="Android 学习计划表">
-                Android 学习计划表 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/11/22/常用注解实践/" rel="prev" title="注解实践">
+                注解实践 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -898,7 +899,7 @@ public class MigrationHelper {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-count">16</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -909,7 +910,7 @@ public class MigrationHelper {
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">categories</span>
                 </a>
               </div>
@@ -920,7 +921,7 @@ public class MigrationHelper {
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -1052,7 +1053,7 @@ public class MigrationHelper {
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、GreenDao和Realm对比。"><span class="nav-number">1.</span> <span class="nav-text">一、GreenDao和Realm对比。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、GreenDao配置"><span class="nav-number">2.</span> <span class="nav-text">二、GreenDao配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、编写实体类，对应的是数据库的每一张表"><span class="nav-number">3.</span> <span class="nav-text">三、编写实体类，对应的是数据库的每一张表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、GreenDao增删改查"><span class="nav-number">4.</span> <span class="nav-text">四、GreenDao增删改查</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五、数据库升级"><span class="nav-number">5.</span> <span class="nav-text">五、数据库升级</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样-。"><span class="nav-number">1.1.</span> <span class="nav-text">成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一、GreenDao和Realm对比。"><span class="nav-number">2.</span> <span class="nav-text">一、GreenDao和Realm对比。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、GreenDao配置"><span class="nav-number">3.</span> <span class="nav-text">二、GreenDao配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、编写实体类，对应的是数据库的每一张表"><span class="nav-number">4.</span> <span class="nav-text">三、编写实体类，对应的是数据库的每一张表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、GreenDao增删改查"><span class="nav-number">5.</span> <span class="nav-text">四、GreenDao增删改查</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#总结："><span class="nav-number">5.0.1.</span> <span class="nav-text">总结：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五、数据库升级"><span class="nav-number">6.</span> <span class="nav-text">五、数据库升级</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#很感谢您阅读这篇文章，希望您能将它分享给您的朋友或技术群，这对我意义重大。"><span class="nav-number">6.1.</span> <span class="nav-text">很感谢您阅读这篇文章，希望您能将它分享给您的朋友或技术群，这对我意义重大。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#希望我们能成为朋友，在-Github、掘金上一起分享知识。"><span class="nav-number">6.2.</span> <span class="nav-text">希望我们能成为朋友，在 Github、掘金上一起分享知识。</span></a></li></ol></li></ol></div>
             
 
           </div>
