@@ -89,12 +89,12 @@
 <meta property="og:site_name" content="Deep into Android">
 <meta property="og:description" content="前言成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。众所周知，一个好的项目需要不断地打造，而一些有效的测试则是加速这一过程的利器。本篇博文将带你了解并逐步深入Android单元测试。 什么是单元测试？单元测试就是针对类中的某一个方法进行验证是否正确的过程，单元就是指独立的粒子，在Android和Java中大都是指方法。 为什么要进行单元测试？使">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="https://note.youdao.com/yws/public/resource/12ec8de4ff02f0af21b5ce1a93cbf9a9/xmlnote/FB3057DE2EF643B8902A21D334872F3A/25764">
-<meta property="og:updated_time" content="2018-07-09T15:07:00.385Z">
+<meta property="og:image" content="https://s1.ax1x.com/2018/07/09/PnEv7j.png">
+<meta property="og:updated_time" content="2018-07-09T15:40:43.555Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="深入Android单元测试（一）">
 <meta name="twitter:description" content="前言成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。众所周知，一个好的项目需要不断地打造，而一些有效的测试则是加速这一过程的利器。本篇博文将带你了解并逐步深入Android单元测试。 什么是单元测试？单元测试就是针对类中的某一个方法进行验证是否正确的过程，单元就是指独立的粒子，在Android和Java中大都是指方法。 为什么要进行单元测试？使">
-<meta name="twitter:image" content="https://note.youdao.com/yws/public/resource/12ec8de4ff02f0af21b5ce1a93cbf9a9/xmlnote/FB3057DE2EF643B8902A21D334872F3A/25764">
+<meta name="twitter:image" content="https://s1.ax1x.com/2018/07/09/PnEv7j.png">
 
 
 
@@ -455,7 +455,10 @@ assertEquals(expected, actual, tolerance) tolerance 偏差值
 <pre><code>@Rule
 public final JsonChaoRule repeatRule = new JsonChaoRule();
 </code></pre><h5 id="5-开始上手，使用Junit4进行单元测试"><a href="#5-开始上手，使用Junit4进行单元测试" class="headerlink" title="5.开始上手，使用Junit4进行单元测试"></a>5.开始上手，使用Junit4进行单元测试</h5><pre><code>1.编写测试类。
-2.鼠标右键点击测试类，选择选择Go To-&gt;Test（或者使用快捷键Ctrl+Shift+T，此快捷键可以在方法和测试方法之间来回切换）在Test/java/项目测试文件夹/下自动生成测试模板。
+2.鼠标右键点击测试类，选择选择Go To-&gt;Test
+（或者使用快捷键Ctrl+Shift+T，此快捷键可
+以在方法和测试方法之间来回切换）在Test/java/项目
+测试文件夹/下自动生成测试模板。
 3.使用断言（assertEqual、assertEqualArrayEquals等等)进行单元测试。
 4.右键点击测试类，Run编写好的测试类。
 </code></pre><h5 id="6-使用Android-Studio自带的Gradle脚本自动化单元测试"><a href="#6-使用Android-Studio自带的Gradle脚本自动化单元测试" class="headerlink" title="6.使用Android Studio自带的Gradle脚本自动化单元测试"></a>6.使用Android Studio自带的Gradle脚本自动化单元测试</h5><p>点击Android Studio中的Gradle projects下的:app/Tasks/verification/test即可同时测试module下所有的测试类（案例），并在module下的build/reports/tests/下生成对应的index.html测试报告。</p>
@@ -472,21 +475,32 @@ public final JsonChaoRule repeatRule = new JsonChaoRule();
 doReturn(3).when(iMathUtils).sum(1,1);   
 //给方法设置桩可以设置多次，只会返回最后一次设置的值
 doReturn(2).when(iMathUtils).sum(1,1);
- //验证方法调用次数
- //方法调用1次
+
+//验证方法调用次数
+//方法调用1次
 Mockito.when(mockValidator.verifyPassword(&quot;xiaochuang_is_handsome&quot;)).thenReturn(true);
 //方法调用3次
-Mockito.when(mockValidator.verifyPassword(&quot;xiaochuang_is_handsome&quot;)， Mockito.times(3).thenReturn(true);
+Mockito.when(mockValidator.verifyPassword(&quot;xiaochuang_is_handsome&quot;)
+， Mockito.times(3).thenReturn(true);
+
 //verify方法用于验证“模仿对象”的互动或验证发生的某些行为
 verify(mPerson, atLeast(2)).getAge();
+
 //参数匹配器,用于匹配特定的参数
 any()
 contains()
 argThat()
 when(mPerson.eat(any(String.class))).thenReturn(&quot;米饭&quot;);
-//除了mock()外，spy()也可以模拟对象，spy与mock的唯一区别就是默认行为不一样：spy对象的方法默认调用真实的逻辑，mock对象的方法默认什么都不做，或直接返回默认值
-//如果要保留原来对象的功能，而仅仅修改一个或几个方法的返回值，可以采用spy方法, 无参构造的类初始化也使用spy方法
+
+//除了mock()外，spy()也可以模拟对象，spy与mock的
+//唯一区别就是默认行为不一样：spy对象的方法默认调用
+//真实的逻辑，mock对象的方法默认什么都不做，或直接
+//返回默认值
+//如果要保留原来对象的功能，而仅仅修改一个或几个
+//方法的返回值，可以采用spy方法,无参构造的类初始
+//化也使用spy方法
 Person mPerson = spy(Person.class); 
+
 //检查入参的mocks是否有任何未经验证的交互
 verifyNoMoreInteractions(iMathUtils);
 </code></pre><h5 id="4-使用Mockito后的思考"><a href="#4-使用Mockito后的思考" class="headerlink" title="4.使用Mockito后的思考"></a>4.使用Mockito后的思考</h5><p>简单的测试会使整体的代码更简单，更可读、更可维护。如果你不能把测试写的很简单，那么请在测试时重构你的代码。    </p>
@@ -670,7 +684,7 @@ task jacocoTestReport(type: JacocoReport, dependsOn: &apos;testDebugUnitTest&apo
     executionData = files(&quot;${buildDir}/jacoco/testDebugUnitTest.exec&quot;)//指定报告数据的路径
 }
 </code></pre><p>在Gradle构建板块Gradle.projects下的app/Task/verification下，其中testDebugUnitTest构建任务会生成单元测试结果报告，包含xml及html格式，分别对应test-results和reports文件夹；jacocoTestReport任务会生成单元测试覆盖率报告，结果存放在jacoco和JacocoReport文件夹。</p>
-<p><img src="https://note.youdao.com/yws/public/resource/12ec8de4ff02f0af21b5ce1a93cbf9a9/xmlnote/FB3057DE2EF643B8902A21D334872F3A/25764" alt="image"></p>
+<p><img src="https://s1.ax1x.com/2018/07/09/PnEv7j.png" alt="image"></p>
 <p>生成的JacocoReport文件夹下的index.html即对应的单元测试覆盖率报告，用浏览器打开后，可以看到覆盖情况被不同的颜色标识出来，其中绿色表示代码被单元测试覆盖到，黄色表示部分覆盖，红色则表示完全没有覆盖到。</p>
 <h3 id="六、单元测试的流程"><a href="#六、单元测试的流程" class="headerlink" title="六、单元测试的流程"></a>六、单元测试的流程</h3><p>要验证程序正确性，必然要给出所有可能的条件（极限编程），并验证其行为或结果，才算是100%覆盖条件。实际项目中，验证边界条件和一般条件就OK了。</p>
 <p>在实际项目中，单元测试对象与页面是一对一的，并不建议跨页面，这样的单元测试藕合度太大，维护困难。<br>需要写完后，看覆盖率，找出单元测试中没有覆盖到的函数分支条件等，然后继续补充单元测试case列表，并在单元测试工程代码中补上case。<br>直到规划的页面中所有逻辑的重要分支、边界条件都被覆盖，该项目的单元测试结束。</p>
