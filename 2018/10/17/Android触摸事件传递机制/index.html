@@ -91,7 +91,7 @@
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/1417629-c87a3dd5ed19ee9d.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="https://camo.githubusercontent.com/e1e469bffad8a95732db704cc161384f8e3c7f0e/68747470733a2f2f75706c6f61642d696d616765732e6a69616e7368752e696f2f75706c6f61645f696d616765732f323931313033382d35333439643665626233323337326461">
-<meta property="og:updated_time" content="2018-10-17T14:38:32.603Z">
+<meta property="og:updated_time" content="2018-10-18T11:54:22.468Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android触摸事件传递机制">
 <meta name="twitter:description" content="前言成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。一、了解Activity的构成一个Activity包含了一个Window对象，这个对象是由PhoneWindow来实现的。PhoneWindow将DecorView作为整个应用窗口的根View，而这个DecorView又将屏幕划分为两个区域：一个是TitleView，另一个是ContentVi">
@@ -414,7 +414,7 @@
         <hr>
 <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><h4 id="成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样-。"><a href="#成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样-。" class="headerlink" title="成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。"></a>成为一名优秀的Android开发，需要一份完备的<a href="https://github.com/JsonChao/Awesome-Android-Exercise" target="_blank" rel="external">知识体系</a>，在这里，让我们一起成长为自己所想的那样~。</h4><h3 id="一、了解Activity的构成"><a href="#一、了解Activity的构成" class="headerlink" title="一、了解Activity的构成"></a>一、了解Activity的构成</h3><p>一个Activity包含了一个Window对象，这个对象是由PhoneWindow来实现的。PhoneWindow将DecorView作为整个应用窗口的根View，而这个DecorView又将屏幕划分为两个区域：一个是TitleView，另一个是ContentView，而我们平时所写的就是展示在ContentView中的，下图表示Activity的构成。</p>
 <p><img src="https://upload-images.jianshu.io/upload_images/1417629-c87a3dd5ed19ee9d.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image"></p>
-<h3 id="二、触摸事件的类型"><a href="#二、触摸事件的类型" class="headerlink" title="二、触摸事件的类型"></a>二、触摸事件的类型</h3><p>触摸事件对于的是MotionEvent类，事件的类型主要有如下三种：</p>
+<h3 id="二、触摸事件的类型"><a href="#二、触摸事件的类型" class="headerlink" title="二、触摸事件的类型"></a>二、触摸事件的类型</h3><p>触摸事件对应的是MotionEvent类，事件的类型主要有如下三种：</p>
 <ul>
 <li>ACTION_DOWN</li>
 <li>ACTION_MOVE(移动的距离超过一定的阈值会被判定为ACTION_MOVE操作)</li>
@@ -422,10 +422,22 @@
 </ul>
 <h3 id="三、事件传递的三个阶段"><a href="#三、事件传递的三个阶段" class="headerlink" title="三、事件传递的三个阶段"></a>三、事件传递的三个阶段</h3><ul>
 <li>分发（dispatchTouchEvent）：方法返回值为true表示事件被当前视图消费掉；返回为super.dispatchTouchEvent表示继续分发该事件。</li>
-<li>拦截（onInterceptTouchEvent）：方法返回值为true表示拦截这个事件并交由自身的onTouchEvent方法进行消费；返回false或者super.onInterceptTouchEvent表示不拦截，需要继续传递给子视图。</li>
-<li>消费（onTouchEvent）：方法返回值为true表示当前视图可以处理对应的事件；返回值为false表示当前试图不处理这个事件，它会被传递给父视图的onTouchEvent方法进行处理。</li>
+<li>拦截（onInterceptTouchEvent）：方法返回值为true表示拦截这个事件并交由自身的onTouchEvent方法进行消费；返回false表示不拦截，需要继续传递给子视图。<br>如果return super.onInterceptTouchEvent(ev)， 事件拦截分两种情况: 　</li>
 </ul>
-<p>注意：在Android系统中，拥有事件传递处理能力的类有以下三种。</p>
+<pre><code>1.如果该View(ViewGroup)存在子View且点击到了该子View, 则不拦截, 继续分发
+给子View 处理, 此时相当于return false。
+2.如果该View(ViewGroup)没有子View或者有子View但是没有点击中子View(此时ViewGroup
+相当于普通View), 则交由该View的onTouchEvent响应，此时相当于return true。 
+注意：一般的LinearLayout、 RelativeLayout、FrameLayout等ViewGroup默认不拦截， 而
+ScrollView、ListView等ViewGroup则可能拦截，得看具体情况。
+</code></pre><ul>
+<li>消费（onTouchEvent）：方法返回值为true表示当前视图可以处理对应的事件；返回值为false表示当前视图不处理这个事件，它会被传递给父视图的onTouchEvent方法进行处理。如果return super.onTouchEvent(ev)，事件处理分为两种情况：</li>
+</ul>
+<pre><code>1.如果该View是clickable或者longclickable的,则会返回true, 表示消费
+了该事件, 与返回true一样;
+2.如果该View不是clickable或者longclickable的,则会返回false, 表示不
+消费该事件,将会向上传递,与返回false一样.
+</code></pre><p>注意：在Android系统中，拥有事件传递处理能力的类有以下三种。</p>
 <ul>
 <li>Activity：拥有分发和消费两个方法。</li>
 <li>ViewGroup：拥有分发、拦截和消费三个方法。</li>
@@ -459,11 +471,11 @@ if (actionMasked === MotionEvent.ACTION_DOWN) {
     resetTouchState();
 }
 </code></pre><h5 id="2-处理当前View是否拦截点击事件"><a href="#2-处理当前View是否拦截点击事件" class="headerlink" title="2.处理当前View是否拦截点击事件"></a>2.处理当前View是否拦截点击事件</h5><pre><code>final boolean interception；
-// 当事件的由ViewGorup的子元素成功处理时，mFirstTouchTarget会被赋值
+// 当事件由ViewGorup的子元素成功处理时，mFirstTouchTarget会被赋值
 // 并指向子元素，反之，被ViewGroup拦截时，mFirstTouchTarget则为null。
 if (actionMasked == MotionEvent.ACTION_DOWN || mFirstTouchTarget != null) {
     // 在子View中通过requestDisallowInterceptTouchEvent方法来设置
-    // FLAG_DISALLOW_INTERCEPT,此时ViewGroup将无法拦截将无法拦截除除ACTION_DOWN以外的其他事件 
+    // FLAG_DISALLOW_INTERCEPT,此时ViewGroup将无法拦截除ACTION_DOWN以外的其他事件 
     final boolean disallowIntercept = (mGroupFlags &amp; FLAG_DISALLOW_INTERCEPT) != 0;
     if (!disallowintercept) {
         intercepted = onInterceptTouchEvent(ev);
@@ -491,7 +503,8 @@ if (actionMasked == MotionEvent.ACTION_DOWN || mFirstTouchTarget != null) {
             childWithAccessibilityFocus = null;
             i = childrenCount - 1;
             }
-            // 判断触摸点的位置是否在子View的范围内或者子View是否在播放动画，有一项不符合则开始遍历下一个子View。
+            // 判断触摸点的位置是否在子View的范围内或者子View是否在播放动画，有一项
+            // 不符合则开始遍历下一个子View。
             if (!canViewReceivePointerEvents(child) || !isTransformedTouchPointInView(x, y, child, null)) {
                 ev.setTargetAccessibilityFocus(false);
                 continue;
@@ -528,7 +541,8 @@ if (actionMasked == MotionEvent.ACTION_DOWN || mFirstTouchTarget != null) {
     final int oldAction = event.getAction();
     if (cancel || oldAction == MotionEvent.ACTION_CANCEL) {
         event.setAction(MotionEvent.ACTION_CANCEL);
-        // 有子View，则调用子View的dispatchTouchEvent(event)方法，如果没有子View，则调用super.dispatchTouchEvent(event)方法。
+        // 有子View，则调用子View的dispatchTouchEvent(event)方法，如果没有子View，
+        // 则调用super.dispatchTouchEvent(event)方法。
         if (child == null) {
             handled == super..dispatchTouchEvent(event);
         } else {
@@ -558,7 +572,8 @@ if (actionMasked == MotionEvent.ACTION_DOWN || mFirstTouchTarget != null) {
 </code></pre><h5 id="6-事件传递到View的onTouchEvent"><a href="#6-事件传递到View的onTouchEvent" class="headerlink" title="6.事件传递到View的onTouchEvent()"></a>6.事件传递到View的onTouchEvent()</h5><pre><code>public boolean onTouchEvent(MotionEvent event) {
     ...
     final int action = event.getAction();
-    // 只要View的CLICKABLE和LONG_CLICKABLE有一个为true，onTouchEvent()就会返回true消耗这个事件。
+    // 只要View的CLICKABLE和LONG_CLICKABLE有一个为true，onTouchEvent()就会
+    // 返回true消耗这个事件。
     if ((viewFlags &amp; CLICKABLE) == CLICKABLE || （viewFlags &amp; LONG_CLICKABLE) == LONG_CLICKABLE) || (viewFlags &amp; CONTEXT_CLICKABLE) == CONTEXT_CLICKABLE) {
         switch(action) {
             case MotionEvent.ACTION_UP:
@@ -610,8 +625,8 @@ if (actionMasked == MotionEvent.ACTION_DOWN || mFirstTouchTarget != null) {
     return consume;
 }
 </code></pre><p>一些重要的结论：</p>
-<p>1.事件传递优先级：onTouchListener &gt; onTouchEvent &gt; onClickListener。</p>
-<p>2.正常情况下，一个时间序列只能被一个View拦截且消耗。因为一旦一个元素拦截了此时间，那么同一个事件序列内的所有事件都会直接交给它处理（即不会再调用这个View的拦截方法去询问它是否要拦截了，而是把剩余的ACTION_MOVE、ACTION_DOWN等事件直接交给它来处理）。特例：通过将重写View的onTouchEvent返还false可强行将事件转交给其他View处理。</p>
+<p>1.事件传递优先级：onTouchListener.onTouch &gt; onTouchEvent &gt; onClickListener.onClick。</p>
+<p>2.正常情况下，一个时间序列只能被一个View拦截且消耗。因为一旦一个元素拦截了此事件，那么同一个事件序列内的所有事件都会直接交给它处理（即不会再调用这个View的拦截方法去询问它是否要拦截了，而是把剩余的ACTION_MOVE、ACTION_DOWN等事件直接交给它来处理）。特例：通过将重写View的onTouchEvent返回false可强行将事件转交给其他View处理。</p>
 <p>3.如果View不消耗除ACTION_DOWN以外的其他事件，那么这个点击事件会消失，此时父元素的onTouchEvent并不会被调用，并且当前View可以持续收到后续的事件，最终这些消失的点击事件会传递给Activity处理。</p>
 <p>4.ViewGroup默认不拦截任何事件（返回false）。</p>
 <p>5.View的onTouchEvent默认都会消耗事件（返回true），除非它是不可点击的（clickable和longClickable同时为false）。View的longClickable属性默认都为false，clickable属性要分情况，比如Button的clickable属性默认为true，而TextView的clickable默认为false。</p>
