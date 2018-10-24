@@ -91,7 +91,8 @@
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/1417629-c87a3dd5ed19ee9d.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="https://camo.githubusercontent.com/e1e469bffad8a95732db704cc161384f8e3c7f0e/68747470733a2f2f75706c6f61642d696d616765732e6a69616e7368752e696f2f75706c6f61645f696d616765732f323931313033382d35333439643665626233323337326461">
-<meta property="og:updated_time" content="2018-10-18T11:54:22.468Z">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/944365-aea821bbb613c195.png">
+<meta property="og:updated_time" content="2018-10-19T12:19:53.244Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android触摸事件传递机制">
 <meta name="twitter:description" content="前言成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。一、了解Activity的构成一个Activity包含了一个Window对象，这个对象是由PhoneWindow来实现的。PhoneWindow将DecorView作为整个应用窗口的根View，而这个DecorView又将屏幕划分为两个区域：一个是TitleView，另一个是ContentVi">
@@ -443,7 +444,7 @@ ScrollView、ListView等ViewGroup则可能拦截，得看具体情况。
 <li>ViewGroup：拥有分发、拦截和消费三个方法。</li>
 <li>View：拥有分发、消费两个方法。</li>
 </ul>
-<h3 id="四、Activity对点击事件的分发过程"><a href="#四、Activity对点击事件的分发过程" class="headerlink" title="四、Activity对点击事件的分发过程"></a>四、Activity对点击事件的分发过程</h3><p>当点击事件产生后，事件会传递给当前的Activity，由Activity中的PhoneWindow完成，PhoneWindow再把事件处理工作交给DecorView，之后再有DecorView将事件处理工作交给ViewGroup。源码流程如下所示：</p>
+<h3 id="四、Activity对点击事件的分发过程"><a href="#四、Activity对点击事件的分发过程" class="headerlink" title="四、Activity对点击事件的分发过程"></a>四、Activity对点击事件的分发过程</h3><p>我们对触摸屏进行操作时，Linux就会收到相应的硬件中断，然后将中断加工成原始的输入事件并写入相应的设备节点中。而我们的Android 输入系统所做的事情概括起来说就是监控这些设备节点，当某个设备节点有数据可读时，将数据读出并进行一系列的翻译加工，然后在所有的窗口中找到合适的事件接收者，并派发给它。<br>当点击事件产生后，事件会传递给当前的Activity，由Activity中的PhoneWindow完成，PhoneWindow再把事件处理工作交给DecorView，之后再有DecorView将事件处理工作交给ViewGroup。源码流程如下所示：</p>
 <h5 id="1-Activity-dispatchTouchEvent"><a href="#1-Activity-dispatchTouchEvent" class="headerlink" title="1.Activity#dispatchTouchEvent"></a>1.Activity#dispatchTouchEvent</h5><pre><code>public boolean dispatchTouchEvent(MotionEvent ev) {
     if (ev.getAction() == MotionEvent.ACTION_DOWN) {
         onUserInteraction();
@@ -632,11 +633,16 @@ if (actionMasked == MotionEvent.ACTION_DOWN || mFirstTouchTarget != null) {
 <p>5.View的onTouchEvent默认都会消耗事件（返回true），除非它是不可点击的（clickable和longClickable同时为false）。View的longClickable属性默认都为false，clickable属性要分情况，比如Button的clickable属性默认为true，而TextView的clickable默认为false。</p>
 <p>6.View的enable属性不影响onTouchEvent的默认返回值。</p>
 <p>7.通过requestDisallowInterceptTouchEvent方法可以在子元素中干预父元素的事件分发过程，但是ACTION_DOWN事件除外。</p>
+<p>最终完整的事件分发流程图如下所示：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/944365-aea821bbb613c195.png" alt="image"></p>
 <h5 id="参考链接："><a href="#参考链接：" class="headerlink" title="参考链接："></a>参考链接：</h5><hr>
 <p>1、Android开发艺术探索</p>
 <p>2、Android进阶之光</p>
 <p>3、Android高级进阶</p>
 <p>4、<a href="http://gityuan.com/2015/09/19/android-touch/" target="_blank" rel="external">Gityuan Android事件分发机制</a></p>
+<p>5、<a href="https://mp.weixin.qq.com/s?__biz=MzIwMTAzMTMxMg==&amp;mid=2649492294&amp;idx=1&amp;sn=1645fa7730dbb1c627bd374e917cd557&amp;chksm=8eec80b9b99b09af1938836b2f19afc60b46c284050b9f17ceb5018867cd86df1c6a40fe56eb&amp;scene=38#wechat_redirect" target="_blank" rel="external">通俗理解Android的事件分发机制</a></p>
+<p>6、<a href="http://www.jianshu.com/p/38015afcdb58" target="_blank" rel="external">Android事件分发机制详解：史上最全面、最易懂</a></p>
+<p>7、<a href="http://mp.weixin.qq.com/s?__biz=MzIxNzU1Nzk3OQ==&amp;mid=2247486486&amp;idx=1&amp;sn=7acc1c9dd8c600ad0ec2db7d32f82f1f&amp;chksm=97f6b2a2a0813bb425cf8bf329bf0e856d3769ac8e21ed5a9a6cb7c57b1097c41f94afe4202d&amp;scene=38#wechat_redirect" target="_blank" rel="external">Android开发之漫漫长途 Ⅵ——图解Android事件分发机制（深入底层源码）</a></p>
 <h4 id="很感谢您阅读这篇文章，希望您能将它分享给您的朋友或技术群，这对我意义重大。"><a href="#很感谢您阅读这篇文章，希望您能将它分享给您的朋友或技术群，这对我意义重大。" class="headerlink" title="很感谢您阅读这篇文章，希望您能将它分享给您的朋友或技术群，这对我意义重大。"></a>很感谢您阅读这篇文章，希望您能将它分享给您的朋友或技术群，这对我意义重大。</h4><h4 id="希望我们能成为朋友，在-Github、掘金上一起分享知识。"><a href="#希望我们能成为朋友，在-Github、掘金上一起分享知识。" class="headerlink" title="希望我们能成为朋友，在 Github、掘金上一起分享知识。"></a>希望我们能成为朋友，在 <a href="https://github.com/JsonChao" target="_blank" rel="external">Github</a>、<a href="https://juejin.im/user/5a3ba9375188252bca050ade" target="_blank" rel="external">掘金</a>上一起分享知识。</h4>
       
     </div>
