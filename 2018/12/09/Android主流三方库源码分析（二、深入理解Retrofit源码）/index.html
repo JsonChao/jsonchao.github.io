@@ -1,0 +1,1686 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="default">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Android主流三方库源码分析," />
+
+
+
+
+
+  <link rel="alternate" href="/rss2.xml" title="Deep into Android" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="前言成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。前篇我们详细地分析了OKHttp的核心源码，如果对OKHttp内部机制不了解的可以看看Android主流三方库源码分析（一、深入理解OKHttp源码）。这篇，将会来深入地分析下目前Android最优秀的网络封装框架Retrofit的源码流程。 一、基本使用流程1、定义HTTP API，用于描述">
+<meta name="keywords" content="Android主流三方库源码分析">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android主流三方库源码分析（二、深入理解Retrofit源码）">
+<meta property="og:url" content="http://yoursite.com/2018/12/09/Android主流三方库源码分析（二、深入理解Retrofit源码）/index.html">
+<meta property="og:site_name" content="Deep into Android">
+<meta property="og:description" content="前言成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。前篇我们详细地分析了OKHttp的核心源码，如果对OKHttp内部机制不了解的可以看看Android主流三方库源码分析（一、深入理解OKHttp源码）。这篇，将会来深入地分析下目前Android最优秀的网络封装框架Retrofit的源码流程。 一、基本使用流程1、定义HTTP API，用于描述">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/625299-29a632638d9f518f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/891/format/webp">
+<meta property="og:updated_time" content="2018-12-09T14:21:06.704Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android主流三方库源码分析（二、深入理解Retrofit源码）">
+<meta name="twitter:description" content="前言成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。前篇我们详细地分析了OKHttp的核心源码，如果对OKHttp内部机制不了解的可以看看Android主流三方库源码分析（一、深入理解OKHttp源码）。这篇，将会来深入地分析下目前Android最优秀的网络封装框架Retrofit的源码流程。 一、基本使用流程1、定义HTTP API，用于描述">
+<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/625299-29a632638d9f518f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/891/format/webp">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":0,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '2JGM8QNUKR',
+      apiKey: 'ad3d08277d479825f7ef759beadbce0d',
+      indexName: 'dicovery',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/12/09/Android主流三方库源码分析（二、深入理解Retrofit源码）/"/>
+
+
+
+
+
+  <title>Android主流三方库源码分析（二、深入理解Retrofit源码） | Deep into Android</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Deep into Android</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/09/Android主流三方库源码分析（二、深入理解Retrofit源码）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JsonChao">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Deep into Android">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Android主流三方库源码分析（二、深入理解Retrofit源码）</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-09T22:19:00+08:00">
+                2018-12-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/安卓主流三方库源码分析/" itemprop="url" rel="index">
+                    <span itemprop="name">安卓主流三方库源码分析</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/12/09/Android主流三方库源码分析（二、深入理解Retrofit源码）/" class="leancloud_visitors" data-flag-title="Android主流三方库源码分析（二、深入理解Retrofit源码）">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">Visitors&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <hr>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><h4 id="成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样-。"><a href="#成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样-。" class="headerlink" title="成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。"></a>成为一名优秀的Android开发，需要一份完备的<a href="https://github.com/JsonChao/Awesome-Android-Exercise" target="_blank" rel="external">知识体系</a>，在这里，让我们一起成长为自己所想的那样~。</h4><p>前篇我们详细地分析了OKHttp的核心源码，如果对OKHttp内部机制不了解的可以看看<a href="https://jsonchao.github.io/2018/12/01/Android%E4%B8%BB%E6%B5%81%E4%B8%89%E6%96%B9%E5%BA%93%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%E3%80%81%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3OKHttp%E6%BA%90%E7%A0%81%EF%BC%89/" target="_blank" rel="external">Android主流三方库源码分析（一、深入理解OKHttp源码）</a>。这篇，将会来深入地分析下目前Android最优秀的网络封装框架Retrofit的源码流程。</p>
+<h3 id="一、基本使用流程"><a href="#一、基本使用流程" class="headerlink" title="一、基本使用流程"></a>一、基本使用流程</h3><h4 id="1、定义HTTP-API，用于描述请求"><a href="#1、定义HTTP-API，用于描述请求" class="headerlink" title="1、定义HTTP API，用于描述请求"></a>1、定义HTTP API，用于描述请求</h4><pre><code>public interface GitHubService {
+
+     @GET(&quot;users/{user}/repos&quot;)
+     Call&lt;List&lt;Repo&gt;&gt; listRepos(@Path(&quot;user&quot;) String user);
+}
+</code></pre><h4 id="2、创建Retrofit并生成API的实现（注意：方法上面的注解表示请求的接口部分，返回类型是请求的返回值类型，方法的参数即是请求的参数）"><a href="#2、创建Retrofit并生成API的实现（注意：方法上面的注解表示请求的接口部分，返回类型是请求的返回值类型，方法的参数即是请求的参数）" class="headerlink" title="2、创建Retrofit并生成API的实现（注意：方法上面的注解表示请求的接口部分，返回类型是请求的返回值类型，方法的参数即是请求的参数）"></a>2、创建Retrofit并生成API的实现（注意：方法上面的注解表示请求的接口部分，返回类型是请求的返回值类型，方法的参数即是请求的参数）</h4><pre><code>// 1.Retrofit构建过程
+Retrofit retrofit = new Retrofit.Builder()
+.baseUrl(&quot;https://api.github.com/&quot;)
+.build();
+
+// 2.创建网络请求接口类实例过程
+GitHubService service = retrofit.create(GitHubService.class);
+</code></pre><h4 id="3、调用API方法，生成Call，执行请求"><a href="#3、调用API方法，生成Call，执行请求" class="headerlink" title="3、调用API方法，生成Call，执行请求"></a>3、调用API方法，生成Call，执行请求</h4><pre><code>// 3.生成并执行请求过程
+Call&lt;List&lt;Repo&gt;&gt; repos = service.listRepos(&quot;octocat&quot;);
+repos.execute() or repos.enqueue()
+</code></pre><p>Retrofit的基本使用流程很简洁，但是简洁并不代表简单，Retrofit为了实现这种简洁的使用流程，内部使用了优秀的架构设计和大量的设计模式，在我分析过Retrofit最新版的源码和大量优秀的Retrofit源码分析文章后，我发现，要想真正理解Retrofit内部的核心源码流程和设计思想，首先，需要对这九大设计模式有一定的了解，如下：</p>
+<pre><code>1.Retrofit构建过程 
+建造者模式、工厂方法模式
+
+2.创建网络请求接口实例过程
+外观模式、代理模式、单例模式、策略模式、装饰模式（建造者模式）
+
+3.生成并执行请求过程
+适配器模式（代理模式、装饰模式）
+</code></pre><p>其次，需要对OKHttp源码有一定的了解，如果不了解的可以看看这篇<a href="https://jsonchao.github.io/2018/12/01/Android%E4%B8%BB%E6%B5%81%E4%B8%89%E6%96%B9%E5%BA%93%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%E3%80%81%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3OKHttp%E6%BA%90%E7%A0%81%EF%BC%89/" target="_blank" rel="external">Android主流三方库源码分析（一、深入理解OKHttp源码）</a>。最后，让我们按以上流程去深入Retrofit源码内部，领悟它带给我们的<strong>设计之美</strong>。</p>
+<h3 id="二、Retrofit构建过程"><a href="#二、Retrofit构建过程" class="headerlink" title="二、Retrofit构建过程"></a>二、Retrofit构建过程</h3><h4 id="1、Retrofit核心对象解析"><a href="#1、Retrofit核心对象解析" class="headerlink" title="1、Retrofit核心对象解析"></a>1、Retrofit核心对象解析</h4><p>首先Retrofit中有一个全局变量非常关键，在V2.5之前的版本，使用的是LinkedHashMap()，它是一个网络请求配置对象，是由网络请求接口中方法注解进行解析后得到的。</p>
+<pre><code>public final class Retrofit {
+
+    // 网络请求配置对象，存储网络请求相关的配置，如网络请求的方法、数据转换器、网络请求适配器、网络请求工厂、基地址等
+    private final Map&lt;Method, ServiceMethod&lt;?&gt;&gt; serviceMethodCache = new ConcurrentHashMap&lt;&gt;();
+</code></pre><p>Retrofit使用了建造者模式通过内部类Builder类建立一个Retrofit实例，如下：</p>
+<pre><code>public static final class Builder {
+
+    // 平台类型对象（Platform -&gt; Android)
+    private final Platform platform;
+    // 网络请求工厂，默认使用OkHttpCall（工厂方法模式）
+    private @Nullable okhttp3.Call.Factory callFactory;
+    // 网络请求的url地址
+    private @Nullable HttpUrl baseUrl;
+    // 数据转换器工厂的集合
+    private final List&lt;Converter.Factory&gt; converterFactories = new     ArrayList&lt;&gt;();
+    // 网络请求适配器工厂的集合，默认是ExecutorCallAdapterFactory
+    private final List&lt;CallAdapter.Factory&gt; callAdapterFactories = new     ArrayList&lt;&gt;();
+    // 回调方法执行器，在 Android 上默认是封装了 handler 的 MainThreadExecutor, 默认作用是：切换线程（子线程 -&gt; 主线程）
+    private @Nullable Executor callbackExecutor;
+    // 一个开关，为true则会缓存创建的ServiceMethod
+    private boolean validateEagerly;
+</code></pre><h4 id="2、Builder内部构造"><a href="#2、Builder内部构造" class="headerlink" title="2、Builder内部构造"></a>2、Builder内部构造</h4><p>下面看看Builder内部构造做了什么。</p>
+<pre><code>public static final class Builder {
+
+    ...
+
+    Builder(Platform platform) {
+        this.platform = platform;
+    }
+
+
+    public Builder() {
+        this(Platform.get());
+    }
+
+    ...
+
+}
+
+
+class Platform {
+
+    private static final Platform PLATFORM = findPlatform();
+
+    static Platform get() {
+      return PLATFORM;
+    }
+
+    private static Platform findPlatform() {
+      try {
+        // 使用JVM加载类的方式判断是否是Android平台
+        Class.forName(&quot;android.os.Build&quot;);
+        if (Build.VERSION.SDK_INT != 0) {
+          return new Android();
+        }
+      } catch (ClassNotFoundException ignored) {
+      }
+      try {
+        // 同时支持Java平台
+        Class.forName(&quot;java.util.Optional&quot;);
+        return new Java8();
+      } catch (ClassNotFoundException ignored) {
+      }
+      return new Platform();
+    }
+
+static class Android extends Platform {
+
+    ...
+
+
+    @Override public Executor defaultCallbackExecutor() {
+        //切换线程（子线程 -&gt; 主线程）
+        return new MainThreadExecutor();
+    }
+
+    // 创建默认的网络请求适配器工厂，如果是Android7.0或Java8上，则使
+    // 用了并发包中的CompletableFuture保证了回调的同步
+    // 在Retrofit中提供了四种CallAdapterFactory(策略模式)：
+    // ExecutorCallAdapterFactory（默认）、GuavaCallAdapterFactory、
+    // va8CallAdapterFactory、RxJavaCallAdapterFactory
+    @Override List&lt;? extends CallAdapter.Factory&gt;     defaultCallAdapterFactories(
+        @Nullable Executor callbackExecutor) {
+      if (callbackExecutor == null) throw new AssertionError();
+      ExecutorCallAdapterFactory executorFactory = new   ExecutorCallAdapterFactory(callbackExecutor);
+      return Build.VERSION.SDK_INT &gt;= 24
+        ? asList(CompletableFutureCallAdapterFactory.INSTANCE,     executorFactory)
+        : singletonList(executorFactory);
+    }
+
+    ...
+
+    @Override List&lt;? extends Converter.Factory&gt;     defaultConverterFactories() {
+      return Build.VERSION.SDK_INT &gt;= 24
+          ? singletonList(OptionalConverterFactory.INSTANCE)
+          : Collections.&lt;Converter.Factory&gt;emptyList();
+    }
+
+    ...
+
+    static class MainThreadExecutor implements Executor {
+
+        // 获取Android 主线程的Handler 
+        private final Handler handler = new   Handler(Looper.getMainLooper());
+
+        @Override public void execute(Runnable r) {
+
+            // 在UI线程对网络请求返回数据处理
+            handler.post(r);
+        }
+    }
+}
+</code></pre><p>可以看到，在Builder内部构造时设置了默认Platform、callAdapterFactories和callbackExecutor。</p>
+<h4 id="3、添加baseUrl"><a href="#3、添加baseUrl" class="headerlink" title="3、添加baseUrl"></a>3、添加baseUrl</h4><p>很简单，就是将String类型的url转换为OkHttp的HttpUrl过程如下：</p>
+<pre><code>/**
+ * Set the API base URL.
+ *
+ * @see #baseUrl(HttpUrl)
+ */
+public Builder baseUrl(String baseUrl) {
+    checkNotNull(baseUrl, &quot;baseUrl == null&quot;);
+    return baseUrl(HttpUrl.get(baseUrl));
+}
+
+public Builder baseUrl(HttpUrl baseUrl) {
+    checkNotNull(baseUrl, &quot;baseUrl == null&quot;);
+    List&lt;String&gt; pathSegments = baseUrl.pathSegments();
+    if (!&quot;&quot;.equals(pathSegments.get(pathSegments.size() - 1))) {
+      throw new IllegalArgumentException(&quot;baseUrl must end in /: &quot; +     baseUrl);
+    }
+    this.baseUrl = baseUrl;
+    return this;
+}
+</code></pre><h4 id="4、添加GsonConverterFactory"><a href="#4、添加GsonConverterFactory" class="headerlink" title="4、添加GsonConverterFactory"></a>4、添加GsonConverterFactory</h4><p>首先，看到GsonConverterFactory.creat()的源码。</p>
+<pre><code>public final class GsonConverterFactory extends Converter.Factory {
+
+    public static GsonConverterFactory create() {
+        return create(new Gson());
+    }
+
+
+    public static GsonConverterFactory create(Gson gson) {
+        if (gson == null) throw new NullPointerException(&quot;gson ==   null&quot;);
+        return new GsonConverterFactory(gson);
+    }
+
+    private final Gson gson;
+
+    // 创建了一个含有Gson对象实例的GsonConverterFactory
+    private GsonConverterFactory(Gson gson) {
+        this.gson = gson;
+    }
+</code></pre><p>然后，看看addConverterFactory()方法内部。</p>
+<pre><code>public Builder addConverterFactory(Converter.Factory factory) {
+    converterFactories.add(checkNotNull(factory, &quot;factory null&quot;));
+    return this;
+}
+</code></pre><p>可知，这一步是将一个含有Gson对象实例的GsonConverterFactory放入到了数据转换器工厂converterFactories里。</p>
+<h4 id="5、build过程"><a href="#5、build过程" class="headerlink" title="5、build过程"></a>5、build过程</h4><pre><code>public Retrofit build() {
+
+    if (baseUrl == null) {
+      throw new IllegalStateException(&quot;Base URL required.&quot;);
+    }
+
+    okhttp3.Call.Factory callFactory = this.callFactory;
+    if (callFactory == null) {
+        // 默认使用okhttp
+         callFactory = new OkHttpClient();
+    }
+
+    Executor callbackExecutor = this.callbackExecutor;
+    if (callbackExecutor == null) {
+        // Android默认的callbackExecutor
+        callbackExecutor = platform.defaultCallbackExecutor();
+    }
+
+    // Make a defensive copy of the adapters and add the defaultCall  adapter.
+    List&lt;CallAdapter.Factory&gt; callAdapterFactories = new ArrayList&lt;&gt;(this.callAdapterFactories);
+    // 添加默认适配器工厂在集合尾部
+    callAdapterFactories.addAll(platform.defaultCallAdapterFactorisca  llbackExecutor));
+
+    // Make a defensive copy of the converters.
+    List&lt;Converter.Factory&gt; converterFactories = new ArrayList&lt;&gt;(
+        1 + this.converterFactories.size() + platform.defaultConverterFactoriesSize());
+    // Add the built-in converter factory first. This prevents overriding its behavior but also
+    // ensures correct behavior when using converters thatconsumeall   types.
+    converterFactories.add(new BuiltInConverters());
+    converterFactories.addAll(this.converterFactories);
+    converterFactories.addAll(platform.defaultConverterFactories();
+
+    return new Retrofit(callFactory, baseUrl, unmodifiableList(converterFactories),
+        unmodifiableList(callAdapterFactories), callbackExecutor, validateEagerly);
+
+}
+</code></pre><p>可以看到，最终我们在Builder类中看到的6大核心对象都已经配置到Retrofit对象中了。</p>
+<h3 id="三、创建网络请求接口实例过程"><a href="#三、创建网络请求接口实例过程" class="headerlink" title="三、创建网络请求接口实例过程"></a>三、创建网络请求接口实例过程</h3><p>retrofit.create()使用了外观模式和代理模式创建了网络请求的接口实例，我们分析下create方法。</p>
+<pre><code>public &lt;T&gt; T create(final Class&lt;T&gt; service) {
+    Utils.validateServiceInterface(service);
+    if (validateEagerly) {
+        // 判断是否需要提前缓存ServiceMethod对象
+        eagerlyValidateMethods(service);
+    }
+
+    // 使用动态代理拿到请求接口所有注解配置后，创建网络请求接口实例
+    return (T) Proxy.newProxyInstance(service.getClassLoader(), new     Class&lt;?&gt;[] { service },
+        new InvocationHandler() {
+          private final Platform platform = Platform.get();
+          private final Object[] emptyArgs = new Object[0];
+
+          @Override public Object invoke(Object proxy, Method method,   @Nullable Object[] args)
+              throws Throwable {
+            // If the method is a method from Object then defer to normal     invocation.
+            if (method.getDeclaringClass() == Object.class) {
+              return method.invoke(this, args);
+            }
+            if (platform.isDefaultMethod(method)) {
+              return platform.invokeDefaultMethod(method, service, proxy,   args);
+            }
+            return loadServiceMethod(method).invoke(args != null ? args : emptyArgs);
+          }
+    });
+ }
+
+private void eagerlyValidateMethods(Class&lt;?&gt; service) {
+
+  Platform platform = Platform.get();
+  for (Method method : service.getDeclaredMethods()) {
+    if (!platform.isDefaultMethod(method)) {
+      loadServiceMethod(method);
+    }
+  }
+}
+</code></pre><p>继续看看loadServiceMethod的内部流程</p>
+<pre><code>ServiceMethod&lt;?&gt; loadServiceMethod(Method method) {
+
+    ServiceMethod&lt;?&gt; result = serviceMethodCache.get(method);
+    if (result != null) return result;
+
+    synchronized (serviceMethodCache) {
+      result = serviceMethodCache.get(method);
+      if (result == null) {
+            // 解析注解配置得到了ServiceMethod
+            result = ServiceMethod.parseAnnotations(this, method);
+            // 可以看到，最终加入到ConcurrentHashMap缓存中
+            serviceMethodCache.put(method, result);
+      }
+    }
+    return result;
+}
+
+
+abstract class ServiceMethod&lt;T&gt; {
+  static &lt;T&gt; ServiceMethod&lt;T&gt; parseAnnotations(Retrofit retrofit, Method   method) {
+        // 通过RequestFactory解析注解配置（工厂模式、内部使用了建造者模式）
+        RequestFactory requestFactory =         RequestFactory.parseAnnotations(retrofit, method);
+
+        Type returnType = method.getGenericReturnType();
+        if (Utils.hasUnresolvableType(returnType)) {
+          throw methodError(method,
+              &quot;Method return type must not include a type variable or      wildcard: %s&quot;, returnType);
+        }
+        if (returnType == void.class) {
+          throw methodError(method, &quot;Service methods cannot return    void.&quot;);
+        }
+
+        // 最终是通过HttpServiceMethod构建的请求方法
+        return HttpServiceMethod.parseAnnotations(retrofit, method,         requestFactory);
+    }
+
+    abstract T invoke(Object[] args);
+}
+</code></pre><h4 id="以下为请求构造核心流程"><a href="#以下为请求构造核心流程" class="headerlink" title="以下为请求构造核心流程"></a>以下为请求构造核心流程</h4><p>根据RequestFactory#Builder构造方法和parseAnnotations方法的源码，可知的它的作用就是用来解析注解配置的。</p>
+<pre><code>Builder(Retrofit retrofit, Method method) {
+    this.retrofit = retrofit;
+    this.method = method;
+    // 获取网络请求接口方法里的注释
+    this.methodAnnotations = method.getAnnotations();
+    // 获取网络请求接口方法里的参数类型       
+    this.parameterTypes = method.getGenericParameterTypes();
+    // 获取网络请求接口方法里的注解内容    
+    this.parameterAnnotationsArray = method.getParameterAnnotations();
+}
+</code></pre><p>接着看HttpServiceMethod.parseAnnotations()的内部流程。</p>
+<pre><code>static &lt;ResponseT, ReturnT&gt; HttpServiceMethod&lt;ResponseT, ReturnT&gt;     parseAnnotations(
+      Retrofit retrofit, Method method, RequestFactory requestFactory) {
+
+        // 1.根据网络请求接口方法的返回值和注解类型，
+        // 从Retrofit对象中获取对应的网络请求适配器 
+        CallAdapter&lt;ResponseT, ReturnT&gt; callAdapter =         createCallAdapter(retrofit, method);
+
+        // 得到响应类型
+        Type responseType = callAdapter.responseType();
+
+        ...
+
+        // 2.根据网络请求接口方法的返回值和注解类型，从Retrofit对象中获取对应的数据转换器 
+        Converter&lt;ResponseBody, ResponseT&gt; responseConverter =
+            createResponseConverter(retrofit, method, responseType);
+
+        okhttp3.Call.Factory callFactory = retrofit.callFactory;
+
+        return new HttpServiceMethod&lt;&gt;(requestFactory, callFactory,         callAdapter, responseConverter);
+}
+</code></pre><h5 id="1-createCallAdapter-retrofit-method"><a href="#1-createCallAdapter-retrofit-method" class="headerlink" title="1.createCallAdapter(retrofit, method)"></a>1.createCallAdapter(retrofit, method)</h5><pre><code>private static &lt;ResponseT, ReturnT&gt; CallAdapter&lt;ResponseT, ReturnT&gt;     createCallAdapter(
+      Retrofit retrofit, Method method) {
+
+    // 获取网络请求接口里方法的返回值类型
+    Type returnType = method.getGenericReturnType();
+
+    // 获取网络请求接口接口里的注解
+    Annotation[] annotations = method.getAnnotations();
+    try {
+      //noinspection unchecked
+      return (CallAdapter&lt;ResponseT, ReturnT&gt;)  retrofit.callAdapter(returnType, annotations);
+    } catch (RuntimeException e) { // Wide exception range because         factories are user code.
+      throw methodError(method, e, &quot;Unable to create call adapter  for     %s&quot;, returnType);
+    }
+}
+
+public CallAdapter&lt;?, ?&gt; callAdapter(Type returnType, Annotation[] annotations) {
+    return nextCallAdapter(null, returnType, annotations);
+}
+
+public CallAdapter&lt;?, ?&gt; nextCallAdapter(@Nullable CallAdapter.Factory skipPast, Type returnType,
+  Annotation[] annotations) {
+    ...
+
+    int start = callAdapterFactories.indexOf(skipPast) + 1;
+    // 遍历 CallAdapter.Factory 集合寻找合适的工厂
+    for (int i = start, count = callAdapterFactories.size(); i &lt;count; i++) {
+        CallAdapter&lt;?, ?&gt; adapter =    callAdapterFactories.get(i).get(returnType, annotations, this);
+        if (adapter != null) {
+          return adapter;
+        }
+    }
+}
+</code></pre><h5 id="2-createResponseConverter-Retrofit-retrofit-Method-method-Type-responseType"><a href="#2-createResponseConverter-Retrofit-retrofit-Method-method-Type-responseType" class="headerlink" title="2.createResponseConverter(Retrofit retrofit, Method method, Type responseType)"></a>2.createResponseConverter(Retrofit retrofit, Method method, Type responseType)</h5><pre><code> private static &lt;ResponseT&gt; Converter&lt;ResponseBody, ResponseT&gt;  createResponseConverter(
+     Retrofit retrofit, Method method, Type responseType) {
+   Annotation[] annotations = method.getAnnotations();
+   try {
+     return retrofit.responseBodyConverter(responseType,annotations);
+   } catch (RuntimeException e) { // Wide exception range because    factories are user code.
+     throw methodError(method, e, &quot;Unable to create converter for%s&quot;,   responseType);
+   }
+}
+
+public &lt;T&gt; Converter&lt;ResponseBody, T&gt; responseBodyConverter(Type type, Annotation[] annotations) {
+    return nextResponseBodyConverter(null, type, annotations);
+}
+
+public &lt;T&gt; Converter&lt;ResponseBody, T&gt; nextResponseBodyConverter(
+  @Nullable Converter.Factory skipPast, Type type, Annotation[] annotations) {
+...
+
+int start = converterFactories.indexOf(skipPast) + 1;
+// 遍历 Converter.Factory 集合并寻找合适的工厂, 这里是GsonResponseBodyConverter
+for (int i = start, count = converterFactories.size(); i &lt; count; i++) {
+  Converter&lt;ResponseBody, ?&gt; converter =
+      converterFactories.get(i).responseBodyConverter(type, annotations, this);
+  if (converter != null) {
+    //noinspection unchecked
+    return (Converter&lt;ResponseBody, T&gt;) converter;
+  }
+}
+</code></pre><h4 id="最终，执行HttpServiceMethod的invoke方法"><a href="#最终，执行HttpServiceMethod的invoke方法" class="headerlink" title="最终，执行HttpServiceMethod的invoke方法"></a>最终，执行HttpServiceMethod的invoke方法</h4><pre><code>@Override ReturnT invoke(Object[] args) {
+    return callAdapter.adapt(
+        new OkHttpCall&lt;&gt;(requestFactory, args, callFactory,     responseConverter));
+}
+</code></pre><p>最终在adapt中创建了一个ExecutorCallbackCall对象，它是一个装饰者，而在它内部真正去执行网络请求的还是OkHttpCall。</p>
+<h3 id="四、创建网络请求接口类实例并执行请求过程"><a href="#四、创建网络请求接口类实例并执行请求过程" class="headerlink" title="四、创建网络请求接口类实例并执行请求过程"></a>四、创建网络请求接口类实例并执行请求过程</h3><h4 id="1、service-listRepos"><a href="#1、service-listRepos" class="headerlink" title="1、service.listRepos()"></a>1、service.listRepos()</h4><pre><code>1、Call&lt;List&lt;Repo&gt;&gt; repos = service.listRepos(&quot;octocat&quot;);
+</code></pre><p>service对象是动态代理对象Proxy.newProxyInstance()，当调用getCall()时会被<br>它拦截，然后调用自身的InvocationHandler#invoke()，得到最终的Call对象。</p>
+<h4 id="2、同步执行流程-repos-execute"><a href="#2、同步执行流程-repos-execute" class="headerlink" title="2、同步执行流程 repos.execute()"></a>2、同步执行流程 repos.execute()</h4><pre><code>@Override public Response&lt;T&gt; execute() throws IOException {
+    okhttp3.Call call;
+
+    synchronized (this) {
+      if (executed) throw new IllegalStateException(&quot;Already     executed.&quot;);
+      executed = true;
+
+      if (creationFailure != null) {
+        if (creationFailure instanceof IOException) {
+          throw (IOException) creationFailure;
+        } else if (creationFailure instanceof RuntimeException) {
+          throw (RuntimeException) creationFailure;
+        } else {
+          throw (Error) creationFailure;
+        }
+      }
+
+      call = rawCall;
+      if (call == null) {
+        try {
+          // 创建一个OkHttp的Request对象请求
+          call = rawCall = createRawCall();
+        } catch (IOException | RuntimeException | Error e) {
+          throwIfFatal(e); //  Do not assign a fatal error to     creationFailure.
+          creationFailure = e;
+          throw e;
+        }
+      }
+    }
+
+    if (canceled) {
+      call.cancel();
+    }
+
+    // 调用OkHttpCall的execute()发送网络请求（同步），
+    // 并解析网络请求返回的数据
+    return parseResponse(call.execute());
+}
+
+
+private okhttp3.Call createRawCall() throws IOException {
+    // 创建 一个okhttp3.Request
+    okhttp3.Call call =
+    callFactory.newCall(requestFactory.create(args));
+    if (call == null) {
+      throw new NullPointerException(&quot;Call.Factory returned null.&quot;);
+    }
+    return call;
+}
+
+
+Response&lt;T&gt; parseResponse(okhttp3.Response rawResponse) throws IOException {
+    ResponseBody rawBody = rawResponse.body(); 
+
+    // Remove the body&apos;s source (the only stateful object) so we can   pass the response along.
+    rawResponse = rawResponse.newBuilder()
+        .body(new NoContentResponseBody(rawBody.contentType(),     rawBody.contentLength()))
+        .build();    
+
+    // 根据响应返回的状态码进行处理    
+    int code = rawResponse.code();
+    if (code &lt; 200 || code &gt;= 300) {
+      try {
+        // Buffer the entire body to avoid future I/O.
+        ResponseBody bufferedBody = Utils.buffer(rawBody);
+        return Response.error(bufferedBody, rawResponse);
+      } finally {
+        rawBody.close();
+      }
+    }    
+    if (code == 204 || code == 205) {
+      rawBody.close();
+      return Response.success(null, rawResponse);
+    }    
+
+
+    ExceptionCatchingResponseBody catchingBody = new    ExceptionCatchingResponseBody(rawBody);
+    try {
+      // 将响应体转为Java对象
+      T body = responseConverter.convert(catchingBody);
+
+      return Response.success(body, rawResponse);
+    } catch (RuntimeException e) {
+      // If the underlying source threw an exception, propagate that     rather than indicating it was
+      // a runtime exception.
+      catchingBody.throwIfCaught();
+      throw e;
+    }
+}
+</code></pre><h4 id="3、异步请求流程-repos-enqueque"><a href="#3、异步请求流程-repos-enqueque" class="headerlink" title="3、异步请求流程 repos.enqueque"></a>3、异步请求流程 repos.enqueque</h4><pre><code>@Override 
+public void enqueue(final Callback&lt;T&gt; callback) {
+
+    // 使用静态代理 delegate进行异步请求 
+    delegate.enqueue(new Callback&lt;T&gt;() {
+
+      @Override 
+      public void onResponse(Call&lt;T&gt; call, finalResponse&lt;T&gt;response)     {
+        // 线程切换，在主线程显示结果
+        callbackExecutor.execute(new Runnable() {
+            @Override 
+             public void run() {
+            if (delegate.isCanceled()) {
+              callback.onFailure(ExecutorCallbackCall.this, newIOException(&quot;Canceled&quot;));
+            } else {
+              callback.onResponse(ExecutorCallbackCall.this,respons);
+            }
+          }
+        });
+      }
+      @Override 
+      public void onFailure(Call&lt;T&gt; call, final Throwable t) {
+        callbackExecutor.execute(new Runnable() {
+          @Override public void run() {
+            callback.onFailure(ExecutorCallbackCall.this, t);
+          }
+        });
+      }
+    });
+}
+</code></pre><p>看看 delegate.enqueue 内部流程。</p>
+<pre><code>@Override 
+public void enqueue(final Callback&lt;T&gt; callback) {
+
+    okhttp3.Call call;
+    Throwable failure;
+
+    synchronized (this) {
+      if (executed) throw new IllegalStateException(&quot;Already executed.&quot;);
+      executed = true;
+
+      call = rawCall;
+      failure = creationFailure;
+      if (call == null &amp;&amp; failure == null) {
+        try {
+          // 创建OkHttp的Request对象，再封装成OkHttp.call
+          // 方法同发送同步请求，此处上面已分析
+          call = rawCall = createRawCall(); 
+        } catch (Throwable t) {
+          failure = creationFailure = t;
+        }
+      }
+
+@Override public void enqueue(final Callback&lt;T&gt; callback) {
+  checkNotNull(callback, &quot;callback == null&quot;);
+
+  okhttp3.Call call;
+  Throwable failure;
+
+  ...
+
+  call.enqueue(new okhttp3.Callback() {
+    @Override public void onResponse(okhttp3.Call call,   okhttp3.Response rawResponse) {
+      Response&lt;T&gt; response;
+      try {
+        // 此处上面已分析
+        response = parseResponse(rawResponse);
+      } catch (Throwable e) {
+        throwIfFatal(e);
+        callFailure(e);
+        return;
+      }
+
+      try {
+        callback.onResponse(OkHttpCall.this, response);
+      } catch (Throwable t) {
+        t.printStackTrace();
+      }
+    }
+
+    @Override public void onFailure(okhttp3.Call call, IOException e) {
+      callFailure(e);
+    }
+
+    private void callFailure(Throwable e) {
+      try {
+        callback.onFailure(OkHttpCall.this, e);
+      } catch (Throwable t) {
+        t.printStackTrace();
+      }
+    }
+  });
+}
+</code></pre><p>如果你看到这里的话，恭喜你，你已经对Retrofit已经有一个比较深入的了解了，但是，笔者还是要建议大家自己主动配合着Retrofit最新版的源码一步步去彻底地认识它，只要这样，你才能看到它真实的内心，最后附上一张Stay的Retrofit源码流程图，要注意的是，这是V2.5之前版本的流程，但是，在看完上面的源码分析后，我们知道，主体流程是没有变化的。</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/625299-29a632638d9f518f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/891/format/webp" alt="image"></p>
+<h3 id="五、总结"><a href="#五、总结" class="headerlink" title="五、总结"></a>五、总结</h3><p>从本质上来说，Retrofit虽然只是一个RESTful 的HTTP 网络请求框架的封装库。但是，它内部通过 大量的设计模式 封装了 OkHttp，让使用者感到它非常简洁、易懂。它内部主要是用动态代理 的方式，动态将网络请求接口的注解 解析 成HTTP请求，最后执行请求的过程。好了，至此，我们的Android主流三方库源码分析的网络库分析部分已经完毕。接下来，将为大家带来最流行的图片加载框架Glide的源码分析，敬请期待~</p>
+<h5 id="参考链接："><a href="#参考链接：" class="headerlink" title="参考链接："></a>参考链接：</h5><hr>
+<p>1、Retrofit V2.5.0源码</p>
+<p>2、Android进阶之光</p>
+<p>3、<a href="https://www.jianshu.com/p/0c055ad46b6c" target="_blank" rel="external">Android：手把手带你 深入读懂 Retrofit 2.0 源码</a></p>
+<p>4、<a href="https://www.jianshu.com/p/45cb536be2f4" target="_blank" rel="external">Retrofit分析-漂亮的解耦套路</a></p>
+<h4 id="很感谢您阅读这篇文章，希望您能将它分享给您的朋友或技术群，这对我意义重大。"><a href="#很感谢您阅读这篇文章，希望您能将它分享给您的朋友或技术群，这对我意义重大。" class="headerlink" title="很感谢您阅读这篇文章，希望您能将它分享给您的朋友或技术群，这对我意义重大。"></a>很感谢您阅读这篇文章，希望您能将它分享给您的朋友或技术群，这对我意义重大。</h4><h4 id="希望我们能成为朋友，在-Github、掘金上一起分享知识。"><a href="#希望我们能成为朋友，在-Github、掘金上一起分享知识。" class="headerlink" title="希望我们能成为朋友，在 Github、掘金上一起分享知识。"></a>希望我们能成为朋友，在 <a href="https://github.com/JsonChao" target="_blank" rel="external">Github</a>、<a href="https://juejin.im/user/5a3ba9375188252bca050ade" target="_blank" rel="external">掘金</a>上一起分享知识。</h4>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.png" alt="JsonChao Alipay"/>
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android主流三方库源码分析/" rel="tag"># Android主流三方库源码分析</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/12/01/Android主流三方库源码分析（一、深入理解OKHttp源码）/" rel="next" title="Android主流三方库源码分析（一、深入理解OKHttp源码）">
+                <i class="fa fa-chevron-left"></i> Android主流三方库源码分析（一、深入理解OKHttp源码）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div id="lv-container" data-id="city" data-uid="MTAyMC8zMzg1Mi8xMDQwNQ==">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="JsonChao" />
+            
+              <p class="site-author-name" itemprop="name">JsonChao</p>
+              <p class="site-description motion-element" itemprop="description">Persist + Plan = Growing</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/rss2.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/JsonChao" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://mail.google.com/mail/u/0/#inbox" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-globe"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://juejin.im/user/5a3ba9375188252bca050ade" target="_blank" title="JueJin">
+                      
+                        <i class="fa fa-fw fa-globe"></i>JueJin</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Manito Link
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://wanandroid.com/" title="WanAndroid" target="_blank">WanAndroid</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://hencoder.com/" title="HenCoder" target="_blank">HenCoder</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.trinea.cn/" title="Trinea" target="_blank">Trinea</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://stormzhang.com/" title="stromzhang" target="_blank">stromzhang</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.hensen.site/" title="Hensen" target="_blank">Hensen</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://liuwangshu.cn/" title="刘望舒" target="_blank">刘望舒</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://zhuanlan.zhihu.com/baron/" title="张磊" target="_blank">张磊</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://kymjs.com/" title="张涛" target="_blank">张涛</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://blog.piasy.com/" title="Piasy" target="_blank">Piasy</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://blog.lmj.wiki/" title="ANLY" target="_blank">ANLY</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://glanwang.com/" title="Glan" target="_blank">Glan</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://huangjunbin.com/" title="黄俊彬" target="_blank">黄俊彬</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://droidyue.com/" title="技术小黑屋" target="_blank">技术小黑屋</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://gityuan.com/" title="gityuan" target="_blank">gityuan</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.gcssloop.com/#blog" title="gcsslop" target="_blank">gcsslop</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样-。"><span class="nav-number">1.0.1.</span> <span class="nav-text">成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一、基本使用流程"><span class="nav-number">1.1.</span> <span class="nav-text">一、基本使用流程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、定义HTTP-API，用于描述请求"><span class="nav-number">1.1.1.</span> <span class="nav-text">1、定义HTTP API，用于描述请求</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、创建Retrofit并生成API的实现（注意：方法上面的注解表示请求的接口部分，返回类型是请求的返回值类型，方法的参数即是请求的参数）"><span class="nav-number">1.1.2.</span> <span class="nav-text">2、创建Retrofit并生成API的实现（注意：方法上面的注解表示请求的接口部分，返回类型是请求的返回值类型，方法的参数即是请求的参数）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、调用API方法，生成Call，执行请求"><span class="nav-number">1.1.3.</span> <span class="nav-text">3、调用API方法，生成Call，执行请求</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、Retrofit构建过程"><span class="nav-number">1.2.</span> <span class="nav-text">二、Retrofit构建过程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、Retrofit核心对象解析"><span class="nav-number">1.2.1.</span> <span class="nav-text">1、Retrofit核心对象解析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、Builder内部构造"><span class="nav-number">1.2.2.</span> <span class="nav-text">2、Builder内部构造</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、添加baseUrl"><span class="nav-number">1.2.3.</span> <span class="nav-text">3、添加baseUrl</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4、添加GsonConverterFactory"><span class="nav-number">1.2.4.</span> <span class="nav-text">4、添加GsonConverterFactory</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5、build过程"><span class="nav-number">1.2.5.</span> <span class="nav-text">5、build过程</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、创建网络请求接口实例过程"><span class="nav-number">1.3.</span> <span class="nav-text">三、创建网络请求接口实例过程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#以下为请求构造核心流程"><span class="nav-number">1.3.1.</span> <span class="nav-text">以下为请求构造核心流程</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-createCallAdapter-retrofit-method"><span class="nav-number">1.3.1.1.</span> <span class="nav-text">1.createCallAdapter(retrofit, method)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-createResponseConverter-Retrofit-retrofit-Method-method-Type-responseType"><span class="nav-number">1.3.1.2.</span> <span class="nav-text">2.createResponseConverter(Retrofit retrofit, Method method, Type responseType)</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#最终，执行HttpServiceMethod的invoke方法"><span class="nav-number">1.3.2.</span> <span class="nav-text">最终，执行HttpServiceMethod的invoke方法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、创建网络请求接口类实例并执行请求过程"><span class="nav-number">1.4.</span> <span class="nav-text">四、创建网络请求接口类实例并执行请求过程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、service-listRepos"><span class="nav-number">1.4.1.</span> <span class="nav-text">1、service.listRepos()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、同步执行流程-repos-execute"><span class="nav-number">1.4.2.</span> <span class="nav-text">2、同步执行流程 repos.execute()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、异步请求流程-repos-enqueque"><span class="nav-number">1.4.3.</span> <span class="nav-text">3、异步请求流程 repos.enqueque</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五、总结"><span class="nav-number">1.5.</span> <span class="nav-text">五、总结</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#参考链接："><span class="nav-number">1.5.0.1.</span> <span class="nav-text">参考链接：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#很感谢您阅读这篇文章，希望您能将它分享给您的朋友或技术群，这对我意义重大。"><span class="nav-number">1.5.1.</span> <span class="nav-text">很感谢您阅读这篇文章，希望您能将它分享给您的朋友或技术群，这对我意义重大。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#希望我们能成为朋友，在-Github、掘金上一起分享知识。"><span class="nav-number">1.5.2.</span> <span class="nav-text">希望我们能成为朋友，在 Github、掘金上一起分享知识。</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">JsonChao</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+    
+
+    
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2155025"></script>
+      <!-- UY END -->
+    
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+   
+   
+     
+   
+   
+  
+     
+</div>
+<!-- City版安装代码已完成 -->
+   
+ 
+
+   
+     
+   
+  
+       <div id="lv-container" data-id="city" data-uid="MTAyMC8zMzg1Mi8xMDQwNQ==">
+       <script type="text/javascript">
+          (function(d, s) {
+              var j, e = d.getElementsByTagName(s)[0];
+              if (typeof LivereTower === 'function') { return; }
+              j = d.createElement(s);
+              j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+              j.async = true;
+              e.parentNode.insertBefore(j, e);
+          })(document, 'script');
+       </script>
+       <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+       <!-- UY END -->
+   
+ 
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("2wtHdVd6zid7kU6YQKIqsHU5-gzGzoHsz", "eLibBRhSAsSoX1JbTMJH6ka3");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
