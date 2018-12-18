@@ -89,15 +89,15 @@
 <meta property="og:site_name" content="Deep into Android">
 <meta property="og:description" content="前言成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。前两篇我们详细地分析了Android的网络底层框架OKHttp和封装框架Retrofit的核心源码，如果对OKHttp或Retrofit内部机制不了解的可以看看Android主流三方库源码分析（一、深入理解OKHttp源码）和Android主流三方库源码分析（二、深入理解Retrofit源码）">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="https://pic4.zhimg.com/v2-57ecd38997babcdc92667017bd553323_r.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/JsonChao/Awesome-Third-Library-Source-Analysis/master/ScreenShots/Glide%E6%A1%86%E6%9E%B6%E5%9B%BE.jpg">
 <meta property="og:image" content="https://raw.githubusercontent.com/JsonChao/Awesome-Android-Notebook/master/screenshots/Glide_with%E5%8A%A0%E8%BD%BD%E6%B5%81%E7%A8%8B.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/JsonChao/Awesome-Android-Notebook/master/screenshots/Glide_load%E5%8A%A0%E8%BD%BD%E6%B5%81%E7%A8%8B.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/JsonChao/Awesome-Android-Notebook/master/screenshots/Glide%E5%8A%A0%E8%BD%BD%E6%B5%81%E7%A8%8B.png">
-<meta property="og:updated_time" content="2018-12-17T14:00:24.194Z">
+<meta property="og:updated_time" content="2018-12-18T13:40:40.276Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android主流三方库源码分析（三、深入理解Glide源码）">
 <meta name="twitter:description" content="前言成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。前两篇我们详细地分析了Android的网络底层框架OKHttp和封装框架Retrofit的核心源码，如果对OKHttp或Retrofit内部机制不了解的可以看看Android主流三方库源码分析（一、深入理解OKHttp源码）和Android主流三方库源码分析（二、深入理解Retrofit源码）">
-<meta name="twitter:image" content="https://pic4.zhimg.com/v2-57ecd38997babcdc92667017bd553323_r.jpg">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/JsonChao/Awesome-Third-Library-Source-Analysis/master/ScreenShots/Glide%E6%A1%86%E6%9E%B6%E5%9B%BE.jpg">
 
 
 
@@ -435,7 +435,7 @@ public class MyAppGlideModule extends AppGlideModule {
 }
 </code></pre><p>接下来，本文将针对Glide的最新源码版本V4.8.0对Glide加载网络图片的流程进行详细地分析与讲解，力争做到让读者朋友们知其然也知其所以然。</p>
 <h3 id="二、GlideApp-with-context-源码详解"><a href="#二、GlideApp-with-context-源码详解" class="headerlink" title="二、GlideApp.with(context)源码详解"></a>二、GlideApp.with(context)源码详解</h3><p>首先，用<strong>艽野尘梦</strong>绘制的这份Glide框架图让我们对Glide的总体框架有一个初步的了解。</p>
-<p><img src="https://pic4.zhimg.com/v2-57ecd38997babcdc92667017bd553323_r.jpg" alt="image"></p>
+<p><img src="https://raw.githubusercontent.com/JsonChao/Awesome-Third-Library-Source-Analysis/master/ScreenShots/Glide%E6%A1%86%E6%9E%B6%E5%9B%BE.jpg" alt="image"></p>
 <p>从GlideApp.with这行代码开始，内部主线执行流程如下。</p>
 <h4 id="1、GlideApp-with"><a href="#1、GlideApp-with" class="headerlink" title="1、GlideApp#with"></a>1、GlideApp#with</h4><pre><code>return (GlideRequests) Glide.with(context);
 </code></pre><h4 id="2、Glide-with"><a href="#2、Glide-with" class="headerlink" title="2、Glide#with"></a>2、Glide#with</h4><pre><code>return getRetriever(context).get(context);
@@ -967,19 +967,11 @@ public void begin() {
     throw new IllegalArgumentException(&quot;Cannot   restart a running request&quot;);
   }
 
-  // If we&apos;re restarted after we&apos;re complete (usually     via something like a notifyDataSetChanged
-  // that starts an identical request into the same     Target or View), we can simply use the
-  // resource and size we retrieved the last time     around and skip obtaining a new size, starting a
-  // new load etc. This does mean that users who want     to restart a load because they expect that
-  // the view size has changed will need to     explicitly clear the View or Target before starting
-  // the new load.
+
   if (status == Status.COMPLETE) {
     onResourceReady(resource,   DataSource.MEMORY_CACHE);
     return;
   }
-
-  // Restarts for requests that are neither complete     nor running can be treated as new requests
-  // and can run again from the beginning.
 
   status = Status.WAITING_FOR_SIZE;
   if (Util.isValidDimensions(overrideWidth, overrideHeight)) {
@@ -1040,33 +1032,7 @@ public void onSizeReady(int width, int height) {
   ...
 }
 </code></pre><p>终于看到Engine类了，感觉距离成功不远了，继续~</p>
-<h4 id="9、Engine-load"><a href="#9、Engine-load" class="headerlink" title="9、Engine#load"></a>9、Engine#load</h4><pre><code>/**
-* Starts a load for the given arguments.
-*
-* &lt;p&gt;Must be called on the main thread.
-*
-* &lt;p&gt;The flow for any request is as follows:
-* &lt;ul&gt;
-*   &lt;li&gt;Check the current set of actively used  resources, return the active resource if
-*   present, and move any newly inactive resources  into the memory cache.&lt;/li&gt;
-*   &lt;li&gt;Check the memory cache and provide the  cached resource if present.&lt;/li&gt;
-*   &lt;li&gt;Check the current set of in progress loads  and add the cb to the in progress load if
-*   one is present.&lt;/li&gt;
-*   &lt;li&gt;Start a new load.&lt;/li&gt;
-* &lt;/ul&gt;
-*
-* &lt;p&gt;Active resources are those that have been  provided to at least one request and have not yet
-* been released. Once all consumers of a resource  have released that resource, the resource then
-* goes to cache. If the resource is ever returned to  a new consumer from cache, it is re-added to
-* the active resources. If the resource is evicted  from the cache, its resources are recycled and
-* re-used if possible and the resource is discarded.  There is no strict requirement that
-* consumers release their resources so active  resources are held weakly.
-*
-* @param width  The target width in pixels of the  desired resource.
-* @param height The target height in pixels of the  desired resource.
-* @param cb     The callback that will be called  when the load completes.
-*/
-public &lt;R&gt; LoadStatus load(
+<h4 id="9、Engine-load"><a href="#9、Engine-load" class="headerlink" title="9、Engine#load"></a>9、Engine#load</h4><pre><code>public &lt;R&gt; LoadStatus load(
     GlideContext glideContext,
     Object model,
     Key signature,
@@ -1313,22 +1279,8 @@ private InputStream loadDataWithRedirects(URL url, int redirects, URL lastUrl,
 
     ...
 
-    urlConnection = connectionFactory.build(url);
-    for (Map.Entry&lt;String, String&gt; headerEntry : headers.entrySet()) {
-      urlConnection.addRequestProperty(headerEntry.getKey(),   headerEntry.getValue());
-    }
-    urlConnection.setConnectTimeout(timeout);
-    urlConnection.setReadTimeout(timeout);
-    urlConnection.setUseCaches(false);
-    urlConnection.setDoInput(true);
-
-    // Stop the urlConnection instance of HttpUrlConnection from     following redirects so that
-    // redirects will be handled by recursive calls to this method,     loadDataWithRedirects.
-    urlConnection.setInstanceFollowRedirects(false);
-
-    // Connect explicitly to avoid errors in decoders if connection     fails.
     urlConnection.connect();
-    // Set the stream so that it&apos;s closed in cleanup to avoid resource     leaks. See #2352.
+    // Set the stream so that it&apos;s closed in cleanup to avoid resource leaks. See #2352.
     stream = urlConnection.getInputStream();
     if (isCancelled) {
       return null;
@@ -1339,14 +1291,9 @@ private InputStream loadDataWithRedirects(URL url, int redirects, URL lastUrl,
       // 从urlConnection中获取资源流
       return getStreamForSuccessfulRequest(urlConnection);
     } else if (isHttpRedirect(statusCode)) {
-      String redirectUrlString =   urlConnection.getHeaderField(&quot;Location&quot;);
-      if (TextUtils.isEmpty(redirectUrlString)) {
-        throw new HttpException(&quot;Received empty or null redirect url&quot;);
-      }
-      URL redirectUrl = new URL(url, redirectUrlString);
-      // Closing the stream specifically is required to avoid leaking   ResponseBodys in addition
-      // to disconnecting the url connection below. See #2352.
-      cleanup();
+
+      ...
+
       // 重定向请求
       return loadDataWithRedirects(redirectUrl, redirects + 1, url,   headers);
     } else if (statusCode == INVALID_STATUS_CODE) {
@@ -1406,6 +1353,7 @@ private InputStream getStreamForSuccessfulRequest(HttpURLConnection urlConnectio
       }
       long startTime = LogTime.getLogTime();
       // 核心代码
+      // 进一步包装了解码方法
       Resource&lt;R&gt; result = decodeFromFetcher(data, dataSource);
       if (Log.isLoggable(TAG, Log.VERBOSE)) {
         logWithTimeAndKey(&quot;Decoded result &quot; + result, startTime);
@@ -1419,8 +1367,9 @@ private InputStream getStreamForSuccessfulRequest(HttpURLConnection urlConnectio
 @SuppressWarnings(&quot;unchecked&quot;)
 private &lt;Data&gt; Resource&lt;R&gt; decodeFromFetcher(Data data, DataSource dataSource)
   throws GlideException {
-    LoadPath&lt;Data, ?, R&gt; path = decodeHelper.getLoadPath((Class&lt;Data&gt;)     data.getClass());
+    LoadPath&lt;Data, ?, R&gt; path = decodeHelper.getLoadPath((Class&lt;Data&gt;) data.getClass());
     // 核心代码
+    // 将解码任务分发给LoadPath
     return runLoadPath(data, dataSource, path);
 }
 
@@ -1432,6 +1381,7 @@ private &lt;Data, ResourceType&gt; Resource&lt;R&gt; runLoadPath(Data data, Data
     try {
       // ResourceType in DecodeCallback below is required for   compilation to work with gradle.
       // 核心代码
+      // 将解码任务分发给LoadPath
       return path.load(
           rewinder, options, width, height, new   DecodeCallback&lt;ResourceType&gt;(dataSource));
     } finally {
@@ -1458,6 +1408,7 @@ try {
       DecodePath&lt;Data, ResourceType, Transcode&gt; path =   decodePaths.get(i);
       try {
         // 核心代码
+        // 将解码任务又进一步分发给DecodePath的decode方法去解码
         result = path.decode(rewinder, width, height, options,     decodeCallback);
       } catch (GlideException e) {
         exceptions.add(e);
@@ -1476,6 +1427,7 @@ try {
 </code></pre><h4 id="17、DecodePath-decode"><a href="#17、DecodePath-decode" class="headerlink" title="17、DecodePath#decode"></a>17、DecodePath#decode</h4><pre><code>public Resource&lt;Transcode&gt; decode(DataRewinder&lt;DataType&gt; rewinder,     int width, int height,
       @NonNull Options options, DecodeCallback&lt;ResourceType&gt; callback)   throws GlideException {
     // 核心代码
+    // 继续调用DecodePath的decodeResource方法去解析出数据
     Resource&lt;ResourceType&gt; decoded = decodeResource(rewinder, width,     height, options);
     Resource&lt;ResourceType&gt; transformed =     callback.onResourceDecoded(decoded);
     return transcoder.transcode(transformed, options);
@@ -1506,10 +1458,9 @@ private Resource&lt;ResourceType&gt;   decodeResourceWithList(DataRewinder&lt;Da
         // 获取包装的数据
         data = rewinder.rewindAndGet();
         // 核心代码 
+        // 根据DataType和ResourceType的类型分发给不同的解码器Decoder
         result = decoder.decode(data, width, height, options);
       }
-      // Some decoders throw unexpectedly. If they do, we shouldn&apos;t     fail the entire load path, but
-      // instead log and continue. See #2406 for an example.
     } catch (IOException | RuntimeException | OutOfMemoryError e) {
       if (Log.isLoggable(TAG, Log.VERBOSE)) {
         Log.v(TAG, &quot;Failed to decode data for &quot; + decoder, e);
@@ -1532,16 +1483,8 @@ private Resource&lt;ResourceType&gt;   decodeResourceWithList(DataRewinder&lt;Da
  * Decodes {@link android.graphics.Bitmap Bitmaps} from {@link    java.nio.ByteBuffer ByteBuffers}.
  */
 public class ByteBufferBitmapDecoder implements     ResourceDecoder&lt;ByteBuffer, Bitmap&gt; {
-  private final Downsampler downsampler;
 
-  public ByteBufferBitmapDecoder(Downsampler downsampler) {
-    this.downsampler = downsampler;
-  }
-
-  @Override
-  public boolean handles(@NonNull ByteBuffer source, @NonNull Options   options) {
-    return downsampler.handles(source);
-  }
+  ...
 
   @Override
   public Resource&lt;Bitmap&gt; decode(@NonNull ByteBuffer source, int width,   int height,
@@ -1564,15 +1507,7 @@ public Resource&lt;Bitmap&gt; decode(InputStream is, int requestedWidth, int req
     Preconditions.checkArgument(is.markSupported(), &quot;You must provide an     InputStream that supports&quot;
         + &quot; mark()&quot;);
 
-    byte[] bytesForOptions =     byteArrayPool.get(ArrayPool.STANDARD_BUFFER_SIZE_BYTES,     byte[].class);
-    BitmapFactory.Options bitmapFactoryOptions = getDefaultOptions();
-    bitmapFactoryOptions.inTempStorage = bytesForOptions;
-
-    DecodeFormat decodeFormat = options.get(DECODE_FORMAT);
-    DownsampleStrategy downsampleStrategy =     options.get(DownsampleStrategy.OPTION);
-    boolean fixBitmapToRequestedDimensions =     options.get(FIX_BITMAP_SIZE_TO_REQUESTED_DIMENSIONS);
-    boolean isHardwareConfigAllowed =
-      options.get(ALLOW_HARDWARE_CONFIG) != null &amp;&amp;   options.get(ALLOW_HARDWARE_CONFIG);
+    ...
 
     try {
       // 核心代码
@@ -1602,23 +1537,10 @@ private Bitmap decodeFromWrappedStreams(InputStream is,
     Bitmap downsampled = decodeStream(is, options, callbacks, bitmapPool);
     callbacks.onDecodeComplete(bitmapPool, downsampled);
 
-    if (Log.isLoggable(TAG, Log.VERBOSE)) {
-      logDecode(sourceWidth, sourceHeight, sourceMimeType, options, downsampled,
-          requestedWidth, requestedHeight, startTime);
-    }
+    ...
 
     // Bimtap旋转处理
-    Bitmap rotated = null;
-    if (downsampled != null) {
-      // If we scaled, the Bitmap density will be our inTargetDensity. Here we correct it back to
-      // the expected density dpi.
-      downsampled.setDensity(displayMetrics.densityDpi);
-
-      rotated = TransformationUtils.rotateImageExif(bitmapPool, downsampled, orientation);
-      if (!downsampled.equals(rotated)) {
-        bitmapPool.put(downsampled);
-      }
-    }
+    ...
 
     return rotated;
 }
@@ -1667,14 +1589,12 @@ private void notifyComplete(Resource&lt;R&gt; resource, DataSource     dataSourc
 public void onResourceReady(Resource&lt;R&gt; resource, DataSource   dataSource) {
   this.resource = resource;
   this.dataSource = dataSource;
-  MAIN_THREAD_HANDLER.obtainMessage(MSG_COMPLETE,     this).sendToTarget();
+  MAIN_THREAD_HANDLER.obtainMessage(MSG_COMPLETE, this).sendToTarget();
 }
 
 private static class MainThreadCallback implements Handler.Callback{
 
-    @Synthetic
-    @SuppressWarnings(&quot;WeakerAccess&quot;)
-    MainThreadCallback() { }
+    ...
 
     @Override
     public boolean handleMessage(Message message) {
