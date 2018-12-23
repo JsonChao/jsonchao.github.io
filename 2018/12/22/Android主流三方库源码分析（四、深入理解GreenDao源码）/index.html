@@ -90,7 +90,7 @@
 <meta property="og:description" content="前言成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。前两篇我们详细地分析了Android的网络底层框架OKHttp和封装框架Retrofit的核心源码，如果对OKHttp或Retrofit内部机制不了解的可以看看Android主流三方库源码分析（一、深入理解OKHttp源码）和Android主流三方库源码分析（二、深入理解Retrofit源码）">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://raw.githubusercontent.com/JsonChao/Awesome-Third-Library-Source-Analysis/master/ScreenShots/greendao_auto_generate_class.png">
-<meta property="og:updated_time" content="2018-12-22T14:56:36.143Z">
+<meta property="og:updated_time" content="2018-12-23T12:17:24.243Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android主流三方库源码分析（四、深入理解GreenDao源码）">
 <meta name="twitter:description" content="前言成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。前两篇我们详细地分析了Android的网络底层框架OKHttp和封装框架Retrofit的核心源码，如果对OKHttp或Retrofit内部机制不了解的可以看看Android主流三方库源码分析（一、深入理解OKHttp源码）和Android主流三方库源码分析（二、深入理解Retrofit源码）">
@@ -526,7 +526,7 @@ List&lt;HistoryData&gt; historyDataList = historyDataDao.loadAll();
 
          @Override
         public void onCreate(Database db) {
-            Log.i(&quot;greenDAO&quot;, &quot;Creating tables for schema version &quot; +     SCHEMA_VERSION);
+            Log.i(&quot;greenDAO&quot;, &quot;Creating tables for schema version &quot; + SCHEMA_VERSION);
             createAllTables(db, false);
         }
     }
@@ -536,14 +536,14 @@ List&lt;HistoryData&gt; historyDataList = historyDataDao.loadAll();
         ...
 
         @Override
-        public void onUpgrade(Database db, int oldVersion, int     newVersion) {
-            Log.i(&quot;greenDAO&quot;, &quot;Upgrading schema from version &quot; +     oldVersion + &quot; to &quot; + newVersion + &quot; by dropping all     tables&quot;);
+        public void onUpgrade(Database db, int oldVersion, int newVersion) {
+            Log.i(&quot;greenDAO&quot;, &quot;Upgrading schema from version &quot; + oldVersion + &quot; to &quot; + newVersion + &quot; by dropping all tables&quot;);
             dropAllTables(db, true);
             onCreate(db);
         }
     }
 }
-</code></pre><p>DevOpenHelper自身实现了更新的逻辑，这里是弃置了所有的表，并且调用了OpenHelper实现的onCreate方法用于创建所有的表，其中DevOpenHelper继承于OpenHelper，于OpenHelper自身又继承于DatabaseOpenHelper，那么，这个DatabaseOpenHelper这个类的作用是什么呢？</p>
+</code></pre><p>DevOpenHelper自身实现了更新的逻辑，这里是弃置了所有的表，并且调用了OpenHelper实现的onCreate方法用于创建所有的表，其中DevOpenHelper继承于OpenHelper，而OpenHelper自身又继承于DatabaseOpenHelper，那么，这个DatabaseOpenHelper这个类的作用是什么呢？</p>
 <pre><code>public abstract class DatabaseOpenHelper extends SQLiteOpenHelper {
 
     ...
@@ -585,7 +585,7 @@ List&lt;HistoryData&gt; historyDataList = historyDataDao.loadAll();
             return new EncryptedDatabase(sqLiteDatabase);
         }
     }
-</code></pre><p>其实，DatabaseOpenHelper也是实现了SQLiteOpenHelper的一个帮助类，它内部可以获取到两种不同的数据库类型，一种是==StandardDatabase==，另一种是==EncryptedDatabase==，从以上源码可知，它们内部都通过wrap这样一个包装的方法，返回了对应的数据库类型，我们大致看一下StandardDatabase和EncryptedDatabase的内部实现。</p>
+</code></pre><p>其实，DatabaseOpenHelper也是实现了SQLiteOpenHelper的一个帮助类，它内部可以获取到两种不同的数据库类型，一种是标准型的数据库==StandardDatabase==，另一种是加密型的数据库==EncryptedDatabase==，从以上源码可知，它们内部都通过wrap这样一个包装的方法，返回了对应的数据库类型，我们大致看一下StandardDatabase和EncryptedDatabase的内部实现。</p>
 <pre><code>public class StandardDatabase implements Database {
 
     // 这里的SQLiteDatabase是android.database.sqlite.SQLiteDatabase包下的
@@ -624,7 +624,7 @@ public class EncryptedDatabaseStatement implements DatabaseStatement     {
 
     ...
 }
-</code></pre><p>StandardDatabase和EncryptedDatabase这两个类内部都使用了<strong>代理模式</strong>给相同的接口添加了不同的具体实现，StandardDatabase自然是使用的Android包下的SQLiteDatabase，而EncryptedDatabaseStatement为了实现加密数据库的功能，则使用了一个叫做==sqlcipher==的数据库加密三方库，这样，如果你项目下的数据库需要保存比较重要的数据，则可以使用getEncryptedWritableDb方法来代替getdWritableDb方法对数据库进行加密，这样，我们之后的数据库操作则会以代理模式的形式间接地使用sqlcipher提供的API去操作数据库。</p>
+</code></pre><p>StandardDatabase和EncryptedDatabase这两个类内部都使用了<strong>代理模式</strong>给相同的接口添加了不同的具体实现，StandardDatabase自然是使用的Android包下的SQLiteDatabase，而EncryptedDatabaseStatement为了实现加密数据库的功能，则使用了一个叫做==sqlcipher==的数据库加密三方库，如果你项目下的数据库需要保存比较重要的数据，则可以使用getEncryptedWritableDb方法来代替getdWritableDb方法对数据库进行加密，这样，我们之后的数据库操作则会以代理模式的形式间接地使用sqlcipher提供的API去操作数据库。</p>
 <h4 id="2、创建DaoMaster对象"><a href="#2、创建DaoMaster对象" class="headerlink" title="2、创建DaoMaster对象"></a>2、创建DaoMaster对象</h4><pre><code>SQLiteDatabase database = devOpenHelper.getWritableDatabase();
 DaoMaster daoMaster = new DaoMaster(database);
 </code></pre><p>首先，DaoMaster作为所有Dao对象的主人，它内部肯定是需要一个SQLiteDatabase对象的，因此，先由DaoMaster的帮助类对象devOpenHelper的getWritableDatabase方法得到一个标准的数据库类对象database，再由此创建一个DaoMaster对象。</p>
@@ -655,14 +655,14 @@ DaoMaster daoMaster = new DaoMaster(database);
         daoConfigMap = new HashMap&lt;Class&lt;? extends AbstractDao&lt;?, ?&gt;&gt;, DaoConfig&gt;();
     }
 
-    protected void registerDaoClass(Class&lt;? extends AbstractDao&lt;?,     ?&gt;&gt; daoClass) {
+    protected void registerDaoClass(Class&lt;? extends AbstractDao&lt;?, ?&gt;&gt; daoClass) {
         DaoConfig daoConfig = new DaoConfig(db, daoClass);
         daoConfigMap.put(daoClass, daoConfig);
     }
 
     ...
 }
-</code></pre><p>在AbstractDaoMaster对象的构造方法中，除了记录当前的数据库对象db和版本schemaVersion之外，还创建了一个类型为HashMap<class<? extends="" abstractdao<?,="" ?="">&gt;, DaoConfig&gt;()的daoConfigMap对象<strong>用于保存每一个DAO对应的数据配置对象DaoConfig</strong>，Daoconfig对象存储了对应的Dao对象所必需的数据。最后，在DaoMaster的构造方法中使用了registerDaoClass(HistoryDataDao.class)方法将HistoryDataDao类对象进行了注册，其实，就是为HistoryDataDao这个Dao对象创建了相应的DaoConfig对象并将它放入daoConfigMap对象中保存起来。</class<?></p>
+</code></pre><p>在AbstractDaoMaster对象的构造方法中，除了记录当前的数据库对象db和版本schemaVersion之外，还创建了一个类型为HashMap<class<? extends="" abstractdao<?,="" ?="">&gt;, DaoConfig&gt;()的daoConfigMap对象<strong>用于保存每一个DAO对应的数据配置对象DaoConfig</strong>，Daoconfig对象存储了对应的Dao对象所必需的数据。最后，在DaoMaster的构造方法中使用了registerDaoClass(HistoryDataDao.class)方法将HistoryDataDao类对象进行了注册，实际上，就是为HistoryDataDao这个Dao对象创建了相应的DaoConfig对象并将它放入daoConfigMap对象中保存起来。</class<?></p>
 <h4 id="3、创建DaoSession对象"><a href="#3、创建DaoSession对象" class="headerlink" title="3、创建DaoSession对象"></a>3、创建DaoSession对象</h4><pre><code>mDaoSession = daoMaster.newSession();
 </code></pre><p>在DaoMaster对象中使用了newSession方法新建了一个DaoSession对象。</p>
 <pre><code>public DaoSession newSession() {
@@ -677,7 +677,7 @@ DaoMaster daoMaster = new DaoMaster(database);
             daoConfigMap) {
         super(db);
 
-        historyDataDaoConfig =     daoConfigMap.get(HistoryDataDao.class).clone();
+        historyDataDaoConfig = daoConfigMap.get(HistoryDataDao.class).clone();
         historyDataDaoConfig.initIdentityScope(type);
 
         historyDataDao = new HistoryDataDao(historyDataDaoConfig, this);
@@ -697,15 +697,15 @@ DaoMaster daoMaster = new DaoMaster(database);
         this.entityToDao = new HashMap&lt;Class&lt;?&gt;, AbstractDao&lt;?, ?&gt;&gt;();
     }
 
-    protected &lt;T&gt; void registerDao(Class&lt;T&gt; entityClass, AbstractDao&lt;T,     ?&gt; dao) {
+    protected &lt;T&gt; void registerDao(Class&lt;T&gt; entityClass, AbstractDao&lt;T, ?&gt; dao) {
         entityToDao.put(entityClass, dao);
     }
 
     ...
 }
-</code></pre><p>在AbstractDaoSession构造方法里面<strong>创建了一个实体和Dao对象的映射集合</strong>。接下来，在DaoSession的构造方法中还做了2件事：</p>
+</code></pre><p>在AbstractDaoSession构造方法里面<strong>创建了一个实体与Dao对象的映射集合</strong>。接下来，在DaoSession的构造方法中还做了2件事：</p>
 <ul>
-<li>1、创建每一个Dao对应的DaoConfig对象，这里是historyDataDaoConfig，并且根据IdentityScopeType的类型初始化创建一个相应的IdentityScope，根据type的不同，它由两种类型，分别是==IdentityScopeObject==和==IdentityScopeLong==，它的作用是根据主键缓存对应的实体数据，当主键是数字类型的时候，如long/Long、int/Integer、short/Short、byte/Byte，则使用IdentityScopeObject缓存实体数据，当主键不是数字类型的时候，则使用IdentityScopeObject缓存实体数据。</li>
+<li>1、创建每一个Dao对应的DaoConfig对象，这里是historyDataDaoConfig，并且根据IdentityScopeType的类型初始化创建一个相应的IdentityScope，根据type的不同，它有两种类型，分别是==IdentityScopeObject==和==IdentityScopeLong==，它的作用是根据主键缓存对应的实体数据。当主键是数字类型的时候，如long/Long、int/Integer、short/Short、byte/Byte，则使用IdentityScopeLong缓存实体数据，当主键不是数字类型的时候，则使用IdentityScopeObject缓存实体数据。</li>
 <li>2、根据DaoSession对象和每一个Dao对应的DaoConfig对象，创建与之对应的historyDataDao对象，由于这个项目只创建了一个实体类HistoryData，因此这里只有一个Dao对象historyDataDao，然后就是注册Dao对象，其实就是将实体和对应的Dao对象放入entityToDao这个映射集合中保存起来了。</li>
 </ul>
 <h4 id="4、插入源码分析"><a href="#4、插入源码分析" class="headerlink" title="4、插入源码分析"></a>4、插入源码分析</h4><pre><code>HistoryDataDao historyDataDao = daoSession.getHistoryDataDao();
@@ -743,15 +743,15 @@ historyDataDao.insert(historyData);
     ...
 
 }
-</code></pre><p>看到这里，大家应该能猜到，AbstractDao是所有Dao对象的基类，它实现了实体数据的操作如增删改查。我们接着分析insert是如何实现的，在AbstractDao的insert方法中又调用了executeInsert这个方法。在这个方法中，第二个参数这里的statements是一个==TableStatements==对象，它是在AbstractDao初始化构造器时从DaoConfig对象中取出来的，它是一个<strong>根据指定的表格创建SQL语句的一个帮助类</strong>。使用statements.getInsertStatement()则是获取了一个插入的语句。而第三个参数则是判断是否是主键的标志。</p>
+</code></pre><p>看到这里，根据程序员优秀的直觉，大家应该能猜到，AbstractDao是所有Dao对象的基类，它实现了实体数据的操作如增删改查。我们接着分析insert是如何实现的，在AbstractDao的insert方法中又调用了executeInsert这个方法。在这个方法中，第二个参里的statements是一个==TableStatements==对象，它是在AbstractDao初始化构造器时从DaoConfig对象中取出来的，是一个<strong>根据指定的表格创建SQL语句的一个帮助类</strong>。使用statements.getInsertStatement()则是获取了一个插入的语句。而第三个参数则是判断是否是主键的标志。</p>
 <pre><code>public class TableStatements {
 
     ...
 
     public DatabaseStatement getInsertStatement() {
         if (insertStatement == null) {
-            String sql = SqlUtils.createSqlInsert(&quot;INSERT INTO &quot;,     tablename, allColumns);
-            DatabaseStatement newInsertStatement =     db.compileStatement(sql);
+            String sql = SqlUtils.createSqlInsert(&quot;INSERT INTO &quot;, tablename, allColumns);
+            DatabaseStatement newInsertStatement = db.compileStatement(sql);
             ...
         }
         return insertStatement;
@@ -761,8 +761,8 @@ historyDataDao.insert(historyData);
 }
 </code></pre><p>在TableStatements的getInsertStatement方法中，主要做了两件事：</p>
 <ul>
-<li>使用SqlUtils创建了插入的sql语句。</li>
-<li>根据不同的数据库类型（标准数据库或加密数据库）将sql语句编译成当前数据库对应的语句。</li>
+<li>1、使用SqlUtils创建了插入的sql语句。</li>
+<li>2、根据不同的数据库类型（标准数据库或加密数据库）将sql语句编译成当前数据库对应的语句。</li>
 </ul>
 <p>我们继续往下分析executeInsert的执行流程。</p>
 <pre><code>private long executeInsert(T entity, DatabaseStatement stmt, boolean setKeyAndAttach) {
@@ -783,7 +783,7 @@ historyDataDao.insert(historyData);
     }
     return rowId;
 }
-</code></pre><p>这里首先是判断数据库是否被当前线程锁定，如果是直接插入数据，否则为了避免死锁，则开启一个数据库事物，再进行插入数据的操作，最后如果设置了主键，则在插入数据之后更新主键的值并将对应的实体缓存到相应identityScope中，这一块的代码流程如下所示：</p>
+</code></pre><p>这里首先是判断数据库是否被当前线程锁定，如果是，则直接插入数据，否则为了避免死锁，则开启一个数据库事务，再进行插入数据的操作。最后如果设置了主键，则在插入数据之后更新主键的值并将对应的实体缓存到相应的identityScope中，这一块的代码流程如下所示：</p>
 <pre><code>protected void updateKeyAfterInsertAndAttach(T entity, long rowId, boolean lock) {
     if (rowId != -1) {
         K key = updateKeyAfterInsert(entity, rowId);
@@ -855,7 +855,7 @@ protected final void attachEntity(K key, T entity, boolean lock) {
 
     ...
 }
-</code></pre><p>可以看到，这里对HistoryData的所有字段使用对应的数据库语句进行了绑定操作，这里最后再提及一下，当前数据库是加密型时，则会使用最开始提及的DatabaseStatement的加密实现类EncryptedDatabaseStatement应用代理模式去使用sqlcipher这个数据加密库的executeInsert方法。</p>
+</code></pre><p>可以看到，这里对HistoryData的所有字段使用对应的数据库语句进行了绑定操作。这里最后再提及一下，如果当前数据库是加密型时，则会使用最开始提及的DatabaseStatement的加密实现类EncryptedDatabaseStatement应用代理模式去使用sqlcipher这个加密型数据库的insert方法。</p>
 <h4 id="5、查询源码分析"><a href="#5、查询源码分析" class="headerlink" title="5、查询源码分析"></a>5、查询源码分析</h4><p>经过对插入源码的分析，我相信大家对GreenDao内部的机制已经有了一些自己的理解，由于删除和更新内部的流程比较简单，且与插入源码有异曲同工之妙，这里就不在赘述了。最后我们再分析下查询的源码，查询的流程调用链较长，所以将它的核心流程源码直接给出。</p>
 <pre><code>List&lt;HistoryData&gt; historyDataList = historyDataDao.loadAll();
 
@@ -904,7 +904,7 @@ protected List&lt;T&gt; loadAllFromCursor(Cursor cursor) {
     }
     return list;
 }
-</code></pre><p>最终，loadAll方法调用到loadAllFromCursor这个方法，首先，如果<strong>当前的游标cursor是跨进程的Cursor</strong>，并且cursor的行数没有偏差的话，则使用一个加快版的==FastCursor==对象进行游标遍历。接着，不管是执行loadAllUnlockOnWindowBounds这个方法还是直接加载当前的数据列表list.add(loadCurrent(cursor, 0, false))，最后都会调用到这行list.add(loadCurrent(cursor, 0, false))代码，很明显，loadCurrent方法就是加载数据的方法。</p>
+</code></pre><p>最终，loadAll方法将会调用到loadAllFromCursor这个方法，首先，如果<strong>当前的游标cursor是跨进程的cursor</strong>，并且cursor的行数没有偏差的话，则使用一个加快版的==FastCursor==对象进行游标遍历。接着，不管是执行loadAllUnlockOnWindowBounds这个方法还是直接加载当前的数据列表list.add(loadCurrent(cursor, 0, false))，最后都会调用到这行list.add(loadCurrent(cursor, 0, false))代码，很明显，loadCurrent方法就是加载数据的方法。</p>
 <pre><code>final protected T loadCurrent(Cursor cursor, int offset, boolean lock) {
     if (identityScopeLong != null) {
         ...
@@ -948,7 +948,7 @@ public HistoryData readEntity(Cursor cursor, int offset) {
     );
     return entity;
 }
-</code></pre><p><strong>最后，如果是非identityScopeLong缓存类型，即是属于identityScope的情况下，则还会在identityScope中将上面获得的数据进行缓存。如果没有实体数据缓存的话，则直接调用readEntity组件数据返回即可。</strong></p>
+</code></pre><p><strong>最后，如果是非identityScopeLong缓存类型，即是属于identityScope的情况下，则还会在identityScope中将上面获得的数据进行缓存。如果没有实体数据缓存的话，则直接调用readEntity组装数据返回即可。</strong></p>
 <p>注意：对于GreenDao缓存的特性，可能会出现没有拿到最新数据的bug，因此，如果遇到这种情况，可以使用DaoSession的clear方法删除缓存。</p>
 <h3 id="三、GreenDao是如何与ReactiveX结合？"><a href="#三、GreenDao是如何与ReactiveX结合？" class="headerlink" title="三、GreenDao是如何与ReactiveX结合？"></a>三、GreenDao是如何与ReactiveX结合？</h3><p>首先，看下与rx结合的使用流程：</p>
 <pre><code>RxDao&lt;HistoryData, Long&gt; xxDao = daoSession.getHistoryDataDao().rx();
@@ -999,7 +999,7 @@ class RxBase {
 
     ...
 }
-</code></pre><p>在RxUtils的fromCallable这个方法内部，其实就是<strong>使用defer这个延迟操作符来进行被观察者事件的发送，主要目的就是为了确保Observable被订阅后才执行。</strong></p>
+</code></pre><p>在RxUtils的fromCallable这个方法内部，其实就是<strong>使用defer这个延迟操作符来进行被观察者事件的发送，主要目的就是为了确保Observable被订阅后才执行</strong>。最后，如果调度器scheduler存在的话，将通过外部的wrap方法将执行环境调度到io线程。</p>
 <pre><code>@Internal
 class RxUtils {
 
@@ -1020,7 +1020,7 @@ class RxUtils {
         });
     }
 }
-</code></pre><h3 id="四、总结"><a href="#四、总结" class="headerlink" title="四、总结"></a>四、总结</h3><p>在分析完GreenDao的大致源码之后，我发现，GreenDao作为最好的数据库框架之一，是有一定道理的。首先，它通过使用自身的插件配套相应freemarker模板生成所需的静态代码，避免了反射等消耗性能的操作。其次，它内部提供了实体数据的映射缓存机制，能够进一步加快查询速度。对于不同数据库对应的SQL语句，也使用了不同的DataBaseStatement实现类结合代理模式进行了封装，屏蔽了数据库操作等繁琐的细节。最后，它使用了sqlcipher提供了加密数据库的功能，一定程度确保了安全性，同时，结合RxJava，我们便能更简洁地实现异步的数据库操作。GreenDao源码分析到这里就真的完结了，下一篇，笔者将会对RxJava的核心源码进行细致地讲解，以此能让大家对RxJava有一个更为深入的理解。</p>
+</code></pre><h3 id="四、总结"><a href="#四、总结" class="headerlink" title="四、总结"></a>四、总结</h3><p>在分析完GreenDao的大致源码之后，我发现，GreenDao作为最好的数据库框架之一，是有一定道理的。首先，它通过使用自身的插件配套相应的freemarker模板生成所需的静态代码，避免了反射等消耗性能的操作。其次，它内部提供了实体数据的映射缓存机制，能够进一步加快查询速度。对于不同数据库对应的SQL语句，也使用了不同的DataBaseStatement实现类结合代理模式进行了封装，屏蔽了数据库操作等繁琐的细节。最后，它使用了sqlcipher提供了加密数据库的功能，在一定程度确保了安全性，同时，结合RxJava，我们便能更简洁地实现异步的数据库操作。GreenDao源码分析到这里就真的完结了，下一篇，笔者将会对RxJava的核心源码进行细致地讲解，以此能让大家对RxJava有一个更为深入的理解。</p>
 <h5 id="参考链接："><a href="#参考链接：" class="headerlink" title="参考链接："></a>参考链接：</h5><hr>
 <p>1、GreenDao V3.2.2源码</p>
 <p>2、<a href="https://mp.weixin.qq.com/s?__biz=MzIwMTAzMTMxMg==&amp;mid=2649492577&amp;idx=1&amp;sn=b35b0ef0f3769efa8c5d49fc5d60dd80&amp;chksm=8eec879eb99b0e8881dd83cac912192df742ad547ccd274b7fccd2995edd08b095e1fd556cfe&amp;scene=38#wechat_redirect" target="_blank" rel="external">GreenDao源码分析</a></p>
