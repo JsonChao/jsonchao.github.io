@@ -1,0 +1,1652 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="default">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Android主流三方库源码分析," />
+
+
+
+
+
+  <link rel="alternate" href="/rss2.xml" title="Deep into Android" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="前言成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。到目前为止笔者分析了Android中最热门的网络底层和封装框架：Android主流三方库源码分析（一、深入理解OKHttp源码）和Android主流三方库源码分析（二、深入理解Retrofit源码），Android中使用最广泛的图片加载框架Glide的加载流程：Android主流三方库源码分析">
+<meta name="keywords" content="Android主流三方库源码分析">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android主流三方库源码分析（五、深入理解RxJava源码）">
+<meta property="og:url" content="http://yoursite.com/2019/01/01/Android主流三方库源码分析（五、深入理解RxJava源码）/index.html">
+<meta property="og:site_name" content="Deep into Android">
+<meta property="og:description" content="前言成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。到目前为止笔者分析了Android中最热门的网络底层和封装框架：Android主流三方库源码分析（一、深入理解OKHttp源码）和Android主流三方库源码分析（二、深入理解Retrofit源码），Android中使用最广泛的图片加载框架Glide的加载流程：Android主流三方库源码分析">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-01-01T15:26:48.483Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android主流三方库源码分析（五、深入理解RxJava源码）">
+<meta name="twitter:description" content="前言成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。到目前为止笔者分析了Android中最热门的网络底层和封装框架：Android主流三方库源码分析（一、深入理解OKHttp源码）和Android主流三方库源码分析（二、深入理解Retrofit源码），Android中使用最广泛的图片加载框架Glide的加载流程：Android主流三方库源码分析">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":0,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '2JGM8QNUKR',
+      apiKey: 'ad3d08277d479825f7ef759beadbce0d',
+      indexName: 'dicovery',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/01/01/Android主流三方库源码分析（五、深入理解RxJava源码）/"/>
+
+
+
+
+
+  <title>Android主流三方库源码分析（五、深入理解RxJava源码） | Deep into Android</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Deep into Android</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/01/Android主流三方库源码分析（五、深入理解RxJava源码）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JsonChao">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Deep into Android">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Android主流三方库源码分析（五、深入理解RxJava源码）</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-01T23:26:00+08:00">
+                2019-01-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/安卓主流三方库源码分析/" itemprop="url" rel="index">
+                    <span itemprop="name">安卓主流三方库源码分析</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/01/01/Android主流三方库源码分析（五、深入理解RxJava源码）/" class="leancloud_visitors" data-flag-title="Android主流三方库源码分析（五、深入理解RxJava源码）">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">Visitors&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <hr>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><h4 id="成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样-。"><a href="#成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样-。" class="headerlink" title="成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。"></a>成为一名优秀的Android开发，需要一份完备的<a href="https://github.com/JsonChao/Awesome-Android-Exercise" target="_blank" rel="external">知识体系</a>，在这里，让我们一起成长为自己所想的那样~。</h4><p>到目前为止笔者分析了Android中最热门的网络底层和封装框架：<a href="https://jsonchao.github.io/2018/12/01/Android%E4%B8%BB%E6%B5%81%E4%B8%89%E6%96%B9%E5%BA%93%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%E3%80%81%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3OKHttp%E6%BA%90%E7%A0%81%EF%BC%89/" target="_blank" rel="external">Android主流三方库源码分析（一、深入理解OKHttp源码）</a>和<a href="https://jsonchao.github.io/2018/12/09/Android%E4%B8%BB%E6%B5%81%E4%B8%89%E6%96%B9%E5%BA%93%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%EF%BC%88%E4%BA%8C%E3%80%81%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3Retrofit%E6%BA%90%E7%A0%81%EF%BC%89/" target="_blank" rel="external">Android主流三方库源码分析（二、深入理解Retrofit源码）</a>，Android中使用最广泛的图片加载框架Glide的加载流程：<a href="https://jsonchao.github.io/2018/12/16/Android%E4%B8%BB%E6%B5%81%E4%B8%89%E6%96%B9%E5%BA%93%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%89%E3%80%81%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3Glide%E6%BA%90%E7%A0%81%EF%BC%89/" target="_blank" rel="external">Android主流三方库源码分析（三、深入理解Glide源码）</a>以及Android中性能最好的数据库框架<a href="https://jsonchao.github.io/2018/12/22/Android%E4%B8%BB%E6%B5%81%E4%B8%89%E6%96%B9%E5%BA%93%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%EF%BC%88%E5%9B%9B%E3%80%81%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3GreenDao%E6%BA%90%E7%A0%81%EF%BC%89/" target="_blank" rel="external">Android主流三方库源码分析（四、深入理解GreenDao源码）</a>。本篇，我将会对近几年比较热门的函数式编程框架RxJava的源码进行详细的分析。</p>
+<h3 id="一、RxJava到底是什么？"><a href="#一、RxJava到底是什么？" class="headerlink" title="一、RxJava到底是什么？"></a>一、RxJava到底是什么？</h3><p>RxJava是基于Java虚拟机上的响应式扩展库，它通过<strong>使用可观察的序列将异步和基于事件的程序组合起来</strong>。<br>与此同时，它<strong>扩展了观察者模式来支持数据/事件序列</strong>，并且添加了操作符，这些<strong>操作符允许你声明性地组合序列</strong>，同时抽象出要关注的问题：比如低级线程、同步、线程安全和并发数据结构等。</p>
+<p>从RxJava的官方定义来看，我们如果要想真正地理解RxJava，就必须对它以下两个部分进行深入的分析：</p>
+<ul>
+<li>1、<strong>订阅流程</strong>。</li>
+<li>2、<strong>线程切换</strong>。</li>
+</ul>
+<p>当然，RxJava操作符的源码也是很不错的学习资源，特别是FlatMap、Zip等操作符的源码，有很多可以借鉴的地方，但是它们内部的实现比较复杂，限于篇幅，本文只讲解RxJava的订阅流程和线程切换原理。接下来，笔者一一对以上RxJava的两个关键部分来进行详细地讲解。</p>
+<h3 id="二、RxJava的订阅流程"><a href="#二、RxJava的订阅流程" class="headerlink" title="二、RxJava的订阅流程"></a>二、RxJava的订阅流程</h3><p>首先给出RxJava消息订阅的例子：</p>
+<pre><code>Observable.create(newObservableOnSubscribe&lt;String&gt;() {
+    @Override
+    public void subscribe(ObservableEmitter&lt;String&gt;emitter) throws Exception {
+        emitter.onNext(&quot;1&quot;);
+        emitter.onNext(&quot;2&quot;);
+        emitter.onNext(&quot;3&quot;);
+        emitter.onComplete();
+    }
+}).subscribe(new Observer&lt;String&gt;() {
+    @Override
+    public void onSubscribe(Disposable d) {
+        Log.d(TAG, &quot;onSubscribe&quot;);
+    }
+    @Override
+    public void onNext(String s) {
+        Log.d(TAG, &quot;onNext : &quot; + s);
+    }
+    @Override
+    public void onError(Throwable e) {
+        Log.d(TAG, &quot;onError : &quot; + e.toString());
+    }
+    @Override
+    public void onComplete() {
+        Log.d(TAG, &quot;onComplete&quot;);
+    }
+});
+</code></pre><p>可以看到，这里首先创建了一个被观察者，然后创建一个观察者订阅了这个被观察者，因此下面分两个部分对RxJava的订阅流程进行分析：</p>
+<ul>
+<li>1、<strong>创建被观察者过程</strong>。</li>
+<li>2、<strong>订阅过程；</strong>。</li>
+</ul>
+<h4 id="1、创建被观察者过程"><a href="#1、创建被观察者过程" class="headerlink" title="1、创建被观察者过程"></a>1、创建被观察者过程</h4><p>首先，上面使用了Observable类的create()方法创建了一个被观察者，看看里面做了什么。</p>
+<h5 id="1-1、Observable-create"><a href="#1-1、Observable-create" class="headerlink" title="1.1、Observable#create()"></a>1.1、Observable#create()</h5><pre><code>// 省略一些检测性的注解
+public static &lt;T&gt; Observable&lt;T&gt; create(ObservableOnSubscribe&lt;T&gt; source) {
+    ObjectHelper.requireNonNull(source, &quot;source is null&quot;);
+    return RxJavaPlugins.onAssembly(new ObservableCreate&lt;T&gt;(source));
+}
+</code></pre><p>在Observable的create()里面实际上是创建了一个新的ObservableCreate对象，同时，把我们定义好的ObservableOnSubscribe对象传入了ObservableCreate对象中，最后调用了RxJavaPlugins.onAssembly()方法。接下来看看这个ObservableCreate是干什么的。</p>
+<h5 id="1-2、ObservableCreate"><a href="#1-2、ObservableCreate" class="headerlink" title="1.2、ObservableCreate"></a>1.2、ObservableCreate</h5><pre><code>public final class ObservableCreate&lt;T&gt; extends Observable&lt;T&gt; {
+
+    final ObservableOnSubscribe&lt;T&gt; source;
+
+    public ObservableCreate(ObservableOnSubscribe&lt;T&gt; source) {
+        this.source = source;
+    }
+
+    ...
+}
+</code></pre><p>这里仅仅是把ObservableOnSubscribe这个对象保存在ObservableCreate中了。然后看看RxJavaPlugins.onAssembly()这个方法的处理。</p>
+<h5 id="1-3、RxJavaPlugins-onAssembly"><a href="#1-3、RxJavaPlugins-onAssembly" class="headerlink" title="1.3、RxJavaPlugins#onAssembly()"></a>1.3、RxJavaPlugins#onAssembly()</h5><pre><code>public static &lt;T&gt; Observable&lt;T&gt; onAssembly(@NonNull Observable&lt;T&gt; source) {
+
+    // 应用hook函数的一些处理，一般用到不到
+    ...
+    return source;
+}
+</code></pre><p>最终仅仅是把我们的ObservableCreate给返回了。</p>
+<h5 id="1-4、创建被观察者过程小结"><a href="#1-4、创建被观察者过程小结" class="headerlink" title="1.4、创建被观察者过程小结"></a>1.4、创建被观察者过程小结</h5><p>从以上分析可知，Observable.create()方法仅仅是<strong>先将我们自定义的ObservableOnSubscribe对象重新包装成了一个ObservableCreate对象</strong>。</p>
+<h4 id="2、订阅过程"><a href="#2、订阅过程" class="headerlink" title="2、订阅过程"></a>2、订阅过程</h4><p>接着，看看Observable.subscribe()的订阅过程是如何实现的。</p>
+<h5 id="2-1、Observable-subscribe"><a href="#2-1、Observable-subscribe" class="headerlink" title="2.1、Observable#subscribe()"></a>2.1、Observable#subscribe()</h5><pre><code>public final void subscribe(Observer&lt;? super T&gt; observer) {
+    ...
+
+    // 1
+    observer = RxJavaPlugins.onSubscribe(this,observer);
+
+    ...
+
+    // 2
+    subscribeActual(observer);
+
+    ...
+}
+</code></pre><p>在Observable的subscribe()方法内部首先调用了RxJavaPlugins的onSubscribe()方法。</p>
+<h5 id="2-2、RxJavaPlugins-onSubscribe"><a href="#2-2、RxJavaPlugins-onSubscribe" class="headerlink" title="2.2、RxJavaPlugins#onSubscribe()"></a>2.2、RxJavaPlugins#onSubscribe()</h5><pre><code>public static &lt;T&gt; Observer&lt;? super T&gt; onSubscribe(@NonNull Observable&lt;T&gt; source, @NonNull Observer&lt;? super T&gt; observer) {
+
+    // 应用hook函数的一些处理，一般用到不到
+    ...
+
+    return observer;
+}
+</code></pre><p>除去hook应用的逻辑，这里仅仅是将observer返回了。接着来分析下subscribeActual()方法，</p>
+<h5 id="2-3、Observable-subscribeActual"><a href="#2-3、Observable-subscribeActual" class="headerlink" title="2.3、Observable#subscribeActual()"></a>2.3、Observable#subscribeActual()</h5><pre><code>protected abstract void subscribeActual(Observer&lt;? super T&gt; observer);
+</code></pre><p>这是一个抽象的方法，很明显，它对应的具体实现类就是我们在第一步创建的ObservableCreate类，接下来看到ObservableCreate的subscribeActual()方法。</p>
+<h5 id="2-4、ObservableCreate-subscribeActual"><a href="#2-4、ObservableCreate-subscribeActual" class="headerlink" title="2.4、ObservableCreate#subscribeActual()"></a>2.4、ObservableCreate#subscribeActual()</h5><pre><code>@Override
+protected void subscribeActual(Observer&lt;? super T&gt; observer) {
+    // 1
+    CreateEmitter&lt;T&gt; parent = new CreateEmitter&lt;T&gt;(observer);
+    // 2
+    observer.onSubscribe(parent);
+
+    try {
+        // 3
+        source.subscribe(parent);
+    } catch (Throwable ex) {
+        Exceptions.throwIfFatal(ex);
+        parent.onError(ex);
+    }
+}
+</code></pre><p>在注释1处，首先新创建了一个CreateEmitter对象，同时传入了我们自定义的observer对象进去。</p>
+<h5 id="2-4-1、CreateEmitter"><a href="#2-4-1、CreateEmitter" class="headerlink" title="2.4.1、CreateEmitter"></a>2.4.1、CreateEmitter</h5><pre><code>static final class CreateEmitter&lt;T&gt;
+extends AtomicReference&lt;Disposable&gt;
+implements ObservableEmitter&lt;T&gt;, Disposable {
+
+    ...
+
+    final Observer&lt;? super T&gt; observer;
+
+    CreateEmitter(Observer&lt;? super T&gt; observer) {
+        this.observer = observer;
+    }
+
+    ...
+}
+</code></pre><p>从上面可以看出，<strong>CreateEmitter通过继承了Java并发包中的原子引用类AtomicReference<disposable>保证了事件流切断状态Dispose的一致性</disposable></strong>（这里不理解的话，看到后面讲解Dispose的时候就明白了），并<strong>实现了ObservableEmitter接口和Disposable接口</strong>，接着我们分析下注释2处的observer.onSubscribe(parent)，这个onSubscribe回调的含义其实就是<strong>告诉观察者已经成功订阅了被观察者</strong>。再看到注释3处的source.subscribe(parent)这行代码，这里的source其实是ObservableOnSubscribe对象，我们看到ObservableOnSubscribe的subscribe()方法。</p>
+<h5 id="2-4-2、ObservableOnSubscribe-subscribe"><a href="#2-4-2、ObservableOnSubscribe-subscribe" class="headerlink" title="2.4.2、ObservableOnSubscribe#subscribe()"></a>2.4.2、ObservableOnSubscribe#subscribe()</h5><pre><code>Observable observable = Observable.create(new ObservableOnSubscribe&lt;String&gt;() {
+    @Override
+    public voidsubscribe(ObservableEmitter&lt;String&gt; emitter) throws Exception {
+        emitter.onNext(&quot;1&quot;);
+        emitter.onNext(&quot;2&quot;);
+        emitter.onNext(&quot;3&quot;);
+        emitter.onComplete();
+    }
+});
+</code></pre><p>这里面使用到了ObservableEmitter的onNext()方法将事件流发送出去，最后调用了onComplete()方法完成了订阅过程。ObservableEmitter是一个抽象类，实现类就是我们传入的CreateEmitter对象，接下来我们看看CreateEmitter的onNext()方法和onComplete()方法的处理。</p>
+<h5 id="2-4-3、CreateEmitter-onNext-amp-amp-CreateEmitter-onComplete"><a href="#2-4-3、CreateEmitter-onNext-amp-amp-CreateEmitter-onComplete" class="headerlink" title="2.4.3、CreateEmitter#onNext() &amp;&amp; CreateEmitter#onComplete()"></a>2.4.3、CreateEmitter#onNext() &amp;&amp; CreateEmitter#onComplete()</h5><pre><code>static final class CreateEmitter&lt;T&gt;
+extends AtomicReference&lt;Disposable&gt;
+implements ObservableEmitter&lt;T&gt;, Disposable {
+
+...
+
+@Override
+public void onNext(T t) {
+    ...
+
+    if (!isDisposed()) {
+        //调用观察者的onNext()
+        observer.onNext(t);
+    }
+}
+
+@Override
+public void onComplete() {
+    if (!isDisposed()) {
+        try {
+            observer.onComplete();
+        } finally {
+            dispose();
+        }
+    }
+}
+
+
+...
+
+}
+</code></pre><p>在CreateEmitter的onNext和onComplete方法中首先都要经过一个<strong>isDisposed</strong>的判断，作用就是看<strong>当前的事件流是否被切断（废弃）掉了</strong>，默认是不切断的，如果想要切断，可以调用Disposable的dispose()方法将此状态设置为切断（废弃）状态。我们继续看看这个isDisposed内部的处理。</p>
+<h5 id="2-4-4、ObservableEmitter-isDisposed"><a href="#2-4-4、ObservableEmitter-isDisposed" class="headerlink" title="2.4.4、ObservableEmitter#isDisposed()"></a>2.4.4、ObservableEmitter#isDisposed()</h5><pre><code>@Override
+public boolean isDisposed() {
+    return DisposableHelper.isDisposed(get());
+}
+</code></pre><p>注意到这里通过get()方法首先从ObservableEmitter的AtomicReference<disposable>中拿到了保存的Disposable状态。然后交给了DisposableHelper进行判断处理。接下来看看DisposableHelper的处理。</disposable></p>
+<h5 id="2-4-5、DisposableHelper-isDisposed-amp-amp-DisposableHelper-set"><a href="#2-4-5、DisposableHelper-isDisposed-amp-amp-DisposableHelper-set" class="headerlink" title="2.4.5、DisposableHelper#isDisposed() &amp;&amp; DisposableHelper#set()"></a>2.4.5、DisposableHelper#isDisposed() &amp;&amp; DisposableHelper#set()</h5><pre><code>public enum DisposableHelper implements Disposable {
+
+    DISPOSED;
+
+    public static boolean isDisposed(Disposable d) {
+        // 1
+        return d == DISPOSED;
+    }
+
+    public static boolean set(AtomicReference&lt;Disposable&gt; field, Disposable d) {
+        for (;;) {
+            Disposable current = field.get();
+            if (current == DISPOSED) {
+                if (d != null) {
+                    d.dispose();
+                }
+                return false;
+            }
+            // 2
+            if (field.compareAndSet(current, d)) {
+                if (current != null) {
+                    current.dispose();
+                }
+                return true;
+            }
+        }
+    }
+
+    ...
+
+    public static boolean dispose(AtomicReference&lt;Disposable&gt; field) {
+        Disposable current = field.get();
+        Disposable d = DISPOSED;
+        if (current != d) {
+            // ...
+            current = field.getAndSet(d);
+            if (current != d) {
+                if (current != null) {
+                    current.dispose();
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+
+    ...
+}
+</code></pre><p>DisposableHelper是一个枚举类，内部只有一个值即DISPOSED, 从上面的分析可知它就是用来<strong>标记事件流被切断（废弃）状态的</strong>。先看到注释2和注释3处的代码<strong>field.compareAndSet(current, d)和field.getAndSet(d)</strong>，这里使用了<strong>原子引用AtomicReference<disposable>内部包装的CAS方法处理了标志Disposable的并发读写问题</disposable></strong>，最后看到注释3处，将我们传入的CreateEmitter这个原子引用类保存的Dispable状态和DisposableHelper内部的DISPOSED进行比较，如果相等，就证明数据流被切断了。为了更进一步理解Disposed的作用，再来看看CreateEmitter中剩余的关键方法。</p>
+<h5 id="2-4-6、CreateEmitter"><a href="#2-4-6、CreateEmitter" class="headerlink" title="2.4.6、CreateEmitter"></a>2.4.6、CreateEmitter</h5><pre><code>@Override
+public void onNext(T t) {
+    ...
+    // 1
+    if (!isDisposed()) {
+        observer.onNext(t);
+    }
+}
+
+@Override
+public void onError(Throwable t) {
+    if (!tryOnError(t)) {
+        // 2
+        RxJavaPlugins.onError(t);
+    }
+}
+
+@Override
+public boolean tryOnError(Throwable t) {
+    ...
+    // 3
+    if (!isDisposed()) {
+        try {
+            observer.onError(t);
+        } finally {
+            // 4
+            dispose();
+        }
+        return true;
+    }
+    return false;
+}
+
+@Override
+public void onComplete() {
+    // 5
+    if (!isDisposed()) {
+        try {
+            observer.onComplete();
+        } finally {
+            // 6
+            dispose();
+        }
+    }
+}
+</code></pre><p>在注释1、3、5处，onNext()和onError()、onComplete()方法首先都会判断事件流是否被切断的处理，如果事件流此时被切断了，那么onNext()和onComplete()则会退出方法体，不做处理，<strong>onError()则会执行到RxJavaPlugins.onError(t)这句代码，内部会直接抛出异常，导致崩溃</strong>。如果事件流没有被切断，那么在onError()和onComplete()内部最终会调用到注释4、6处的这句dispose()代码，将事件流进行切断，由此可知，<strong>onError()和onComplete()只能调用一个，如果先执行的是onComplete()，再调用onError()的话就会导致异常崩溃</strong>。</p>
+<h3 id="三、RxJava的线程切换"><a href="#三、RxJava的线程切换" class="headerlink" title="三、RxJava的线程切换"></a>三、RxJava的线程切换</h3><p>首先给出RxJava线程切换的例子：</p>
+<pre><code>Observable.create(new ObservableOnSubscribe&lt;String&gt;() {
+    @Override
+    public voidsubscribe(ObservableEmitter&lt;String&gt;emitter) throws Exception {
+        emitter.onNext(&quot;1&quot;);
+        emitter.onNext(&quot;2&quot;);
+        emitter.onNext(&quot;3&quot;);
+        emitter.onComplete();
+    }
+}) 
+    .subscribeOn(Schedulers.io())
+    .observeOn(AndroidSchedulers.mainThread())
+    .subscribe(new Observer&lt;String&gt;() {
+        @Override
+        public void onSubscribe(Disposable d) {
+            Log.d(TAG, &quot;onSubscribe&quot;);
+        }
+        @Override
+        public void onNext(String s) {
+            Log.d(TAG, &quot;onNext : &quot; + s);
+        }
+        @Override
+        public void onError(Throwable e) {
+            Log.d(TAG, &quot;onError : &quot; +e.toString());
+        }
+        @Override
+        public void onComplete() {
+            Log.d(TAG, &quot;onComplete&quot;);
+        }
+});
+</code></pre><p>可以看到，RxJava的线程切换主要分为subscribeOn()和observeOn()方法，首先，来分析下subscribeOn()方法。</p>
+<h4 id="3-1-1、subscribeOn-Schedulers-io"><a href="#3-1-1、subscribeOn-Schedulers-io" class="headerlink" title="3.1.1、subscribeOn(Schedulers.io())"></a>3.1.1、subscribeOn(Schedulers.io())</h4><p>在Schedulers.io()方法中，我们需要先传入一个Scheduler调度类，这里是传入了一个调度到io子线程的调度类，我们看看这个Schedulers.io()方法内部是怎么构造这个调度器的。</p>
+<h4 id="3-1-2、Schedulers-io"><a href="#3-1-2、Schedulers-io" class="headerlink" title="3.1.2、Schedulers#io()"></a>3.1.2、Schedulers#io()</h4><pre><code>static final Scheduler IO;
+
+...
+
+public static Scheduler io() {
+    // 1
+    return RxJavaPlugins.onIoScheduler(IO);
+}
+
+static {
+    ...
+
+    // 2
+    IO = RxJavaPlugins.initIoScheduler(new IOTask());
+}
+
+static final class IOTask implements Callable&lt;Scheduler&gt; {
+    @Override
+    public Scheduler call() throws Exception {
+        // 3
+        return IoHolder.DEFAULT;
+    }
+}
+
+static final class IoHolder {
+    // 4
+    static final Scheduler DEFAULT = new IoScheduler();
+}
+</code></pre><p>Schedulers这个类的代码很多，这里我只拿出有关Schedulers。io这个方法涉及的逻辑代码进行讲解。首先，在注释1处，同前面分析的订阅流程的处理一样，只是一个处理hook的逻辑，最终返回的还是传入的这个IO对象。再看到注释2处，在Schedulers的静态代码块中将IO对象进行了初始化，其实质就是新建了一个IOTask的静态内部类，在IOTask的call方法中，也就是注释3处，可以了解到使用了静态内部类的方式把创建的IOScheduler对象给返回出去了。绕了这么大圈子，<strong>Schedulers.io方法其实质就是返回了一个IOScheduler对象</strong>。</p>
+<h4 id="3-1-3、Observable-subscribeOn"><a href="#3-1-3、Observable-subscribeOn" class="headerlink" title="3.1.3、Observable#subscribeOn()"></a>3.1.3、Observable#subscribeOn()</h4><pre><code>  public final Observable&lt;T&gt; subscribeOn(Scheduler scheduler) {
+    ...
+
+    return RxJavaPlugins.onAssembly(new ObservableSubscribeOn&lt;T&gt;(this, scheduler));
+}
+</code></pre><p>在subscribeOn()方法里面，又将ObservableCreate包装成了一个ObservableSubscribeOn对象。我们关注到ObservableSubscribeOn类。</p>
+<h4 id="3-1-4、ObservableSubscribeOn"><a href="#3-1-4、ObservableSubscribeOn" class="headerlink" title="3.1.4、ObservableSubscribeOn"></a>3.1.4、ObservableSubscribeOn</h4><pre><code>public final class ObservableSubscribeOn&lt;T&gt; extends AbstractObservableWithUpstream&lt;T, T&gt; {
+    final Scheduler scheduler;
+
+    public ObservableSubscribeOn(ObservableSource&lt;T&gt; source, Scheduler scheduler) {
+        // 1
+        super(source);
+        this.scheduler = scheduler;
+    }
+
+    @Override
+    public void subscribeActual(final Observer&lt;? super T&gt; observer) {
+        // 2
+        final SubscribeOnObserver&lt;T&gt; parent = new SubscribeOnObserver&lt;T&gt;(observer);
+
+        // 3
+        observer.onSubscribe(parent);
+
+        // 4
+        parent.setDisposable(scheduler.scheduleDirect(new SubscribeTask(parent)));
+    }
+
+...
+}
+</code></pre><p>首先，在注释1处，将传进来的source和scheduler保存起来。接着，等到实际订阅的时候，就会执行到这个subscribeActual方法，在注释2处，将我们自定义的Observer包装成了一个SubscribeOnObserver对象。在注释3处，通知观察者订阅了被观察者。在注释4处，内部先创建了一个SubscribeTask对象，来看看它的实现。</p>
+<h4 id="3-1-5、ObservableSubscribeOn-SubscribeTask"><a href="#3-1-5、ObservableSubscribeOn-SubscribeTask" class="headerlink" title="3.1.5、ObservableSubscribeOn#SubscribeTask"></a>3.1.5、ObservableSubscribeOn#SubscribeTask</h4><pre><code>final class SubscribeTask implements Runnable {
+    private final SubscribeOnObserver&lt;T&gt; parent;
+
+    SubscribeTask(SubscribeOnObserver&lt;T&gt; parent) {
+        this.parent = parent;
+    }
+
+    @Override
+    public void run() {
+        source.subscribe(parent);
+    }
+}
+</code></pre><p>SubscribeTask是ObservableSubscribeOn的内部类，它实质上就是一个任务类，在它的run方法中会执行到source.subscribe(parent)的订阅方法，<strong>这个source其实就是我们在ObservableSubscribeOn构造方法中传进来的ObservableCreate对象</strong>。接下来看看scheduler.scheduleDirect()内部的处理。</p>
+<h4 id="3-1-6、Scheduler-scheduleDirect"><a href="#3-1-6、Scheduler-scheduleDirect" class="headerlink" title="3.1.6、Scheduler#scheduleDirect()"></a>3.1.6、Scheduler#scheduleDirect()</h4><pre><code>public Disposable scheduleDirect(@NonNull Runnable run) {
+    return scheduleDirect(run, 0L, TimeUnit.NANOSECONDS);
+}
+
+public Disposable scheduleDirect(@NonNull Runnable run, long delay, @NonNull TimeUnit unit) {
+
+    // 1
+    final Worker w = createWorker();
+
+    // 2
+    final Runnable decoratedRun = RxJavaPlugins.onSchedule(run);
+
+    // 3
+    DisposeTask task = new DisposeTask(decoratedRun, w);
+
+    // 4
+    w.schedule(task, delay, unit);
+
+    return task;
+}
+</code></pre><p>这里最后会执行到上面这个scheduleDirect()重载方法。首先，在注释1处，会调用createWorker()方法创建一个工作者对象Worker，它是一个抽象类，这里的实现类就是IoScheduler，下面，我们看看IoScheduler类的createWorker()方法。</p>
+<h4 id="3-1-6-1、IOScheduler-createWorker"><a href="#3-1-6-1、IOScheduler-createWorker" class="headerlink" title="3.1.6.1、IOScheduler#createWorker()"></a>3.1.6.1、IOScheduler#createWorker()</h4><pre><code>final AtomicReference&lt;CachedWorkerPool&gt; pool;
+
+...
+
+public IoScheduler(ThreadFactory threadFactory) {
+    this.threadFactory = threadFactory;
+    this.pool = new AtomicReference&lt;CachedWorkerPool&gt;(NONE);
+    start();
+}
+
+...
+
+@Override
+public Worker createWorker() {
+    // 1
+    return new EventLoopWorker(pool.get());
+}
+
+static final class EventLoopWorker extends Scheduler.Worker {
+    ...
+
+    EventLoopWorker(CachedWorkerPool pool) {
+        this.pool = pool;
+        this.tasks = new CompositeDisposable();
+        // 2
+        this.threadWorker = pool.get();
+    }
+
+}
+</code></pre><p>首先，在注释1处调用了pool.get()这个方法，pool是一个CachedWorkerPool类型的原子引用对象，它的作用就是<strong>用于缓存工作者对象Worker的</strong>。然后，将得到的CachedWorkerPool传入新创建的EventLoopWorker对象中。重点关注一下注释2处，这里讲CachedWorkerPool缓存的threadWorker对象保存起来了。</p>
+<p>下面，我们继续分析3.6处代码段的注释2处的代码，这里又是一个关于hook的封装处理，最终还是返回的当前的Runnable对象。在注释3处新建了一个切断任务DisposeTask将decoratedRun和w包装了起来。最后在注释4处调用了工作者的schedule()方法。下面我们来分析下它内部的处理。</p>
+<h4 id="3-1-6-2、IoScheduler-schedule"><a href="#3-1-6-2、IoScheduler-schedule" class="headerlink" title="3.1.6.2、IoScheduler#schedule()"></a>3.1.6.2、IoScheduler#schedule()</h4><pre><code>@Override
+public Disposable schedule(@NonNull Runnableaction, long delayTime, @NonNull TimeUnit unit){
+    ...
+
+    return threadWorker.scheduleActual(action,delayTime, unit, tasks);
+}
+</code></pre><p>内部调用了threadWorker的scheduleActual()方法，实际上是调用到了父类NewThreadWorker的scheduleActual()方法，我们继续看看NewThreadWorker的scheduleActual()方法中做的事情。</p>
+<h4 id="3-1-6-2-1、NewThreadWorker-scheduleActual"><a href="#3-1-6-2-1、NewThreadWorker-scheduleActual" class="headerlink" title="3.1.6.2.1、NewThreadWorker#scheduleActual()"></a>3.1.6.2.1、NewThreadWorker#scheduleActual()</h4><pre><code>public NewThreadWorker(ThreadFactory threadFactory) {
+    executor = SchedulerPoolFactory.create(threadFactory);
+}
+
+
+@NonNull
+public ScheduledRunnable scheduleActual(final Runnable run, long delayTime, @NonNull TimeUnit unit, @Nullable DisposableContainer parent) {
+    Runnable decoratedRun = RxJavaPlugins.onSchedule(run);
+
+    // 1
+    ScheduledRunnable sr = new ScheduledRunnable(decoratedRun, parent);
+
+
+    if (parent != null) {
+        if (!parent.add(sr)) {
+            return sr;
+        }
+    }
+
+    Future&lt;?&gt; f;
+    try {
+        // 2
+        if (delayTime &lt;= 0) {
+            // 3
+            f = executor.submit((Callable&lt;Object&gt;)sr);
+        } else {
+            // 4
+            f = executor.schedule((Callable&lt;Object&gt;)sr, delayTime, unit);
+        }
+        sr.setFuture(f);
+    } catch (RejectedExecutionException ex) {
+        if (parent != null) {
+            parent.remove(sr);
+        }
+        RxJavaPlugins.onError(ex);
+    }
+
+    return sr;
+}
+</code></pre><p>在NewThreadWorker的scheduleActual()方法的内部，在注释1处首先会新建一个ScheduledRunnable对象，将Runnable对象和parent包装起来了，<strong>这里parent是一个DisposableContainer对象，它实际的实现类是CompositeDisposable类，即一个保存所有事件流是否被切断状态的容器，它内部的实现是使用了RxJava自己定义的一个简单的OpenHashSet类ji进行存储</strong>。最后注释2处，判断是否设置了延迟时间，如果设置了，则调用线程池的submit()方法立即进行线程切换，否则，调用schedule()方法进行延时执行线程切换。</p>
+<h4 id="3-1-7、为什么多次执行subscribeOn-，只有第一次有效？"><a href="#3-1-7、为什么多次执行subscribeOn-，只有第一次有效？" class="headerlink" title="3.1.7、为什么多次执行subscribeOn()，只有第一次有效？"></a>3.1.7、为什么多次执行subscribeOn()，只有第一次有效？</h4><p>从上面的分析，我们可以很容易了解到<strong>被观察者被订阅时是从最外面的一层（ObservableSubscribeOn）通知到里面的一层（ObservableOnSubscribe）</strong>，当连续执行了到多次subscribeOn()的时候，其实就是先执行倒数第一次的subscribeOn()方法，直到最后一次执行的subscribeOn()方法肯定会覆盖前面的线程切换。</p>
+<h4 id="3-2-1、observeOn-AndroidSchedulers-mainThread"><a href="#3-2-1、observeOn-AndroidSchedulers-mainThread" class="headerlink" title="3.2.1、observeOn(AndroidSchedulers.mainThread())"></a>3.2.1、observeOn(AndroidSchedulers.mainThread())</h4><pre><code>public final Observable&lt;T&gt; observeOn(Scheduler scheduler) {
+    return observeOn(scheduler, false, bufferSize());
+}
+
+public final Observable&lt;T&gt; observeOn(Scheduler scheduler, boolean delayError, int bufferSize) {
+    ....
+
+    return RxJavaPlugins.onAssembly(new ObservableObserveOn&lt;T&gt;(this, scheduler, delayError, bufferSize));
+}
+</code></pre><p>可以看到，observeOn()方法内部最终也是返回了一个ObservableObserveOn对象，我们直接来看看ObservableObserveOn的subscribeActual()方法。</p>
+<h4 id="3-2-2、ObservableObserveOn-subscribeActual"><a href="#3-2-2、ObservableObserveOn-subscribeActual" class="headerlink" title="3.2.2、ObservableObserveOn#subscribeActual()"></a>3.2.2、ObservableObserveOn#subscribeActual()</h4><pre><code>@Override
+protected void subscribeActual(Observer&lt;? super T&gt; observer) {
+    // 1
+    if (scheduler instanceof TrampolineScheduler) {
+        // 2
+        source.subscribe(observer);
+    } else {
+        // 3
+        Scheduler.Worker w = scheduler.createWorker();
+        // 4
+        source.subscribe(new ObserveOnObserver&lt;T&gt;(observer, w, delayError, bufferSize));
+    }
+}
+</code></pre><p>首先，在注释1处，判断指定的调度器是不是TrampolineScheduler，这是一个不进行线程切换，立即执行当前代码的调度器，。如果是，则会直接调用调用ObservableSubscribeOn的subscribe()方法，如果不是，则会在注释3处创建一个工作者对象。然后在注释4处创建一个新的ObserveOnObserver将SubscribeOnobserver对象包装起来，并传入ObservableSubscribeOn的subscribe()方法进行订阅。接下来看看ObserveOnObserver类的重点方法。</p>
+<h4 id="3-2-3、ObserveOnObserver"><a href="#3-2-3、ObserveOnObserver" class="headerlink" title="3.2.3、ObserveOnObserver"></a>3.2.3、ObserveOnObserver</h4><pre><code>@Override
+public void onNext(T t) {
+    ...
+    if (sourceMode != QueueDisposable.ASYNC) {
+        // 1
+        queue.offer(t);
+    }
+    schedule();
+}
+
+@Override
+public void onError(Throwable t) {
+    ...
+    schedule();
+}
+
+@Override
+public void onComplete() {
+    ...
+    schedule();
+}
+</code></pre><p>去除非主线逻辑的代码，在ObserveOnObserver的onNext()和onError()、onComplete()方法中最后都会调用到schedule()方法。接着看schedule()方法，其中onNext()还会把消息存放到队列中。</p>
+<h4 id="3-2-4、ObserveOnObserver-schedule"><a href="#3-2-4、ObserveOnObserver-schedule" class="headerlink" title="3.2.4、ObserveOnObserver#schedule()"></a>3.2.4、ObserveOnObserver#schedule()</h4><pre><code>void schedule() {
+    if (getAndIncrement() == 0) {
+        worker.schedule(this);
+    }
+}
+</code></pre><p>这里使用了worker进行调度ObserveOnObserver这个实现了Runnable的任务。worker就是在AndroidSchedulers.mainThread()中创建的，内部其实就是<strong>使用Handler进行线程切换的</strong>，此处不再赘述了。接着看ObserveOnObserver的run()方法。</p>
+<h4 id="3-2-5、ObserveOnObserver-run"><a href="#3-2-5、ObserveOnObserver-run" class="headerlink" title="3.2.5、ObserveOnObserver#run()"></a>3.2.5、ObserveOnObserver#run()</h4><pre><code>@Override
+public void run() {
+    // 1
+    if (outputFused) {
+        drainFused();
+    } else {
+        // 2
+        drainNormal();
+    }
+}
+</code></pre><p>在注释1处会先判断outputFused这个标志位，它表示事件流是否被融化掉，默认是false，所以，最后会执行到drainNormal()方法。接着看看drainNormal()方法内部的处理。</p>
+<h4 id="3-2-6、ObserveOnObserver-drainNormal"><a href="#3-2-6、ObserveOnObserver-drainNormal" class="headerlink" title="3.2.6、ObserveOnObserver#drainNormal()"></a>3.2.6、ObserveOnObserver#drainNormal()</h4><pre><code>void drainNormal() {
+    int missed = 1;
+
+    final SimpleQueue&lt;T&gt; q = queue;
+
+    // 1
+    final Observer&lt;? super T&gt; a = downstream;
+
+    ...
+
+    // 2
+    v = q.poll();
+
+    ...
+    // 3
+    a.onNext(v);
+
+    ...
+}
+</code></pre><p>在注释1处，这里的downstream实际上是从外面传进来的SubscribeOnObserver对象。在注释2处将队列中的消息取出来，接着在注释3处调用了SubscribeOnObserver的onNext方法。<strong>最终，会从我们包装类的最外层一直调用到最里面的我们自定义的Observer中的onNext()方法，所以，在observeOn()方法下面的链式代码都会执行到它所指定的线程中，噢，原来如此</strong>。</p>
+<h3 id="五、总结"><a href="#五、总结" class="headerlink" title="五、总结"></a>五、总结</h3><p>其实笔者使用了RxJava也已经有一年多的时间了，但是一直没有去深入去了解过它的内部实现原理，如今细细品尝，的确是酣畅淋漓。从一开始的OkHttp到现如今的RxJava源码分析，到此为止，Android主流三方库源码分析系列文章已经发布了五篇了，我们的征途已经过半，接下来，我将会对Android中的内存泄露框架LeakCanary源码进行深入地讲解，尽请期待~</p>
+<h5 id="参考链接："><a href="#参考链接：" class="headerlink" title="参考链接："></a>参考链接：</h5><hr>
+<p>1、RxJava V2.2.5 源码</p>
+<p>2、Android 进阶之光</p>
+<p>3、<a href="https://mp.weixin.qq.com/s?__biz=MzIwMTAzMTMxMg==&amp;mid=2649492749&amp;idx=1&amp;sn=a4d2e79afd8257b57c6efa57cbff4404&amp;chksm=8eec86f2b99b0fe46f61f324e032af335fbe02c7db1ef4eca60abb4bc99b4d216da7ba32dc88&amp;scene=38#wechat_redirect" target="_blank" rel="external">详解 RxJava 的消息订阅和线程切换原理</a></p>
+<h4 id="很感谢您阅读这篇文章，希望您能将它分享给您的朋友或技术群，这对我意义重大。"><a href="#很感谢您阅读这篇文章，希望您能将它分享给您的朋友或技术群，这对我意义重大。" class="headerlink" title="很感谢您阅读这篇文章，希望您能将它分享给您的朋友或技术群，这对我意义重大。"></a>很感谢您阅读这篇文章，希望您能将它分享给您的朋友或技术群，这对我意义重大。</h4><h4 id="希望我们能成为朋友，在-Github、掘金上一起分享知识。"><a href="#希望我们能成为朋友，在-Github、掘金上一起分享知识。" class="headerlink" title="希望我们能成为朋友，在 Github、掘金上一起分享知识。"></a>希望我们能成为朋友，在 <a href="https://github.com/JsonChao" target="_blank" rel="external">Github</a>、<a href="https://juejin.im/user/5a3ba9375188252bca050ade" target="_blank" rel="external">掘金</a>上一起分享知识。</h4>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.png" alt="JsonChao Alipay"/>
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android主流三方库源码分析/" rel="tag"># Android主流三方库源码分析</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/12/29/2018年终总结/" rel="next" title="2018年终总结">
+                <i class="fa fa-chevron-left"></i> 2018年终总结
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div id="lv-container" data-id="city" data-uid="MTAyMC8zMzg1Mi8xMDQwNQ==">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="JsonChao" />
+            
+              <p class="site-author-name" itemprop="name">JsonChao</p>
+              <p class="site-description motion-element" itemprop="description">Persist + Plan = Growing</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/rss2.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/JsonChao" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://mail.google.com/mail/u/0/#inbox" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-globe"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://juejin.im/user/5a3ba9375188252bca050ade" target="_blank" title="JueJin">
+                      
+                        <i class="fa fa-fw fa-globe"></i>JueJin</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Manito Link
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://wanandroid.com/" title="WanAndroid" target="_blank">WanAndroid</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://hencoder.com/" title="HenCoder" target="_blank">HenCoder</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.trinea.cn/" title="Trinea" target="_blank">Trinea</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://stormzhang.com/" title="stromzhang" target="_blank">stromzhang</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.hensen.site/" title="Hensen" target="_blank">Hensen</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://liuwangshu.cn/" title="刘望舒" target="_blank">刘望舒</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://zhuanlan.zhihu.com/baron/" title="张磊" target="_blank">张磊</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://kymjs.com/" title="张涛" target="_blank">张涛</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://blog.piasy.com/" title="Piasy" target="_blank">Piasy</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://blog.lmj.wiki/" title="ANLY" target="_blank">ANLY</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://glanwang.com/" title="Glan" target="_blank">Glan</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://huangjunbin.com/" title="黄俊彬" target="_blank">黄俊彬</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://droidyue.com/" title="技术小黑屋" target="_blank">技术小黑屋</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://gityuan.com/" title="gityuan" target="_blank">gityuan</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.gcssloop.com/#blog" title="gcsslop" target="_blank">gcsslop</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样-。"><span class="nav-number">1.0.1.</span> <span class="nav-text">成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一、RxJava到底是什么？"><span class="nav-number">1.1.</span> <span class="nav-text">一、RxJava到底是什么？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、RxJava的订阅流程"><span class="nav-number">1.2.</span> <span class="nav-text">二、RxJava的订阅流程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、创建被观察者过程"><span class="nav-number">1.2.1.</span> <span class="nav-text">1、创建被观察者过程</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-1、Observable-create"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">1.1、Observable#create()</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-2、ObservableCreate"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">1.2、ObservableCreate</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-3、RxJavaPlugins-onAssembly"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">1.3、RxJavaPlugins#onAssembly()</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-4、创建被观察者过程小结"><span class="nav-number">1.2.1.4.</span> <span class="nav-text">1.4、创建被观察者过程小结</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、订阅过程"><span class="nav-number">1.2.2.</span> <span class="nav-text">2、订阅过程</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2-1、Observable-subscribe"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">2.1、Observable#subscribe()</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2、RxJavaPlugins-onSubscribe"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">2.2、RxJavaPlugins#onSubscribe()</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-3、Observable-subscribeActual"><span class="nav-number">1.2.2.3.</span> <span class="nav-text">2.3、Observable#subscribeActual()</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-4、ObservableCreate-subscribeActual"><span class="nav-number">1.2.2.4.</span> <span class="nav-text">2.4、ObservableCreate#subscribeActual()</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-4-1、CreateEmitter"><span class="nav-number">1.2.2.5.</span> <span class="nav-text">2.4.1、CreateEmitter</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-4-2、ObservableOnSubscribe-subscribe"><span class="nav-number">1.2.2.6.</span> <span class="nav-text">2.4.2、ObservableOnSubscribe#subscribe()</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-4-3、CreateEmitter-onNext-amp-amp-CreateEmitter-onComplete"><span class="nav-number">1.2.2.7.</span> <span class="nav-text">2.4.3、CreateEmitter#onNext() && CreateEmitter#onComplete()</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-4-4、ObservableEmitter-isDisposed"><span class="nav-number">1.2.2.8.</span> <span class="nav-text">2.4.4、ObservableEmitter#isDisposed()</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-4-5、DisposableHelper-isDisposed-amp-amp-DisposableHelper-set"><span class="nav-number">1.2.2.9.</span> <span class="nav-text">2.4.5、DisposableHelper#isDisposed() && DisposableHelper#set()</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-4-6、CreateEmitter"><span class="nav-number">1.2.2.10.</span> <span class="nav-text">2.4.6、CreateEmitter</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、RxJava的线程切换"><span class="nav-number">1.3.</span> <span class="nav-text">三、RxJava的线程切换</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-1、subscribeOn-Schedulers-io"><span class="nav-number">1.3.1.</span> <span class="nav-text">3.1.1、subscribeOn(Schedulers.io())</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-2、Schedulers-io"><span class="nav-number">1.3.2.</span> <span class="nav-text">3.1.2、Schedulers#io()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-3、Observable-subscribeOn"><span class="nav-number">1.3.3.</span> <span class="nav-text">3.1.3、Observable#subscribeOn()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-4、ObservableSubscribeOn"><span class="nav-number">1.3.4.</span> <span class="nav-text">3.1.4、ObservableSubscribeOn</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-5、ObservableSubscribeOn-SubscribeTask"><span class="nav-number">1.3.5.</span> <span class="nav-text">3.1.5、ObservableSubscribeOn#SubscribeTask</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-6、Scheduler-scheduleDirect"><span class="nav-number">1.3.6.</span> <span class="nav-text">3.1.6、Scheduler#scheduleDirect()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-6-1、IOScheduler-createWorker"><span class="nav-number">1.3.7.</span> <span class="nav-text">3.1.6.1、IOScheduler#createWorker()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-6-2、IoScheduler-schedule"><span class="nav-number">1.3.8.</span> <span class="nav-text">3.1.6.2、IoScheduler#schedule()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-6-2-1、NewThreadWorker-scheduleActual"><span class="nav-number">1.3.9.</span> <span class="nav-text">3.1.6.2.1、NewThreadWorker#scheduleActual()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-7、为什么多次执行subscribeOn-，只有第一次有效？"><span class="nav-number">1.3.10.</span> <span class="nav-text">3.1.7、为什么多次执行subscribeOn()，只有第一次有效？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-1、observeOn-AndroidSchedulers-mainThread"><span class="nav-number">1.3.11.</span> <span class="nav-text">3.2.1、observeOn(AndroidSchedulers.mainThread())</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-2、ObservableObserveOn-subscribeActual"><span class="nav-number">1.3.12.</span> <span class="nav-text">3.2.2、ObservableObserveOn#subscribeActual()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-3、ObserveOnObserver"><span class="nav-number">1.3.13.</span> <span class="nav-text">3.2.3、ObserveOnObserver</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-4、ObserveOnObserver-schedule"><span class="nav-number">1.3.14.</span> <span class="nav-text">3.2.4、ObserveOnObserver#schedule()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-5、ObserveOnObserver-run"><span class="nav-number">1.3.15.</span> <span class="nav-text">3.2.5、ObserveOnObserver#run()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-6、ObserveOnObserver-drainNormal"><span class="nav-number">1.3.16.</span> <span class="nav-text">3.2.6、ObserveOnObserver#drainNormal()</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五、总结"><span class="nav-number">1.4.</span> <span class="nav-text">五、总结</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#参考链接："><span class="nav-number">1.4.0.1.</span> <span class="nav-text">参考链接：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#很感谢您阅读这篇文章，希望您能将它分享给您的朋友或技术群，这对我意义重大。"><span class="nav-number">1.4.1.</span> <span class="nav-text">很感谢您阅读这篇文章，希望您能将它分享给您的朋友或技术群，这对我意义重大。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#希望我们能成为朋友，在-Github、掘金上一起分享知识。"><span class="nav-number">1.4.2.</span> <span class="nav-text">希望我们能成为朋友，在 Github、掘金上一起分享知识。</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">JsonChao</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+    
+
+    
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2155025"></script>
+      <!-- UY END -->
+    
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+   
+   
+     
+   
+   
+  
+     
+</div>
+<!-- City版安装代码已完成 -->
+   
+ 
+
+   
+     
+   
+  
+       <div id="lv-container" data-id="city" data-uid="MTAyMC8zMzg1Mi8xMDQwNQ==">
+       <script type="text/javascript">
+          (function(d, s) {
+              var j, e = d.getElementsByTagName(s)[0];
+              if (typeof LivereTower === 'function') { return; }
+              j = d.createElement(s);
+              j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+              j.async = true;
+              e.parentNode.insertBefore(j, e);
+          })(document, 'script');
+       </script>
+       <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+       <!-- UY END -->
+   
+ 
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("2wtHdVd6zid7kU6YQKIqsHU5-gzGzoHsz", "eLibBRhSAsSoX1JbTMJH6ka3");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
