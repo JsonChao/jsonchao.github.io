@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="Deep into Android">
 <meta property="og:description" content="前言成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。不知不觉，笔者已经对Android主流三方库中的网络框架OkHttp、Retrofit，图片加载框架Glide、数据库框架GreenDao、响应式编程框架RxJava、内存泄露框架LeakCanary进行了详细的分析，如果有朋友对这些开源框架的内部实现机制感兴趣的话，可以在笔者的个人主页选择相">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-01-13T14:57:46.928Z">
+<meta property="og:updated_time" content="2019-01-13T15:03:21.506Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android主流三方库源码分析（七、深入理解ButterKnife源码）">
 <meta name="twitter:description" content="前言成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。不知不觉，笔者已经对Android主流三方库中的网络框架OkHttp、Retrofit，图片加载框架Glide、数据库框架GreenDao、响应式编程框架RxJava、内存泄露框架LeakCanary进行了详细的分析，如果有朋友对这些开源框架的内部实现机制感兴趣的话，可以在笔者的个人主页选择相">
@@ -453,7 +453,7 @@
 </ul>
 <p>下面，我们正式来解剖一下ButterKnife的心脏。</p>
 <h3 id="二、源码分析"><a href="#二、源码分析" class="headerlink" title="二、源码分析"></a>二、源码分析</h3><h4 id="2-1-模板代码解析"><a href="#2-1-模板代码解析" class="headerlink" title="2.1 模板代码解析"></a>2.1 模板代码解析</h4><p>首先，在我们编写好上述的示例代码之后，调用 gradle build 命令，在app/build/generated/source/apt下将可以找到APT为我们生产的配套模板代码CollectFragment_ViewBinding，如下所示：</p>
-<pre><code>public class CollectFragment_ViewBinding implements       Unbinder {
+<pre><code>public class CollectFragment_ViewBinding implements Unbinder {
     private CollectFragment target;
 
     private View view2131230812;
@@ -542,8 +542,8 @@ public static Unbinder bind(@NonNull Object target, @NonNull View source) {
     // 3
     } catch (IllegalAccessException e) {
     ...
-</code></pre><p>  }</p>
-<p>首先，在注释1处，通过 findBindingConstructorForClass() 方法从 Class 中查找 constructor，这里constructor即上文生成的CollectFragment_ViewBinding类。然后，在注释2处，利用反射来新建 constructor 对象。最后，如果新建 constructor 对象失败，则会在注释3后面捕获一系列对应的异常进行自定义异常抛出处理。</p>
+}
+</code></pre><p>首先，在注释1处，通过 findBindingConstructorForClass() 方法从 Class 中查找 constructor，这里constructor即上文生成的CollectFragment_ViewBinding类。然后，在注释2处，利用反射来新建 constructor 对象。最后，如果新建 constructor 对象失败，则会在注释3后面捕获一系列对应的异常进行自定义异常抛出处理。</p>
 <p>下面，我们来详细分析下<br>findBindingConstructorForClass() 方法的实现逻辑。</p>
 <pre><code>@VisibleForTesting
 static final Map&lt;Class&lt;?&gt;, Constructor&lt;? extends Unbinder&gt;&gt; BINDINGS = new LinkedHashMap&lt;&gt;();
@@ -732,7 +732,7 @@ private static Constructor&lt;? extends Unbinder&gt; findBindingConstructorForCl
     // 2、验证目标类型是否继承自View。
     ...
 
-    // 3、
+    // 3
     int id = element.getAnnotation(BindView.class).value();
     BindingSet.Builder builder = builderMap.get(enclosingElement);
     Id resourceId = elementToId(element, BindView.class, id);
