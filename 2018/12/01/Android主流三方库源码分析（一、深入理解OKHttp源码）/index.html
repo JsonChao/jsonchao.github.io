@@ -89,12 +89,13 @@
 <meta property="og:site_name" content="Deep into Android">
 <meta property="og:description" content="前言成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。前两篇我们详细分析了View的核心源码—Android的触摸事件传递机制和Android View的绘制流程，从这篇开始，笔者接下来将会陪大家深入分析目前Android中大部分的主流开源框架源码，从而能够让我们真正地去理解这些优秀开源框架背后的思想，真真切切地提升自己的内功。目前，这一系列的分">
 <meta property="og:locale" content="default">
+<meta property="og:image" content="https://raw.githubusercontent.com/JsonChao/Awesome-Third-Library-Source-Analysis/master/ScreenShots/Android_hot_third_source_analysis.png">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/1916953-fc6439af2bfefddc.jpg?imageMogr2/auto-orient/">
-<meta property="og:updated_time" content="2019-01-19T14:13:46.379Z">
+<meta property="og:updated_time" content="2019-01-19T15:08:16.753Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android主流三方库源码分析（一、深入理解OKHttp源码）">
 <meta name="twitter:description" content="前言成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。前两篇我们详细分析了View的核心源码—Android的触摸事件传递机制和Android View的绘制流程，从这篇开始，笔者接下来将会陪大家深入分析目前Android中大部分的主流开源框架源码，从而能够让我们真正地去理解这些优秀开源框架背后的思想，真真切切地提升自己的内功。目前，这一系列的分">
-<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/1916953-fc6439af2bfefddc.jpg?imageMogr2/auto-orient/">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/JsonChao/Awesome-Third-Library-Source-Analysis/master/ScreenShots/Android_hot_third_source_analysis.png">
 
 
 
@@ -424,7 +425,9 @@
 8、Dagger2
 事件总线：
 9、EventBus
-</code></pre><p>这一篇将会对Android的三方网络库OKHttp源码进行深入的分析，在阅读过OKHttp源码和大量其它优秀的OKHttp源码分析文章后，我发现只要搞懂以下这三块，就能<strong>证明你对OKHttp有了一个深入的理解</strong>。</p>
+</code></pre><p>总结成思维导图，就是这样的：</p>
+<p><img src="https://raw.githubusercontent.com/JsonChao/Awesome-Third-Library-Source-Analysis/master/ScreenShots/Android_hot_third_source_analysis.png" alt="image"></p>
+<p>这一篇将会对Android的三方网络库OKHttp源码进行深入的分析，在阅读过OKHttp源码和大量其它优秀的OKHttp源码分析文章后，我发现只要搞懂以下这三块，就能<strong>证明你对OKHttp有了一个深入的理解</strong>。</p>
 <ul>
 <li>OKHttp请求流程</li>
 <li>网络请求缓存处理</li>
