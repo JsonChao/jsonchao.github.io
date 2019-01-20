@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="Deep into Android">
 <meta property="og:description" content="前言成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。上一篇，笔者详细地分析了Android中的依赖注入框架ButterKnife，使用它帮助我们解决了重复编写findViewById和setOnclickListener的繁琐。众所周知，当项目越来越大时，类之间的调用层次会越来越深，并且有些类是Activity/Fragment，有些是单例，而">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-01-20T14:47:50.894Z">
+<meta property="og:updated_time" content="2019-01-20T15:17:10.139Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android主流三方库源码分析（八、深入理解Dagger2源码）">
 <meta name="twitter:description" content="前言成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。上一篇，笔者详细地分析了Android中的依赖注入框架ButterKnife，使用它帮助我们解决了重复编写findViewById和setOnclickListener的繁琐。众所周知，当项目越来越大时，类之间的调用层次会越来越深，并且有些类是Activity/Fragment，有些是单例，而">
@@ -332,7 +332,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-20T22:47:00+08:00">
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-20T23:17:00+08:00">
                 2019-01-20
               </time>
             
@@ -584,6 +584,20 @@ public abstract class AbstractAllDialogFragmentModule {
     protected void onCreate(@Nullable Bundle     savedInstanceState) {
         AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
+    }
+
+    ...
+
+}
+</code></pre><p>这里使用了@Inject表明了需要注入mPresenter实例，然后，我们需要在具体的Presenter类的构造方法上使用@Inject提供基于当前构造方法的mPresenter实例，如下所示：</p>
+<pre><code>public class MainPresenter extends BasePresenter&lt;MainContract.View&gt; implements MainContract.Presenter {
+
+    ...
+
+    @Inject
+    MainPresenter(DataManager dataManager) {
+        super(dataManager);
+        this.mDataManager = dataManager;
     }
 
     ...
