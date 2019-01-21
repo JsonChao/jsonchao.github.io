@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="Deep into Android">
 <meta property="og:description" content="前言成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。上一篇，笔者详细地分析了Android中的依赖注入框架ButterKnife，使用它帮助我们解决了重复编写findViewById和setOnclickListener的繁琐。众所周知，当项目越来越大时，类之间的调用层次会越来越深，并且有些类是Activity/Fragment，有些是单例，而">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-01-21T13:12:34.594Z">
+<meta property="og:updated_time" content="2019-01-21T13:27:34.397Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android主流三方库源码分析（八、深入理解Dagger2源码）">
 <meta name="twitter:description" content="前言成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。上一篇，笔者详细地分析了Android中的依赖注入框架ButterKnife，使用它帮助我们解决了重复编写findViewById和setOnclickListener的繁琐。众所周知，当项目越来越大时，类之间的调用层次会越来越深，并且有些类是Activity/Fragment，有些是单例，而">
@@ -421,7 +421,7 @@
 <p>对于@Singleton，大家可能会产生一些误解，这里详细阐述下：</p>
 <ul>
 <li>Singleton容易给人造成一种误解就是用Singleton注解后在整个Java代码中都是单例，但实际上他和Scope一样，只是在同一个Component是单例。也就是说，如果重新调用了component的build（）方法，即使使用了Singleton注解了，但仍然获取的是不同的对象。</li>
-<li>它表明了@Singleton注解只是声明了这是一个单例，为的只是提高代码可读性，其实真正控制对象生命周期的还是Component。同理，自定义的@ActivityScope 、@ApplicationScope也仅仅是一个声明的作用。真正控制对象生命周期的还是Component。</li>
+<li>它表明了@Singleton注解只是声明了这是一个单例，为的只是提高代码可读性，其实真正控制对象生命周期的还是Component。同理，自定义的@ActivityScope 、@ApplicationScope也仅仅是一个声明的作用，<strong>真正控制对象生命周期的还是Component</strong>。</li>
 </ul>
 <h4 id="4、-Providers"><a href="#4、-Providers" class="headerlink" title="4、@Providers"></a>4、@Providers</h4><p>只在@Module中使用，用于提供构造好的实例。一般与@Singleton搭配，用单例方法的形式对外提供依赖,是一种替代@Inject注解构造方法的方式。</p>
 <p>注意：</p>
@@ -556,7 +556,7 @@ public abstract class AbstractAllFragmentModule {
     abstract CollectFragment contributesCollectFragmentInject();
 
     @ContributesAndroidInjector(modules = KnowledgeFragmentModule.class)
-    abstract KnowledgeHierarchyFragment     contributesKnowledgeHierarchyFragmentInject();
+    abstract KnowledgeHierarchyFragment contributesKnowledgeHierarchyFragmentInject();
 
     ...
 
@@ -568,7 +568,7 @@ public abstract class AbstractAllFragmentModule {
 public abstract class AbstractAllDialogFragmentModule {
 
     @ContributesAndroidInjector(modules = SearchDialogFragmentModule.class)
-    abstract SearchDialogFragment     contributesSearchDialogFragmentInject();
+    abstract SearchDialogFragment contributesSearchDialogFragmentInject();
 
     @ContributesAndroidInjector(modules = UsageDialogFragmentModule.class)
     abstract UsageDialogFragment contributesUsageDialogFragmentInject();
@@ -586,7 +586,7 @@ public abstract class AbstractAllDialogFragmentModule {
 
 
     @Override
-    protected void onCreate(@Nullable Bundle     savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
     }
@@ -652,7 +652,7 @@ public abstract class AbstractAllDialogFragmentModule {
     // 1
     this.mainActivitySubcomponentBuilderProvider =
         new Provider&lt;
-            AbstractAllActivityModule_ContributesMainActivityInjector.MainActivit    ySubcomponent
+            AbstractAllActivityModule_ContributesMainActivityInjector.MainActivitySubcomponent
                 .Builder&gt;() {
         @Override
         public AbstractAllActivityModule_ContributesMainActivityInjector.MainActivitySubcomponent
@@ -675,7 +675,7 @@ private final class MainActivitySubcomponentBuilder
     private MainActivity seedInstance;
 
     @Override
-    public AbstractAllActivityModule_ContributesMainAct    ivityInjector.MainActivitySubcomponent
+    public AbstractAllActivityModule_ContributesMainActivityInjector.MainActivitySubcomponent
         build() {
       if (seedInstance == null) {
         throw new IllegalStateException(MainActivity.class.getCanonicalName() + &quot; must be set&quot;);
@@ -770,7 +770,7 @@ public void inject(WanAndroidApp wanAndroidApp) {
     return instance;
 }
 </code></pre><p>首先，执行getDispatchingAndroidInjectorOfActivity()方法得到了一个Activity类型的DispatchingAndroidInjector对象，继续查看getDispatchingAndroidInjectorOfActivity()方法：</p>
-<pre><code>private DispatchingAndroidInjector&lt;Activity&gt;     getDispatchingAndroidInjectorOfActivity() {
+<pre><code>private DispatchingAndroidInjector&lt;Activity&gt; getDispatchingAndroidInjectorOfActivity() {
     return DispatchingAndroidInjector_Factory.newDispatchingAndroidInjector(
     getMapOfClassOfAndProviderOfFactoryOf());
 }
@@ -839,7 +839,7 @@ DispatchingAndroidInjector(
 public void inject(T instance) {
     boolean wasInjected = maybeInject(instance);
     if (!wasInjected) {
-    throw new IllegalArgumentException(errorMessageSuggestions(instance));
+        throw new IllegalArgumentException(errorMessageSuggestions(instance));
     }
 }
 </code></pre><p>DispatchingAndroidInjector的inject()方法，它的作用就是给传入的instance实例执行成员注入。具体在这个案例中，其实就是负责将创建好的Presenter实例赋值给BaseActivity对象<br>的mPresenter全局变量。在inject()方法中，又调用了maybeInject()方法，我们继续查看它：</p>
