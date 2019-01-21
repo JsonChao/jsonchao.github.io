@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="Deep into Android">
 <meta property="og:description" content="前言成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。上一篇，笔者详细地分析了Android中的依赖注入框架ButterKnife，使用它帮助我们解决了重复编写findViewById和setOnclickListener的繁琐。众所周知，当项目越来越大时，类之间的调用层次会越来越深，并且有些类是Activity/Fragment，有些是单例，而">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-01-21T13:27:34.397Z">
+<meta property="og:updated_time" content="2019-01-21T13:38:24.559Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android主流三方库源码分析（八、深入理解Dagger2源码）">
 <meta name="twitter:description" content="前言成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。上一篇，笔者详细地分析了Android中的依赖注入框架ButterKnife，使用它帮助我们解决了重复编写findViewById和setOnclickListener的繁琐。众所周知，当项目越来越大时，类之间的调用层次会越来越深，并且有些类是Activity/Fragment，有些是单例，而">
@@ -610,9 +610,8 @@ public abstract class AbstractAllDialogFragmentModule {
 }
 </code></pre><p>从上面的使用流程中，可以总结出三个核心部分：</p>
 <ul>
-<li><p>1、appComponent = DaggerAppComponent.builder()</p>
-<pre><code>.build()这句代码如何构建出DaggerAPPComponent的？
-</code></pre></li>
+<li><p>1、appComponent = DaggerAppComponent.builder().build()这句代码如何构建出DaggerAPPComponent的？</p>
+</li>
 <li><p>2、appComponent.inject(this)是如何将mAndroidInjector实例赋值给当前的Application的？</p>
 </li>
 <li><p>3、在目标Activity下的AndroidInjection.inject(this)这句代码是如何将当前Activity对象纳入依赖分配总管DispatchingAndroidInjector囊中的呢？</p>
@@ -748,7 +747,7 @@ public interface MainActivitySubcomponent extends AndroidInjector&lt;MainActivit
         return instance;
     }
 </code></pre><p>在注释1处，MainActivitySubcomponentImpl实现了AndroidInjector接口的inject()方法，在injectMainActivity()首先调用getMainPresenter()方法从MainPresenter_Factory工厂类中新建了一个MainPresenter对象。我们看看MainPresenter的newMainPresenter()方法：</p>
-<pre><code>public static MainPresenter             newMainPresenter(DataManager dataManager) {
+<pre><code>public static MainPresenter newMainPresenter(DataManager dataManager) {
     return new MainPresenter(dataManager);
 }
 </code></pre><p>这里直接新建了一个MainPresenter。然后我们回到MainActivitySubcomponentImpl类的注释3处，继续调用了BaseActivity_MembersInjector的injectMPresenter()方法，顾名思义，可以猜到，它BaseActivity的成员注射器，继续看看injectMPresenter()内部：</p>
