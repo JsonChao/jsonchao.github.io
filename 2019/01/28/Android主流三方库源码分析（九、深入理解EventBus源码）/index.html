@@ -91,7 +91,7 @@
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2276275-c20610cdd44f4c5f.png?imageMogr2/auto-orient/">
 <meta property="og:image" content="https://raw.githubusercontent.com/greenrobot/EventBus/master/EventBus-Publish-Subscribe.png">
-<meta property="og:updated_time" content="2019-01-28T14:50:12.883Z">
+<meta property="og:updated_time" content="2019-01-28T14:56:42.881Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android主流三方库源码分析（九、深入理解EventBus源码）">
 <meta name="twitter:description" content="前言成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。不知不觉，Android主流三方库源码分析系列已经来到最后关头了。这一次，笔者将会对Android中的事件总线框架EventBus源码进行详细地解析，一起来和大家揭开它背后的面纱。 一、简单示例1、首先，定义要传递的事件实体public class CollectEvent { ... } 2">
@@ -602,7 +602,7 @@ EventBus(EventBusBuilder builder) {
     // 6
     executorService = builder.executorService;
 }
-</code></pre><p>在注释1处，创建了一个subscriptionsByEventType对象，可以看到它是一个Map对象，并且其key为 Event 类型，value为 Subscription链表。这里的Subscription是一个订阅信息对象，它里面保存了两个重要的字段，一个是类型为 Object 的 subscriber，该字段即为注册的对象（在 Android 中时通常是 Activity对象）；另一个是 类型为SubscriberMethod 的 subscriberMethod，它就是被@Subscribe注解的那个订阅方法，里面保存了一个重要的字段eventType，它是 Class&lt;?&gt; 类型的，代表了 Event 的类型。在注释2处，新建了一个类型为 Map 的typesBySubscriber对象，它的key为subscriber对象，value为subscriber对象中所有的 Event 类型链表，日常使用中仅用于判断某个对象是否注册过。在注释3处又新建了一个类型为Map的对象，它是专用于粘性事件处理的一个字段，key为事件的Class对象，value为当前的事件。可能有的同学不了解sticky event，这里解释下：</p>
+</code></pre><p>在注释1处，创建了一个subscriptionsByEventType对象，可以看到它是一个类型为HashMap的subscriptionsByEventType对象，并且其key为 Event 类型，value为 Subscription链表。这里的Subscription是一个订阅信息对象，它里面保存了两个重要的字段，一个是类型为 Object 的 subscriber，该字段即为注册的对象（在 Android 中时通常是 Activity对象）；另一个是 类型为SubscriberMethod 的 subscriberMethod，它就是被@Subscribe注解的那个订阅方法，里面保存了一个重要的字段eventType，它是 Class&lt;?&gt; 类型的，代表了 Event 的类型。在注释2处，新建了一个类型为 Map 的typesBySubscriber对象，它的key为subscriber对象，value为subscriber对象中所有的 Event 类型链表，日常使用中仅用于判断某个对象是否注册过。在注释3处新建了一个类型为ConcurrentHashMap的stickyEvents对象，它是专用于粘性事件处理的一个字段，key为事件的Class对象，value为当前的事件。可能有的同学不了解sticky event，这里解释下：</p>
 <ul>
 <li>我们都知道普通事件是先注册，然后发送事件才能收到；而粘性事件，在发送事件之后再订阅该事件也能收到。并且，粘性事件会保存在内存中，每次进入都会去内存中查找获取最新的粘性事件，除非你手动解除注册。</li>
 </ul>
