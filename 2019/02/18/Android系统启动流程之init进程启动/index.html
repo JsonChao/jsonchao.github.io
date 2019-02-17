@@ -90,7 +90,7 @@
 <meta property="og:description" content="前言成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。众所周知，Android核心源码这一块的知识一直是阻碍广大Android开发者成为高级甚至资深Android的拦路虎，因此，从这篇开始，笔者接下来将会陪大家深入分析Android中的核心源码，从而能够让我们真正地去理解Android源码背后的设计思想与艺术，真真切切地提升自己的内功。目前，这一">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://gityuan.com/images/android-process/android-boot.jpg">
-<meta property="og:updated_time" content="2019-02-17T16:39:54.600Z">
+<meta property="og:updated_time" content="2019-02-17T17:00:57.820Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android系统启动流程之init进程启动">
 <meta name="twitter:description" content="前言成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。众所周知，Android核心源码这一块的知识一直是阻碍广大Android开发者成为高级甚至资深Android的拦路虎，因此，从这篇开始，笔者接下来将会陪大家深入分析Android中的核心源码，从而能够让我们真正地去理解Android源码背后的设计思想与艺术，真真切切地提升自己的内功。目前，这一">
@@ -334,7 +334,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-18T00:33:00+08:00">
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-18T01:00:00+08:00">
                 2019-02-18
               </time>
             
@@ -412,7 +412,6 @@
 <li>Android系统启动流程（上）：init进程启动</li>
 <li>Android系统启动流程（中）：Zygote进程和SystemServer进程启动</li>
 <li>Android系统启动流程（下）：Launcher进程启动</li>
-<li></li>
 </ul>
 <h5 id="2、Binder-上、下"><a href="#2、Binder-上、下" class="headerlink" title="2、Binder(上、下)"></a>2、Binder(上、下)</h5><p>共分为两篇，分别为：</p>
 <ul>
@@ -618,30 +617,23 @@ on nonencrypted
     class_start main         
     class_start late_start 
 ...
-</code></pre><ul>
-<li>1、使用class_start这个COMMAND去启动Zygote。其中class_start对应do_class_strart()函数。</li>
-</ul>
-<pre><code>static int do_class_start(const     std::vector&lt;std::string&gt;&amp; args) {
+</code></pre><p>1、使用class_start这个COMMAND去启动Zygote。其中class_start对应do_class_strart()函数。</p>
+<pre><code>static int do_class_start(const std::vector&lt;std::string&gt;&amp; args) {
 
     ServiceManager::GetInstance().
         ForEachServiceInClass(args[1], [] (Service* s) { s-&gt;StartIfNotDisabled(); });
     return 0;
 }
-</code></pre><ul>
-<li><p>2、在system/core/init/builtins.cpp的do_class_start()函数中会使用ForEachServiceInClass函数遍历前面的Vector类型的Service链表，找到classname为main的Zygote，并调用system/core/init/service.cpp中的startIfNotDisabled()函数。</p>
-<p>  bool Service::StartIfNotDisabled() {</p>
-<pre><code>if (!(flags_ &amp; SVC_DISABLED)) {
-    return Start();
-} else {
-    flags_ |= SVC_DISABLED_START;
+</code></pre><p>2、在system/core/init/builtins.cpp的do_class_start()函数中会使用ForEachServiceInClass函数遍历前面的Vector类型的Service链表，找到classname为main的Zygote，并调用system/core/init/service.cpp中的startIfNotDisabled()函数。</p>
+<pre><code>bool Service::StartIfNotDisabled() {
+    if (!(flags_ &amp; SVC_DISABLED)) {
+        return Start();
+    } else {
+        flags_ |= SVC_DISABLED_START;
+    }
+    return true;
 }
-return true;
-</code></pre><p>  }</p>
-</li>
-</ul>
-<ul>
-<li>3、如果Service没有再其对应的rc文件中设置disabled选项，则会调用Start()启动该Service。</li>
-</ul>
+</code></pre><p>3、如果Service没有再其对应的rc文件中设置disabled选项，则会调用Start()启动该Service。</p>
 <pre><code>bool Service::Start() {
 
     ...
@@ -679,9 +671,7 @@ return true;
     ...
     return true;
 }
-</code></pre><ul>
-<li>4、在Start()函数中，如果Service已经运行，则不再启动。如果没有，则使用fork()函数创建子进程，并返回pid值。当pid为0时，则说明当前代码逻辑在子进程中运行，最然后会调用execve()函数去启动子进程，并进入该Service的main函数中，如果该Service是Zygote，则会执行Zygote的main函数。（对应frameworks/base/cmds/app_process/app_main.cpp中的main()函数）</li>
-</ul>
+</code></pre><p>4、在Start()函数中，如果Service已经运行，则不再启动。如果没有，则使用fork()函数创建子进程，并返回pid值。当pid为0时，则说明当前代码逻辑在子进程中运行，最然后会调用execve()函数去启动子进程，并进入该Service的main函数中，如果该Service是Zygote，则会执行Zygote的main函数。（对应frameworks/base/cmds/app_process/app_main.cpp中的main()函数）</p>
 <pre><code>int main(int argc, char* const argv[])
 {
     ...
@@ -696,9 +686,7 @@ return true;
         return 10;
     }
 }
-</code></pre><ul>
-<li>5、最后，调用runtime的start函数启动Zygote。</li>
-</ul>
+</code></pre><p>5、最后，调用runtime的start函数启动Zygote。</p>
 <h4 id="6、重启死去的子进程"><a href="#6、重启死去的子进程" class="headerlink" title="6、重启死去的子进程"></a>6、重启死去的子进程</h4><pre><code>restart_process();
 </code></pre><h3 id="五、总结"><a href="#五、总结" class="headerlink" title="五、总结"></a>五、总结</h3><p>经过以上的分析，init进程的启动过程主要分为以下三部：</p>
 <ul>
