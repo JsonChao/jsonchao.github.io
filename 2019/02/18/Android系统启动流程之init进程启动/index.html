@@ -90,7 +90,7 @@
 <meta property="og:description" content="前言成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。众所周知，Android核心源码这一块的知识一直是阻碍广大Android开发者成为高级甚至资深Android的拦路虎，因此，从这篇开始，笔者接下来将会陪大家深入分析Android中的核心源码，从而能够让我们真正地去理解Android源码背后的设计思想与艺术，真真切切地提升自己的内功。目前，这一">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://gityuan.com/images/android-process/android-boot.jpg">
-<meta property="og:updated_time" content="2019-02-17T17:00:57.820Z">
+<meta property="og:updated_time" content="2019-02-18T00:33:07.048Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android系统启动流程之init进程启动">
 <meta name="twitter:description" content="前言成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。众所周知，Android核心源码这一块的知识一直是阻碍广大Android开发者成为高级甚至资深Android的拦路虎，因此，从这篇开始，笔者接下来将会陪大家深入分析Android中的核心源码，从而能够让我们真正地去理解Android源码背后的设计思想与艺术，真真切切地提升自己的内功。目前，这一">
@@ -418,16 +418,17 @@
 <li>一步步探索Binder机制（上）：初探Binder</li>
 <li>一步步探索Binder机制（下）：深入Binder</li>
 </ul>
-<h5 id="3、App启动流程"><a href="#3、App启动流程" class="headerlink" title="3、App启动流程"></a>3、App启动流程</h5><h5 id="4、四大组件工作原理"><a href="#4、四大组件工作原理" class="headerlink" title="4、四大组件工作原理"></a>4、四大组件工作原理</h5><p>共分为四篇，分别为：</p>
+<h5 id="3、App启动流程"><a href="#3、App启动流程" class="headerlink" title="3、App启动流程"></a>3、App启动流程</h5><p>一文全面了解App启动流程</p>
+<h5 id="4、四大组件工作原理"><a href="#4、四大组件工作原理" class="headerlink" title="4、四大组件工作原理"></a>4、四大组件工作原理</h5><p>共分为四篇，分别为：</p>
 <ul>
 <li>Activity启动流程</li>
 <li>Service启动和绑定流程</li>
 <li>BroadcastReceiver工作流程</li>
 <li>Content Provider启动过程</li>
 </ul>
-<h5 id="5、AMS"><a href="#5、AMS" class="headerlink" title="5、AMS"></a>5、AMS</h5><p>拆解ActivityManagerService</p>
-<h5 id="6、WMS"><a href="#6、WMS" class="headerlink" title="6、WMS"></a>6、WMS</h5><p>拆解WindowManager<br>拆解WindowManagerService</p>
-<h5 id="7、PMS"><a href="#7、PMS" class="headerlink" title="7、PMS"></a>7、PMS</h5><p>拆解PackageManagerService</p>
+<h5 id="5、AMS"><a href="#5、AMS" class="headerlink" title="5、AMS"></a>5、AMS</h5><p>拆解ActivityManagerService（上）<br>拆解ActivityManagerService（下）</p>
+<h5 id="6、WMS"><a href="#6、WMS" class="headerlink" title="6、WMS"></a>6、WMS</h5><p>拆解WindowManager<br>拆解WindowManagerService（上）<br>拆解WindowManagerService（中）<br>拆解WindowManagerService（下）</p>
+<h5 id="7、PMS"><a href="#7、PMS" class="headerlink" title="7、PMS"></a>7、PMS</h5><p>拆解PackageManagerService（上）<br>拆解PackageManagerService（中）<br>拆解PackageManagerService（下）</p>
 <p>接下来，笔者将会为大家介绍Android系统启动流程的相关知识，但是由于篇幅太长，这里便打算分为上、中、下三部分来进行讲解。这一篇，我将首先对其中最重要的init进程启动过程进行分析。这里，先给出一幅Gityuan博客中的一幅系统启动架构图来对Android系统的启动流程有一个宏观的把控。</p>
 <p><img src="http://gityuan.com/images/android-process/android-boot.jpg" alt="image"></p>
 <p>下面，我们正式开始进行分析~</p>
