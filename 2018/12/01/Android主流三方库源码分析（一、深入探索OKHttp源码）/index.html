@@ -84,16 +84,16 @@
 <meta name="description" content="前言成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。前两篇我们详细分析了View的核心源码—Android的触摸事件传递机制和Android View的绘制流程，从这篇开始，笔者接下来将会陪大家深入分析目前Android中大部分的主流开源框架源码，从而能够让我们真正地去理解这些优秀开源框架背后的思想，真真切切地提升自己的内功。目前，这一系列的分">
 <meta name="keywords" content="Android主流三方库源码分析">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Android主流三方库源码分析（一、深入理解OKHttp源码）">
-<meta property="og:url" content="http://yoursite.com/2018/12/01/Android主流三方库源码分析（一、深入理解OKHttp源码）/index.html">
+<meta property="og:title" content="Android主流三方库源码分析（一、深入探索OKHttp源码）">
+<meta property="og:url" content="http://yoursite.com/2018/12/01/Android主流三方库源码分析（一、深入探索OKHttp源码）/index.html">
 <meta property="og:site_name" content="Deep into Android">
 <meta property="og:description" content="前言成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。前两篇我们详细分析了View的核心源码—Android的触摸事件传递机制和Android View的绘制流程，从这篇开始，笔者接下来将会陪大家深入分析目前Android中大部分的主流开源框架源码，从而能够让我们真正地去理解这些优秀开源框架背后的思想，真真切切地提升自己的内功。目前，这一系列的分">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://raw.githubusercontent.com/JsonChao/Awesome-Third-Library-Source-Analysis/master/ScreenShots/Android_hot_third_source_analysis.png">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/1916953-fc6439af2bfefddc.jpg?imageMogr2/auto-orient/">
-<meta property="og:updated_time" content="2019-01-19T15:08:16.753Z">
+<meta property="og:updated_time" content="2019-03-06T13:18:50.546Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Android主流三方库源码分析（一、深入理解OKHttp源码）">
+<meta name="twitter:title" content="Android主流三方库源码分析（一、深入探索OKHttp源码）">
 <meta name="twitter:description" content="前言成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。前两篇我们详细分析了View的核心源码—Android的触摸事件传递机制和Android View的绘制流程，从这篇开始，笔者接下来将会陪大家深入分析目前Android中大部分的主流开源框架源码，从而能够让我们真正地去理解这些优秀开源框架背后的思想，真真切切地提升自己的内功。目前，这一系列的分">
 <meta name="twitter:image" content="https://raw.githubusercontent.com/JsonChao/Awesome-Third-Library-Source-Analysis/master/ScreenShots/Android_hot_third_source_analysis.png">
 
@@ -125,13 +125,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/12/01/Android主流三方库源码分析（一、深入理解OKHttp源码）/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/12/01/Android主流三方库源码分析（一、深入探索OKHttp源码）/"/>
 
 
 
 
 
-  <title>Android主流三方库源码分析（一、深入理解OKHttp源码） | Deep into Android</title>
+  <title>Android主流三方库源码分析（一、深入探索OKHttp源码） | Deep into Android</title>
   
 
 
@@ -306,7 +306,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/01/Android主流三方库源码分析（一、深入理解OKHttp源码）/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/01/Android主流三方库源码分析（一、深入探索OKHttp源码）/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="JsonChao">
@@ -323,7 +323,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Android主流三方库源码分析（一、深入理解OKHttp源码）</h1>
+          <h1 class="post-title" itemprop="name headline">Android主流三方库源码分析（一、深入探索OKHttp源码）</h1>
         
 
         <div class="post-meta">
@@ -375,7 +375,7 @@
 
           
           
-             <span id="/2018/12/01/Android主流三方库源码分析（一、深入理解OKHttp源码）/" class="leancloud_visitors" data-flag-title="Android主流三方库源码分析（一、深入理解OKHttp源码）">
+             <span id="/2018/12/01/Android主流三方库源码分析（一、深入探索OKHttp源码）/" class="leancloud_visitors" data-flag-title="Android主流三方库源码分析（一、深入探索OKHttp源码）">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -427,7 +427,7 @@
 9、EventBus
 </code></pre><p>总结成思维导图，就是这样的：</p>
 <p><img src="https://raw.githubusercontent.com/JsonChao/Awesome-Third-Library-Source-Analysis/master/ScreenShots/Android_hot_third_source_analysis.png" alt="image"></p>
-<p>这一篇将会对Android的三方网络库OKHttp源码进行深入的分析，在阅读过OKHttp源码和大量其它优秀的OKHttp源码分析文章后，我发现只要搞懂以下这三块，就能<strong>证明你对OKHttp有了一个深入的理解</strong>。</p>
+<p>这一篇将会对Android的三方网络库OKHttp源码进行深入的分析，在阅读过OKHttp源码和大量其它优秀的OKHttp源码分析文章后，我发现只要搞懂以下这三块，就能<strong>证明你对OKHttp有了一个深入的了解</strong>。</p>
 <ul>
 <li>OKHttp请求流程</li>
 <li>网络请求缓存处理</li>
@@ -437,7 +437,7 @@
 <p>一些常用的状态码</p>
 <ul>
 <li>100~199：指示信息，表示请求已接收，继续处理</li>
-<li>200~299：请求成功，表示请求已被成功接收、理解、接受</li>
+<li>200~299：请求成功，表示请求已被成功接收、理解</li>
 <li>300~399：重定向，要完成请求必须进行更进一步的操作</li>
 <li>400~499：客户端错误，请求有语法错误或请求无法实现</li>
 <li>500~599：服务器端错误，服务器未能实现合法的请求</li>
@@ -464,29 +464,29 @@ OkHttpClient(Builder builder) {
 }
 </code></pre><p>可以看到，OkHttpClient使用了建造者模式，Builder里面的可配置参数如下：</p>
 <pre><code>public static final class Builder {
-    Dispatcher dispatcher;//分发器
+    Dispatcher dispatcher;// 分发器
     @Nullable Proxy proxy;
     List&lt;Protocol&gt; protocols;
-    List&lt;ConnectionSpec&gt; connectionSpecs;//传输层版本和连接协议
-    final List&lt;Interceptor&gt; interceptors = new     ArrayList&lt;&gt;();//拦截器
-    final List&lt;Interceptor&gt; networkInterceptors = new     ArrayList&lt;&gt;();
+    List&lt;ConnectionSpec&gt; connectionSpecs;// 传输层版本和连接协议
+    final List&lt;Interceptor&gt; interceptors = new ArrayList&lt;&gt;();// 拦截器
+    final List&lt;Interceptor&gt; networkInterceptors = new ArrayList&lt;&gt;();
     EventListener.Factory eventListenerFactory;
     ProxySelector proxySelector;
     CookieJar cookieJar;
     @Nullable Cache cache;
-    @Nullable InternalCache internalCache;//内部缓存
+    @Nullable InternalCache internalCache;// 内部缓存
     SocketFactory socketFactory;
-    @Nullable SSLSocketFactory sslSocketFactory;//安全套接层socket 工厂，用于HTTPS
-    @Nullable CertificateChainCleaner     certificateChainCleaner;// 验证确认响应证书 适用 HTTPS 请求连接的主机名。
-    HostnameVerifier hostnameVerifier;// 验证确认响应证书 适用 HTTPS 请求连接的主机名。
-    CertificatePinner certificatePinner;// 验证确认响应证书 适用 HTTPS 请求连接的主机名。
-    Authenticator proxyAuthenticator;//代理身份验证
-    Authenticator authenticator;//代理身份验证
-    ConnectionPool connectionPool;//代理身份验证
+    @Nullable SSLSocketFactory sslSocketFactory;// 安全套接层socket 工厂，用于HTTPS
+    @Nullable CertificateChainCleaner certificateChainCleaner;// 验证确认响应证书 适用 HTTPS 请求连接的主机名。
+    HostnameVerifier hostnameVerifier;// 验证确认响应证书 适用 HTTPS 请求连接的主机名。  
+    CertificatePinner certificatePinner;// 证书锁定，使用CertificatePinner来约束哪些认证机构被信任。
+    Authenticator proxyAuthenticator;// 代理身份验证
+    Authenticator authenticator;// 身份验证
+    ConnectionPool connectionPool;// 连接池
     Dns dns;
-    boolean followSslRedirects; //安全套接层重定向
-    boolean followRedirects;//本地重定向
-    boolean retryOnConnectionFailure;//重试连接失败
+    boolean followSslRedirects; // 安全套接层重定向
+    boolean followRedirects;// 本地重定向
+    boolean retryOnConnectionFailure;// 重试连接失败
     int callTimeout;
     int connectTimeout;
     int readTimeout;
@@ -541,8 +541,8 @@ static RealCall newRealCall(OkHttpClient client, Request originalRequest, boolea
         // 通知dispatcher已经进入执行状态
         client.dispatcher().executed(this);
         // 通过一系列的拦截器请求处理和响应处理得到最终的返回结果
-        Response result =     getResponseWithInterceptorChain();
-        if (result == null) throw new     IOException(&quot;Canceled&quot;);
+        Response result = getResponseWithInterceptorChain();
+        if (result == null) throw new IOException(&quot;Canceled&quot;);
         return result;
     } catch (IOException e) {
         e = timeoutExit(e);
@@ -562,14 +562,14 @@ Response getResponseWithInterceptorChain() throws IOException {
     // 负责失败重试以及重定向
     interceptors.add(retryAndFollowUpInterceptor);
     // 请求时，对必要的Header进行一些添加，接受响应时，移除必要的Header
-    interceptors.add(new     BridgeInterceptor(client.cookieJar()));
+    interceptors.add(new BridgeInterceptor(client.cookieJar()));
     // 负责读取缓存直接返回、更新缓存
-    interceptors.add(new     CacheInterceptor(client.internalCache()));
+    interceptors.add(new CacheInterceptor(client.internalCache()));
     // 负责和服务器建立连接
     interceptors.add(new ConnectInterceptor(client));
     if (!forWebSocket) {
         // 配置 OkHttpClient 时设置的 networkInterceptors
-        interceptors.addAll(client.networkInterceptors())  ;
+        interceptors.addAll(client.networkInterceptors());
     }
     // 负责向服务器发送请求数据、从服务器读取响应数据
     interceptors.add(new CallServerInterceptor(forWebSocket));
@@ -590,8 +590,8 @@ public Response proceed(Request request, StreamAllocation streamAllocation, Http
 
     // Call the next interceptor in the chain.
     // 实例化下一个拦截器对应的RealIterceptorChain对象
-    RealInterceptorChain next = new     RealInterceptorChain(interceptors,     streamAllocation, httpCodec,
-        connection, index + 1, request, call,     eventListener, connectTimeout, readTimeout,
+    RealInterceptorChain next = new     RealInterceptorChain(interceptors, streamAllocation, httpCodec,
+        connection, index + 1, request, call, eventListener, connectTimeout, readTimeout,
         writeTimeout);
     // 得到当前的拦截器
     Interceptor interceptor = interceptors.get(index);
@@ -618,12 +618,11 @@ client.newCall(request).enqueue(new Callback() {
     }
 
 void enqueue(AsyncCall call) {
-synchronized (this) {
-    readyAsyncCalls.add(call);
-}
+    synchronized (this) {
+        readyAsyncCalls.add(call);
+    }
     promoteAndExecute();
 }
-
 
 // 正在准备中的异步请求队列
 private final Deque&lt;AsyncCall&gt; readyAsyncCalls = new ArrayDeque&lt;&gt;();
@@ -640,16 +639,16 @@ private final Deque&lt;RealCall&gt; runningSyncCalls = new   ArrayDeque&lt;&gt;(
 private boolean promoteAndExecute() {
     assert (!Thread.holdsLock(this));
 
-    List&lt;AsyncCall&gt; executableCalls = new     ArrayList&lt;&gt;();
+    List&lt;AsyncCall&gt; executableCalls = new ArrayList&lt;&gt;();
     boolean isRunning;
     synchronized (this) {
-      for (Iterator&lt;AsyncCall&gt; i =   readyAsyncCalls.iterator(); i.hasNext(); ) {
+      for (Iterator&lt;AsyncCall&gt; i = readyAsyncCalls.iterator(); i.hasNext(); ) {
         AsyncCall asyncCall = i.next();
 
-        // 如果中的runningAsynCalls不满，且call占用的host小于最大数量，则将call加入到runningAsyncCalls中执行，
+        // 如果其中的runningAsynCalls不满，且call占用的host小于最大数量，则将call加入到runningAsyncCalls中执行，
         // 同时利用线程池执行call；否者将call加入到readyAsyncCalls中。
-        if (runningAsyncCalls.size() &gt;= maxRequests)     break; // Max capacity.
-        if (runningCallsForHost(asyncCall) &gt;=     maxRequestsPerHost) continue; // Host max     capacity.
+        if (runningAsyncCalls.size() &gt;= maxRequests) break; // Max capacity.
+        if (runningCallsForHost(asyncCall) &gt;= maxRequestsPerHost) continue; // Host max capacity.
 
         i.remove();
         executableCalls.add(asyncCall);
@@ -658,7 +657,7 @@ private boolean promoteAndExecute() {
       isRunning = runningCallsCount() &gt; 0;
     }
 
-    for (int i = 0, size = executableCalls.size(); i &lt;     size; i++) {
+    for (int i = 0, size = executableCalls.size(); i &lt; size; i++) {
       AsyncCall asyncCall = executableCalls.get(i);
       asyncCall.executeOn(executorService());
     }
@@ -697,13 +696,13 @@ private boolean promoteAndExecute() {
         executorService.execute(this);
         success = true;
       } catch (RejectedExecutionException e) {
-        InterruptedIOException ioException = new     InterruptedIOException(&quot;executor rejected&quot;);
+        InterruptedIOException ioException = new InterruptedIOException(&quot;executor rejected&quot;);
         ioException.initCause(e);
-        eventListener.callFailed(RealCall.this,     ioException);
-        responseCallback.onFailure(RealCall.this,     ioException);
+        eventListener.callFailed(RealCall.this, ioException);
+        responseCallback.onFailure(RealCall.this, ioException);
       } finally {
         if (!success) {
-          client.dispatcher().finished(this); // This   call is no longer running!
+          client.dispatcher().finished(this); // This call is no longer running!
         }
       }
     }
@@ -713,7 +712,7 @@ private boolean promoteAndExecute() {
       timeout.enter();
       try {
         // 跟同步执行一样，最后都会调用到这里
-        Response response =     getResponseWithInterceptorChain();
+        Response response = getResponseWithInterceptorChain();
         if (retryAndFollowUpInterceptor.isCanceled()) {
           signalledCallback = true;
           responseCallback.onFailure(RealCall.this, new   IOException(&quot;Canceled&quot;));
@@ -735,7 +734,7 @@ private boolean promoteAndExecute() {
       }
     }
 }
-</code></pre><p>从上面的源码可以知道，拦截链的处理OKHttp帮我们默认做了五步拦截处理，其中RetryAndFollowUpInterceptor、BridgeInterceptor、CallServerInterceptor内部的源码很简洁易懂，此处不再多说，下面将对OKHttp最为核心的两部分缓存处理和连接处理（连接池）进行讲解。   </p>
+</code></pre><p>从上面的源码可以知道，拦截链的处理OKHttp帮我们默认做了五步拦截处理，其中RetryAndFollowUpInterceptor、BridgeInterceptor、CallServerInterceptor内部的源码很简洁易懂，此处不再多说，下面将对OKHttp最为核心的两部分：缓存处理和连接处理（连接池）进行讲解。   </p>
 <h3 id="二、网络请求缓存处理之CacheInterceptor"><a href="#二、网络请求缓存处理之CacheInterceptor" class="headerlink" title="二、网络请求缓存处理之CacheInterceptor"></a>二、网络请求缓存处理之CacheInterceptor</h3><pre><code>@Override public Response intercept(Chain chain) throws IOException {
     // 根据request得到cache中缓存的response
     Response cacheCandidate = cache != null
@@ -1144,8 +1143,8 @@ long cleanup(long now) {
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/12/09/Android主流三方库源码分析（二、深入理解Retrofit源码）/" rel="prev" title="Android主流三方库源码分析（二、深入理解Retrofit源码）">
-                Android主流三方库源码分析（二、深入理解Retrofit源码） <i class="fa fa-chevron-right"></i>
+              <a href="/2018/12/09/Android主流三方库源码分析（二、深入探索Retrofit源码）/" rel="prev" title="Android主流三方库源码分析（二、深入探索Retrofit源码）">
+                Android主流三方库源码分析（二、深入探索Retrofit源码） <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
