@@ -84,14 +84,14 @@
 <meta name="description" content="前言成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。不知不觉，笔者已经对Android主流三方库中的网络框架OkHttp、Retrofit，图片加载框架Glide、数据库框架GreenDao、响应式编程框架RxJava、内存泄露框架LeakCanary进行了详细的分析，如果有朋友对这些开源框架的内部实现机制感兴趣的话，可以在笔者的个人主页选择相">
 <meta name="keywords" content="Android主流三方库源码分析">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Android主流三方库源码分析（七、深入探索ButterKnife源码）">
-<meta property="og:url" content="http://yoursite.com/2019/01/13/Android主流三方库源码分析（七、深入探索ButterKnife源码）/index.html">
+<meta property="og:title" content="Android主流三方库源码分析（七、深入理解ButterKnife源码）">
+<meta property="og:url" content="http://yoursite.com/2019/01/13/Android主流三方库源码分析（七、深入理解ButterKnife源码）/index.html">
 <meta property="og:site_name" content="Deep into Android">
 <meta property="og:description" content="前言成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。不知不觉，笔者已经对Android主流三方库中的网络框架OkHttp、Retrofit，图片加载框架Glide、数据库框架GreenDao、响应式编程框架RxJava、内存泄露框架LeakCanary进行了详细的分析，如果有朋友对这些开源框架的内部实现机制感兴趣的话，可以在笔者的个人主页选择相">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-03-06T13:19:49.279Z">
+<meta property="og:updated_time" content="2019-03-06T13:29:19.274Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Android主流三方库源码分析（七、深入探索ButterKnife源码）">
+<meta name="twitter:title" content="Android主流三方库源码分析（七、深入理解ButterKnife源码）">
 <meta name="twitter:description" content="前言成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。不知不觉，笔者已经对Android主流三方库中的网络框架OkHttp、Retrofit，图片加载框架Glide、数据库框架GreenDao、响应式编程框架RxJava、内存泄露框架LeakCanary进行了详细的分析，如果有朋友对这些开源框架的内部实现机制感兴趣的话，可以在笔者的个人主页选择相">
 
 
@@ -122,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/01/13/Android主流三方库源码分析（七、深入探索ButterKnife源码）/"/>
+  <link rel="canonical" href="http://yoursite.com/2019/01/13/Android主流三方库源码分析（七、深入理解ButterKnife源码）/"/>
 
 
 
 
 
-  <title>Android主流三方库源码分析（七、深入探索ButterKnife源码） | Deep into Android</title>
+  <title>Android主流三方库源码分析（七、深入理解ButterKnife源码） | Deep into Android</title>
   
 
 
@@ -303,7 +303,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/13/Android主流三方库源码分析（七、深入探索ButterKnife源码）/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/13/Android主流三方库源码分析（七、深入理解ButterKnife源码）/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="JsonChao">
@@ -320,7 +320,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Android主流三方库源码分析（七、深入探索ButterKnife源码）</h1>
+          <h1 class="post-title" itemprop="name headline">Android主流三方库源码分析（七、深入理解ButterKnife源码）</h1>
         
 
         <div class="post-meta">
@@ -372,7 +372,7 @@
 
           
           
-             <span id="/2019/01/13/Android主流三方库源码分析（七、深入探索ButterKnife源码）/" class="leancloud_visitors" data-flag-title="Android主流三方库源码分析（七、深入探索ButterKnife源码）">
+             <span id="/2019/01/13/Android主流三方库源码分析（七、深入理解ButterKnife源码）/" class="leancloud_visitors" data-flag-title="Android主流三方库源码分析（七、深入理解ButterKnife源码）">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -879,8 +879,8 @@ private TypeSpec createType(int sdk, boolean debuggable) {
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/01/06/Android主流三方库源码分析（六、深入探索Leakcanary源码）/" rel="next" title="Android主流三方库源码分析（六、深入探索Leakcanary源码）">
-                <i class="fa fa-chevron-left"></i> Android主流三方库源码分析（六、深入探索Leakcanary源码）
+              <a href="/2019/01/06/Android主流三方库源码分析（六、深入理解Leakcanary源码）/" rel="next" title="Android主流三方库源码分析（六、深入理解Leakcanary源码）">
+                <i class="fa fa-chevron-left"></i> Android主流三方库源码分析（六、深入理解Leakcanary源码）
               </a>
             
           </div>
@@ -889,8 +889,8 @@ private TypeSpec createType(int sdk, boolean debuggable) {
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/01/20/Android主流三方库源码分析（八、深入探索Dagger2源码）/" rel="prev" title="Android主流三方库源码分析（八、深入探索Dagger2源码）">
-                Android主流三方库源码分析（八、深入探索Dagger2源码） <i class="fa fa-chevron-right"></i>
+              <a href="/2019/01/20/Android主流三方库源码分析（八、深入理解Dagger2源码）/" rel="prev" title="Android主流三方库源码分析（八、深入理解Dagger2源码）">
+                Android主流三方库源码分析（八、深入理解Dagger2源码） <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>

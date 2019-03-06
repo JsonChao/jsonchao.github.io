@@ -84,16 +84,16 @@
 <meta name="description" content="前言成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。前两篇我们详细分析了View的核心源码—Android的触摸事件传递机制和Android View的绘制流程，从这篇开始，笔者接下来将会陪大家深入分析目前Android中大部分的主流开源框架源码，从而能够让我们真正地去理解这些优秀开源框架背后的思想，真真切切地提升自己的内功。目前，这一系列的分">
 <meta name="keywords" content="Android主流三方库源码分析">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Android主流三方库源码分析（一、深入探索OKHttp源码）">
-<meta property="og:url" content="http://yoursite.com/2018/12/01/Android主流三方库源码分析（一、深入探索OKHttp源码）/index.html">
+<meta property="og:title" content="Android主流三方库源码分析（一、深入理解OKHttp源码）">
+<meta property="og:url" content="http://yoursite.com/2018/12/01/Android主流三方库源码分析（一、深入理解OKHttp源码）/index.html">
 <meta property="og:site_name" content="Deep into Android">
 <meta property="og:description" content="前言成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。前两篇我们详细分析了View的核心源码—Android的触摸事件传递机制和Android View的绘制流程，从这篇开始，笔者接下来将会陪大家深入分析目前Android中大部分的主流开源框架源码，从而能够让我们真正地去理解这些优秀开源框架背后的思想，真真切切地提升自己的内功。目前，这一系列的分">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://raw.githubusercontent.com/JsonChao/Awesome-Third-Library-Source-Analysis/master/ScreenShots/Android_hot_third_source_analysis.png">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/1916953-fc6439af2bfefddc.jpg?imageMogr2/auto-orient/">
-<meta property="og:updated_time" content="2019-03-06T13:18:50.546Z">
+<meta property="og:updated_time" content="2019-03-06T13:28:07.681Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Android主流三方库源码分析（一、深入探索OKHttp源码）">
+<meta name="twitter:title" content="Android主流三方库源码分析（一、深入理解OKHttp源码）">
 <meta name="twitter:description" content="前言成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。前两篇我们详细分析了View的核心源码—Android的触摸事件传递机制和Android View的绘制流程，从这篇开始，笔者接下来将会陪大家深入分析目前Android中大部分的主流开源框架源码，从而能够让我们真正地去理解这些优秀开源框架背后的思想，真真切切地提升自己的内功。目前，这一系列的分">
 <meta name="twitter:image" content="https://raw.githubusercontent.com/JsonChao/Awesome-Third-Library-Source-Analysis/master/ScreenShots/Android_hot_third_source_analysis.png">
 
@@ -125,13 +125,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/12/01/Android主流三方库源码分析（一、深入探索OKHttp源码）/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/12/01/Android主流三方库源码分析（一、深入理解OKHttp源码）/"/>
 
 
 
 
 
-  <title>Android主流三方库源码分析（一、深入探索OKHttp源码） | Deep into Android</title>
+  <title>Android主流三方库源码分析（一、深入理解OKHttp源码） | Deep into Android</title>
   
 
 
@@ -306,7 +306,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/01/Android主流三方库源码分析（一、深入探索OKHttp源码）/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/01/Android主流三方库源码分析（一、深入理解OKHttp源码）/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="JsonChao">
@@ -323,7 +323,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Android主流三方库源码分析（一、深入探索OKHttp源码）</h1>
+          <h1 class="post-title" itemprop="name headline">Android主流三方库源码分析（一、深入理解OKHttp源码）</h1>
         
 
         <div class="post-meta">
@@ -375,7 +375,7 @@
 
           
           
-             <span id="/2018/12/01/Android主流三方库源码分析（一、深入探索OKHttp源码）/" class="leancloud_visitors" data-flag-title="Android主流三方库源码分析（一、深入探索OKHttp源码）">
+             <span id="/2018/12/01/Android主流三方库源码分析（一、深入理解OKHttp源码）/" class="leancloud_visitors" data-flag-title="Android主流三方库源码分析（一、深入理解OKHttp源码）">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1143,8 +1143,8 @@ long cleanup(long now) {
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/12/09/Android主流三方库源码分析（二、深入探索Retrofit源码）/" rel="prev" title="Android主流三方库源码分析（二、深入探索Retrofit源码）">
-                Android主流三方库源码分析（二、深入探索Retrofit源码） <i class="fa fa-chevron-right"></i>
+              <a href="/2018/12/09/Android主流三方库源码分析（二、深入理解Retrofit源码）/" rel="prev" title="Android主流三方库源码分析（二、深入理解Retrofit源码）">
+                Android主流三方库源码分析（二、深入理解Retrofit源码） <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
