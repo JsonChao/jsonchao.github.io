@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="Deep into Android">
 <meta property="og:description" content="前言成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。前面几篇文章我们已经详细分析了Android系统启动流程的init进程、Zygote进程和SystemServer进程。本篇，我们来分析一下Launcher的启动过程。 Android系统启动的最后一步就是启动了一个Launcher应用程序来显示系统中已经安装的应用程序。Launcher在启动">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-03-09T07:00:06.902Z">
+<meta property="og:updated_time" content="2019-03-09T07:10:48.589Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android系统启动流程之Launcher进程启动">
 <meta name="twitter:description" content="前言成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。前面几篇文章我们已经详细分析了Android系统启动流程的init进程、Zygote进程和SystemServer进程。本篇，我们来分析一下Launcher的启动过程。 Android系统启动的最后一步就是启动了一个Launcher应用程序来显示系统中已经安装的应用程序。Launcher在启动">
@@ -955,13 +955,13 @@ private void rebindAdapters(boolean showTabs, boolean force) {
 </code></pre><p>注释1处，会将app信息列表appsList设置给AllAppsRecyclerView对象，在注释2处，为其设置了Adapter。最终，应用程序快捷图标列表就会显示到屏幕上了。</p>
 <h3 id="三、总结"><a href="#三、总结" class="headerlink" title="三、总结"></a>三、总结</h3><p>到此，我们终于将Android系统启动流程这一主题分析完毕，结合前面的几篇内容，可以得出核心流程如下：</p>
 <ul>
-<li>1、启动电源以及系统启动：当电源按下时引导芯片从预定义的订房（固化在ROM）开始执行，加载引导程序BootLoader到RAM，然后执行。</li>
-<li>2、引导程序BootLoader:BootLoader是在Android系统开始运行前的一个小程序，主要用于把系统OS拉起来并运行。。</li>
-<li>3、Linux内核启动：当内核启动时，设置缓存、被保护存储器、计划列表、加载驱动。当其完成系统设置时，会先在系统文件中寻找init.rc文件，并启动init进行。</li>
-<li>4、init进程启动：初始化和启动属性服务，并且启动Zygote进程。</li>
-<li>5、Zygote进程启动：创建JVM并为其注册JNI方法，创建服务器端Socket，启动SystemServer进程。</li>
-<li>6、SystemServer进程启动：启动Binder线程池和SystemServiceManager，并且启动各种系统服务。</li>
-<li>7、Launcher启动：被SystemServer进程启动的AMS会启动Launcher，Launcher启动后会将已安装应用的快捷图标显示到系统桌面上。</li>
+<li>1、<strong>启动电源以及系统启动</strong>：当电源按下时引导芯片从预定义的订房（固化在ROM）开始执行，加载引导程序BootLoader到RAM，然后执行。</li>
+<li>2、<strong>引导程序BootLoader</strong>：BootLoader是在Android系统开始运行前的一个小程序，主要用于把系统OS拉起来并运行。。</li>
+<li>3、<strong>Linux内核启动</strong>：当内核启动时，设置缓存、被保护存储器、计划列表、加载驱动。当其完成系统设置时，会先在系统文件中寻找init.rc文件，并启动init进行。</li>
+<li>4、<strong>init进程启动</strong>：初始化和启动属性服务，并且启动Zygote进程。</li>
+<li>5、<strong>Zygote进程启动</strong>：创建JVM并为其注册JNI方法，创建服务器端Socket，启动SystemServer进程。</li>
+<li>6、<strong>SystemServer进程启动</strong>：启动Binder线程池和SystemServiceManager，并且启动各种系统服务。</li>
+<li>7、<strong>Launcher启动</strong>：被SystemServer进程启动的AMS会启动Launcher，Launcher启动后会将已安装应用的快捷图标显示到系统桌面上。</li>
 </ul>
 <p>下一系列，笔者将会给大家带来Android中的跨进程通信Binder的详细讲解，尽请期待~</p>
 <h5 id="参考链接："><a href="#参考链接：" class="headerlink" title="参考链接："></a>参考链接：</h5><hr>
