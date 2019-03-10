@@ -91,7 +91,7 @@
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/1967257-f245ffbefe056fb6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="https://images2015.cnblogs.com/blog/918357/201706/918357-20170618234001337-203688773.png">
-<meta property="og:updated_time" content="2018-11-25T15:04:03.941Z">
+<meta property="og:updated_time" content="2019-03-10T09:13:42.662Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android View的绘制流程">
 <meta name="twitter:description" content="前言成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。上一篇中我们讲到了Android的触摸事件传递机制，除此之外，关于Android View的绘制流程这一块也是View相关的核心知识点。我们都知道，PhoneWindow是Android系统中最基本的窗口系统，每个Activity会创建一个。同时，PhoneWindow也是Activity和V">
@@ -508,6 +508,7 @@ public void addView(View view, ViewGroup.LayoutParams params, Display display, W
 }
 </code></pre><p>performTraversals的大致工作流程图如下所示：</p>
 <p><img src="https://upload-images.jianshu.io/upload_images/1967257-f245ffbefe056fb6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image"></p>
+<p><a href="https://upload-images.jianshu.io/upload_images/1967257-f245ffbefe056fb6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" target="_blank" rel="external">显示不出来的可点击这里查看</a></p>
 <p>注意：</p>
 <ul>
 <li>preformLayout和performDraw的传递流程和performMeasure是类似的，唯一不同的是，performDraw的传递过程是在draw方法中通过dispatchDraw来实现的，不过这并没有本质区别。</li>
