@@ -91,7 +91,7 @@
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://raw.githubusercontent.com/JsonChao/Awesome-Third-Library-Source-Analysis/master/ScreenShots/Android_hot_third_source_analysis.png">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/1916953-fc6439af2bfefddc.jpg?imageMogr2/auto-orient/">
-<meta property="og:updated_time" content="2019-03-06T13:28:07.681Z">
+<meta property="og:updated_time" content="2019-03-10T14:08:33.071Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android主流三方库源码分析（一、深入理解OKHttp源码）">
 <meta name="twitter:description" content="前言成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。前两篇我们详细分析了View的核心源码—Android的触摸事件传递机制和Android View的绘制流程，从这篇开始，笔者接下来将会陪大家深入分析目前Android中大部分的主流开源框架源码，从而能够让我们真正地去理解这些优秀开源框架背后的思想，真真切切地提升自己的内功。目前，这一系列的分">
@@ -517,7 +517,7 @@ OkHttpClient(Builder builder) {
 * Prepares the {@code request} to be executed at   some point in the future.
 */
 @Override public Call newCall(Request request) {
-    return RealCall.newRealCall(this, request, false /*     for web socket */);
+    return RealCall.newRealCall(this, request, false /* for web socket */);
 }
 
 // RealCall为真正的请求执行者
@@ -590,7 +590,7 @@ public Response proceed(Request request, StreamAllocation streamAllocation, Http
 
     // Call the next interceptor in the chain.
     // 实例化下一个拦截器对应的RealIterceptorChain对象
-    RealInterceptorChain next = new     RealInterceptorChain(interceptors, streamAllocation, httpCodec,
+    RealInterceptorChain next = new RealInterceptorChain(interceptors, streamAllocation, httpCodec,
         connection, index + 1, request, call, eventListener, connectTimeout, readTimeout,
         writeTimeout);
     // 得到当前的拦截器
@@ -613,7 +613,7 @@ client.newCall(request).enqueue(new Callback() {
     }
 
     @Override 
-    public void onResponse(Call call, Response   response) throws IOException {
+    public void onResponse(Call call, Response response) throws IOException {
         ...
     }
 
@@ -631,9 +631,9 @@ private final Deque&lt;AsyncCall&gt; readyAsyncCalls = new ArrayDeque&lt;&gt;();
 private final Deque&lt;AsyncCall&gt; runningAsyncCalls = new ArrayDeque&lt;&gt;();
 
 // 同步请求
-private final Deque&lt;RealCall&gt; runningSyncCalls = new   ArrayDeque&lt;&gt;();
+private final Deque&lt;RealCall&gt; runningSyncCalls = new ArrayDeque&lt;&gt;();
 
-//  Promotes eligible calls from {@link #readyAsyncCalls} to {@link #runningAsyncCalls} and runs
+// Promotes eligible calls from {@link #readyAsyncCalls} to {@link #runningAsyncCalls} and runs
 // them on the executor service. Must not be called with synchronization because executing calls
 // can call into user code.
 private boolean promoteAndExecute() {
@@ -744,7 +744,7 @@ private boolean promoteAndExecute() {
     long now = System.currentTimeMillis();
 
     // request判断缓存的策略，是否要使用了网络，缓存或两者都使用
-    CacheStrategy strategy = new     CacheStrategy.Factory(now, chain.request(),     cacheCandidate).get();
+    CacheStrategy strategy = new CacheStrategy.Factory(now, chain.request(),     cacheCandidate).get();
     Request networkRequest = strategy.networkRequest;
     Response cacheResponse = strategy.cacheResponse;
 
@@ -752,20 +752,20 @@ private boolean promoteAndExecute() {
       cache.trackResponse(strategy);
     }
 
-    if (cacheCandidate != null &amp;&amp; cacheResponse ==     null) {
+    if (cacheCandidate != null &amp;&amp; cacheResponse == null) {
       closeQuietly(cacheCandidate.body()); // The cache   candidate wasn&apos;t applicable. Close it.
     }
 
-    // If we&apos;re forbidden from using the network and     the cache is insufficient, fail.
-    if (networkRequest == null &amp;&amp; cacheResponse ==     null) {
+    // If we&apos;re forbidden from using the network and the cache is insufficient, fail.
+    if (networkRequest == null &amp;&amp; cacheResponse == null) {
       return new Response.Builder()
           .request(chain.request())
           .protocol(Protocol.HTTP_1_1)
           .code(504)
-          .message(&quot;Unsatisfiable Request   (only-if-cached)&quot;)
+          .message(&quot;Unsatisfiable Request (only-if-cached)&quot;)
           .body(Util.EMPTY_RESPONSE)
           .sentRequestAtMillis(-1L)
-          .receivedResponseAtMillis(System.currentTimeM  illis())
+          .receivedResponseAtMillis(System.currentTimeMillis())
           .build();
     }
 
@@ -781,27 +781,27 @@ private boolean promoteAndExecute() {
         // 调用下一个拦截器，决定从网络上来得到response
         networkResponse = chain.proceed(networkRequest);
     } finally {
-        // If we&apos;re crashing on I/O or otherwise,   don&apos;t   leak the cache body.
-        if (networkResponse == null &amp;&amp; cacheCandidate   !=   null) {
+        // If we&apos;re crashing on I/O or otherwise,   don&apos;t leak the cache body.
+        if (networkResponse == null &amp;&amp; cacheCandidate != null) {
           closeQuietly(cacheCandidate.body());
         }
     }
 
-    // If we have a cache response too, then we&apos;re     doing a conditional get.
+    // If we have a cache response too, then we&apos;re doing a conditional get.
     // 如果本地已经存在cacheResponse，那么让它和网络得到的networkResponse做比较，决定是否来更新缓存的cacheResponse
     if (cacheResponse != null) {
-        if (networkResponse.code() ==   HTTP_NOT_MODIFIED)   {
-          Response response =     cacheResponse.newBuilder()
-                  .headers(combine(cacheResponse.headers(    ),     networkResponse.headers()))
-                  .sentRequestAtMillis(networkResponse.se    ntRe    questAtMillis())
-                  .receivedResponseAtMillis(networkRespon    se.r    eceivedResponseAtMillis())
-                  .cacheResponse(stripBody(cacheResponse)    )
-                  .networkResponse(stripBody(networkRespo    nse)    )
+        if (networkResponse.code() == HTTP_NOT_MODIFIED)   {
+          Response response = cacheResponse.newBuilder()
+                  .headers(combine(cacheResponse.headers(), networkResponse.headers()))
+                  .sentRequestAtMillis(networkResponse.sentRequestAtMillis())
+                  .receivedResponseAtMillis(networkResponse.receivedResponseAtMillis())
+                  .cacheResponse(stripBody(cacheResponse))
+                  .networkResponse(stripBody(networkResponse))
               .build();
           networkResponse.body().close();
 
-          // Update the cache after combining headers     but     before stripping the
-          // Content-Encoding header (as performed by         initContentStream()).
+          // Update the cache after combining headers but before stripping the
+          // Content-Encoding header (as performed by initContentStream()).
           cache.trackConditionalCacheHit();
           cache.update(cacheResponse, response);
           return response;
@@ -816,14 +816,14 @@ private boolean promoteAndExecute() {
         .build();
 
     if (cache != null) {
-      if (HttpHeaders.hasBody(response) &amp;&amp;   CacheStrategy.isCacheable(response,   networkRequest)) {
+      if (HttpHeaders.hasBody(response) &amp;&amp; CacheStrategy.isCacheable(response,   networkRequest)) {
         // Offer this request to the cache.
         // 缓存未经缓存过的response
-        CacheRequest cacheRequest =     cache.put(response);
-        return cacheWritingResponse(cacheRequest,     response);
+        CacheRequest cacheRequest = cache.put(response);
+        return cacheWritingResponse(cacheRequest, response);
       }
 
-      if (HttpMethod.invalidatesCache(networkRequest.me  thod())) {
+      if (HttpMethod.invalidatesCache(networkRequest.method())) {
         try {
           cache.remove(networkRequest);
         } catch (IOException ignored) {
@@ -836,17 +836,17 @@ private boolean promoteAndExecute() {
 }
 </code></pre><p>缓存拦截器会根据请求的信息和缓存的响应的信息来判断是否存在缓存可用，如果有可以使用的缓存，那么就返回该缓存给用户，否则就继续使用责任链模式来从服务器中获取响应。当获取到响应的时候，又会把响应缓存到磁盘上面。</p>
 <h3 id="三、ConnectInterceptor之连接池"><a href="#三、ConnectInterceptor之连接池" class="headerlink" title="三、ConnectInterceptor之连接池"></a>三、ConnectInterceptor之连接池</h3><pre><code>@Override public Response intercept(Chain chain) throws IOException {
-    RealInterceptorChain realChain =     (RealInterceptorChain) chain;
+    RealInterceptorChain realChain = (RealInterceptorChain) chain;
     Request request = realChain.request();
-    StreamAllocation streamAllocation =     realChain.streamAllocation();
+    StreamAllocation streamAllocation = realChain.streamAllocation();
 
     // We need the network to satisfy this request.     Possibly for validating a conditional GET.
-    boolean doExtensiveHealthChecks =     !request.method().equals(&quot;GET&quot;);
+    boolean doExtensiveHealthChecks = !request.method().equals(&quot;GET&quot;);
     // HttpCodec是对 HTTP 协议操作的抽象，有两个实现：Http1Codec和Http2Codec，顾名思义，它们分别对应 HTTP/1.1 和 HTTP/2 版本的实现。在这个方法的内部实现连接池的复用处理
-    HttpCodec httpCodec =     streamAllocation.newStream(client, chain,     doExtensiveHealthChecks);
-    RealConnection connection =     streamAllocation.connection();
+    HttpCodec httpCodec = streamAllocation.newStream(client, chain,     doExtensiveHealthChecks);
+    RealConnection connection = streamAllocation.connection();
 
-    return realChain.proceed(request, streamAllocation,     httpCodec, connection);
+    return realChain.proceed(request, streamAllocation, httpCodec, connection);
 }
 
 
@@ -856,22 +856,22 @@ private boolean promoteAndExecute() {
 // 调用 streamAllocation 的 newStream() 方法的时候，最终会经过一系列
 // 的判断到达 StreamAllocation 中的 findConnection() 方法
 private RealConnection findConnection(int   connectTimeout, int readTimeout, int writeTimeout,
-    int pingIntervalMillis, boolean   connectionRetryEnabled) throws IOException {
+    int pingIntervalMillis, boolean connectionRetryEnabled) throws IOException {
       ...
 
-      // Attempt to use an already-allocated       connection. We need to be careful here because       our
-      // already-allocated connection may have been       restricted from creating new streams.
+      // Attempt to use an already-allocated connection. We need to be careful here because our
+      // already-allocated connection may have been restricted from creating new streams.
       // 尝试使用已分配的连接，已经分配的连接可能已经被限制创建新的流
       releasedConnection = this.connection;
       // 释放当前连接的资源，如果该连接已经被限制创建新的流，就返回一个Socket以关闭连接
       toClose = releaseIfNoNewStreams();
       if (this.connection != null) {
-        // We had an already-allocated connection and       it&apos;s good.
+        // We had an already-allocated connection and it&apos;s good.
         result = this.connection;
         releasedConnection = null;
       }
       if (!reportedAcquired) {
-        // If the connection was never reported       acquired, don&apos;t report it as released!
+        // If the connection was never reported acquired, don&apos;t report it as released!
         // 如果该连接从未被标记为获得，不要标记为发布状态，reportedAcquired 通过 acquire()   方法修改
         releasedConnection = null;
       }
@@ -879,7 +879,7 @@ private RealConnection findConnection(int   connectTimeout, int readTimeout, int
       if (result == null) {
         // Attempt to get a connection from the pool.
         // 尝试供连接池中获取一个连接
-        Internal.instance.get(connectionPool,   address,     this, null);
+        Internal.instance.get(connectionPool, address, this, null);
         if (connection != null) {
           foundPooledConnection = true;
           result = connection;
@@ -892,36 +892,36 @@ private RealConnection findConnection(int   connectTimeout, int readTimeout, int
     closeQuietly(toClose);
 
     if (releasedConnection != null) {
-      eventListener.connectionReleased(call,       releasedConnection);
+      eventListener.connectionReleased(call, releasedConnection);
     }
     if (foundPooledConnection) {
       eventListener.connectionAcquired(call, result);
     }
     if (result != null) {
-      // If we found an already-allocated or pooled       connection, we&apos;re done.
+      // If we found an already-allocated or pooled connection, we&apos;re done.
       // 如果已经从连接池中获取到了一个连接，就将其返回
       return result;
     }
 
-    // If we need a route selection, make one. This   is     a blocking operation.
+    // If we need a route selection, make one. This   is a blocking operation.
     boolean newRouteSelection = false;
-    if (selectedRoute == null &amp;&amp; (routeSelection ==       null || !routeSelection.hasNext())) {
+    if (selectedRoute == null &amp;&amp; (routeSelection == null || !routeSelection.hasNext())) {
       newRouteSelection = true;
       routeSelection = routeSelector.next();
     }
 
     synchronized (connectionPool) {
-      if (canceled) throw new     IOException(&quot;Canceled&quot;);
+      if (canceled) throw new IOException(&quot;Canceled&quot;);
 
       if (newRouteSelection) {
-        // Now that we have a set of IP addresses,   make     another attempt at getting a   connection from
-        // the pool. This could match due to   connection     coalescing.
+        // Now that we have a set of IP addresses,   make another attempt at getting a   connection from
+        // the pool. This could match due to   connection coalescing.
          // 根据一系列的 IP地址从连接池中获取一个链接
         List&lt;Route&gt; routes = routeSelection.getAll();
-        for (int i = 0, size = routes.size(); i &lt;   size;     i++) {
+        for (int i = 0, size = routes.size(); i &lt; size;i++) {
           Route route = routes.get(i);
           // 从连接池中获取一个连接
-          Internal.instance.get(connectionPool,       address, this, route);
+          Internal.instance.get(connectionPool, address, this, route);
           if (connection != null) {
             foundPooledConnection = true;
             result = connection;
@@ -936,12 +936,12 @@ private RealConnection findConnection(int   connectTimeout, int readTimeout, int
           selectedRoute = routeSelection.next();
         }
 
-        // Create a connection and assign it to this       allocation immediately. This makes it   possible
-        // for an asynchronous cancel() to interrupt       the handshake we&apos;re about to do.
+        // Create a connection and assign it to this allocation immediately. This makes it   possible
+        // for an asynchronous cancel() to interrupt the handshake we&apos;re about to do.
         // 在连接池中如果没有该连接，则创建一个新的连接，并将其分配，这样我们就可以在握手之前进行终端
         route = selectedRoute;
         refusedStreamCount = 0;
-        result = new RealConnection(connectionPool,       selectedRoute);
+        result = new RealConnection(connectionPool, selectedRoute);
         acquire(result, false);
       }
     }
@@ -954,8 +954,8 @@ private RealConnection findConnection(int   connectTimeout, int readTimeout, int
 
     // Do TCP + TLS handshakes. This is a blocking     operation.
      // 进行 TCP 和 TLS 握手
-    result.connect(connectTimeout, readTimeout,     writeTimeout, pingIntervalMillis,
-        connectionRetryEnabled, call, eventListener);
+    result.connect(connectTimeout, readTimeout, writeTimeout, pingIntervalMillis,
+      connectionRetryEnabled, call, eventListener);
     routeDatabase().connected(result.route());
 
     Socket socket = null;
@@ -970,7 +970,7 @@ private RealConnection findConnection(int   connectTimeout, int readTimeout, int
       // release this connection and acquire that one.
       // 如果同时创建了另一个到同一地址的多路复用连接，释放这个连接并获取那个连接
       if (result.isMultiplexed()) {
-        socket =     Internal.instance.deduplicate(connectionPool,     address, this);
+        socket = Internal.instance.deduplicate(connectionPool, address, this);
         result = connection;
       }
     }
@@ -1012,7 +1012,7 @@ assert (Thread.holdsLock(this));
           waitNanos -= (waitMillis * 1000000L);
           synchronized (ConnectionPool.this) {
             try {
-              ConnectionPool.this.wait(waitMillis,     (int) waitNanos);
+              ConnectionPool.this.wait(waitMillis, (int) waitNanos);
             } catch (InterruptedException ignored) {
             }
           }
@@ -1026,15 +1026,15 @@ long cleanup(long now) {
     RealConnection longestIdleConnection = null;
     long longestIdleDurationNs = Long.MIN_VALUE;
 
-    // Find either a connection to evict, or the time     that the next eviction is due.
+    // Find either a connection to evict, or the time that the next eviction is due.
     synchronized (this) {
         // 遍历所有的连接
-        for (Iterator&lt;RealConnection&gt; i =     connections.iterator(); i.hasNext(); ) {
+        for (Iterator&lt;RealConnection&gt; i = connections.iterator(); i.hasNext(); ) {
           RealConnection connection = i.next();
 
           // If the connection is in use, keep     searching.
           // 遍历所有的连接
-          if (pruneAndGetAllocationCount(connection,     now)     &gt; 0) {
+          if (pruneAndGetAllocationCount(connection, now) &gt; 0) {
             inUseConnectionCount++;
             continue;
           }
@@ -1043,26 +1043,27 @@ long cleanup(long now) {
 
           // If the connection is ready to be     evicted,     we&apos;re done.
           // 如果找到了一个可以被清理的连接，会尝试去寻找闲置时间最久的连接来释放
-          long idleDurationNs = now -         connection.idleAtNanos;
-          if (idleDurationNs &gt; longestIdleDurationNs)     {
+          long idleDurationNs = now - connection.idleAtNanos;
+          if (idleDurationNs &gt; longestIdleDurationNs) {
             longestIdleDurationNs = idleDurationNs;
             longestIdleConnection = connection;
           }
         }
 
-        // maxIdleConnections 表示最大允许的闲置的连接的数量,keepAliveDurationNs表示连接允许存活的最长的时间。默认空闲连接最大数目为5个，keepalive 时间最长为5分钟。
-        if (longestIdleDurationNs &gt;=     this.keepAliveDurationNs
-            || idleConnectionCount &gt;     this.maxIdleConnections) {
-          // We&apos;ve found a connection to evict.     Remove it     from the list, then close it     below (outside
+        // maxIdleConnections 表示最大允许的闲置的连接的数量,keepAliveDurationNs表示连接允许存活的最长的时间。
+        // 默认空闲连接最大数目为5个，keepalive 时间最长为5分钟。
+        if (longestIdleDurationNs &gt;= this.keepAliveDurationNs
+            || idleConnectionCount &gt; this.maxIdleConnections) {
+          // We&apos;ve found a connection to evict. Remove it from the list, then close it     below (outside
           // of the synchronized block).
           // 该连接的时长超出了最大的活跃时长或者闲置的连接数量超出了最大允许的范围，直接移除
           connections.remove(longestIdleConnection);
         } else if (idleConnectionCount &gt; 0) {
-          // A connection will be ready to evict     soon.
+          // A connection will be ready to evict soon.
           // 闲置的连接的数量大于0，停顿指定的时间（等会儿会将其清理掉，现在还不是时候）
-          return keepAliveDurationNs -         longestIdleDurationNs;
+          return keepAliveDurationNs - longestIdleDurationNs;
         } else if (inUseConnectionCount &gt; 0) {
-          // All connections are in use. It&apos;ll be at         least the keep alive duration &apos;til we     run     again.
+          // All connections are in use. It&apos;ll be at least the keep alive duration &apos;til we run again.
           // 所有的连接都在使用中，5分钟后再清理
           return keepAliveDurationNs;
         } else {

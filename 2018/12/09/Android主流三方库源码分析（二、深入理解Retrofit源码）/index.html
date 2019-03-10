@@ -90,7 +90,7 @@
 <meta property="og:description" content="前言成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。前篇我们详细地分析了OKHttp的核心源码，如果对OKHttp内部机制不了解的可以看看Android主流三方库源码分析（一、深入理解OKHttp源码）。这篇，将会来深入地分析下目前Android最优秀的网络封装框架Retrofit的源码流程。 一、基本使用流程1、定义HTTP API，用于描述">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/625299-29a632638d9f518f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/891/format/webp">
-<meta property="og:updated_time" content="2019-03-06T13:28:26.511Z">
+<meta property="og:updated_time" content="2019-03-10T14:19:48.271Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android主流三方库源码分析（二、深入理解Retrofit源码）">
 <meta name="twitter:description" content="前言成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。前篇我们详细地分析了OKHttp的核心源码，如果对OKHttp内部机制不了解的可以看看Android主流三方库源码分析（一、深入理解OKHttp源码）。这篇，将会来深入地分析下目前Android最优秀的网络封装框架Retrofit的源码流程。 一、基本使用流程1、定义HTTP API，用于描述">
@@ -447,9 +447,9 @@ repos.execute() or repos.enqueue()
     // 网络请求的url地址
     private @Nullable HttpUrl baseUrl;
     // 数据转换器工厂的集合
-    private final List&lt;Converter.Factory&gt; converterFactories = new     ArrayList&lt;&gt;();
+    private final List&lt;Converter.Factory&gt; converterFactories = new ArrayList&lt;&gt;();
     // 网络请求适配器工厂的集合，默认是ExecutorCallAdapterFactory
-    private final List&lt;CallAdapter.Factory&gt; callAdapterFactories = new     ArrayList&lt;&gt;();
+    private final List&lt;CallAdapter.Factory&gt; callAdapterFactories = new ArrayList&lt;&gt;();
     // 回调方法执行器，在 Android 上默认是封装了 handler 的 MainThreadExecutor, 默认作用是：切换线程（子线程 -&gt; 主线程）
     private @Nullable Executor callbackExecutor;
     // 一个开关，为true则会缓存创建的ServiceMethod
@@ -514,18 +514,18 @@ static class Android extends Platform {
     // 在Retrofit中提供了四种CallAdapterFactory(策略模式)：
     // ExecutorCallAdapterFactory（默认）、GuavaCallAdapterFactory、
     // va8CallAdapterFactory、RxJavaCallAdapterFactory
-    @Override List&lt;? extends CallAdapter.Factory&gt;     defaultCallAdapterFactories(
+    @Override List&lt;? extends CallAdapter.Factory&gt; defaultCallAdapterFactories(
         @Nullable Executor callbackExecutor) {
       if (callbackExecutor == null) throw new AssertionError();
       ExecutorCallAdapterFactory executorFactory = new   ExecutorCallAdapterFactory(callbackExecutor);
       return Build.VERSION.SDK_INT &gt;= 24
-        ? asList(CompletableFutureCallAdapterFactory.INSTANCE,     executorFactory)
+        ? asList(CompletableFutureCallAdapterFactory.INSTANCE, executorFactory)
         : singletonList(executorFactory);
     }
 
     ...
 
-    @Override List&lt;? extends Converter.Factory&gt;     defaultConverterFactories() {
+    @Override List&lt;? extends Converter.Factory&gt; defaultConverterFactories() {
       return Build.VERSION.SDK_INT &gt;= 24
           ? singletonList(OptionalConverterFactory.INSTANCE)
           : Collections.&lt;Converter.Factory&gt;emptyList();
@@ -536,7 +536,7 @@ static class Android extends Platform {
     static class MainThreadExecutor implements Executor {
 
         // 获取Android 主线程的Handler 
-        private final Handler handler = new   Handler(Looper.getMainLooper());
+        private final Handler handler = new Handler(Looper.getMainLooper());
 
         @Override public void execute(Runnable r) {
 
@@ -561,7 +561,7 @@ public Builder baseUrl(HttpUrl baseUrl) {
     checkNotNull(baseUrl, &quot;baseUrl == null&quot;);
     List&lt;String&gt; pathSegments = baseUrl.pathSegments();
     if (!&quot;&quot;.equals(pathSegments.get(pathSegments.size() - 1))) {
-      throw new IllegalArgumentException(&quot;baseUrl must end in /: &quot; +     baseUrl);
+      throw new IllegalArgumentException(&quot;baseUrl must end in /: &quot; + baseUrl);
     }
     this.baseUrl = baseUrl;
     return this;
@@ -609,7 +609,7 @@ public Builder baseUrl(HttpUrl baseUrl) {
         callbackExecutor = platform.defaultCallbackExecutor();
     }
 
-    // Make a defensive copy of the adapters and add the defaultCall  adapter.
+    // Make a defensive copy of the adapters and add the defaultCall adapter.
     List&lt;CallAdapter.Factory&gt; callAdapterFactories = new ArrayList&lt;&gt;(this.callAdapterFactories);
     // 添加默认适配器工厂在集合尾部
     callAdapterFactories.addAll(platform.defaultCallAdapterFactorisca  llbackExecutor));
@@ -618,7 +618,7 @@ public Builder baseUrl(HttpUrl baseUrl) {
     List&lt;Converter.Factory&gt; converterFactories = new ArrayList&lt;&gt;(
         1 + this.converterFactories.size() + platform.defaultConverterFactoriesSize());
     // Add the built-in converter factory first. This prevents overriding its behavior but also
-    // ensures correct behavior when using converters thatconsumeall   types.
+    // ensures correct behavior when using converters thatconsumeall types.
     converterFactories.add(new BuiltInConverters());
     converterFactories.addAll(this.converterFactories);
     converterFactories.addAll(platform.defaultConverterFactories();
@@ -637,19 +637,19 @@ public Builder baseUrl(HttpUrl baseUrl) {
     }
 
     // 使用动态代理拿到请求接口所有注解配置后，创建网络请求接口实例
-    return (T) Proxy.newProxyInstance(service.getClassLoader(), new     Class&lt;?&gt;[] { service },
+    return (T) Proxy.newProxyInstance(service.getClassLoader(), new  Class&lt;?&gt;[] { service },
         new InvocationHandler() {
           private final Platform platform = Platform.get();
           private final Object[] emptyArgs = new Object[0];
 
-          @Override public Object invoke(Object proxy, Method method,   @Nullable Object[] args)
+          @Override public Object invoke(Object proxy, Method method, @Nullable Object[] args)
               throws Throwable {
-            // If the method is a method from Object then defer to normal     invocation.
+            // If the method is a method from Object then defer to normal invocation.
             if (method.getDeclaringClass() == Object.class) {
               return method.invoke(this, args);
             }
             if (platform.isDefaultMethod(method)) {
-              return platform.invokeDefaultMethod(method, service, proxy,   args);
+              return platform.invokeDefaultMethod(method, service, proxy, args);
             }
             return loadServiceMethod(method).invoke(args != null ? args : emptyArgs);
           }
@@ -687,19 +687,19 @@ private void eagerlyValidateMethods(Class&lt;?&gt; service) {
 abstract class ServiceMethod&lt;T&gt; {
   static &lt;T&gt; ServiceMethod&lt;T&gt; parseAnnotations(Retrofit retrofit, Method   method) {
         // 通过RequestFactory解析注解配置（工厂模式、内部使用了建造者模式）
-        RequestFactory requestFactory =         RequestFactory.parseAnnotations(retrofit, method);
+        RequestFactory requestFactory = RequestFactory.parseAnnotations(retrofit, method);
 
         Type returnType = method.getGenericReturnType();
         if (Utils.hasUnresolvableType(returnType)) {
           throw methodError(method,
-              &quot;Method return type must not include a type variable or      wildcard: %s&quot;, returnType);
+              &quot;Method return type must not include a type variable or wildcard: %s&quot;, returnType);
         }
         if (returnType == void.class) {
-          throw methodError(method, &quot;Service methods cannot return    void.&quot;);
+          throw methodError(method, &quot;Service methods cannot return void.&quot;);
         }
 
         // 最终是通过HttpServiceMethod构建的请求方法
-        return HttpServiceMethod.parseAnnotations(retrofit, method,         requestFactory);
+        return HttpServiceMethod.parseAnnotations(retrofit, method, requestFactory);
     }
 
     abstract T invoke(Object[] args);
@@ -716,25 +716,25 @@ abstract class ServiceMethod&lt;T&gt; {
     this.parameterAnnotationsArray = method.getParameterAnnotations();
 }
 </code></pre><p>接着看HttpServiceMethod.parseAnnotations()的内部流程。</p>
-<pre><code>static &lt;ResponseT, ReturnT&gt; HttpServiceMethod&lt;ResponseT, ReturnT&gt;     parseAnnotations(
+<pre><code>static &lt;ResponseT, ReturnT&gt; HttpServiceMethod&lt;ResponseT, ReturnT&gt; parseAnnotations(
       Retrofit retrofit, Method method, RequestFactory requestFactory) {
 
-        // 1.根据网络请求接口方法的返回值和注解类型，
-        // 从Retrofit对象中获取对应的网络请求适配器 
-        CallAdapter&lt;ResponseT, ReturnT&gt; callAdapter =         createCallAdapter(retrofit, method);
+    //1.根据网络请求接口方法的返回值和注解类型，
+    // 从Retrofit对象中获取对应的网络请求适配器
+    CallAdapter&lt;ResponseT, ReturnT&gt; callAdapter = createCallAdapter(retrofit,method);
 
-        // 得到响应类型
-        Type responseType = callAdapter.responseType();
+    // 得到响应类型
+    Type responseType = callAdapter.responseType();
 
-        ...
+    ...
 
-        // 2.根据网络请求接口方法的返回值和注解类型，从Retrofit对象中获取对应的数据转换器 
-        Converter&lt;ResponseBody, ResponseT&gt; responseConverter =
-            createResponseConverter(retrofit, method, responseType);
+    //2.根据网络请求接口方法的返回值和注解类型从Retrofit对象中获取对应的数据转换器 
+    Converter&lt;ResponseBody, ResponseT&gt;responseConverter =
+        createResponseConverter(retrofit,method, responseType);
 
-        okhttp3.Call.Factory callFactory = retrofit.callFactory;
+    okhttp3.Call.Factory callFactory = retrofit.callFactory;
 
-        return new HttpServiceMethod&lt;&gt;(requestFactory, callFactory,         callAdapter, responseConverter);
+    return newHttpServiceMethod&lt;&gt;(requestFactory, callFactory, callAdapter,responseConverter);
 }
 </code></pre><h5 id="1-createCallAdapter-retrofit-method"><a href="#1-createCallAdapter-retrofit-method" class="headerlink" title="1.createCallAdapter(retrofit, method)"></a>1.createCallAdapter(retrofit, method)</h5><pre><code>private static &lt;ResponseT, ReturnT&gt; CallAdapter&lt;ResponseT, ReturnT&gt;     createCallAdapter(
       Retrofit retrofit, Method method) {
@@ -747,8 +747,8 @@ abstract class ServiceMethod&lt;T&gt; {
     try {
       //noinspection unchecked
       return (CallAdapter&lt;ResponseT, ReturnT&gt;)  retrofit.callAdapter(returnType, annotations);
-    } catch (RuntimeException e) { // Wide exception range because         factories are user code.
-      throw methodError(method, e, &quot;Unable to create call adapter  for     %s&quot;, returnType);
+    } catch (RuntimeException e) { // Wide exception range because factories are user code.
+      throw methodError(method, e, &quot;Unable to create call adapter for %s&quot;, returnType);
     }
 }
 
@@ -763,7 +763,7 @@ public CallAdapter&lt;?, ?&gt; nextCallAdapter(@Nullable CallAdapter.Factory ski
     int start = callAdapterFactories.indexOf(skipPast) + 1;
     // 遍历 CallAdapter.Factory 集合寻找合适的工厂
     for (int i = start, count = callAdapterFactories.size(); i &lt;count; i++) {
-        CallAdapter&lt;?, ?&gt; adapter =    callAdapterFactories.get(i).get(returnType, annotations, this);
+        CallAdapter&lt;?, ?&gt; adapter = callAdapterFactories.get(i).get(returnType, annotations, this);
         if (adapter != null) {
           return adapter;
         }
@@ -799,7 +799,7 @@ for (int i = start, count = converterFactories.size(); i &lt; count; i++) {
 }
 </code></pre><h4 id="最终，执行HttpServiceMethod的invoke方法"><a href="#最终，执行HttpServiceMethod的invoke方法" class="headerlink" title="最终，执行HttpServiceMethod的invoke方法"></a>最终，执行HttpServiceMethod的invoke方法</h4><pre><code>@Override ReturnT invoke(Object[] args) {
     return callAdapter.adapt(
-        new OkHttpCall&lt;&gt;(requestFactory, args, callFactory,     responseConverter));
+        new OkHttpCall&lt;&gt;(requestFactory, args, callFactory, responseConverter));
 }
 </code></pre><p>最终在adapt中创建了一个ExecutorCallbackCall对象，它是一个装饰者，而在它内部真正去执行网络请求的还是OkHttpCall。</p>
 <h3 id="四、创建网络请求接口类实例并执行请求过程"><a href="#四、创建网络请求接口类实例并执行请求过程" class="headerlink" title="四、创建网络请求接口类实例并执行请求过程"></a>四、创建网络请求接口类实例并执行请求过程</h3><h4 id="1、service-listRepos"><a href="#1、service-listRepos" class="headerlink" title="1、service.listRepos()"></a>1、service.listRepos()</h4><pre><code>1、Call&lt;List&lt;Repo&gt;&gt; repos = service.listRepos(&quot;octocat&quot;);
@@ -808,7 +808,7 @@ for (int i = start, count = converterFactories.size(); i &lt; count; i++) {
     okhttp3.Call call;
 
     synchronized (this) {
-      if (executed) throw new IllegalStateException(&quot;Already     executed.&quot;);
+      if (executed) throw new IllegalStateException(&quot;Already executed.&quot;);
       executed = true;
 
       if (creationFailure != null) {
@@ -860,7 +860,7 @@ Response&lt;T&gt; parseResponse(okhttp3.Response rawResponse) throws IOException
 
     // Remove the body&apos;s source (the only stateful object) so we can   pass the response along.
     rawResponse = rawResponse.newBuilder()
-        .body(new NoContentResponseBody(rawBody.contentType(),     rawBody.contentLength()))
+        .body(new NoContentResponseBody(rawBody.contentType(), rawBody.contentLength()))
         .build();    
 
     // 根据响应返回的状态码进行处理    
@@ -880,7 +880,7 @@ Response&lt;T&gt; parseResponse(okhttp3.Response rawResponse) throws IOException
     }    
 
 
-    ExceptionCatchingResponseBody catchingBody = new    ExceptionCatchingResponseBody(rawBody);
+    ExceptionCatchingResponseBody catchingBody = new ExceptionCatchingResponseBody(rawBody);
     try {
       // 将响应体转为Java对象
       T body = responseConverter.convert(catchingBody);
@@ -900,7 +900,7 @@ public void enqueue(final Callback&lt;T&gt; callback) {
     delegate.enqueue(new Callback&lt;T&gt;() {
 
       @Override 
-      public void onResponse(Call&lt;T&gt; call, finalResponse&lt;T&gt;response)     {
+      public void onResponse(Call&lt;T&gt; call, finalResponse&lt;T&gt;response) {
         // 线程切换，在主线程显示结果
         callbackExecutor.execute(new Runnable() {
             @Override 
@@ -955,7 +955,7 @@ public void enqueue(final Callback&lt;T&gt; callback) {
   ...
 
   call.enqueue(new okhttp3.Callback() {
-    @Override public void onResponse(okhttp3.Call call,   okhttp3.Response rawResponse) {
+    @Override public void onResponse(okhttp3.Call call, okhttp3.Response rawResponse) {
       Response&lt;T&gt; response;
       try {
         // 此处上面已分析
