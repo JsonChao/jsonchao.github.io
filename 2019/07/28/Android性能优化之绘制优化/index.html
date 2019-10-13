@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="Deep into Android">
 <meta property="og:description" content="前言成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。我们都知道，造成绘制不流畅最大的罪魁祸首就是卡顿，而卡顿的主要场景有很多，按场景可以分成4类：UI绘制、应用启动、页面跳转、事件响应，其中又可细分为如下： UI 绘制 刷新  启动 安装启动 冷启动 热启动  跳转 页面间跳转 前后台切换  响应 按键 系统事件 滑动  造成其根本原因可以分为">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-07-28T10:18:23.521Z">
+<meta property="og:updated_time" content="2019-10-13T11:52:31.834Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android性能优化之绘制优化">
 <meta name="twitter:description" content="前言成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。我们都知道，造成绘制不流畅最大的罪魁祸首就是卡顿，而卡顿的主要场景有很多，按场景可以分成4类：UI绘制、应用启动、页面跳转、事件响应，其中又可细分为如下： UI 绘制 刷新  启动 安装启动 冷启动 热启动  跳转 页面间跳转 前后台切换  响应 按键 系统事件 滑动  造成其根本原因可以分为">
@@ -593,24 +593,29 @@ python systrace.py --time=10 -o mynewtrace.html sched gfx view wm
 <p>启动分为两种类型：</p>
 <ul>
 <li>冷启动：系统会重新创建一个新的进程分配给它。</li>
-<li>热启动：因为会从已有的进程中启动，所以它不会再创建和初识Application。</li>
+<li>温启动：只会走Activity的生命周期。</li>
+<li>热启动：因为会从已有的进程中启动，所以它不会再创建和初始化Application，从后台切换到前台。</li>
 </ul>
 <p>具体又可分为如下过程：</p>
-<h5 id="冷启动前"><a href="#冷启动前" class="headerlink" title="冷启动前"></a>冷启动前</h5><ul>
-<li>1、点击相应应用图标。</li>
-<li>2、App启动之后立即展示一个空白的Window（预览窗口显示）。</li>
-<li>3、创建App进程。</li>
-</ul>
-<h5 id="冷启动后"><a href="#冷启动后" class="headerlink" title="冷启动后"></a>冷启动后</h5><ul>
-<li>1、创建App对象。</li>
-<li>2、启动Main Thread。</li>
-<li>3、创建启动的Activity对象，闪屏显示。</li>
-<li>4、创建启动的MainActivity对象，主页显示。</li>
-<li>5、其它工作。</li>
-</ul>
-<h4 id="5-2、启动耗时监测"><a href="#5-2、启动耗时监测" class="headerlink" title="5.2、启动耗时监测"></a>5.2、启动耗时监测</h4><h5 id="1、adb-shell-am"><a href="#1、adb-shell-am" class="headerlink" title="1、adb shell am"></a>1、adb shell am</h5><p>使用adb shell获取应用真实的启动时间：</p>
+<h5 id="冷启动"><a href="#冷启动" class="headerlink" title="冷启动"></a>冷启动</h5><p>耗时最多，衡量标准。</p>
+<pre><code>Click Event -&gt; IPC -&gt; Process.start -&gt; ActivityThread -&gt; bindApplication -&gt; LifeCycle -&gt; ViewRootImpl
+</code></pre><h5 id="热启动"><a href="#热启动" class="headerlink" title="热启动"></a>热启动</h5><p>最快。</p>
+<pre><code>后台 -&gt; 前台
+</code></pre><h5 id="温启动"><a href="#温启动" class="headerlink" title="温启动"></a>温启动</h5><p>较快。</p>
+<pre><code>LifeCycle
+</code></pre><h4 id="5-2、启动耗时监测"><a href="#5-2、启动耗时监测" class="headerlink" title="5.2、启动耗时监测"></a>5.2、启动耗时监测</h4><h5 id="1、adb-shell-am"><a href="#1、adb-shell-am" class="headerlink" title="1、adb shell am"></a>1、adb shell am</h5><p>使用adb shell获取应用真实的启动时间：</p>
 <pre><code>adb shell am start -W [packageName]/[packageName.AppstartActivity]
-</code></pre><p>执行后会得到三个时间：ThisTime、TotalTime和WaitTime，一般查看得到的TotalTime，即应用的启动时间，包括创建进程+Application初始化+Activity初始化到界面显示。</p>
+</code></pre><p>执行后会得到三个时间：ThisTime、TotalTime和WaitTime，一般查看得到的TotalTime，即应用的启动时间，包括创建进程+Application初始化+Activity初始化到界面显示，详情如下：</p>
+<ul>
+<li>ThisTime：最后一个Activity启动耗时。</li>
+<li>TotalTime：所有Activity启动耗时。</li>
+<li>WaitTime：AMS启动Activity的总耗时。</li>
+</ul>
+<p>特点：</p>
+<ul>
+<li>线下使用方便，不能带到线上。</li>
+<li>非严谨、精确时间。</li>
+</ul>
 <h5 id="2、代码打点"><a href="#2、代码打点" class="headerlink" title="2、代码打点"></a>2、代码打点</h5><p>可以写一个统计耗时的工具类来记录整个过程的耗时情况。其中需要注意的有：</p>
 <ul>
 <li>在上传数据到服务器时建议根据用户ID的尾号来抽样上报。</li>
@@ -623,7 +628,7 @@ python systrace.py --time=10 -o mynewtrace.html sched gfx view wm
 public class TimeMonitor {
 
     private final String TAG = TimeMonitor.class.getSimpleName();
-    private int mMonitorId = -1;
+    private int mMonitord = -1;
 
     // 保存一个耗时统计模块的各种耗时，tag对应某一个阶段的时间
     private HashMap&lt;String, Long&gt; mTimeTag = new HashMap&lt;&gt;();
@@ -761,9 +766,72 @@ protected void onStart() {
     super.onStart();
     TimeMonitorManager.getInstance().getTimeMonitor(TimeMonitorConfig.TIME_MONITOR_ID_APPLICATION_START).end(&quot;SplashActivity-onStart&quot;, false);
 }
-</code></pre><h4 id="5-3-启动速度分析工具"><a href="#5-3-启动速度分析工具" class="headerlink" title="5.3 启动速度分析工具"></a>5.3 启动速度分析工具</h4><p>目标：力求获取准确的数据评估。</p>
-<h5 id="1、TraceView"><a href="#1、TraceView" class="headerlink" title="1、TraceView"></a>1、TraceView</h5><p>性能损耗太大，得出的结果并不真实</p>
-<h5 id="作用："><a href="#作用：" class="headerlink" title="作用："></a>作用：</h5><p>主要做热点分析，得到两种数据：</p>
+</code></pre><p>特点：</p>
+<ul>
+<li>精确，可带到线上，推荐使用。</li>
+</ul>
+<p>注意：</p>
+<ul>
+<li>onWindowFocusChanged只是首帧时间，App启动完成的结束点应该是真实数据展示出来的时候，如列表第一条数据展示，记得使用getViewTreeObserver().addOnPreDrawListener()。</li>
+</ul>
+<h5 id="3、AOP埋点"><a href="#3、AOP埋点" class="headerlink" title="3、AOP埋点"></a>3、AOP埋点</h5><p>首先，为了引入AspectJ，在项目根目录的build.gradle下加入：</p>
+<pre><code>classpath &apos;com.hujiang.aspectjx:gradle-android-plugin-aspectjx:2.0.0&apos;
+</code></pre><p>然后，在app目录下的build.gradle下加入：</p>
+<pre><code>implement &apos;org.aspectj:aspectjrt:1.8.+&apos;
+
+apply plugin: &apos;android-aspectjx&apos;
+</code></pre><p>然后，可以使Join Points在程序运行时的执行点进行切面，如以下位置：</p>
+<ul>
+<li>函数调用、执行</li>
+<li>获取、设置变量</li>
+<li>类初始化</li>
+</ul>
+<p>此外，还可以使用PointCut，它是带条件的JoinPoints，会有更多方式选择我们感兴趣的点。这里，我们还必须了解Advice，它是一种Hook，指定插入代码的位置，它有如下分类：</p>
+<ul>
+<li>Before：PointCut之前执行</li>
+<li>After：PointCut之后执行</li>
+<li>Around：PointCut之前、之后分别执行</li>
+</ul>
+<p>这里举一个实例：</p>
+<pre><code>@Before(&quot;execution(* android.app.Activity.on**(..))&quot;)
+public void onActivityCalled(JoinPoint joinPoint) throws Throwable {
+    ...
+}
+</code></pre><p>上面的execution是指的处理Join Point的类型，Join Point的类型有两类：</p>
+<ul>
+<li>call：插入在函数体里面。</li>
+<li>execution：插入在函数体外面。</li>
+</ul>
+<p>在execution中的是一个匹配规则，第一个*代表匹配任意的方法返回值，后面的语法代码匹配所有Activity中on开头的方法。</p>
+<p>如果我们想统计Application中的所有方法耗时，可以创建如下的切面类：</p>
+<pre><code>@Aspect
+public class WanAndroidAop {
+
+    @Around(&quot;call (* com.json.chao.application.WandroidApplication.**(..))&quot;)
+    public void getTime(ProceedingJoinPoint joinPoint) {
+        Signature signature = joinPoin.getSignature();
+        String name = signature.toShortString();
+        long time = System.currentTimeMillis();
+        try {
+            joinPoint.proceed();
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+        }
+        Log.i(TAG, name + &quot; cost&quot; + (System.currentTimeMillis() - time));
+    }
+}
+</code></pre><p>AOP特点：</p>
+<ul>
+<li>无侵入性</li>
+<li>修改方便</li>
+</ul>
+<h4 id="5-3-启动速度分析工具"><a href="#5-3-启动速度分析工具" class="headerlink" title="5.3 启动速度分析工具"></a>5.3 启动速度分析工具</h4><p>目标：力求获取准确的数据评估。</p>
+<h5 id="1、TraceView"><a href="#1、TraceView" class="headerlink" title="1、TraceView"></a>1、TraceView</h5><h5 id="特点"><a href="#特点" class="headerlink" title="特点:"></a>特点:</h5><ul>
+<li>图形的形式展示执行时间、调用栈等。</li>
+<li>信息全面，包含所有线程。</li>
+<li>运行时开销严重，整体都会变慢，得出的结果并不真实。                                             <h5 id="作用："><a href="#作用：" class="headerlink" title="作用："></a>作用：</h5></li>
+</ul>
+<p>主要做热点分析，得到两种数据：</p>
 <ul>
 <li>单次执行最耗时的方法。</li>
 <li>执行次数最多的方法。</li>
@@ -772,15 +840,18 @@ protected void onStart() {
 <li>1、代码中添加：Debug.startMethodTracing()、检测方法、Debug.stopMethodTracing()。</li>
 <li>2、打开Profile-&gt;CPU-&gt;点击Record-&gt;点击Stop-&gt;查看Profile下方Top Down/Bottom Up找出耗时的热点方法。</li>
 </ul>
-<h5 id="2、Systrace-函数插桩"><a href="#2、Systrace-函数插桩" class="headerlink" title="2、Systrace+函数插桩"></a>2、Systrace+函数插桩</h5><h5 id="Systrace原理"><a href="#Systrace原理" class="headerlink" title="Systrace原理"></a>Systrace原理</h5><p>在系统的一些关键链路（如SystemServcie、虚拟机、Binder驱动）插入一些信息（Label），<br>通过Label的开始和结束来确定某个核心过程的执行时间，然后把这些Label信息收集起来得到系统关键路径的运行时间信息，<br>最后得到整个系统的运行性能信息。Android Framework里面一些重要的模块都插入了label信息(Java层通过android.os.Trace类完成，<br>native层通过ATrace宏完成），用户App中可以添加自定义的Lable。</p>
+<pre><code>Wall Clock Time：程序执行时间。
+Thread Time：CPU执行的时间。
+</code></pre><h5 id="2、Systrace-函数插桩"><a href="#2、Systrace-函数插桩" class="headerlink" title="2、Systrace+函数插桩"></a>2、Systrace+函数插桩</h5><h5 id="Systrace原理"><a href="#Systrace原理" class="headerlink" title="Systrace原理"></a>Systrace原理</h5><p>在系统的一些关键链路（如SystemServcie、虚拟机、Binder驱动）插入一些信息（Label），<br>通过Label的开始和结束来确定某个核心过程的执行时间，然后把这些Label信息收集起来得到系统关键路径的运行时间信息，<br>最后得到整个系统的运行性能信息。Android Framework里面一些重要的模块都插入了label信息(Java层通过android.os.Trace类完成，<br>native层通过ATrace宏完成），用户App中可以添加自定义的Lable。</p>
 <h5 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h5><ul>
+<li>结合Android内核的数据，生成Html报告。</li>
+<li>API 18以上使用，推荐TraceCompat。</li>
 <li>系统版本越高，Android Framework中添加的系统可用Label就越多，能够支持和分析的系统模块也就越多。</li>
 <li>必须手动缩小范围，会帮助你加速收敛问题的分析过程，进而快速地定位和解决问题。</li>
 </ul>
-<h5 id="使用方式："><a href="#使用方式：" class="headerlink" title="使用方式："></a>使用方式：</h5><h5 id="1、命令行"><a href="#1、命令行" class="headerlink" title="1、命令行"></a>1、命令行</h5><p>systrace.py -t 10 sched gfx view wm am app webview -a <package-name></package-name></p>
+<h5 id="使用方式："><a href="#使用方式：" class="headerlink" title="使用方式："></a>使用方式：</h5><h5 id="1、命令行"><a href="#1、命令行" class="headerlink" title="1、命令行"></a>1、命令行</h5><p>python systrace.py -t 10 sched gfx view wm am app webview -a <package-name> -o <target-file.html></target-file.html></package-name></p>
 <h5 id="2、代码插桩"><a href="#2、代码插桩" class="headerlink" title="2、代码插桩"></a>2、代码插桩</h5><p>定义Trace静态工厂类i，o封装Trace.begainSection(),Trace.endSection()。</p>
-<p>分析App的冷启动过程：在Application类的attachBaseContext调用<code>Trace.beginSection(&quot;Boot Procedure&quot;)</code>，然后在App首页的onWindowFoucusChanged方法<br>或者你认为别的合适的启动结束点调用<code>Trace.endSection</code>就可以到启动过程的信息。</p>
-<p>手动开启App自定义Label的Trace功能：通过反射设置setAppTracingAllowed方法为true。</p>
+<p>分析App的冷启动： 在想要分析的方法前后进行插桩即可。</p>
 <h4 id="5-4、启动优化方案"><a href="#5-4、启动优化方案" class="headerlink" title="5.4、启动优化方案"></a>5.4、启动优化方案</h4><h5 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h5><h5 id="1、点击图标很久都不响应"><a href="#1、点击图标很久都不响应" class="headerlink" title="1、点击图标很久都不响应"></a>1、点击图标很久都不响应</h5><p>预览窗口被禁用或设置为透明</p>
 <h5 id="2、首页显示太慢"><a href="#2、首页显示太慢" class="headerlink" title="2、首页显示太慢"></a>2、首页显示太慢</h5><p>初始化任务太多</p>
 <h5 id="3、首页显示后无法操作"><a href="#3、首页显示后无法操作" class="headerlink" title="3、首页显示后无法操作"></a>3、首页显示后无法操作</h5><p>太多任务初始化异步/延迟</p>
@@ -807,17 +878,110 @@ protected void onStart() {
 <pre><code>adb shell am start com.growingwiththeweb.example/.MainActivity
 </code></pre><p>adb命令统计启动时间</p>
 <pre><code>adb shell am start -W com.growingwiththeweb.example/.SplashActivity
-</code></pre><ul>
-<li>1、分步初始化（优先级高的放前面）</li>
-<li>2、异步初始化（如出现主线程要使用时还没初始化则在此次使用前初始化）</li>
-<li>3、延迟初始化（利用闪屏页的停留时间进行部分初始化）</li>
+</code></pre><h5 id="2-1、分步初始化（优先级高的放前面）"><a href="#2-1、分步初始化（优先级高的放前面）" class="headerlink" title="2.1、分步初始化（优先级高的放前面）"></a>2.1、分步初始化（优先级高的放前面）</h5><h5 id="2-2、异步初始化（如出现主线程要使用时还没初始化则在此次使用前初始化）"><a href="#2-2、异步初始化（如出现主线程要使用时还没初始化则在此次使用前初始化）" class="headerlink" title="2.2、异步初始化（如出现主线程要使用时还没初始化则在此次使用前初始化）"></a>2.2、异步初始化（如出现主线程要使用时还没初始化则在此次使用前初始化）</h5><p>核心思想：子线程分担主线程任务，并行减少时间。</p>
+<p>异步优化注意点：</p>
+<ul>
+<li>1、不符合异步要求</li>
+<li>2、需要在某个阶段完成（采用CountDownLatch确保异步任务完成后才到下一个阶段）</li>
+<li>3、区分CPU密集型和IO密集型任务</li>
+</ul>
+<h5 id="异步优化最优解：异步启动器"><a href="#异步优化最优解：异步启动器" class="headerlink" title="异步优化最优解：异步启动器"></a>异步优化最优解：异步启动器</h5><p>常规异步优化痛点</p>
+<ul>
+<li>1、代码不优雅</li>
+<li>2、场景不好处理（依赖关系）</li>
+<li>3、维护成本高</li>
+</ul>
+<p>启动器</p>
+<pre><code>核心思想：充分利用CPU多核，自动梳理任务顺序。
+</code></pre><p>启动器流程</p>
+<pre><code>代码Task化，启动逻辑抽象成Task。
+
+根据所有任务依赖关系排序生成一个有向无环图
+
+多线程按照排序后的优先级依次执行
+</code></pre><h5 id="2-3、延迟初始化（利用闪屏页的停留时间进行部分初始化）"><a href="#2-3、延迟初始化（利用闪屏页的停留时间进行部分初始化）" class="headerlink" title="2.3、延迟初始化（利用闪屏页的停留时间进行部分初始化）"></a>2.3、延迟初始化（利用闪屏页的停留时间进行部分初始化）</h5><p>1、常规方案</p>
+<pre><code>new Handler().postDelayed()
+
+界面UI展示后调用
+</code></pre><p>2、常规初始化痛点</p>
+<pre><code>时机不容易控制
+
+导致界面UI卡顿        
+</code></pre><p>3、更优方案</p>
+<p>核心思想：利用IdleHandler特性，在CPU空闲时执行，对延迟任务进行分批初始化</p>
+<p>优势：</p>
+<ul>
+<li>执行时机明确</li>
+<li>缓解界面UI卡顿</li>
+<li>真正提升用户体验</li>
 </ul>
 <h5 id="3、Multidex预加载优化"><a href="#3、Multidex预加载优化" class="headerlink" title="3、Multidex预加载优化"></a>3、Multidex预加载优化</h5><ul>
 <li>1、启动时单独开一个进程进行Multidex的第一次加载，即Dex提取和Dexopt操作。</li>
 <li>2、此时，主进程在后台等待，优化进程执行完毕后通知主进程继续执行，此时执行到Multidex时，则已经发现提取优化好了Dex，直接执行。</li>
 </ul>
 <p><strong>注意：判断只有在主进程及SDK 5.0以下才进行Multidex的预加载。</strong></p>
-<h5 id="4、闪屏页和主页绘制优化（即布局优化和过渡绘制优化）"><a href="#4、闪屏页和主页绘制优化（即布局优化和过渡绘制优化）" class="headerlink" title="4、闪屏页和主页绘制优化（即布局优化和过渡绘制优化）"></a>4、闪屏页和主页绘制优化（即布局优化和过渡绘制优化）</h5><h5 id="5、业务层面优化"><a href="#5、业务层面优化" class="headerlink" title="5、业务层面优化"></a>5、业务层面优化</h5><h3 id="六、合理的刷新机制"><a href="#六、合理的刷新机制" class="headerlink" title="六、合理的刷新机制"></a>六、合理的刷新机制</h3><h4 id="6-1-减少刷新次数"><a href="#6-1-减少刷新次数" class="headerlink" title="6.1 减少刷新次数"></a>6.1 减少刷新次数</h4><ul>
+<h5 id="4、闪屏页和主页绘制优化（即布局优化和过渡绘制优化）"><a href="#4、闪屏页和主页绘制优化（即布局优化和过渡绘制优化）" class="headerlink" title="4、闪屏页和主页绘制优化（即布局优化和过渡绘制优化）"></a>4、闪屏页和主页绘制优化（即布局优化和过渡绘制优化）</h5><h5 id="5、总结"><a href="#5、总结" class="headerlink" title="5、总结"></a>5、总结</h5><p>1、优化总方针</p>
+<pre><code>异步、延迟、懒加载
+
+技术、业务相结合
+</code></pre><p>2、注意事项</p>
+<ul>
+<li>wall time（代码执行时间）与cpu time（代码消耗CPU时间），锁冲突会造成两者时间差距过大。</li>
+<li>cpu time才是优化方向</li>
+<li>按照systrace及cpu time跑满cpu</li>
+<li>监控的完善</li>
+<li>线上监控多阶段时间（App、Activity、生命周期间隔时间）</li>
+<li>处理聚合看趋势</li>
+<li>收敛启动代码修改权限</li>
+<li>结合CI修改启动代码需要Review通知</li>
+</ul>
+<p>3、其它方案</p>
+<ul>
+<li><p>提前加载SharedPreferences<br>Multidex之前加载，利用此阶段CPU，注意重写getApplicationContext()返回this。</p>
+</li>
+<li><p>启动阶段不启动子进程</p>
+</li>
+</ul>
+<pre><code>子进程会共享CPU资源，导致主进程CPU紧张
+
+注意启动顺序：App onCreate之前是ContentProvider
+</code></pre><ul>
+<li>类加载优化：Multidex之前提前异步加载</li>
+</ul>
+<pre><code>Class.forName()只加载类本身及其静态变量的引用类
+
+new 类实例 可以额外加载类成员变量的引用类
+
+替换系统的ClassLoader，打印类加载的时间，选取需要异步加载的类
+</code></pre><ul>
+<li><p>启动阶段抑制GC</p>
+</li>
+<li><p>CPU锁频（暴力拉伸CPU频率，导致耗电量增加）</p>
+</li>
+</ul>
+<h5 id="6、常见问题"><a href="#6、常见问题" class="headerlink" title="6、常见问题"></a>6、常见问题</h5><p>1、启动优化是怎么做的？</p>
+<pre><code>分析现状、确认问题
+
+针对性优化（先概括，引导其深入）
+
+长期保持优化效果
+</code></pre><p>2、是怎么异步的，异步遇到问题没有？</p>
+<pre><code>体现演进过程
+
+详细介绍启动器
+</code></pre><p>3、启动优化有哪些容易忽略的注意点？</p>
+<pre><code>cpu time与wall time
+
+注意延迟初始化的优化
+
+介绍下黑科技
+</code></pre><p>4、版本迭代导致的启动变慢有好的解决方式吗？</p>
+<pre><code>启动器
+
+结合CI
+
+监控完善
+</code></pre><h3 id="六、合理的刷新机制"><a href="#六、合理的刷新机制" class="headerlink" title="六、合理的刷新机制"></a>六、合理的刷新机制</h3><h4 id="6-1-减少刷新次数"><a href="#6-1-减少刷新次数" class="headerlink" title="6.1 减少刷新次数"></a>6.1 减少刷新次数</h4><ul>
 <li>控制刷新频率</li>
 <li>避免没有必要的刷新</li>
 </ul>
@@ -878,6 +1042,9 @@ protected void onStart() {
 <h5 id="参考链接："><a href="#参考链接：" class="headerlink" title="参考链接："></a>参考链接：</h5><hr>
 <p>1、Android应用性能优化最佳实践</p>
 <p>2、<a href="https://mp.weixin.qq.com/s/QVOYF2nfoWMCbM5YsxQgRQ?" target="_blank" rel="external">必知必会 | Android 性能优化的方面方面都在这儿</a></p>
+<p>3、<a href="https://coding.imooc.com/class/308.html" target="_blank" rel="external">极客时间之Top团队大牛带你玩转Android性能分析与优化</a></p>
+<p>4、<a href="https://github.com/zeshaoaaa/LaunchStarter" target="_blank" rel="external">启动器源码</a></p>
+<p>5、<a href="https://github.com/AndroidAdvanceWithGeektime/Chapter07" target="_blank" rel="external">使用gradle自动化增加Trace Tag</a></p>
 <h4 id="很感谢您阅读这篇文章，希望您能将它分享给您的朋友或技术群，这对我意义重大。"><a href="#很感谢您阅读这篇文章，希望您能将它分享给您的朋友或技术群，这对我意义重大。" class="headerlink" title="很感谢您阅读这篇文章，希望您能将它分享给您的朋友或技术群，这对我意义重大。"></a>很感谢您阅读这篇文章，希望您能将它分享给您的朋友或技术群，这对我意义重大。</h4><h4 id="希望我们能成为朋友，在-Github、掘金上一起分享知识。"><a href="#希望我们能成为朋友，在-Github、掘金上一起分享知识。" class="headerlink" title="希望我们能成为朋友，在 Github、掘金上一起分享知识。"></a>希望我们能成为朋友，在 <a href="https://github.com/JsonChao" target="_blank" rel="external">Github</a>、<a href="https://juejin.im/user/5a3ba9375188252bca050ade" target="_blank" rel="external">掘金</a>上一起分享知识。</h4>
       
     </div>
@@ -1183,7 +1350,7 @@ protected void onStart() {
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样-。"><span class="nav-number">1.0.1.</span> <span class="nav-text">成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#UI"><span class="nav-number">1.0.1.1.</span> <span class="nav-text">UI</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#启动"><span class="nav-number">1.0.1.2.</span> <span class="nav-text">启动</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#跳转"><span class="nav-number">1.0.1.3.</span> <span class="nav-text">跳转</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#响应"><span class="nav-number">1.0.1.4.</span> <span class="nav-text">响应</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#界面绘制"><span class="nav-number">1.0.1.5.</span> <span class="nav-text">界面绘制</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#数据处理"><span class="nav-number">1.0.1.6.</span> <span class="nav-text">数据处理</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一、Android系统显示原理"><span class="nav-number">1.1.</span> <span class="nav-text">一、Android系统显示原理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1、绘制原理"><span class="nav-number">1.1.1.</span> <span class="nav-text">1.1、绘制原理</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1、应用层"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">1、应用层</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2、系统层"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">2、系统层</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-刷新机制"><span class="nav-number">1.1.2.</span> <span class="nav-text">1.2 刷新机制</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#为什么要推出Project-Butter？"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">为什么要推出Project Butter？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#为什么要使用双缓冲技术？"><span class="nav-number">1.1.2.2.</span> <span class="nav-text">为什么要使用双缓冲技术？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#双缓冲的含义？"><span class="nav-number">1.1.2.3.</span> <span class="nav-text">双缓冲的含义？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Choreographer的作用是什么？"><span class="nav-number">1.1.2.4.</span> <span class="nav-text">Choreographer的作用是什么？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#当第一帧数据没有及时处理时，为什么CPU不能在第二个16ms处即VSync到来就开始工作呢？"><span class="nav-number">1.1.2.5.</span> <span class="nav-text">当第一帧数据没有及时处理时，为什么CPU不能在第二个16ms处即VSync到来就开始工作呢？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Google做了这么多的优化，为什么实际开发中应用还存在卡顿现象？"><span class="nav-number">1.1.2.6.</span> <span class="nav-text">Google做了这么多的优化，为什么实际开发中应用还存在卡顿现象？</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3、卡顿的根本原因"><span class="nav-number">1.1.3.</span> <span class="nav-text">1.3、卡顿的根本原因</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、性能分析工具"><span class="nav-number">1.2.</span> <span class="nav-text">二、性能分析工具</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1、卡顿检测工具Profile-GPU-Rendering"><span class="nav-number">1.2.1.</span> <span class="nav-text">2.1、卡顿检测工具Profile GPU Rendering</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1、橙色-Swap-Buffers"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">1、橙色-Swap Buffers</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2、红色-Command-Issue"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">2、红色-Command Issue</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3、浅蓝-Sync-amp-Upload"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">3、浅蓝-Sync&Upload</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4、深蓝-Draw"><span class="nav-number">1.2.1.4.</span> <span class="nav-text">4、深蓝-Draw</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5、一级绿-Measure-Layout"><span class="nav-number">1.2.1.5.</span> <span class="nav-text">5、一级绿-Measure/Layout</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#6、二级绿-Animation"><span class="nav-number">1.2.1.6.</span> <span class="nav-text">6、二级绿-Animation</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#7、三级绿-Input-Handling"><span class="nav-number">1.2.1.7.</span> <span class="nav-text">7、三级绿-Input Handling</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#8、四级绿-Misc-Time-Vsync-Delay"><span class="nav-number">1.2.1.8.</span> <span class="nav-text">8、四级绿-Misc Time/Vsync Delay</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2、TraceView"><span class="nav-number">1.2.2.</span> <span class="nav-text">2.2、TraceView</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3、Systrace-UI性能分析"><span class="nav-number">1.2.3.</span> <span class="nav-text">2.3、Systrace UI性能分析</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1、Systrace使用方法"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">1、Systrace使用方法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2、分析Systrace报告"><span class="nav-number">1.2.3.2.</span> <span class="nav-text">2、分析Systrace报告</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、布局优化"><span class="nav-number">1.3.</span> <span class="nav-text">三、布局优化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1、布局优化方法"><span class="nav-number">1.3.1.</span> <span class="nav-text">3.1、布局优化方法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1、减少层级"><span class="nav-number">1.3.1.1.</span> <span class="nav-text">1、减少层级</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2、提供显示速度"><span class="nav-number">1.3.1.2.</span> <span class="nav-text">2、提供显示速度</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3、布局复用"><span class="nav-number">1.3.1.3.</span> <span class="nav-text">3、布局复用</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、避免过度绘制"><span class="nav-number">1.4.</span> <span class="nav-text">四、避免过度绘制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-1、过度绘制检测工具"><span class="nav-number">1.4.1.</span> <span class="nav-text">4.1、过度绘制检测工具</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2、如何避免过度绘制"><span class="nav-number">1.4.2.</span> <span class="nav-text">4.2、如何避免过度绘制</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1、布局上的优化"><span class="nav-number">1.4.2.1.</span> <span class="nav-text">1、布局上的优化</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2、自定义View优化"><span class="nav-number">1.4.2.2.</span> <span class="nav-text">2、自定义View优化</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五、启动优化"><span class="nav-number">1.5.</span> <span class="nav-text">五、启动优化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#5-1、应用启动流程"><span class="nav-number">1.5.1.</span> <span class="nav-text">5.1、应用启动流程</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#冷启动前"><span class="nav-number">1.5.1.1.</span> <span class="nav-text">冷启动前</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#冷启动后"><span class="nav-number">1.5.1.2.</span> <span class="nav-text">冷启动后</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-2、启动耗时监测"><span class="nav-number">1.5.2.</span> <span class="nav-text">5.2、启动耗时监测</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1、adb-shell-am"><span class="nav-number">1.5.2.1.</span> <span class="nav-text">1、adb shell am</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2、代码打点"><span class="nav-number">1.5.2.2.</span> <span class="nav-text">2、代码打点</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-3-启动速度分析工具"><span class="nav-number">1.5.3.</span> <span class="nav-text">5.3 启动速度分析工具</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1、TraceView"><span class="nav-number">1.5.3.1.</span> <span class="nav-text">1、TraceView</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#作用："><span class="nav-number">1.5.3.2.</span> <span class="nav-text">作用：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#使用："><span class="nav-number">1.5.3.3.</span> <span class="nav-text">使用：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2、Systrace-函数插桩"><span class="nav-number">1.5.3.4.</span> <span class="nav-text">2、Systrace+函数插桩</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Systrace原理"><span class="nav-number">1.5.3.5.</span> <span class="nav-text">Systrace原理</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#特性"><span class="nav-number">1.5.3.6.</span> <span class="nav-text">特性</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#使用方式："><span class="nav-number">1.5.3.7.</span> <span class="nav-text">使用方式：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1、命令行"><span class="nav-number">1.5.3.8.</span> <span class="nav-text">1、命令行</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2、代码插桩"><span class="nav-number">1.5.3.9.</span> <span class="nav-text">2、代码插桩</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-4、启动优化方案"><span class="nav-number">1.5.4.</span> <span class="nav-text">5.4、启动优化方案</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#常见问题"><span class="nav-number">1.5.4.1.</span> <span class="nav-text">常见问题</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1、点击图标很久都不响应"><span class="nav-number">1.5.4.2.</span> <span class="nav-text">1、点击图标很久都不响应</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2、首页显示太慢"><span class="nav-number">1.5.4.3.</span> <span class="nav-text">2、首页显示太慢</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3、首页显示后无法操作"><span class="nav-number">1.5.4.4.</span> <span class="nav-text">3、首页显示后无法操作</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#优化区域"><span class="nav-number">1.5.4.5.</span> <span class="nav-text">优化区域</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#通常手段"><span class="nav-number">1.5.4.6.</span> <span class="nav-text">通常手段</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#具体优化步骤如下所示："><span class="nav-number">1.5.4.7.</span> <span class="nav-text">具体优化步骤如下所示：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1、主题切换"><span class="nav-number">1.5.4.8.</span> <span class="nav-text">1、主题切换</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2、避免过重的App初始化"><span class="nav-number">1.5.4.9.</span> <span class="nav-text">2、避免过重的App初始化</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3、Multidex预加载优化"><span class="nav-number">1.5.4.10.</span> <span class="nav-text">3、Multidex预加载优化</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4、闪屏页和主页绘制优化（即布局优化和过渡绘制优化）"><span class="nav-number">1.5.4.11.</span> <span class="nav-text">4、闪屏页和主页绘制优化（即布局优化和过渡绘制优化）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5、业务层面优化"><span class="nav-number">1.5.4.12.</span> <span class="nav-text">5、业务层面优化</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#六、合理的刷新机制"><span class="nav-number">1.6.</span> <span class="nav-text">六、合理的刷新机制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#6-1-减少刷新次数"><span class="nav-number">1.6.1.</span> <span class="nav-text">6.1 减少刷新次数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-2-避免后台线程的影响"><span class="nav-number">1.6.2.</span> <span class="nav-text">6.2 避免后台线程的影响</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-3-缩小刷新区域"><span class="nav-number">1.6.3.</span> <span class="nav-text">6.3 缩小刷新区域</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#七、提升动画性能"><span class="nav-number">1.7.</span> <span class="nav-text">七、提升动画性能</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#7-1-帧动画"><span class="nav-number">1.7.1.</span> <span class="nav-text">7.1 帧动画</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-2-补间动画"><span class="nav-number">1.7.2.</span> <span class="nav-text">7.2 补间动画</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-3-属性动画"><span class="nav-number">1.7.3.</span> <span class="nav-text">7.3 属性动画</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-4-硬件加速"><span class="nav-number">1.7.4.</span> <span class="nav-text">7.4 硬件加速</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1、硬件加速原理"><span class="nav-number">1.7.4.1.</span> <span class="nav-text">1、硬件加速原理</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2、硬件加速控制级别"><span class="nav-number">1.7.4.2.</span> <span class="nav-text">2、硬件加速控制级别</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3、在动画上使用硬件加速"><span class="nav-number">1.7.4.3.</span> <span class="nav-text">3、在动画上使用硬件加速</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#设计一个动画的流程如下："><span class="nav-number">1.7.4.4.</span> <span class="nav-text">设计一个动画的流程如下：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#硬件加速需要注意的问题："><span class="nav-number">1.7.4.5.</span> <span class="nav-text">硬件加速需要注意的问题：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#八、卡顿监控方案与实现"><span class="nav-number">1.8.</span> <span class="nav-text">八、卡顿监控方案与实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#8-1-监控原理"><span class="nav-number">1.8.1.</span> <span class="nav-text">8.1 监控原理</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#可抓取的信息"><span class="nav-number">1.8.1.1.</span> <span class="nav-text">可抓取的信息</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#注意：这里的信息建议抽样上报或者可以先将其保存到本地，在合适的时机以及达到一定的量时，再压缩上报到服务器，供开发者分析。具体监控代码实现可以参考BlockCanary开源项目的代码。"><span class="nav-number">1.8.1.2.</span> <span class="nav-text">注意：这里的信息建议抽样上报或者可以先将其保存到本地，在合适的时机以及达到一定的量时，再压缩上报到服务器，供开发者分析。具体监控代码实现可以参考BlockCanary开源项目的代码。</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#九、总结"><span class="nav-number">1.9.</span> <span class="nav-text">九、总结</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#参考链接："><span class="nav-number">1.9.0.1.</span> <span class="nav-text">参考链接：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#很感谢您阅读这篇文章，希望您能将它分享给您的朋友或技术群，这对我意义重大。"><span class="nav-number">1.9.1.</span> <span class="nav-text">很感谢您阅读这篇文章，希望您能将它分享给您的朋友或技术群，这对我意义重大。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#希望我们能成为朋友，在-Github、掘金上一起分享知识。"><span class="nav-number">1.9.2.</span> <span class="nav-text">希望我们能成为朋友，在 Github、掘金上一起分享知识。</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样-。"><span class="nav-number">1.0.1.</span> <span class="nav-text">成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#UI"><span class="nav-number">1.0.1.1.</span> <span class="nav-text">UI</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#启动"><span class="nav-number">1.0.1.2.</span> <span class="nav-text">启动</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#跳转"><span class="nav-number">1.0.1.3.</span> <span class="nav-text">跳转</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#响应"><span class="nav-number">1.0.1.4.</span> <span class="nav-text">响应</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#界面绘制"><span class="nav-number">1.0.1.5.</span> <span class="nav-text">界面绘制</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#数据处理"><span class="nav-number">1.0.1.6.</span> <span class="nav-text">数据处理</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一、Android系统显示原理"><span class="nav-number">1.1.</span> <span class="nav-text">一、Android系统显示原理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1、绘制原理"><span class="nav-number">1.1.1.</span> <span class="nav-text">1.1、绘制原理</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1、应用层"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">1、应用层</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2、系统层"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">2、系统层</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-刷新机制"><span class="nav-number">1.1.2.</span> <span class="nav-text">1.2 刷新机制</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#为什么要推出Project-Butter？"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">为什么要推出Project Butter？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#为什么要使用双缓冲技术？"><span class="nav-number">1.1.2.2.</span> <span class="nav-text">为什么要使用双缓冲技术？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#双缓冲的含义？"><span class="nav-number">1.1.2.3.</span> <span class="nav-text">双缓冲的含义？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Choreographer的作用是什么？"><span class="nav-number">1.1.2.4.</span> <span class="nav-text">Choreographer的作用是什么？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#当第一帧数据没有及时处理时，为什么CPU不能在第二个16ms处即VSync到来就开始工作呢？"><span class="nav-number">1.1.2.5.</span> <span class="nav-text">当第一帧数据没有及时处理时，为什么CPU不能在第二个16ms处即VSync到来就开始工作呢？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Google做了这么多的优化，为什么实际开发中应用还存在卡顿现象？"><span class="nav-number">1.1.2.6.</span> <span class="nav-text">Google做了这么多的优化，为什么实际开发中应用还存在卡顿现象？</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3、卡顿的根本原因"><span class="nav-number">1.1.3.</span> <span class="nav-text">1.3、卡顿的根本原因</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、性能分析工具"><span class="nav-number">1.2.</span> <span class="nav-text">二、性能分析工具</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1、卡顿检测工具Profile-GPU-Rendering"><span class="nav-number">1.2.1.</span> <span class="nav-text">2.1、卡顿检测工具Profile GPU Rendering</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1、橙色-Swap-Buffers"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">1、橙色-Swap Buffers</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2、红色-Command-Issue"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">2、红色-Command Issue</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3、浅蓝-Sync-amp-Upload"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">3、浅蓝-Sync&Upload</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4、深蓝-Draw"><span class="nav-number">1.2.1.4.</span> <span class="nav-text">4、深蓝-Draw</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5、一级绿-Measure-Layout"><span class="nav-number">1.2.1.5.</span> <span class="nav-text">5、一级绿-Measure/Layout</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#6、二级绿-Animation"><span class="nav-number">1.2.1.6.</span> <span class="nav-text">6、二级绿-Animation</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#7、三级绿-Input-Handling"><span class="nav-number">1.2.1.7.</span> <span class="nav-text">7、三级绿-Input Handling</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#8、四级绿-Misc-Time-Vsync-Delay"><span class="nav-number">1.2.1.8.</span> <span class="nav-text">8、四级绿-Misc Time/Vsync Delay</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2、TraceView"><span class="nav-number">1.2.2.</span> <span class="nav-text">2.2、TraceView</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3、Systrace-UI性能分析"><span class="nav-number">1.2.3.</span> <span class="nav-text">2.3、Systrace UI性能分析</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1、Systrace使用方法"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">1、Systrace使用方法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2、分析Systrace报告"><span class="nav-number">1.2.3.2.</span> <span class="nav-text">2、分析Systrace报告</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、布局优化"><span class="nav-number">1.3.</span> <span class="nav-text">三、布局优化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1、布局优化方法"><span class="nav-number">1.3.1.</span> <span class="nav-text">3.1、布局优化方法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1、减少层级"><span class="nav-number">1.3.1.1.</span> <span class="nav-text">1、减少层级</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2、提供显示速度"><span class="nav-number">1.3.1.2.</span> <span class="nav-text">2、提供显示速度</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3、布局复用"><span class="nav-number">1.3.1.3.</span> <span class="nav-text">3、布局复用</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、避免过度绘制"><span class="nav-number">1.4.</span> <span class="nav-text">四、避免过度绘制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-1、过度绘制检测工具"><span class="nav-number">1.4.1.</span> <span class="nav-text">4.1、过度绘制检测工具</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2、如何避免过度绘制"><span class="nav-number">1.4.2.</span> <span class="nav-text">4.2、如何避免过度绘制</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1、布局上的优化"><span class="nav-number">1.4.2.1.</span> <span class="nav-text">1、布局上的优化</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2、自定义View优化"><span class="nav-number">1.4.2.2.</span> <span class="nav-text">2、自定义View优化</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五、启动优化"><span class="nav-number">1.5.</span> <span class="nav-text">五、启动优化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#5-1、应用启动流程"><span class="nav-number">1.5.1.</span> <span class="nav-text">5.1、应用启动流程</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#冷启动"><span class="nav-number">1.5.1.1.</span> <span class="nav-text">冷启动</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#热启动"><span class="nav-number">1.5.1.2.</span> <span class="nav-text">热启动</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#温启动"><span class="nav-number">1.5.1.3.</span> <span class="nav-text">温启动</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-2、启动耗时监测"><span class="nav-number">1.5.2.</span> <span class="nav-text">5.2、启动耗时监测</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1、adb-shell-am"><span class="nav-number">1.5.2.1.</span> <span class="nav-text">1、adb shell am</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2、代码打点"><span class="nav-number">1.5.2.2.</span> <span class="nav-text">2、代码打点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3、AOP埋点"><span class="nav-number">1.5.2.3.</span> <span class="nav-text">3、AOP埋点</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-3-启动速度分析工具"><span class="nav-number">1.5.3.</span> <span class="nav-text">5.3 启动速度分析工具</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1、TraceView"><span class="nav-number">1.5.3.1.</span> <span class="nav-text">1、TraceView</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#特点"><span class="nav-number">1.5.3.2.</span> <span class="nav-text">特点:</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#作用："><span class="nav-number">1.5.3.3.</span> <span class="nav-text">作用：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#使用："><span class="nav-number">1.5.3.4.</span> <span class="nav-text">使用：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2、Systrace-函数插桩"><span class="nav-number">1.5.3.5.</span> <span class="nav-text">2、Systrace+函数插桩</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Systrace原理"><span class="nav-number">1.5.3.6.</span> <span class="nav-text">Systrace原理</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#特性"><span class="nav-number">1.5.3.7.</span> <span class="nav-text">特性</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#使用方式："><span class="nav-number">1.5.3.8.</span> <span class="nav-text">使用方式：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1、命令行"><span class="nav-number">1.5.3.9.</span> <span class="nav-text">1、命令行</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2、代码插桩"><span class="nav-number">1.5.3.10.</span> <span class="nav-text">2、代码插桩</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-4、启动优化方案"><span class="nav-number">1.5.4.</span> <span class="nav-text">5.4、启动优化方案</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#常见问题"><span class="nav-number">1.5.4.1.</span> <span class="nav-text">常见问题</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1、点击图标很久都不响应"><span class="nav-number">1.5.4.2.</span> <span class="nav-text">1、点击图标很久都不响应</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2、首页显示太慢"><span class="nav-number">1.5.4.3.</span> <span class="nav-text">2、首页显示太慢</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3、首页显示后无法操作"><span class="nav-number">1.5.4.4.</span> <span class="nav-text">3、首页显示后无法操作</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#优化区域"><span class="nav-number">1.5.4.5.</span> <span class="nav-text">优化区域</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#通常手段"><span class="nav-number">1.5.4.6.</span> <span class="nav-text">通常手段</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#具体优化步骤如下所示："><span class="nav-number">1.5.4.7.</span> <span class="nav-text">具体优化步骤如下所示：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1、主题切换"><span class="nav-number">1.5.4.8.</span> <span class="nav-text">1、主题切换</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2、避免过重的App初始化"><span class="nav-number">1.5.4.9.</span> <span class="nav-text">2、避免过重的App初始化</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-1、分步初始化（优先级高的放前面）"><span class="nav-number">1.5.4.10.</span> <span class="nav-text">2.1、分步初始化（优先级高的放前面）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2、异步初始化（如出现主线程要使用时还没初始化则在此次使用前初始化）"><span class="nav-number">1.5.4.11.</span> <span class="nav-text">2.2、异步初始化（如出现主线程要使用时还没初始化则在此次使用前初始化）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#异步优化最优解：异步启动器"><span class="nav-number">1.5.4.12.</span> <span class="nav-text">异步优化最优解：异步启动器</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-3、延迟初始化（利用闪屏页的停留时间进行部分初始化）"><span class="nav-number">1.5.4.13.</span> <span class="nav-text">2.3、延迟初始化（利用闪屏页的停留时间进行部分初始化）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3、Multidex预加载优化"><span class="nav-number">1.5.4.14.</span> <span class="nav-text">3、Multidex预加载优化</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4、闪屏页和主页绘制优化（即布局优化和过渡绘制优化）"><span class="nav-number">1.5.4.15.</span> <span class="nav-text">4、闪屏页和主页绘制优化（即布局优化和过渡绘制优化）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5、总结"><span class="nav-number">1.5.4.16.</span> <span class="nav-text">5、总结</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#6、常见问题"><span class="nav-number">1.5.4.17.</span> <span class="nav-text">6、常见问题</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#六、合理的刷新机制"><span class="nav-number">1.6.</span> <span class="nav-text">六、合理的刷新机制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#6-1-减少刷新次数"><span class="nav-number">1.6.1.</span> <span class="nav-text">6.1 减少刷新次数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-2-避免后台线程的影响"><span class="nav-number">1.6.2.</span> <span class="nav-text">6.2 避免后台线程的影响</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-3-缩小刷新区域"><span class="nav-number">1.6.3.</span> <span class="nav-text">6.3 缩小刷新区域</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#七、提升动画性能"><span class="nav-number">1.7.</span> <span class="nav-text">七、提升动画性能</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#7-1-帧动画"><span class="nav-number">1.7.1.</span> <span class="nav-text">7.1 帧动画</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-2-补间动画"><span class="nav-number">1.7.2.</span> <span class="nav-text">7.2 补间动画</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-3-属性动画"><span class="nav-number">1.7.3.</span> <span class="nav-text">7.3 属性动画</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-4-硬件加速"><span class="nav-number">1.7.4.</span> <span class="nav-text">7.4 硬件加速</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1、硬件加速原理"><span class="nav-number">1.7.4.1.</span> <span class="nav-text">1、硬件加速原理</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2、硬件加速控制级别"><span class="nav-number">1.7.4.2.</span> <span class="nav-text">2、硬件加速控制级别</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3、在动画上使用硬件加速"><span class="nav-number">1.7.4.3.</span> <span class="nav-text">3、在动画上使用硬件加速</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#设计一个动画的流程如下："><span class="nav-number">1.7.4.4.</span> <span class="nav-text">设计一个动画的流程如下：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#硬件加速需要注意的问题："><span class="nav-number">1.7.4.5.</span> <span class="nav-text">硬件加速需要注意的问题：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#八、卡顿监控方案与实现"><span class="nav-number">1.8.</span> <span class="nav-text">八、卡顿监控方案与实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#8-1-监控原理"><span class="nav-number">1.8.1.</span> <span class="nav-text">8.1 监控原理</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#可抓取的信息"><span class="nav-number">1.8.1.1.</span> <span class="nav-text">可抓取的信息</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#注意：这里的信息建议抽样上报或者可以先将其保存到本地，在合适的时机以及达到一定的量时，再压缩上报到服务器，供开发者分析。具体监控代码实现可以参考BlockCanary开源项目的代码。"><span class="nav-number">1.8.1.2.</span> <span class="nav-text">注意：这里的信息建议抽样上报或者可以先将其保存到本地，在合适的时机以及达到一定的量时，再压缩上报到服务器，供开发者分析。具体监控代码实现可以参考BlockCanary开源项目的代码。</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#九、总结"><span class="nav-number">1.9.</span> <span class="nav-text">九、总结</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#参考链接："><span class="nav-number">1.9.0.1.</span> <span class="nav-text">参考链接：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#很感谢您阅读这篇文章，希望您能将它分享给您的朋友或技术群，这对我意义重大。"><span class="nav-number">1.9.1.</span> <span class="nav-text">很感谢您阅读这篇文章，希望您能将它分享给您的朋友或技术群，这对我意义重大。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#希望我们能成为朋友，在-Github、掘金上一起分享知识。"><span class="nav-number">1.9.2.</span> <span class="nav-text">希望我们能成为朋友，在 Github、掘金上一起分享知识。</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
