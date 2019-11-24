@@ -91,8 +91,8 @@
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://gityuan.com/images/stability/app_crash.jpg">
 <meta property="og:image" content="http://gityuan.com/images/stability/binder_died.jpg">
-<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/5micibPI4OJJAa3MSRxvibvhibNXTJ7fkdHgXerqe3E6JZmeEEWiaxHfnMvjVU3AvAicM12M44jiaSHV0eg1m6IRDO8vg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
-<meta property="og:updated_time" content="2019-11-24T14:45:22.330Z">
+<meta property="og:image" content="https://raw.githubusercontent.com/JsonChao/Awesome-Android-Notebook/master/screenshots/native_crash_log.png">
+<meta property="og:updated_time" content="2019-11-24T14:58:18.747Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="深入探索Android稳定性优化">
 <meta name="twitter:description" content="前言成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。一、正确认识 稳定性很重要，Crash是P0优先级 稳定性可优化的面很广  1.1 稳定性纬度 Crash纬度 性能纬度：启动速度、内存、绘制等等优化方向，相对于Crash来说是次要的 业务高可用纬度  1.2 稳定性优化概述 重在预防、监控必不可少 思考更深一层、重视隐含信息：如解决Cras">
@@ -595,7 +595,7 @@
 <p>未来Chromium会使用Crashpad替代Breakpad。</p>
 <h5 id="5、想要遵循Android的文本格式并添加更多重要的信息？"><a href="#5、想要遵循Android的文本格式并添加更多重要的信息？" class="headerlink" title="5、想要遵循Android的文本格式并添加更多重要的信息？"></a>5、想要遵循Android的文本格式并添加更多重要的信息？</h5><p>改造Breakpad，增加Logcat信息，Java调用栈信息、其它有用信息。</p>
 <h4 id="2-4-5-Native崩溃捕获注册"><a href="#2-4-5-Native崩溃捕获注册" class="headerlink" title="2.4.5 Native崩溃捕获注册"></a>2.4.5 Native崩溃捕获注册</h4><p>一个Native Crash log信息如下：</p>
-<p><img src="https://mmbiz.qpic.cn/mmbiz_png/5micibPI4OJJAa3MSRxvibvhibNXTJ7fkdHgXerqe3E6JZmeEEWiaxHfnMvjVU3AvAicM12M44jiaSHV0eg1m6IRDO8vg/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="image"></p>
+<p><img src="https://raw.githubusercontent.com/JsonChao/Awesome-Android-Notebook/master/screenshots/native_crash_log.png" alt="image"></p>
 <p>堆栈信息中 pc 后面跟的内存地址，就是当前函数的栈地址，我们可以通过下面的命令行得出出错的代码行数</p>
 <pre><code>arm-linux-androideabi-addr2line -e 内存地址
 </code></pre><p>下面列出全部的信号量以及所代表的含义：</p>
