@@ -92,7 +92,7 @@
 <meta property="og:image" content="http://gityuan.com/images/stability/app_crash.jpg">
 <meta property="og:image" content="http://gityuan.com/images/stability/binder_died.jpg">
 <meta property="og:image" content="https://raw.githubusercontent.com/JsonChao/Awesome-Android-Notebook/master/screenshots/native_crash_log.png">
-<meta property="og:updated_time" content="2019-11-25T12:18:13.047Z">
+<meta property="og:updated_time" content="2019-11-25T12:40:23.854Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="深入探索Android稳定性优化">
 <meta name="twitter:description" content="前言成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。一、正确认识 稳定性很重要，Crash是P0优先级 稳定性可优化的面很广  1.1 稳定性纬度 Crash纬度 性能纬度：启动速度、内存、绘制等等优化方向，相对于Crash来说是次要的 业务高可用纬度  1.2 稳定性优化概述 重在预防、监控必不可少 思考更深一层、重视隐含信息：如解决Cras">
@@ -713,7 +713,7 @@ env-&gt;CallStaticVoidMethod( vm_class, dump_mid );
 <li>2、尝试使用其它使用方式规避</li>
 <li>3、Hook解决</li>
 </ul>
-<h4 id="2-4-7-实战：使用Breakpad捕获native崩溃"><a href="#2-4-7-实战：使用Breakpad捕获native崩溃" class="headerlink" title="2.4.7 实战：使用Breakpad捕获native崩溃"></a>2.4.7 实战：使用Breakpad捕获native崩溃</h4><p>首先，这里给出《Android开发高手课》张绍文老师写的crash捕获示例工程，工程里面已经集成了Breakpad 来获取发生 native crash 时候的系统信息和线程堆栈信息。下面来详细介绍下使用Breakpad来分析native崩溃的流程：</p>
+<h4 id="2-4-7-实战：使用Breakpad捕获native崩溃"><a href="#2-4-7-实战：使用Breakpad捕获native崩溃" class="headerlink" title="2.4.7 实战：使用Breakpad捕获native崩溃"></a>2.4.7 实战：使用Breakpad捕获native崩溃</h4><p>首先，这里给出《Android开发高手课》张绍文老师写的<a href="https://github.com/AndroidAdvanceWithGeektime/Chapter01" target="_blank" rel="external">crash捕获示例工程</a>，工程里面已经集成了Breakpad 来获取发生 native crash 时候的系统信息和线程堆栈信息。下面来详细介绍下使用Breakpad来分析native崩溃的流程：</p>
 <p>1、示例工程是采用cmake的构建方式，所以需要先到Android Studio中SDK Manager中的SDK Tools下下载NDK和cmake。</p>
 <p>2、安装实例工程后，点击CRASH按钮产生一个native崩溃。生成的 crash信息，如果授予Sdcard权限会优先存放在/sdcard/crashDump下，便于我们做进一步的分析。反之会放到目录 /data/data/com.dodola.breakpad/files/crashDump中。</p>
 <p>3、使用adb pull命令将抓取到的crash日志文件放到电脑本地目录中：</p>
