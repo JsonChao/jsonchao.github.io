@@ -91,7 +91,10 @@
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://raw.githubusercontent.com/JsonChao/Awesome-Third-Library-Source-Analysis/master/ScreenShots/Android_hot_third_source_analysis.png">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/1916953-fc6439af2bfefddc.jpg?imageMogr2/auto-orient/">
-<meta property="og:updated_time" content="2019-03-10T14:08:33.071Z">
+<meta property="og:image" content="https://raw.githubusercontent.com/JsonChao/Awesome-Android-Interview/master/screenshot/wexin_play.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/JsonChao/Awesome-Android-Interview/master/screenshot/Apaliy.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/JsonChao/Awesome-Android-Interview/master/screenshot/wexin_qrcode.jpg">
+<meta property="og:updated_time" content="2019-11-30T01:22:26.313Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android主流三方库源码分析（一、深入理解OKHttp源码）">
 <meta name="twitter:description" content="前言成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。前两篇我们详细分析了View的核心源码—Android的触摸事件传递机制和Android View的绘制流程，从这篇开始，笔者接下来将会陪大家深入分析目前Android中大部分的主流开源框架源码，从而能够让我们真正地去理解这些优秀开源框架背后的思想，真真切切地提升自己的内功。目前，这一系列的分">
@@ -561,7 +564,7 @@ Response getResponseWithInterceptorChain() throws IOException {
     interceptors.addAll(client.interceptors());
     // 负责失败重试以及重定向
     interceptors.add(retryAndFollowUpInterceptor);
-    // 请求时，对必要的Header进行一些添加，接受响应时，移除必要的Header
+    // 请求时，对必要的Header进行一些添加，接收响应时，移除必要的Header
     interceptors.add(new BridgeInterceptor(client.cookieJar()));
     // 负责读取缓存直接返回、更新缓存
     interceptors.add(new CacheInterceptor(client.internalCache()));
@@ -1080,6 +1083,28 @@ long cleanup(long now) {
 <p>1、Android进阶之光</p>
 <p>2、<a href="https://www.jianshu.com/p/27c1554b7fee" target="_blank" rel="external">OKHttp源码解析</a></p>
 <p>3、<a href="https://juejin.im/post/5bc89fbc5188255c713cb8a5#heading-10" target="_blank" rel="external">Andriod 网络框架 OkHttp 源码解析</a></p>
+<h2 id="赞赏"><a href="#赞赏" class="headerlink" title="赞赏"></a>赞赏</h2><p>如果这个库对您有很大帮助，您愿意支持这个项目的进一步开发和这个项目的持续维护。你可以扫描下面的二维码，让我喝一杯咖啡或啤酒。非常感谢您的捐赠。谢谢！</p>
+<div align="center"><br><img src="https://raw.githubusercontent.com/JsonChao/Awesome-Android-Interview/master/screenshot/wexin_play.jpg" width="20%"><img src="https://raw.githubusercontent.com/JsonChao/Awesome-Android-Interview/master/screenshot/Apaliy.jpg" width="20%"><br></div>
+
+
+<hr>
+<h2 id="Contanct-Me"><a href="#Contanct-Me" class="headerlink" title="Contanct Me"></a>Contanct Me</h2><h3 id="●-微信："><a href="#●-微信：" class="headerlink" title="●  微信："></a>●  微信：</h3><blockquote>
+<p>欢迎关注我的微信：<code>bcce5360</code>  </p>
+</blockquote>
+<h3 id="●-微信群："><a href="#●-微信群：" class="headerlink" title="●  微信群："></a>●  微信群：</h3><blockquote>
+<p><strong>微信群如果不能扫码加入，麻烦大家想进微信群的朋友们，加我微信拉你进群。</strong></p>
+</blockquote>
+<div align="center"><br><img src="https://raw.githubusercontent.com/JsonChao/Awesome-Android-Interview/master/screenshot/wexin_qrcode.jpg" width="35%"><br></div>
+
+
+<h3 id="●-QQ群："><a href="#●-QQ群：" class="headerlink" title="●  QQ群："></a>●  QQ群：</h3><blockquote>
+<p>2千人QQ群，<strong>Awesome-Android学习交流群，QQ群号：959936182</strong>， 欢迎大家加入~</p>
+</blockquote>
+<h3 id="About-me"><a href="#About-me" class="headerlink" title="About me"></a>About me</h3><ul>
+<li><h4 id="Email-chao-qu521-gmail-com"><a href="#Email-chao-qu521-gmail-com" class="headerlink" title="Email: chao.qu521@gmail.com"></a>Email: <a href="">chao.qu521@gmail.com</a></h4></li>
+<li><h4 id="Blog-https-jsonchao-github-io"><a href="#Blog-https-jsonchao-github-io" class="headerlink" title="Blog: https://jsonchao.github.io/"></a>Blog: <a href="https://jsonchao.github.io/" target="_blank" rel="external">https://jsonchao.github.io/</a></h4></li>
+<li><h4 id="掘金-https-juejin-im-user-5a3ba9375188252bca050ade"><a href="#掘金-https-juejin-im-user-5a3ba9375188252bca050ade" class="headerlink" title="掘金: https://juejin.im/user/5a3ba9375188252bca050ade"></a>掘金: <a href="https://juejin.im/user/5a3ba9375188252bca050ade" target="_blank" rel="external">https://juejin.im/user/5a3ba9375188252bca050ade</a></h4></li>
+</ul>
 <h4 id="很感谢您阅读这篇文章，希望您能将它分享给您的朋友或技术群，这对我意义重大。"><a href="#很感谢您阅读这篇文章，希望您能将它分享给您的朋友或技术群，这对我意义重大。" class="headerlink" title="很感谢您阅读这篇文章，希望您能将它分享给您的朋友或技术群，这对我意义重大。"></a>很感谢您阅读这篇文章，希望您能将它分享给您的朋友或技术群，这对我意义重大。</h4><h4 id="希望我们能成为朋友，在-Github、掘金上一起分享知识。"><a href="#希望我们能成为朋友，在-Github、掘金上一起分享知识。" class="headerlink" title="希望我们能成为朋友，在 Github、掘金上一起分享知识。"></a>希望我们能成为朋友，在 <a href="https://github.com/JsonChao" target="_blank" rel="external">Github</a>、<a href="https://juejin.im/user/5a3ba9375188252bca050ade" target="_blank" rel="external">掘金</a>上一起分享知识。</h4>
       
     </div>
@@ -1385,7 +1410,7 @@ long cleanup(long now) {
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样-。"><span class="nav-number">1.0.1.</span> <span class="nav-text">成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一、OKHttp请求流程"><span class="nav-number">1.1.</span> <span class="nav-text">一、OKHttp请求流程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-新建OKHttpClient客户端"><span class="nav-number">1.1.1.</span> <span class="nav-text">1.新建OKHttpClient客户端</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-同步请求流程"><span class="nav-number">1.1.2.</span> <span class="nav-text">2.同步请求流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-异步请求的流程"><span class="nav-number">1.1.3.</span> <span class="nav-text">3.异步请求的流程</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、网络请求缓存处理之CacheInterceptor"><span class="nav-number">1.2.</span> <span class="nav-text">二、网络请求缓存处理之CacheInterceptor</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、ConnectInterceptor之连接池"><span class="nav-number">1.3.</span> <span class="nav-text">三、ConnectInterceptor之连接池</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、总结"><span class="nav-number">1.4.</span> <span class="nav-text">四、总结</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#参考链接："><span class="nav-number">1.4.0.1.</span> <span class="nav-text">参考链接：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#很感谢您阅读这篇文章，希望您能将它分享给您的朋友或技术群，这对我意义重大。"><span class="nav-number">1.4.1.</span> <span class="nav-text">很感谢您阅读这篇文章，希望您能将它分享给您的朋友或技术群，这对我意义重大。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#希望我们能成为朋友，在-Github、掘金上一起分享知识。"><span class="nav-number">1.4.2.</span> <span class="nav-text">希望我们能成为朋友，在 Github、掘金上一起分享知识。</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样-。"><span class="nav-number">1.0.1.</span> <span class="nav-text">成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一、OKHttp请求流程"><span class="nav-number">1.1.</span> <span class="nav-text">一、OKHttp请求流程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-新建OKHttpClient客户端"><span class="nav-number">1.1.1.</span> <span class="nav-text">1.新建OKHttpClient客户端</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-同步请求流程"><span class="nav-number">1.1.2.</span> <span class="nav-text">2.同步请求流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-异步请求的流程"><span class="nav-number">1.1.3.</span> <span class="nav-text">3.异步请求的流程</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、网络请求缓存处理之CacheInterceptor"><span class="nav-number">1.2.</span> <span class="nav-text">二、网络请求缓存处理之CacheInterceptor</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、ConnectInterceptor之连接池"><span class="nav-number">1.3.</span> <span class="nav-text">三、ConnectInterceptor之连接池</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、总结"><span class="nav-number">1.4.</span> <span class="nav-text">四、总结</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#参考链接："><span class="nav-number">1.4.0.1.</span> <span class="nav-text">参考链接：</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#赞赏"><span class="nav-number">2.</span> <span class="nav-text">赞赏</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Contanct-Me"><span class="nav-number">3.</span> <span class="nav-text">Contanct Me</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#●-微信："><span class="nav-number">3.1.</span> <span class="nav-text">●  微信：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#●-微信群："><span class="nav-number">3.2.</span> <span class="nav-text">●  微信群：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#●-QQ群："><span class="nav-number">3.3.</span> <span class="nav-text">●  QQ群：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#About-me"><span class="nav-number">3.4.</span> <span class="nav-text">About me</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Email-chao-qu521-gmail-com"><span class="nav-number">3.4.1.</span> <span class="nav-text">Email: chao.qu521@gmail.com</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Blog-https-jsonchao-github-io"><span class="nav-number">3.4.2.</span> <span class="nav-text">Blog: https://jsonchao.github.io/</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#掘金-https-juejin-im-user-5a3ba9375188252bca050ade"><span class="nav-number">3.4.3.</span> <span class="nav-text">掘金: https://juejin.im/user/5a3ba9375188252bca050ade</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#很感谢您阅读这篇文章，希望您能将它分享给您的朋友或技术群，这对我意义重大。"><span class="nav-number">3.4.4.</span> <span class="nav-text">很感谢您阅读这篇文章，希望您能将它分享给您的朋友或技术群，这对我意义重大。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#希望我们能成为朋友，在-Github、掘金上一起分享知识。"><span class="nav-number">3.4.5.</span> <span class="nav-text">希望我们能成为朋友，在 Github、掘金上一起分享知识。</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
