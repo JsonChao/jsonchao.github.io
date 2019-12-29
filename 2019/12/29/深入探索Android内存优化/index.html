@@ -99,7 +99,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/JsonChao/Awesome-Android-Interview/master/screenshot/wexin_play.jpg">
 <meta property="og:image" content="https://raw.githubusercontent.com/JsonChao/Awesome-Android-Interview/master/screenshot/Apaliy.jpg">
 <meta property="og:image" content="https://raw.githubusercontent.com/JsonChao/Awesome-Android-Interview/master/screenshot/wexin_qrcode.jpg">
-<meta property="og:updated_time" content="2019-12-29T10:36:49.357Z">
+<meta property="og:updated_time" content="2019-12-29T10:54:29.049Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="深入探索Android内存优化">
 <meta name="twitter:description" content="前言成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。本篇是Android内存优化的进阶篇，难度会比较大，建议对内存优化不是非常熟悉的前仔细看看在前几篇文章中，笔者曾经写过的一篇Android性能优化之内存优化，其中详细分析了以下几大模块：  Android的内存管理机制 优化内存的意义 避免内存泄漏 优化内存空间 图片管理模块的设计与实现  如">
@@ -343,7 +343,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-12-29T18:19:00+08:00">
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-12-29T18:54:00+08:00">
                 2019-12-29
               </time>
             
@@ -1024,7 +1024,7 @@ update, R to reverse sort, Q to exit.
 <th>内存指标</th>
 <th>英文全称</th>
 <th>含义</th>
-<th>等价 </th>
+<th>等价</th>
 </tr>
 </thead>
 <tbody>
@@ -1033,24 +1033,28 @@ update, R to reverse sort, Q to exit.
 <td>Unique Set Size</td>
 <td>物理内存</td>
 <td>进程独占的内存</td>
+<td></td>
 </tr>
 <tr>
 <td>PSS</td>
 <td>Proportional Set Size</td>
 <td>物理内存</td>
 <td>PSS = USS + 按比例包含共享库</td>
+<td></td>
 </tr>
 <tr>
 <td>RSS</td>
 <td>Resident Set Size</td>
 <td>物理内存</td>
 <td>RSS= USS+ 包含共享库</td>
+<td></td>
 </tr>
 <tr>
 <td>VSS</td>
 <td>Virtual Set Size</td>
 <td>虚拟内存</td>
 <td>VSS= RSS+ 未分配实际物理内存</td>
+<td></td>
 </tr>
 </tbody>
 </table>
@@ -1199,6 +1203,7 @@ Tuning: 256 (large 512), oom   322,560K, restore limit   107,520K (high-end-gfx)
 <table>
 <thead>
 <tr>
+<th></th>
 <th>划分类型</th>
 <th>排序指标</th>
 <th>含义</th>
@@ -1209,21 +1214,25 @@ Tuning: 256 (large 512), oom   322,560K, restore limit   107,520K (high-end-gfx)
 <td>process</td>
 <td>PSS</td>
 <td>以进程的PSS从大到小依次排序显示，每行显示一个进程，一般用来做初步的竞品分析</td>
+<td></td>
 </tr>
 <tr>
 <td>OOM adj</td>
 <td>PSS</td>
-<td>展示当前系统内部运行的所有Android进程的内存状态和被杀顺序，越靠近下方的进程越容易被杀，排序按照一套复杂的算法，算法涵盖了前后台、服务或节目、可见与否、老化等 </td>
+<td>展示当前系统内部运行的所有Android进程的内存状态和被杀顺序，越靠近下方的进程越容易被杀，排序按照一套复杂的算法，算法涵盖了前后台、服务或节目、可见与否、老化等</td>
+<td></td>
 </tr>
 <tr>
 <td>category</td>
 <td>PSS</td>
 <td>以Dalvik/Native/.art mmap/.dex map等划分并按降序列出各类进程的总PSS分布情况</td>
+<td></td>
 </tr>
 <tr>
 <td>total</td>
 <td>-</td>
-<td>总内存、剩余内存、可用内存、其他内存 </td>
+<td>总内存、剩余内存、可用内存、其他内存</td>
+<td></td>
 </tr>
 </tbody>
 </table>
@@ -1431,7 +1440,7 @@ Server is ready.
 <th>freed 104710 （7MB） AllocSpace objects,</th>
 <th>21（416KB） LOS objects，</th>
 <th>33% free,25MB/38MB</th>
-<th>paused 1.230ms total 67.216ms </th>
+<th>paused 1.230ms total 67.216ms</th>
 </tr>
 </thead>
 <tbody>
@@ -1442,7 +1451,8 @@ Server is ready.
 <td>释放的数量和占用的空间</td>
 <td>释放的大对象数量和所占用的空间</td>
 <td>堆中空闲空间的百分比和（对象的个数）/（堆的总空间）</td>
-<td>暂停耗时 </td>
+<td>暂停耗时</td>
+<td></td>
 </tr>
 </tbody>
 </table>
@@ -1560,7 +1570,7 @@ f.set(job, null);
 <li>9、实现了全局的线程监控</li>
 <li>10、针对内存使用的重度场景实现了GC监控。</li>
 </ul>
-<p>最后，当监控到应用内存超过阈值时，是否定制了完善的兜底策略来重启应用进程。</p>
+<p>最后，当监控到应用内存超过阈值时，还定制了完善的兜底策略来重启应用进程。</p>
 <p>从性能分类的纬度来看，除了内存监控方面外，是否也同样建立了卡顿、缓存、电量、异常流量、布局、包体积、IO、存储相关的监控与优化体系。总的来说，要想实现更健全的功能、更深层次的定位问题、线上问题快速准确的发现，还是有很多事情可以做的。</p>
 <pre><code>路漫漫其修远兮，吾将上下而求索。
 </code></pre><h5 id="参考链接："><a href="#参考链接：" class="headerlink" title="参考链接："></a>参考链接：</h5><hr>
