@@ -1,0 +1,1947 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="default">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="性能优化," />
+
+
+
+
+
+  <link rel="alternate" href="/rss2.xml" title="Deep into Android" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="前言成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。本篇，为深入探索Android布局优化的下篇。这篇文章包含的主要内容如下所示：  6、布局优化常规方案 7、布局优化的进阶方案 8、布局优化的常见问题  下面，笔者将与大家一起进入进行布局优化的实操环节。 六、布局优化常规方案布局优化的方法有很多，大部分主流的方案笔者已经在Android性能优">
+<meta name="keywords" content="性能优化">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入探索Android布局优化（下）">
+<meta property="og:url" content="http://yoursite.com/2020/01/13/深入探索Android布局优化（下）/index.html">
+<meta property="og:site_name" content="Deep into Android">
+<meta property="og:description" content="前言成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。本篇，为深入探索Android布局优化的下篇。这篇文章包含的主要内容如下所示：  6、布局优化常规方案 7、布局优化的进阶方案 8、布局优化的常见问题  下面，笔者将与大家一起进入进行布局优化的实操环节。 六、布局优化常规方案布局优化的方法有很多，大部分主流的方案笔者已经在Android性能优">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://raw.githubusercontent.com/JsonChao/Awesome-Android-Performance/master/screenshots/pre_overdraw.jpeg">
+<meta property="og:image" content="https://raw.githubusercontent.com/JsonChao/Awesome-Android-Performance/master/screenshots/after_overdraw.jpeg">
+<meta property="og:image" content="http://image.diydoutu.com/12140371143798.png?imageView2/0/format/jpg/q/75">
+<meta property="og:image" content="http://image.diydoutu.com/12140564648444.gif?imageView2/0/format/gif/q/75">
+<meta property="og:image" content="https://raw.githubusercontent.com/JsonChao/Awesome-Android-Performance/master/screenshots/litho_text.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/JsonChao/Awesome-Android-Performance/master/screenshots/litho_listitem.png">
+<meta property="og:image" content="https://github.com/JsonChao/Awesome-Android-Performance/blob/master/screenshots/litho_build_listitem.png?raw=true">
+<meta property="og:image" content="https://github.com/JsonChao/Awesome-Android-Performance/blob/master/screenshots/app_listitemspec.png?raw=true">
+<meta property="og:image" content="https://raw.githubusercontent.com/JsonChao/Awesome-Android-Performance/master/screenshots/litho_mount_spec_lifecycle.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/JsonChao/Awesome-Android-Performance/master/screenshots/litho_sync.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/JsonChao/Awesome-Android-Performance/master/screenshots/litho_plan.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/JsonChao/Awesome-Android-Performance/master/screenshots/litho_recycler.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/JsonChao/Awesome-Android-Performance/master/screenshots/recycle_section.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/JsonChao/Awesome-Android-Performance/master/screenshots/litho_prop.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/JsonChao/Awesome-Android-Performance/master/screenshots/flutter_acrchitecture.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/JsonChao/Awesome-Android-Performance/master/screenshots/flutter_performance_compare.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/JsonChao/Awesome-Android-Performance/master/screenshots/flutter_ui_core.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/JsonChao/Awesome-Android-Interview/master/screenshot/wexin_play.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/JsonChao/Awesome-Android-Interview/master/screenshot/Apaliy.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/JsonChao/Awesome-Android-Interview/master/screenshot/wexin_qrcode.jpg">
+<meta property="og:updated_time" content="2020-01-13T15:00:04.346Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="深入探索Android布局优化（下）">
+<meta name="twitter:description" content="前言成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。本篇，为深入探索Android布局优化的下篇。这篇文章包含的主要内容如下所示：  6、布局优化常规方案 7、布局优化的进阶方案 8、布局优化的常见问题  下面，笔者将与大家一起进入进行布局优化的实操环节。 六、布局优化常规方案布局优化的方法有很多，大部分主流的方案笔者已经在Android性能优">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/JsonChao/Awesome-Android-Performance/master/screenshots/pre_overdraw.jpeg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":0,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '2JGM8QNUKR',
+      apiKey: 'ad3d08277d479825f7ef759beadbce0d',
+      indexName: 'dicovery',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/01/13/深入探索Android布局优化（下）/"/>
+
+
+
+
+
+  <title>深入探索Android布局优化（下） | Deep into Android</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Deep into Android</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/13/深入探索Android布局优化（下）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JsonChao">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Deep into Android">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">深入探索Android布局优化（下）</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-01-13T22:59:00+08:00">
+                2020-01-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/性能优化/" itemprop="url" rel="index">
+                    <span itemprop="name">性能优化</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2020/01/13/深入探索Android布局优化（下）/" class="leancloud_visitors" data-flag-title="深入探索Android布局优化（下）">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">Visitors&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <hr>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><h4 id="成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样-。"><a href="#成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样-。" class="headerlink" title="成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。"></a>成为一名优秀的Android开发，需要一份完备的<a href="https://github.com/JsonChao/Awesome-Android-Exercise" target="_blank" rel="external">知识体系</a>，在这里，让我们一起成长为自己所想的那样~。</h4><p>本篇，为深入探索Android布局优化的下篇。这篇文章包含的主要内容如下所示：</p>
+<ul>
+<li>6、布局优化常规方案</li>
+<li>7、布局优化的进阶方案</li>
+<li>8、布局优化的常见问题</li>
+</ul>
+<p>下面，笔者将与大家一起进入进行布局优化的实操环节。</p>
+<h3 id="六、布局优化常规方案"><a href="#六、布局优化常规方案" class="headerlink" title="六、布局优化常规方案"></a>六、布局优化常规方案</h3><p>布局优化的方法有很多，大部分主流的方案笔者已经在<a href="https://jsonchao.github.io/2019/07/28/Android%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E4%B9%8B%E7%BB%98%E5%88%B6%E4%BC%98%E5%8C%96/" target="_blank" rel="external">Android性能优化之绘制优化</a>里讲解过了。下面，我将介绍一些其它的优化方案。</p>
+<h4 id="1、布局Inflate优化方案演进"><a href="#1、布局Inflate优化方案演进" class="headerlink" title="1、布局Inflate优化方案演进"></a>1、布局Inflate优化方案演进</h4><h5 id="1、代码动态创建View"><a href="#1、代码动态创建View" class="headerlink" title="1、代码动态创建View"></a>1、代码动态创建View</h5><p>使用Java代码动态添加控件的简单示例如下：</p>
+<pre><code>Button button=new Button(this);        
+button.setBackgroundColor(Color.RED);
+button.setText(&quot;Hello World&quot;);
+ViewGroup viewGroup = (ViewGroup) LayoutInflater.from(this).inflate(R.layout.activity_main, null);
+viewGroup.addView(button);
+</code></pre><h5 id="2、替换MessageQueue来实现异步创建View"><a href="#2、替换MessageQueue来实现异步创建View" class="headerlink" title="2、替换MessageQueue来实现异步创建View"></a>2、替换MessageQueue来实现异步创建View</h5><p>在使用子线程创建视图控件的时候，我们可以把子线程Looper的MessageQueue替换成主线程的MessageQueue，在创建完需要的视图控件后记得将子线程Looper中的MessageQueue恢复为原来的。在<a href="https://github.com/JsonChao/Awesome-WanAndroid" target="_blank" rel="external">Awesome-WanAndroid</a>项目下的UiUtils的Ui优化工具类中，提供了相应的实现，代码如下所示：</p>
+<pre><code> /**
+ * 实现将子线程Looper中的MessageQueue替换为主线程中Looper的
+ * MessageQueue，这样就能够在子线程中异步创建UI。
+ *
+ * 注意：需要在子线程中调用。
+ *
+ * @param reset 是否将子线程中的MessageQueue重置为原来的，false则表示需要进行替换
+ * @return 替换是否成功
+ */
+public static boolean replaceLooperWithMainThreadQueue(boolean reset) {
+    if (CommonUtils.isMainThread()) {
+        return true;
+    } else {
+        // 1、获取子线程的ThreadLocal实例
+        ThreadLocal&lt;Looper&gt; threadLocal = ReflectUtils.reflect(Looper.class).field(&quot;sThreadLocal&quot;).get();
+        if (threadLocal == null) {
+            return false;
+        } else {
+            Looper looper = null;
+            if (!reset) {
+                Looper.prepare();
+                looper = Looper.myLooper();
+                // 2、通过调用MainLooper的getQueue方法区获取主线程Looper中的MessageQueue实例
+                Object queue = ReflectUtils.reflect(Looper.getMainLooper()).method(&quot;getQueue&quot;).get();
+                if (!(queue instanceof MessageQueue)) {
+                    return false;
+                }
+                // 3、将子线程中的MessageQueue字段的值设置为主线的MessageQueue实例
+                ReflectUtils.reflect(looper).field(&quot;mQueue&quot;, queue);
+            }
+
+            // 4、reset为false，表示需要将子线程Looper中的MessageQueue重置为原来的。
+            ReflectUtils.reflect(threadLocal).method(&quot;set&quot;, looper);
+            return true;
+        }
+    }
+}
+</code></pre><h5 id="3、AsynclayoutInflater异步创建View"><a href="#3、AsynclayoutInflater异步创建View" class="headerlink" title="3、AsynclayoutInflater异步创建View"></a>3、AsynclayoutInflater异步创建View</h5><p>在第三小节中，我们对Android的布局加载原理进行了深入地分析，从中我们得出了布局加载过程中的两个耗时点：</p>
+<ul>
+<li>1、布局文件读取慢：IO过程。</li>
+<li>2、创建View慢：使用反射，比直接new的方式要慢3倍。布局嵌套层级越多，控件个数越多，反射的次数就会越频繁。</li>
+</ul>
+<p>很明显，我们无法从根本上去解决这两个问题，但是Google提供了一个从侧面解决的方案:使用AsyncLayoutInflater去异步加载对应的布局，它的特点如下：</p>
+<ul>
+<li>1、工作线程加载布局。</li>
+<li>2、回调主线程。</li>
+<li>3、节省主线程时间。</li>
+</ul>
+<p>接下来，我将详细地介绍AsynclayoutInflater的使用。</p>
+<p>首先，在项目的build.gradle中进行配置：</p>
+<pre><code>implementation &apos;com.android.support:asynclayoutinflater:28.0.0&apos;
+</code></pre><p>然后，在Activity中的onCreate方法中将setContentView注释：</p>
+<pre><code>super.onCreate(savedInstanceState);
+// 内部分别使用了IO和反射的方式去加载布局解析器和创建对应的View
+// setContentView(R.layout.activity_main);
+</code></pre><p>接着，在super.onCreate方法前继续布局的异步加载：</p>
+<pre><code>// 使用AsyncLayoutInflater进行布局的加载
+new AsyncLayoutInflater(MainActivity.this).inflate(R.layout.activity_main, null, new AsyncLayoutInflater.OnInflateFinishedListener() {
+        @Override
+        public void onInflateFinished(@NonNull View view, int i, @Nullable ViewGroup viewGroup) {
+            setContentView(view);
+            // findViewById、视图操作等
+    }
+});
+super.onCreate(savedInstanceState);
+</code></pre><p>接下来，我们来分析下AsyncLayoutInflater的实现原理与工作流程。</p>
+<p>由于我们是使用new的方式创建的AsyncLayoutInflater，所以我们先来看看它的构造函数：</p>
+<pre><code> public AsyncLayoutInflater(@NonNull Context context) {
+    // 1
+    this.mInflater = new AsyncLayoutInflater.BasicInflater(context);
+    // 2
+    this.mHandler = new Handler(this.mHandlerCallback);
+    // 3
+    this.mInflateThread = AsyncLayoutInflater.InflateThread.getInstance();
+}
+</code></pre><p>在注释1处，创建了一个BasicInflater，它内部的onCreateView并没有使用Factory做AppCompat控件兼容的处理：</p>
+<pre><code>protected View onCreateView(String name, AttributeSet attrs) throws ClassNotFoundException {
+    String[] var3 = sClassPrefixList;
+    int var4 = var3.length;
+
+    for(int var5 = 0; var5 &lt; var4; ++var5) {
+        String prefix = var3[var5];
+
+        try {
+            View view = this.createView(name, prefix, attrs);
+            if (view != null) {
+                return view;
+            }
+        } catch (ClassNotFoundException var8) {
+        }
+    }
+
+    return super.onCreateView(name, attrs);
+}
+</code></pre><p>由前面的分析可知，在createView方法中仅仅是做了反射创建出对应View的处理。</p>
+<p>接着，在注释2处，创建了一个全局的Handler对象，主要是用于将异步线程创建好的View实例及其相关信息回调到主线程。</p>
+<p>最后，在注释3处，获取了一个用于异步加载View的线程实例。</p>
+<p>接着，我们继续跟踪AsyncLayoutInflater实例的inflate方法：</p>
+<pre><code>@UiThread
+public void inflate(@LayoutRes int resid, @Nullable ViewGroup parent, @NonNull AsyncLayoutInflater.OnInflateFinishedListener callback) {
+    if (callback == null) {
+        throw new NullPointerException(&quot;callback argument may not be null!&quot;);
+    } else {
+        // 1
+        AsyncLayoutInflater.InflateRequest request = this.mInflateThread.obtainRequest();
+        request.inflater = this;
+        request.resid = resid;
+        request.parent = parent;
+        request.callback = callback;
+        this.mInflateThread.enqueue(request);
+    }
+}
+</code></pre><p>在注释1处，这里使用InflateRequest对象将我们传进来的三个参数进行了包装，并最终将这个InflateRequest对象加入了mInflateThread线程中的一个ArrayBlockingQueue中：</p>
+<pre><code>public void enqueue(AsyncLayoutInflater.InflateRequest request) {
+    try {
+        this.mQueue.put(request);
+      } catch (InterruptedException var3) {
+        throw new RuntimeException(&quot;Failed to enqueue async inflate request&quot;, var3);
+    }
+}
+</code></pre><p>并且，在InflateThread这个静态内部类的静态代码块中调用了其自身实例的start方法以启动线程：</p>
+<pre><code>static {
+    sInstance.start();
+}
+
+public void run() {
+    while(true) {
+        this.runInner();
+    }
+}
+
+public void runInner() {
+    AsyncLayoutInflater.InflateRequest request;
+    try {
+        // 1
+        request = (AsyncLayoutInflater.InflateRequest)this.mQueue.take();
+    } catch (InterruptedException var4) {
+        Log.w(&quot;AsyncLayoutInflater&quot;, var4);
+        return;
+    }
+
+    try {
+        // 2
+        request.view = request.inflater.mInflater.inflate(request.resid, request.parent, false);
+    } catch (RuntimeException var3) {
+        Log.w(&quot;AsyncLayoutInflater&quot;, &quot;Failed to inflate resource in the background! Retrying on the UI thread&quot;, var3);
+    }
+
+    // 3
+    Message.obtain(request.inflater.mHandler, 0, request).sendToTarget();
+}
+</code></pre><p>在run方法中，使用了死循环的方式去不断地调用runInner方法，在runInner方法中，首先在注释1处从ArrayBlockingQueue队列中获取一个InflateRequest对象，然后在注释2处将异步加载好的view对象赋值给了InflateRequest对象，最后，在注释3处，将请求作为消息发送给了Handler的handleMessage：</p>
+<pre><code>private Callback mHandlerCallback = new Callback() {
+    public boolean handleMessage(Message msg) {
+        AsyncLayoutInflater.InflateRequest request = (AsyncLayoutInflater.InflateRequest)msg.obj;
+        // 1
+        if (request.view == null) {
+            request.view = AsyncLayoutInflater.this.mInflater.inflate(request.resid, request.parent, false);
+        }
+
+        request.callback.onInflateFinished(request.view, request.resid, request.parent);
+        AsyncLayoutInflater.this.mInflateThread.releaseRequest(request);
+        return true;
+    }
+};
+</code></pre><p>在handleMessage方法中，当异步加载得到的view为null时，此时在注释1处还做了一个fallback处理，直接在主线程进行view的加载，以此兼容某些异常情况，最后，就调用了回调接口的onInflateFinished方法将view的相关信息返回给Activity对象。</p>
+<h4 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h4><p>由以上分析可知，AsyncLayoutInflater是通过侧面缓解的方式去缓解布局加载过程中的卡顿，但是它依然存在一些问题：</p>
+<ul>
+<li>1、不能设置LayoutInflater.Factory，通过自定义AsyncLayoutInflater的方式解决，由于它是一个final，所以需要将代码直接拷处进行修改。</li>
+<li>2、因为是异步加载，所以需要注意在布局加载过程中不能有依赖于主线程的操作。</li>
+</ul>
+<p>由于AsyncLayoutInflater仅仅只能通过侧面缓解的方式去缓解布局加载的卡顿，因此，我们下面将介绍一种从根本上解决问题的方案。对于AsynclayoutInflater的改进措施，可以查看祁同伟同学封装之后的代码：</p>
+<p><a href="https://www.jianshu.com/p/f0c0eda06ae4" target="_blank" rel="external">Android AsyncLayoutInflater 限制及改进</a></p>
+<h5 id="4、使用X2C进行布局加载优化"><a href="#4、使用X2C进行布局加载优化" class="headerlink" title="4、使用X2C进行布局加载优化"></a>4、使用X2C进行布局加载优化</h5><p>由上分析可知，在布局加载的过程中有两个主要的耗时点，即IO操作和反射，而AsyncLayoutInflater仅仅是缓解，那么有什么方案能从根本上去解决这个问题呢？</p>
+<h4 id="使用Java代码写布局？"><a href="#使用Java代码写布局？" class="headerlink" title="使用Java代码写布局？"></a>使用Java代码写布局？</h4><p>如果使用Java代码写布局，无疑从Xml文件进行IO操作的过程和反射获取View实例的过程都将被抹去。虽然这样从本质上解决了问题，但是也引入了一些新问题，如不便于开发，可维护性差等等。</p>
+<p>那么，还有没有别的更好的方式呢？</p>
+<p>答案就是X2C。</p>
+<h4 id="X2C"><a href="#X2C" class="headerlink" title="X2C"></a>X2C</h4><p><a href="https://github.com/iReaderAndroid/X2C/blob/master/README_CN.md" target="_blank" rel="external">X2C项目地址</a></p>
+<p>X2C框架保留了XML的优点，并解决了其IO操作和反射的性能问题。开发人员只需要正常写XML代码即可，在编译期，X2C会利用APT工具将XML代码翻译为Java代码。</p>
+<p>接下来，我们来进行X2C的使用。</p>
+<p>首先，在app的build.gradle文件添加如下依赖：</p>
+<pre><code>annotationProcessor &apos;com.zhangyue.we:x2c-apt:1.1.2&apos;
+implementation &apos;com.zhangyue.we:x2c-lib:1.0.6&apos;
+</code></pre><p>然后，在对应的MainActivity类上方添加如下注解，让MainActivity知道我们使用的布局是activity_main：</p>
+<pre><code>@Xml(layouts = &quot;activity_main&quot;)
+public class MainActivity extends AppCompatActivity implements OnFeedShowCallBack {
+</code></pre><p>接着，将onCreate方法中setContentView的原始方式改为X2C的设置方式：</p>
+<pre><code>X2C.setContentView(MainActivity.this, R.layout.activity_main);
+</code></pre><p>最后，我们再Rebuild项目，会在build下的generated-&gt;source-&gt;apt-&gt;debug-&gt;com.zhangyue.we.x2c下自动生成X2C127_activity_main这个类：</p>
+<pre><code>public class X2C127_activity_main implements IViewCreator {
+@Override
+public View createView(Context context) {
+    return new com.zhangyue.we.x2c.layouts.X2C127_Activity_Main().createView(context);
+    }
+}
+</code></pre><p>在这个类中又继续调用了layout目录下的X2C127_Activity_Main实例的createView方法，如下所示：</p>
+<pre><code>public class X2C127_Activity_Main implements IViewCreator {
+    @Override
+    public View createView(Context ctx) {
+        Resources res = ctx.getResources();
+
+        ConstraintLayout constraintLayout0 = new ConstraintLayout(ctx);
+
+        RecyclerView recyclerView1 = new RecyclerView(ctx);
+        ConstraintLayout.LayoutParams layoutParam1 = new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
+        recyclerView1.setId(R.id.recycler_view);
+        recyclerView1.setLayoutParams(layoutParam1);
+        constraintLayout0.addView(recyclerView1);
+
+        return constraintLayout0;
+    }
+}
+</code></pre><p>从上可知，里面采用了new的方式创建了相应的控件，并设置了对应的信息。</p>
+<p>接下来，我们回到X2C.setContentView(MainActivity.this, R.layout.activity_main)这个方法，看看它内部究竟做了什么处理：</p>
+<pre><code>/**
+ * 设置contentview，检测如果有对应的java文件，使用java文件，否则使用xml
+ *
+ * @param activity 上下文
+ * @param layoutId layout的资源id
+ */
+public static void setContentView(Activity activity, int layoutId) {
+    if (activity == null) {
+        throw new IllegalArgumentException(&quot;Activity must not be null&quot;);
+    }
+    // 1
+    View view = getView(activity, layoutId);
+    if (view != null) {
+        activity.setContentView(view);
+    } else {
+        activity.setContentView(layoutId);
+    }
+}
+</code></pre><p>在注释1处，通过getView方法获取到了对应的view，我们继续跟踪进去：</p>
+<pre><code>public static View getView(Context context, int layoutId) {
+    IViewCreator creator = sSparseArray.get(layoutId);
+    if (creator == null) {
+        try {
+            int group = generateGroupId(layoutId);
+            String layoutName = context.getResources().getResourceName(layoutId);
+            layoutName = layoutName.substring(layoutName.lastIndexOf(&quot;/&quot;) + 1);
+            String clzName = &quot;com.zhangyue.we.x2c.X2C&quot; + group + &quot;_&quot; + layoutName;
+            // 1
+            creator = (IViewCreator) context.getClassLoader().loadClass(clzName).newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        //如果creator为空，放一个默认进去，防止每次都调用反射方法耗时
+        if (creator == null) {
+            creator = new DefaultCreator();
+        }
+        sSparseArray.put(layoutId, creator);
+    }
+    // 2
+    return creator.createView(context);
+}
+</code></pre><p>可以看到，这里采用了一个sSparseArray集合去存储布局对应的视图创建对象creator，如果是首次创建creator的话，会在注释1处使用反射的方式去加载处对应的creator对象，然后将它放入sSparseArray集中，最后在注释2处调用了creator的createView方法去使用new的方式去创建对应的控件。</p>
+<p>但是，X2C框架还存在一些问题：</p>
+<ul>
+<li>1、部分Java属性不支持。</li>
+<li>2、失去了系统的兼容（AppCompat）</li>
+</ul>
+<p>对于第2个问题，我们需要修改X2C框架的源码，当发现是TextView等控件时，需要直接使用new的方式去创建一个AppCompatTextView等兼容类型的控件。于此同时，它还有如下两个小的点不支持，但是这个问题不大：</p>
+<ul>
+<li>merge标签 ,在编译期间无法确定xml的parent，所以无法支持。</li>
+<li>系统style,在编译期间只能查到应用的style列表，无法查询系统style，所以只支持应用内style。</li>
+</ul>
+<h4 id="2、使用ConstraintLayout降低布局嵌套层级"><a href="#2、使用ConstraintLayout降低布局嵌套层级" class="headerlink" title="2、使用ConstraintLayout降低布局嵌套层级"></a>2、使用ConstraintLayout降低布局嵌套层级</h4><p>首先，对于Android视图绘制的原理，我们必须要有一定的了解，关于这块，大家可以参考下<a href="https://jsonchao.github.io/2018/10/28/Android%20View%E7%9A%84%E7%BB%98%E5%88%B6%E6%B5%81%E7%A8%8B/" target="_blank" rel="external">Android View的绘制流程
+</a>这篇文章。</p>
+<p>对于视图绘制的性能瓶颈，大概有以下三点：</p>
+<ul>
+<li>1、测量、布局、绘制每个阶段的耗时。</li>
+<li>2、自顶而下的遍历，当嵌套层级过多时，遍历耗时会比较明显。</li>
+<li>3、无效的嵌套布局或不合理使用RelativeLayout可能会导致触发多次绘制。</li>
+</ul>
+<p>那么，如何减少布局的层级及复杂度呢？</p>
+<p>基本上只要遵循以下两点即可：</p>
+<ul>
+<li>1、减少View树层级。</li>
+<li>2、宽而浅，避免窄而深。</li>
+</ul>
+<p>为了提升布局的绘制速度，Google推出了ConstraintLayout，它的特点如下：</p>
+<ul>
+<li>1、实现几乎完全扁平化的布局。</li>
+<li>2、构建复杂布局性能更高。</li>
+<li>3、具有RelativeLayout和LinearLayout的特性。</li>
+</ul>
+<p>接下来，我们来简单使用一下ConstraintLayout来优化一下我们的布局。</p>
+<p>首先，下面是我们的原始布局:</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;LinearLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+    android:id=&quot;@+id/ll_out&quot;
+    android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;wrap_content&quot;
+    android:orientation=&quot;vertical&quot;
+    android:padding=&quot;5dp&quot;&gt;
+
+    &lt;LinearLayout
+        android:layout_width=&quot;match_parent&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:orientation=&quot;horizontal&quot;&gt;
+
+        &lt;com.facebook.drawee.view.SimpleDraweeView
+            android:id=&quot;@+id/iv_news&quot;
+            android:layout_width=&quot;80dp&quot;
+            android:layout_height=&quot;80dp&quot;
+            android:scaleType=&quot;fitXY&quot; /&gt;
+
+        &lt;TextView
+            android:id=&quot;@+id/tv_title&quot;
+            android:layout_width=&quot;wrap_content&quot;
+            android:layout_height=&quot;wrap_content&quot;
+            android:padding=&quot;10dp&quot;
+            android:textSize=&quot;20dp&quot; /&gt;
+    &lt;/LinearLayout&gt;
+
+    &lt;TextView
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:layout_gravity=&quot;right&quot;
+        android:padding=&quot;3dp&quot;
+        android:text=&quot;来自NBA官网&quot;
+        android:textSize=&quot;14dp&quot; /&gt;
+&lt;/LinearLayout&gt;
+</code></pre><p>可以看到,它具有三层嵌套结构,然后我们来使用ConstraintLayout来优化一下这个布局：</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;android.support.constraint.ConstraintLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+    xmlns:app=&quot;http://schemas.android.com/apk/res-auto&quot;
+    android:id=&quot;@+id/ll_out&quot;
+    android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;wrap_content&quot;
+    android:orientation=&quot;vertical&quot;
+    android:padding=&quot;5dp&quot;&gt;
+
+    &lt;com.facebook.drawee.view.SimpleDraweeView
+        android:id=&quot;@+id/iv_news&quot;
+        android:layout_width=&quot;80dp&quot;
+        android:layout_height=&quot;80dp&quot;
+        android:scaleType=&quot;fitXY&quot;
+        app:layout_constraintLeft_toLeftOf=&quot;parent&quot;
+        app:layout_constraintTop_toTopOf=&quot;parent&quot; /&gt;
+
+    &lt;TextView
+        android:id=&quot;@+id/tv_title&quot;
+        android:layout_width=&quot;0dp&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:paddingLeft=&quot;10dp&quot;
+        android:textSize=&quot;20dp&quot;
+        app:layout_constraintLeft_toRightOf=&quot;@id/iv_news&quot;
+        app:layout_constraintRight_toRightOf=&quot;parent&quot;
+        app:layout_constraintTop_toTopOf=&quot;@id/iv_news&quot; /&gt;
+
+    &lt;TextView
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:padding=&quot;3dp&quot;
+        android:text=&quot;来自NBA官网&quot;
+        android:textSize=&quot;14dp&quot;
+        app:layout_constraintBottom_toBottomOf=&quot;parent&quot;
+        app:layout_constraintRight_toRightOf=&quot;parent&quot;
+        app:layout_constraintTop_toBottomOf=&quot;@id/iv_news&quot; /&gt;
+&lt;/android.support.constraint.ConstraintLayout&gt;
+</code></pre><p>经过ConstraintLayout之后，布局的嵌套层级变为了2级，如果布局比较复杂，比如有5，6，7层嵌套层级，使用Contraintlayout之后降低的层级会更加明显。对于其app下的一系列属性，其实都非常简单，这里就不多做介绍了。</p>
+<p>除此之外，还有以下方式可以减少布局层级和复杂度：</p>
+<ul>
+<li>1、不嵌套使用RelativeLayout。</li>
+<li>2、不在嵌套LinearLayout中使用weight。</li>
+<li>3、使用merge标签，它能够减少一个层级，但只能用于根View。</li>
+</ul>
+<h4 id="3、过渡绘制优化"><a href="#3、过渡绘制优化" class="headerlink" title="3、过渡绘制优化"></a>3、过渡绘制优化</h4><p>在视图的绘制优化中，还有一个比较重要的优化点，就是避免过渡绘制，这个笔者已经在<a href="https://jsonchao.github.io/2019/07/28/Android%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E4%B9%8B%E7%BB%98%E5%88%B6%E4%BC%98%E5%8C%96/" target="_blank" rel="external">Android性能优化之绘制优化</a>一文的第四小节详细分析过了。最后这里补充一下自定义View中使用clipRect的一个实例。</p>
+<p>首先，我们自定义了一个DroidCardsView，他可以存放多个叠加的卡片，onDraw方法的实现如下：</p>
+<pre><code> protected void onDraw(Canvas canvas) {
+    super.onDraw(canvas);
+
+    // Don&apos;t draw anything until all the Asynctasks are done and all the DroidCards are ready.
+    if (mDroids.length &gt; 0 &amp;&amp; mDroidCards.size() == mDroids.length) {
+        // Loop over all the droids, except the last one.
+        int i;
+        for (i = 0; i &lt; mDroidCards.size() - 1; i++) {
+
+            mCardLeft = i * mCardSpacing;
+
+            // Draw the card. Only the parts of the card that lie within the bounds defined by
+            // the clipRect() get drawn.
+            drawDroidCard(canvas, mDroidCards.get(i), mCardLeft, 0);
+
+        }
+
+        // Draw the final card. This one doesn&apos;t get clipped.
+        drawDroidCard(canvas, mDroidCards.get(mDroidCards.size() - 1),
+                mCardLeft + mCardSpacing, 0);
+    }
+
+    // Invalidate the whole view. Doing this calls onDraw() if the view is visible.
+    invalidate();
+}
+</code></pre><p>从以上代码可知，这里是直接进行绘制的，此时显示的布局过渡绘制背景如下所示：</p>
+<p><img src="https://raw.githubusercontent.com/JsonChao/Awesome-Android-Performance/master/screenshots/pre_overdraw.jpeg" alt="image"></p>
+<p>可以看到，图片的背景都叠加起来了，这个时候，我们需要在绘制的时候使用clipRect让系统去识别可绘制的区域，因此我们在自定义的DroidCardsView的onDraw方法去使用clipRect：</p>
+<pre><code>protected void onDraw(Canvas canvas) {
+    super.onDraw(canvas);
+
+    // Don&apos;t draw anything until all the Asynctasks are done and all the DroidCards are ready.
+    if (mDroids.length &gt; 0 &amp;&amp; mDroidCards.size() == mDroids.length) {
+        // Loop over all the droids, except the last one.
+        int i;
+        for (i = 0; i &lt; mDroidCards.size() - 1; i++) {
+
+            mCardLeft = i * mCardSpacing;
+
+            // 1、clipRect方法和绘制前后成对使用canvas的save方法与restore方法。
+            canvas.save();
+            // 2、使用clipRect指定绘制区域，这里的mCardSpacing是指的相邻卡片最左边的间距，需要在动态创建DroidCardsView的时候传入。
+
+            canvas.clipRect(mCardLeft,0,mCardLeft+mCardSpacing,mDroidCards.get(i).getHeight());
+
+            // 3、Draw the card. Only the parts of the card that lie within the bounds defined by
+            // the clipRect() get drawn.
+            drawDroidCard(canvas, mDroidCards.get(i), mCardLeft, 0);
+
+            canvas.restore();
+        }
+
+        // Draw the final card. This one doesn&apos;t get clipped.
+        drawDroidCard(canvas, mDroidCards.get(mDroidCards.size() - 1),
+                mCardLeft + mCardSpacing, 0);
+    }
+
+    // Invalidate the whole view. Doing this calls onDraw() if the view is visible.
+    invalidate();
+}
+</code></pre><p>在注释1处，首先需要在clipRect方法和绘制前后成对使用canvas的save方法与restore方法用来对画布进行操作。接着，在注释2处，使用clipRect指定绘制区域，这里的mCardSpacing是指的相邻卡片最左边的间距，需要在动态创建DroidCardsView的时候传入。最后，在注释3处调用实际绘制卡片的方法。</p>
+<p>使用clipRect优化过后的布局过渡绘制背景如下所示：</p>
+<p><img src="https://raw.githubusercontent.com/JsonChao/Awesome-Android-Performance/master/screenshots/after_overdraw.jpeg" alt="image"></p>
+<p><strong>注意：</strong></p>
+<p>我们还可以通过canvas.quickReject方法来判断是否没和某个矩形相交，以跳过非矩形区域的绘制操作。</p>
+<p>当然，对视图的绘制优化还有其它的一些优化操作，比如：</p>
+<ul>
+<li>1、使用ViewStub、Merge，ViewStub是一种高效占位符，用于延迟初始化。</li>
+<li>2、onDraw中避免创建大对象，进行耗时操作。</li>
+<li>3、TextView的优化，比如利用它的drawableLeft属性。此外，也可以使用Android 9.0之后的 PrecomputedText，它将文件的measure与layout过程进行了异步化。但是需要注意，如果要显示的文本比较少，反而会造成不必要的Scheduling delay，建议文本字符大于200时才使用，并记得使用其兼容类PrecomputedTextCompat，它在9.0以上使用PrecomputedText进行优化，在5.0~9.0使用StaticLayout进行优化。具体调用代码如下所示：</li>
+</ul>
+<pre><code>Future&lt;PrecomputedTextCompat&gt; future = PrecomputedTextCompat.getTextFuture(
+                “text”, textView.getTextMetricsParamsCompat(), null)；
+textView.setTextFuture(future);
+</code></pre><p>到这里，笔者就将常规的布局优化讲解完了，是不是顿时感觉实力大增呢？</p>
+<div align="center"><br><img src="http://image.diydoutu.com/12140371143798.png?imageView2/0/format/jpg/q/75" width="30%"><br></div>
+
+<p>如果你此时内心已经YY到这种程度，那我只能说：</p>
+<div align="center"><br><img src="http://image.diydoutu.com/12140564648444.gif?imageView2/0/format/gif/q/75" width="30%"><br></div>
+
+<p>下面，笔者就来和大家一起来探索布局优化的进阶方案。</p>
+<h3 id="七、布局优化的进阶方案"><a href="#七、布局优化的进阶方案" class="headerlink" title="七、布局优化的进阶方案"></a>七、布局优化的进阶方案</h3><h4 id="1、使用异步布局框架Litho"><a href="#1、使用异步布局框架Litho" class="headerlink" title="1、使用异步布局框架Litho"></a>1、使用异步布局框架Litho</h4><p>Litho是Facebook开源的一款在Android上高效建立UI的声明式框架，它具有以下特点：</p>
+<ul>
+<li>声明式：它使用了声明式的API来定义UI组件。</li>
+<li>异步布局：它可以提前布局UI，而不会阻塞UI线程。</li>
+<li>视图扁平化：它使用了Facebook开源的另一款布局引擎Yoga进行布局，以自动减少UI包含的ViewGroup数量。</li>
+<li>细粒度的回收：可以回收文本或图形等任何组件，并可以在用户界面的任何位置重复使用。</li>
+<li>内部不仅支持使用View来渲染视图，还可以使用更轻量的Drawable来渲染视图。Litho实现了大量使用Drawable来渲染的基础组件，可以进一步使布局扁平化。</li>
+</ul>
+<h5 id="简单使用Litho"><a href="#简单使用Litho" class="headerlink" title="简单使用Litho"></a>简单使用Litho</h5><p>接下来，我们在项目里面来使用Litho。</p>
+<p>1、首先，我们需要配置Litho的相关依赖，如下所示：</p>
+<pre><code>// 项目下
+repositories {
+    jcenter()
+}
+
+// module下
+dependencies {
+    // ...
+    // Litho
+    implementation &apos;com.facebook.litho:litho-core:0.33.0&apos;
+    implementation &apos;com.facebook.litho:litho-widget:0.33.0&apos;
+
+    annotationProcessor &apos;com.facebook.litho:litho-processor:0.33.0&apos;
+
+    // SoLoader
+    implementation &apos;com.facebook.soloader:soloader:0.5.1&apos;
+
+    // For integration with Fresco
+    implementation &apos;com.facebook.litho:litho-fresco:0.33.0&apos;
+
+    // For testing
+    testImplementation &apos;com.facebook.litho:litho-testing:0.33.0&apos;
+
+    // Sections （options，用来声明去构建一个list）
+    implementation &apos;com.facebook.litho:litho-sections-core:0.33.0&apos;
+    implementation &apos;com.facebook.litho:litho-sections-widget:0.33.0&apos;
+    compileOnly &apos;com.facebook.litho:litho-sections-annotations:0.33.0&apos;
+
+    annotationProcessor &apos;com.facebook.litho:litho-sections-processor:0.33.0&apos;
+}
+</code></pre><p>2、然后，在Application下的onCreate方法中初始化SoLoader：</p>
+<pre><code>@Override
+public void onCreate() {
+    super.onCreate();
+
+    SoLoader.init(this, false);
+}
+</code></pre><p>从之前的介绍可知，我们知道Litho使用了Yoga进行布局，而Yoga包含有native依赖，在Soloader.init方法中对这些native依赖进行了加载。</p>
+<p>3、最后，在Activity的onCreate方法中添加如下代码即可显示单个的文本视图：</p>
+<pre><code> // 1、将Activity的Context对象保存到ComponentContext中，并同时初始化
+// 一个资源解析者实例ResourceResolver供其余组件使用。
+ComponentContext componentContext = new ComponentContext(this);
+
+// 2、Text内部使用建造者模式以实现组件属性的链式调用，下面设置的text、
+// TextColor等属性在Litho中被称为Prop，此概念引申字React。
+Text lithoText = Text.create(componentContext)
+        .text(&quot;Litho text&quot;)
+        .textSizeDip(64)
+        .textColor(ContextCompat.getColor(this, R.color.light_deep_red))
+            .build();
+
+// 3、设置一个LithoView去展示Text组件：LithoView.create内部新建了一个
+// LithoView实例，并用给定的Component（lithoText）进行初始化
+setContentView(LithoView.create(componentContext, lithoText));
+</code></pre><p>显示效果如下所示：</p>
+<p><img src="https://raw.githubusercontent.com/JsonChao/Awesome-Android-Performance/master/screenshots/litho_text.png" alt="image"></p>
+<p>在上面的示例中，我们仅仅是将Text这个子组件设置给了LithoView，后续为了实现更复杂的布局，我们需要使用带多个子组件的根组件去替换它。</p>
+<h5 id="使用自定义Component"><a href="#使用自定义Component" class="headerlink" title="使用自定义Component"></a>使用自定义Component</h5><p>由上可知，在Litho中的视图单元叫做Component，即组件，它的设计理念来源于React组件化的思想。每个组件持有描述一个视图单元所必须的属性与状态，用于视图布局的计算工作。视图最终的绘制工作是由组件指定的绘制单元（View或Drawable）来完成的。接下来，我们使用Litho提供的自定义Component的功能，它能够让我们实现更复杂的Component，这里我们来实现一个类似ListView的列表。</p>
+<p>首先，我们先来实现一个ListItem Component，它就如ListView的itemView一样。在下面的实战中，我们将会学习到所有的基础知识，这将会支撑你后续能实现更多更复杂的Component。</p>
+<p>然后，在Litho中，我们需要先写一个Spec类去声明Component所对应的布局，在这里需要使用@LayoutSpec规范注解(除此之外，Litho还提供了另一种类型的组件规范：Mount Spec)。代码如下所示：</p>
+<pre><code>@LayoutSpec
+public class ListItemSpec {
+
+    @OnCreateLayout
+    static Component onCreateLayout(ComponentContext context) {
+        // Column的作用类似于HTML中的&lt;div&gt;标签
+        return Column.create(context)
+                .paddingDip(YogaEdge.ALL, 16)
+                .backgroundColor(Color.WHITE)
+                .child(Text.create(context)
+                            .text(&quot;Litho Study&quot;)
+                            .textSizeSp(36)
+                         .textColor(Color.BLUE)
+                            .build())
+                .child(Text.create(context)
+                            .text(&quot;JsonChao&quot;)
+                            .textSizeSp(24)
+                         .textColor(Color.MAGENTA)
+                            .build())
+                .build();
+    }
+}
+</code></pre><p>然后，框架会使用APT技术去帮助生成对应的ListItem Component 类。最后，我们在Activity的onCreate中将上述第一个例子中的第二步改为如下：</p>
+<pre><code> // 2、构建ListItem组件
+ListItem listItem = ListItem.create(componentContext).build();
+</code></pre><p>运行项目，显示界面如下所示：</p>
+<p><img src="https://raw.githubusercontent.com/JsonChao/Awesome-Android-Performance/master/screenshots/litho_listitem.png" alt="image"></p>
+<p><strong>那上述过程是如何创建与构建的呢？</strong></p>
+<p>它看起来就像有一个LithoSpec的类名，并且在项目构建之后生成了一个与LithoSpec有着同样包名的Litho类，如下所示：</p>
+<p><img src="https://github.com/JsonChao/Awesome-Android-Performance/blob/master/screenshots/litho_build_listitem.png?raw=true" alt="image"></p>
+<p><img src="https://github.com/JsonChao/Awesome-Android-Performance/blob/master/screenshots/app_listitemspec.png?raw=true" alt="image"></p>
+<p>类似于Litho这种类中的所有方法参数都会由Litho进行自动填充。此外，基于这些规格，将会有一些额外的方法由注解处理器自动生成，例如上述示例中Column或Row中的Text的TextSizeSp、backgroundColor等方法。(Row和Column分别对应着Flexox中的行和列，它们都实现了Litho中另一种特殊的组件Layout)</p>
+<h5 id="补充：MountSpec规范"><a href="#补充：MountSpec规范" class="headerlink" title="补充：MountSpec规范"></a>补充：MountSpec规范</h5><p>MountSpec是用来生成可挂载类型组件的一种规范，它的作用是用来生成渲染具体的View或者Drawable的组件。同LayoutSpec类似，它必须使用@MountSpec注解来标注，并实现一个标注了@onCreateMountContent的方法。但是MountSpec的实现要比Layout更加地复杂，因为它拥有自己的生命周期，如下所示：</p>
+<ul>
+<li>@OnPrepare：准备阶段，用于进行一些初始化操作。</li>
+<li>@OnMeasure：负责布局的计算工作。</li>
+<li>@OnBoundsDefined：在布局计算完成之后、挂载视图之前做一些操作。</li>
+<li>@OnCreateMountContent：如果没有可以复用的视图单元，则调用它去创建需要挂载的视图。</li>
+<li>@OnMount：挂载视图，用于完成布局相关的设置。</li>
+<li>@OnBind：绑定视图，用于完成数据和视图的绑定。</li>
+<li>@OnUnBind：解绑视图，与@OnBind相对，主要用于重置视图的数据属性，避免出现数据复用的问题。</li>
+<li>@OnUnmount：卸载视图，与@OnMount相对，主要用于重置视图的布局相关的属性，避免出现布局复用的问题。</li>
+</ul>
+<p>MountSpec的生命周期流转图如下所示：</p>
+<p><img src="https://raw.githubusercontent.com/JsonChao/Awesome-Android-Performance/master/screenshots/litho_mount_spec_lifecycle.png" alt="image"></p>
+<p>在使用Litho完成了两个实例的开发之后，相信我们已经对Litho的布局方式已经有了一个感性的认知。那么，Litho到底是如何进行布局优化的呢？在布局优化中它所做的核心工作有哪些？</p>
+<p>Litho在布局优化中所做的核心工作包括以下三点：</p>
+<ul>
+<li>1、异步布局化。</li>
+<li>2、布局自动扁平化。</li>
+<li>3、更细粒度地优化RecyclerView中组件的缓存与回收的方法。</li>
+</ul>
+<h5 id="1、异步布局化"><a href="#1、异步布局化" class="headerlink" title="1、异步布局化"></a>1、异步布局化</h5><p>在前文中，我们知道Android的布局加载过程通常会先后涉及到measure、layout、draw过程，并且它们都是在主线程执行的，如果方法执行过程中耗时太多，则主界面必然会产生卡顿现象。</p>
+<p>还记得我们在前面介绍的PrecomputedText，它内部将measure与layout的过程放在了异步线程进行初始化，而Litho与PrecomputedText类似，也是将measre与layout的过程进行了异步化，核心原理就是利用CPU的闲置时间提前在异步线程中完成measure和layout的过程，仅在UI线程中完成绘制工作。</p>
+<p><strong>那么Android为什么不自己实现异步布局呢？</strong></p>
+<p>主要有以下两原因：</p>
+<ul>
+<li>1、因为View的属性是可变的，只要属性发生变化就可能导致布局变化，所以需要重新计算布局，那么提前异步去计算布局的意义就不大了。而Litho组件的属性是不可变的，因此它的布局计算结果也是不变的。</li>
+<li>2、提前异步布局需要去提前创建好接下来用到的若干条目的视图，但是Android原生的View作为视图单元，不仅包含一个视图的所有属性，而且还负责视图的绘制工作。如果要在绘制前提前去计算布局，就需要预先去持有大量未展示的View实例，这将会大大增加App进程的内存占用。对于Litho的组件来说，它只是视图属性的一个集合，仅仅负责计算布局，绘制工作由指定的绘制单元来完成。因此在Litho中，提前创建好下面要用到的多个条目的组件，是不会有性能问题的。两者的绘制原理简图如下所示：</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/JsonChao/Awesome-Android-Performance/master/screenshots/litho_sync.png" alt="image"></p>
+<h5 id="2、布局自动扁平化"><a href="#2、布局自动扁平化" class="headerlink" title="2、布局自动扁平化"></a>2、布局自动扁平化</h5><p>经过之前的学习，我们了解到Litho采用了一套自有的布局引擎Yoga，它会在布局的过程中去检测出不必要的布局嵌套层级，并自动去减少多余的层级以实现布局的扁平化，这可以显著减少渲染时的递归调用，加快渲染速度。例如，在实现一个图片带多个文字的布局中，我们通常会至少有两个布局层级，当然，<strong>你也可以使用TextView的drawableStart方法 + 代码动态布局使用Spannable/Html.fromHtml(用来实现多种不同规格的文字) + lineSpaceExtra/lineSpacingMultiplier（用来调整多行文本的显示间距）</strong>来将布局层级降为一层，但是这种实现方式比较繁琐，而通过使用Litho，我们可以把降低布局嵌套层级的任务全部丢给布局引擎Yoga去处理。由前面可知，Litho是使用Flexbox来创建布局的，并最终生成带有层级结构的组件树。通过使用Yoga来进行布局计算，可以使用Flexbox的相对布局变成了只有一层嵌套的绝对布局。相比于ConstraintLayout，对于实现复杂布局的时候可读性会更好一些，因为ConstraintLayout此时会有过多的约束条件，这会导致可读性变差。此外，Litho自身还提供了许多挂载Drawable的基本视图组件，相比Viwe组件使用它们可以显著减少内存占用（通常会减少80%的内存占用）。Litho实现布局自动扁平化的原理图如下所示：</p>
+<p><img src="https://raw.githubusercontent.com/JsonChao/Awesome-Android-Performance/master/screenshots/litho_plan.png" alt="image"></p>
+<h5 id="3、更细粒度地优化RecyclerView中组件的缓存与回收的方法"><a href="#3、更细粒度地优化RecyclerView中组件的缓存与回收的方法" class="headerlink" title="3、更细粒度地优化RecyclerView中组件的缓存与回收的方法"></a>3、更细粒度地优化RecyclerView中组件的缓存与回收的方法</h5><p>使用了RecyclerView与ListView这么久，我们明白它是以viewType为粒度来对一个组件集合统一进行缓存与回收的，并且，当viewType的类型越多，其对组件集合的缓存与回收的效果就会越差。相对于RecyclerView与ListView缓存与回收的粗粒度而言，Litho实现了更细粒度的回收机制，它是以Text、image、video等单个Component为粒度来作为其基准的，具体实现原理为在item回收前，会把LithoView中挂载的各个绘制单元进行解绑拆分出来，由Litho自己的缓存池去分类回收，然后在展示前由LithoView按照组件树的样式挂载组装各个绘制单元，这样就达到了细粒度复用的目的。毫无疑问，这不仅提高了其缓存的命中率与内存的使用率，也降低了提高了其滚动刷新的频率。更细粒度复用优化内存的原图如下所示：</p>
+<p><img src="https://raw.githubusercontent.com/JsonChao/Awesome-Android-Performance/master/screenshots/litho_recycler.png" alt="image"></p>
+<p>由上图可以看出，滑出屏幕的itemType1会被拆分成一个个的视图单元。其中LithoView容器由Recycler缓存池回收，而其他视图单元则由Litho的缓存池分类回收，例如分类为Img缓存池、Text缓存池等等。</p>
+<p>现在，我们对Litho已经比较了解了，它似乎很完美，但是任何事物都有其弊端，在学习一个新的事物时，我们不仅仅只去使用与了解它的优势，更应该对它的缺陷与弊端了如指掌。Litho在布局的过程中，使用了类似React的单向数据流设计，并且由于Litho是使用代码进行动态布局，这大大增加了布局的复杂度，而且，代码布局是无法实时预览的，这也增加了开发调试时的难度。</p>
+<p>综上，对于某些性能性能要求高的场景，可以先使用Litho布局的方式去替换，特别是利用好RecyclerViewCollectionComponent与sections去充分提升RecylerView的性能。</p>
+<p>现在，我们来使用RecyclerViewCollectionComponent与sections去创建一个可滚动的列表单元。</p>
+<p>接下来，我们需要使用SectionsAPI，它可以将列表分为多个Section，然后编写GroupSectionSpec注解类来声明每个Section需要呈现的内容及其使用的数据。下面，我们创建一个ListSectoinSpec：</p>
+<pre><code>// 1、可以理解为一个组合Sectoin规格
+@GroupSectionSpec
+public class ListSectionSpec {
+
+    @OnCreateChildren
+    static Children onCreateChildren(final SectionContext context) {
+        Children.Builder builder = Children.create();
+
+        for (int i = 0; i &lt; 20; i++) {
+            builder.child(
+                   // 单组件区域用来包含一个特定的组件 
+                   SingleComponentSection.create(context)
+                    .key(String.valueOf(i))
+                    .component(ListItem.create(context).build())
+        };
+
+        return builder.build();
+    }
+}
+</code></pre><p>然后，我们将MainActivity onCreate方法中的步骤2替换为如下代码：</p>
+<pre><code>// 2、使用RecyclerCollectionComponent去绘制list
+   RecyclerCollectionComponent recyclerCollectionComponent = RecyclerCollectionComponent.create(componentContext)
+           // 使下拉刷新实现
+           .disablePTR(true)
+           .section(ListSection.create(new SectionContext(componentContext)).build())
+           .build();
+</code></pre><p>最终的显示效果如下所示：</p>
+<p><img src="https://raw.githubusercontent.com/JsonChao/Awesome-Android-Performance/master/screenshots/recycle_section.png" alt="image"></p>
+<p><strong>如果我们需要显示不同UI的ListItem该怎么办呢？</strong></p>
+<p>这个时候我们需要去自定义Component的属性，即props，它是一种不可变属性（此外还有一种可变属性称为State，但是其变化是由组件内部进行控制的，例如输入框、Checkbox等都是由组件内部去感知用户的行为，并由此更新组件的State属性），你设置的这些属性将会改变Component的行为或表现。Props是Component Spec中方法的参数，并且使用@Prop注解。</p>
+<p>下面，我们使用props将ListItemSpec的onCreateLayout修改为可自定义组件属性的方法，如下所示：</p>
+<pre><code>@LayoutSpec
+public class ListItemSpec {
+
+    @OnCreateLayout
+    static Component onCreateLayout(ComponentContext context,
+                                @Prop int bacColor,
+                                @Prop String title,
+                                @Prop String subTitle,
+                                @Prop int textSize,
+                                @Prop int subTextSize) {
+        // Column的作用类似于HTML中的&lt;div&gt;标签
+        return Column.create(context)
+                .paddingDip(YogaEdge.ALL, 16)
+                .backgroundColor(bacColor)
+                .child(Text.create(context)
+                            .text(title)
+                         .textSizeSp(textSize)
+                         .textColor(Color.BLUE)
+                            .build())
+                .child(Text.create(context)
+                            .text(subTitle)
+                         .textSizeSp(subTextSize)
+                         .textColor(Color.MAGENTA)
+                            .build())
+                .build();
+    }
+}
+</code></pre><p>奇妙之处就发生在我们所定义的@Prop注解与注解处理器之间，注解处理器以一种智能的方对组件构建过程中所关联的属性生成了对应的方法。</p>
+<p>接下来，我们再修改ListSectionSpec类，如下所示：</p>
+<pre><code>@GroupSectionSpec
+public class ListSectionSpec {
+
+    @OnCreateChildren
+    static Children onCreateChildren(final SectionContext context) {
+        Children.Builder builder = Children.create();
+
+        for (int i = 0; i &lt; 20; i++) {
+            builder.child(
+                    SingleComponentSection.create(context)
+                    .key(String.valueOf(i))
+                    .component(ListItem.create(context)
+                            .bacColor(i % 2 == 0 ? Color.BLUE:Color.MAGENTA)
+                            .title(&quot;第&quot; + i + &quot;次练习&quot;)
+                         .subTitle(&quot;JsonChao&quot;)
+                            .textSize(36)
+                            .subTextSize(24)
+                            .build())
+            );
+        }
+
+        return builder.build();
+    }
+}
+</code></pre><p>最终的显示效果如下所示：</p>
+<p><img src="https://raw.githubusercontent.com/JsonChao/Awesome-Android-Performance/master/screenshots/litho_prop.png" alt="image"></p>
+<p>除此之外，我们还可以有更多的方式去定义@Prop，如下所示：</p>
+<pre><code>@Prop(optional = true, resType = ResType.DIMEN_OFFSET) int shadowRadius,
+</code></pre><p>上面定义了一个可选的Prop，传入的shadowRadius是支持dimen规格的，如px、dp、sp等等。</p>
+<h5 id="小结-1"><a href="#小结-1" class="headerlink" title="小结"></a>小结</h5><p>使用Litho，在布局性能上有很大的提升，但是开发成本太高，因为需要自己去实现很多的组件，并且其组件需要在编译时才能生成，不能够进行实时预览，但是可以把Litho封装成Flexbox布局的底层渲染引擎，以此实现上层的动态化，具体实现原理可参见<a href="https://tech.meituan.com/2019/09/19/litho-practice-in-dynamic-program-mtflexbox.html" target="_blank" rel="external">Litho在美团动态化方案MTFlexbox中的实践</a>。</p>
+<h4 id="2、使用Flutter实现高性能的UI布局"><a href="#2、使用Flutter实现高性能的UI布局" class="headerlink" title="2、使用Flutter实现高性能的UI布局"></a>2、使用Flutter实现高性能的UI布局</h4><p>Flutter可以说是2019最火爆的框架之一了，它是 Google 开源的 UI 工具包，帮助开发者通过一套代码库高效构建多平台精美应用，支持移动、Web、桌面和嵌入式平台。对于Android来说，FLutter能够创作媲美原生的高性能应用，应用使用 Dart语言进行 开发。Flutter的架构类似于Android的层级架构，每一层都建立在前一层之上，其架构图如下所示：</p>
+<p><img src="https://raw.githubusercontent.com/JsonChao/Awesome-Android-Performance/master/screenshots/flutter_acrchitecture.png" alt="image"></p>
+<p>在Framework层中，Flutter通过在 widgets 层组合基础 widgets 来构建 Material 层，而 widgets 层本身则是通过对来自 Rendering 层的低层次对象组合而来。而在Engine层，Flutter集成了Skia引擎用于进行栅格化，并且使用了Dart虚拟机。</p>
+<h5 id="那么Flutter的图形性能为何能够媲美原生应用呢？"><a href="#那么Flutter的图形性能为何能够媲美原生应用呢？" class="headerlink" title="那么Flutter的图形性能为何能够媲美原生应用呢？"></a>那么Flutter的图形性能为何能够媲美原生应用呢？</h5><p>接下来，我们以Flutter、原生Android、其它跨平台框架如RN来做比较，它们的图形绘制调用层级图如下所示：</p>
+<p><img src="https://raw.githubusercontent.com/JsonChao/Awesome-Android-Performance/master/screenshots/flutter_performance_compare.png" alt="image"></p>
+<p>可以看到，Flutter框架的代码完全取代了Java层的框架代码，所以只要当Flutter框架中Dart代码的效率可以媲美原生框架的Java代码的时候，那么总体的Flutter App的性能就能够媲美原生的APP。而反观其它流行的跨平台框架如RN，它首先需要调用自身的Js代码，然后再去调用Java层的代码，这里比原生和Flutter的App显然多出来一个步骤，所以它的性能肯定是不及原生的APP的。此外，Flutter App不同于原生、RN，它内部是直接包含了Skia渲染引擎的，只要Flutter SDK进行升级，Skia就能够升级，这样Skia的性能改进就能够同步到Flutter框架之中。而对于Android原生和RN来说，只能等到Android系统升级才能同步Skia的性能改进。</p>
+<h5 id="而Flutter又是如何实现高性能UI布局的呢？"><a href="#而Flutter又是如何实现高性能UI布局的呢？" class="headerlink" title="而Flutter又是如何实现高性能UI布局的呢？"></a>而Flutter又是如何实现高性能UI布局的呢？</h5><p>接下来，我们来大致了解一下Flutter的UI绘制原理，它主要是通过VSYNC信号来使UI线程和GPU线程有条不紊的周期性的去渲染界面，其绘制原理图如下所示：</p>
+<p><img src="https://raw.githubusercontent.com/JsonChao/Awesome-Android-Performance/master/screenshots/flutter_ui_core.png" alt="image"></p>
+<p>绘制步骤大致如下：</p>
+<ul>
+<li>1、首先 UI Runner 会执行 root isolate（可简单理解为Dart  VM的线程），它会告诉引擎层有帧要渲染，当需要渲染则会调用到Engine的ScheduleFrame()来注册VSYNC信号回调，一旦触发回调doFrame()，并当它执行完成后，便会移除回调方法，也就是说一次注册一次回调。</li>
+<li>2、当需要再次绘制则需要重新调用到ScheduleFrame()方法，该方法的唯一重要参数regenerate_layer_tree决定在帧绘制过程是否需要重新生成layer tree，还是直接复用上一次的layer tree。</li>
+<li>3、接着，执行的是UI线程绘制过程中最核心的WidgetsBinding的drawFrame()方法，然后会创建layer tree视图树。</li>
+<li>4、然后 Layer Tree 会交给 GPU Task Runner 进行合成和栅格化。</li>
+<li>5、最后，GPU Task Runner会利用Skia库结合GL或Vu’lkan将layer tree提供的信息转化为平台可执行的GPU指令。</li>
+</ul>
+<p>此外，Flutter 也采用了类似 Litho 的props属性不可变、Reat单向数据流的方案，用于将视图与数据分离。对于Flutter这一大前端领域的核心技术，笔者也是充满兴趣，后续会有计划对此进行深入研究，敬请期待。</p>
+<h4 id="3、使用RenderThread-与-RenderScript"><a href="#3、使用RenderThread-与-RenderScript" class="headerlink" title="3、使用RenderThread 与 RenderScript"></a>3、使用RenderThread 与 RenderScript</h4><p>在Android 5.0之后，Android引进了RenderThread，它能够实现动画的异步渲染。但是目前支持RenderThread完全渲染的动画，只有两种，即ViewPropertyAnimator和CircularReveal（揭露动画）。对于CircularReveal使用比较简单且功能较为单一，就不多做过多的描述了。下面我简单说下ViewPropertyAnimator中如何去利用RenderThread。</p>
+<h5 id="1、在ViewPropertyAnimator类系中，有一个ViewPropertyAnimatorRT-，它的主要作用就把动画交给RenderThread去处理。因此，我们需要先去创建对应view的ViewPropertyAnimatorRT，代码如下所示："><a href="#1、在ViewPropertyAnimator类系中，有一个ViewPropertyAnimatorRT-，它的主要作用就把动画交给RenderThread去处理。因此，我们需要先去创建对应view的ViewPropertyAnimatorRT，代码如下所示：" class="headerlink" title="1、在ViewPropertyAnimator类系中，有一个ViewPropertyAnimatorRT ，它的主要作用就把动画交给RenderThread去处理。因此，我们需要先去创建对应view的ViewPropertyAnimatorRT，代码如下所示："></a>1、在ViewPropertyAnimator类系中，有一个ViewPropertyAnimatorRT ，它的主要作用就把动画交给RenderThread去处理。因此，我们需要先去创建对应view的ViewPropertyAnimatorRT，代码如下所示：</h5><pre><code> /**
+ * 使用反射的方式去创建对应View的ViewPropertyAnimatorRT(非hide类)
+ */
+private static Object createViewPropertyAnimatorRT(View view) {
+    try {           
+        Class&lt;?&gt; animRtClazz = Class.forName(&quot;android.view.ViewPropertyAnimatorRT&quot;);
+        Constructor&lt;?&gt; animRtConstructor = animRtClazz.getDeclaredConstructor(View.class);
+        animRtConstructor.setAccessible(true);
+        Object animRt = animRtConstructor.newInstance(view);            
+        return animRt;
+    } catch (Exception e) {            
+        Log.d(TAG, &quot;创建ViewPropertyAnimatorRT出错,错误信息:&quot; + e.toString());           
+        return null;
+    }
+}
+</code></pre><h5 id="2、接下来，我们需要将ViewPropertyAnimatorRT设置给ViewPropertyAnimator的mRTBackend字段，这样ViewPropertyAnimator才能利用它去将动画交给RenderThread处理，如下所示："><a href="#2、接下来，我们需要将ViewPropertyAnimatorRT设置给ViewPropertyAnimator的mRTBackend字段，这样ViewPropertyAnimator才能利用它去将动画交给RenderThread处理，如下所示：" class="headerlink" title="2、接下来，我们需要将ViewPropertyAnimatorRT设置给ViewPropertyAnimator的mRTBackend字段，这样ViewPropertyAnimator才能利用它去将动画交给RenderThread处理，如下所示："></a>2、接下来，我们需要将ViewPropertyAnimatorRT设置给ViewPropertyAnimator的mRTBackend字段，这样ViewPropertyAnimator才能利用它去将动画交给RenderThread处理，如下所示：</h5><pre><code>private static void setViewPropertyAnimatorRT(ViewPropertyAnimator animator, Object rt) {       
+ try {
+        Class&lt;?&gt; animClazz = Class.forName(&quot;android.view.ViewPropertyAnimator&quot;);
+        Field animRtField = animClazz.getDeclaredField(&quot;mRTBackend&quot;);
+        animRtField.setAccessible(true);
+        animRtField.set(animator, rt);
+    } catch (Exception e) {
+        Log.d(TAG, &quot;设置ViewPropertyAnimatorRT出错,错误信息:&quot; + e.toString());
+    }
+}
+
+/**
+ * 在animator.start()即执行动画开始之前配置的方法
+ */
+public static void onStartBeforeConfig(ViewPropertyAnimator animator, View view) {
+    Object rt = createViewPropertyAnimatorRT(view);
+    setViewPropertyAnimatorRT(animator, rt);
+}
+</code></pre><h5 id="3、最后，在开启动画之前将ViewPropertyAnimatorRT实例设置进去即可，如下所示："><a href="#3、最后，在开启动画之前将ViewPropertyAnimatorRT实例设置进去即可，如下所示：" class="headerlink" title="3、最后，在开启动画之前将ViewPropertyAnimatorRT实例设置进去即可，如下所示："></a>3、最后，在开启动画之前将ViewPropertyAnimatorRT实例设置进去即可，如下所示：</h5><pre><code>ViewPropertyAnimator animator = v.animate().scaleY(2).setDuration(2000);
+AnimHelper.onStartBeforeConfig(animator, v);
+animator.start();
+</code></pre><p>现在，如果是做音视频或图像处理的工作，经常需要对图片进行高斯模糊、放大、锐化等操作，但是这里涉及大量的图片变换操作，例如缩放、裁剪、二值化以及降噪等。而图片的变换又涉及大量的计算任务，这个时候我们可以通过RenderScript去充分利用手机的GPU计算能力，以实现高效的图片处理。</p>
+<p>而RenderScript的工作流程需要经历如下三个步骤：</p>
+<ul>
+<li>1、RenderScript运行时API：提供进行运算的API。</li>
+<li>2、反射层：相当于NDK中的JNI胶水代码，它是一些由Android编译工具自动生成的类，对我们写的RenderScript代码进行包装，以使得安卓层能够和RenderScript进行交互。</li>
+<li>3、安卓框架：通过调用反射层来访问RenderScript运行时。</li>
+</ul>
+<p>由于RenderScript主要是用于音视频、图像处理等细分领域，这里笔者就不继续深入扩展了，对于NDK、音视频领域的知识，笔者在今年会有一系列学习计划，目前大纲已经定制好了，如果有兴趣的朋友，可以了解下：<a href="https://github.com/JsonChao/Awesome-Android-NDK" target="_blank" rel="external">Awesome-Android-NDK</a>。</p>
+<h3 id="八、布局优化的常见问题"><a href="#八、布局优化的常见问题" class="headerlink" title="八、布局优化的常见问题"></a>八、布局优化的常见问题</h3><h4 id="1、你在做布局优化的过程中用到了哪些工具？"><a href="#1、你在做布局优化的过程中用到了哪些工具？" class="headerlink" title="1、你在做布局优化的过程中用到了哪些工具？"></a>1、你在做布局优化的过程中用到了哪些工具？</h4><p>我在做布局优化的过程中，用到了很多的工具，但是每一个工具都有它不同的使用场景，不同的场景应该使用不同的工具。下面我从线上和线下两个角度来进行分析。</p>
+<p>比如说，我要统计线上的FPS，我使用的就是Choreographer这个类，它具有以下特性：</p>
+<ul>
+<li>1、能够获取整体的帧率。</li>
+<li>2、能够带到线上使用。</li>
+<li>3、它获取的帧率几乎是实时的，能够满足我们的需求。</li>
+</ul>
+<p>同时，在线下，如果要去优化布局加载带来的时间消耗，那就需要检测每一个布局的耗时，对此我使用的是AOP的方式，它没有侵入性，同时也不需要别的开发同学进行接入，就可以方便地获取每一个布局加载的耗时。如果还要更细粒度地去检测每一个控件的加载耗时，那么就需要使用LayoutInflaterCompat.setFactory2这个方法去进行Hook。</p>
+<p>此外，我还使用了LayoutInspector和Systrace这两个工具，Systrace可以很方便地看到每帧的具体耗时以及这一帧在布局当中它真正做了什么。而LayoutInspector可以很方便地看到每一个界面的布局层级，帮助我们对层级进行优化。</p>
+<h4 id="2、布局为什么会导致卡顿，你又是如何优化的？"><a href="#2、布局为什么会导致卡顿，你又是如何优化的？" class="headerlink" title="2、布局为什么会导致卡顿，你又是如何优化的？"></a>2、布局为什么会导致卡顿，你又是如何优化的？</h4><p>分析完布局的加载流程之后，我们发现有如下四点可能会导致布局卡顿：</p>
+<ul>
+<li>1、首先，系统会将我们的Xml文件通过<strong>IO</strong>的方式映射的方式加载到我们的内存当中，而IO的过程可能会导致卡顿。</li>
+<li>2、其次，布局加载的过程是一个反射的过程，而反射的过程也会可能会导致卡顿。</li>
+<li>3、同时，这个布局的层级如果比较深，那么进行布局遍历的过程就会比较耗时。</li>
+<li>4、最后，不合理的嵌套RelativeLayout布局也会导致重绘的次数过多。</li>
+</ul>
+<p>对此，我们的优化方式有如下几种：</p>
+<ul>
+<li>1、针对布局加载Xml文件的优化，我们使用了异步Inflate的方式，即AsyncLayoutInflater。它的核心原理是在子线程中对我们的Layout进行加载，而加载完成之后会将View通过Handler发送到主线程来使用。所以不会阻塞我们的主线程，加载的时间全部是在异步线程中进行消耗的。而这仅仅是一个从侧面缓解的思路。</li>
+<li>2、后面，我们发现了一个从根源解决上述痛点的方式，即使用X2C框架。它的一个核心原理就是在开发过程我们还是使用的XML进行编写布局，但是在编译的时候它会使用APT的方式将XML布局转换为Java的方式进行布局，通过这样的方式去写布局，它有以下优点：1、它省去了使用IO的方式去加载XML布局的耗时过程。2、它是采用Java代码直接new的方式去创建控件对象，所以它也没有反射带来的性能损耗。这样就从根本上解决了布局加载过程中带来的问题。</li>
+<li>3、然后，我们可以使用ConstraintLayout去减少我们界面布局的嵌套层级，如果原始布局层级越深，它能减少的层级就越多。而使用它也能避免嵌套RelativeLayout布局导致的重绘次数过多。</li>
+<li>4、最后，我们可以使用AspectJ框架（即AOP）和LayoutInflaterCompat.setFactory2的方式分别去建立线下全局的布局加载速度和控件加载速度的监控体系。</li>
+</ul>
+<h4 id="3、做完布局优化有哪些成果产出？"><a href="#3、做完布局优化有哪些成果产出？" class="headerlink" title="3、做完布局优化有哪些成果产出？"></a>3、做完布局优化有哪些成果产出？</h4><ul>
+<li>1、首先，我们建立了一个体系化的监控手段，这里的体系还指的是线上加线下的一个综合方案，针对线下，我们使用AOP或者ARTHook，可以很方便地获取到每一个布局的加载耗时以及每一个控件的加载耗时。针对线上，我们通过Choreographer.getInstance().postFrameCallback的方式收集到了FPS，这样我们可以知道用户在哪些界面出现了丢帧的情况。</li>
+<li>2、然后，对于布局监控方面，我们设立了FPS、布局加载时间、布局层级等一系列指标。</li>
+<li>3、最后，在每一个版本上线之前，我们都会对我们的核心路径进行一次Review，确保我们的FPS、布局加载时间、布局层级等达到一个合理的状态。</li>
+</ul>
+<h3 id="九、总结"><a href="#九、总结" class="headerlink" title="九、总结"></a>九、总结</h3><p>对于Android的布局优化，笔者以一种自顶向下，层层递进的方式和大家一起深入地去探索了Android中如何将布局优化做到极致，其中主要涉及以下八大主题：</p>
+<ul>
+<li>1、绘制原理：CPU\GPU、Android图形系统的整体架构、绘制线程、刷新机制。</li>
+<li>2、屏幕适配：OLED 屏幕和 LCD 屏幕的区别、屏幕适配方案。</li>
+<li>3、优化工具：使用Systrace来进行布局优化、利用Layout Inspector来查看视图层级结构、采用Choreographer来获取FPS以及自动化测量 UI 渲染性能的方式（gfxinfo、SurfaceFlinger等dumpsys命令）。</li>
+<li>4、布局加载原理：布局加载源码分析、LayoutInflater.Factory分析。</li>
+<li>5、获取界面布局耗时：使用AOP的方式去获取界面加载的耗时、利用LayoutInflaterCompat.setFactory2去监控每一个控件加载的耗时。</li>
+<li>6、布局优化常规方案：使用AOP的方式去获取界面加载的耗时、利用LayoutInflaterCompat.setFactory2去监控每一个控件加载的耗时。</li>
+<li>7、布局优化的进阶方案：使用异步布局框架Litho、使用Flutter实现高性能的UI布局、使用RenderThread实现动画的异步渲染与 利用RenderScript实现高效的图片处理。</li>
+<li>8、布局优化的常见问题。</li>
+</ul>
+<p>可以看到，布局优化看似是Android性能优化中最简单的专项优化项，但是笔者却花费了整整三万字的篇幅才能比较完整地将其核心知识传授给大家。因此，不要小看每一个专项优化点，深入进去，必定满载而归。</p>
+<h5 id="参考链接："><a href="#参考链接：" class="headerlink" title="参考链接："></a>参考链接：</h5><hr>
+<p>1、<a href="https://coding.imooc.com/class/308.html" target="_blank" rel="external">国内Top团队大牛带你玩转Android性能分析与优化 第五章 布局优化</a></p>
+<p>2、<a href="https://time.geekbang.org/column/article/80921" target="_blank" rel="external">极客时间之Android开发高手课 UI优化</a></p>
+<p>3、<a href="http://mobile.zol.com.cn/680/6809348.html" target="_blank" rel="external">手机屏幕的前世今生 可能比你想的还精彩</a></p>
+<p>4、<a href="https://www.zhihu.com/question/22263252" target="_blank" rel="external">OLED 和 LCD 什么区别？</a></p>
+<p>5、<a href="https://mp.weixin.qq.com/s?__biz=MzAxMTI4MTkwNQ==&amp;mid=2650826034&amp;idx=1&amp;sn=5e86768d7abc1850b057941cdd003927&amp;chksm=80b7b1acb7c038ba8912b9a09f7e0d41eef13ec0cea19462e47c4e4fe6a08ab760fec864c777&amp;scene=21#wechat_redirect" target="_blank" rel="external">Android 目前稳定高效的UI适配方案</a></p>
+<p>6、<a href="https://mp.weixin.qq.com/s?__biz=MzAxMTI4MTkwNQ==&amp;mid=2650826381&amp;idx=1&amp;sn=5b71b7f1654b04a55fca25b0e90a4433&amp;chksm=80b7b213b7c03b0598f6014bfa2f7de12e1f32ca9f7b7fc49a2cf0f96440e4a7897d45c788fb&amp;scene=21#wechat_redirect" target="_blank" rel="external">骚年你的屏幕适配方式该升级了!-smallestWidth 限定符适配方案</a></p>
+<p>7、<a href="https://github.com/ladingwu/dimens_sw" target="_blank" rel="external">dimens_sw github</a></p>
+<p>8、<a href="https://mp.weixin.qq.com/s?__biz=MzI1MzYzMjE0MQ==&amp;mid=2247484502&amp;idx=2&amp;sn=a60ea223de4171dd2022bc2c71e09351&amp;scene=21#wechat_redirect" target="_blank" rel="external">一种极低成本的Android屏幕适配方式</a></p>
+<p>9、<a href="https://mp.weixin.qq.com/s/oSBUA7QKMWZURm1AHMyubA" target="_blank" rel="external">骚年你的屏幕适配方式该升级了!-今日头条适配方案</a></p>
+<p>10、<a href="https://juejin.im/post/5bce688e6fb9a05cf715d1c2#heading-0" target="_blank" rel="external">今日头条屏幕适配方案终极版正式发布!</a></p>
+<p>11、<a href="https://www.jianshu.com/p/b492140a555f" target="_blank" rel="external">使用Systrace分析UI性能</a></p>
+<p>12、<a href="https://gapid.dev/about/" target="_blank" rel="external">GAPID-Graphics API Debugger</a></p>
+<p>13、<a href="http://hukai.me/android-performance-render/" target="_blank" rel="external">Android性能优化之渲染篇</a></p>
+<p>14、<a href="https://blog.csdn.net/qian520ao/article/details/81144167" target="_blank" rel="external">Android 屏幕绘制机制及硬件加速</a></p>
+<p>15、<a href="https://blog.csdn.net/qian520ao/article/details/81144167" target="_blank" rel="external">Android 图形处理官方教程</a></p>
+<p>16、<a href="https://zhuanlan.zhihu.com/p/20712354" target="_blank" rel="external">Vulkan - 高性能渲染</a></p>
+<p>17、<a href="https://source.android.com/devices/graphics/arch-vulkan" target="_blank" rel="external">Android Vulkan Tutorial</a></p>
+<p>18、<a href="https://developer.android.com/training/testing/performance#top_of_page" target="_blank" rel="external">Test UI performance-gfxinfo</a></p>
+<p>19、<a href="https://www.jianshu.com/p/7477e381a7ea" target="_blank" rel="external">使用dumpsys gfxinfo 测UI性能（适用于Android6.0以后）</a></p>
+<p>20、<a href="https://developer.android.com/reference/android/view/TextureView" target="_blank" rel="external">TextureView API</a></p>
+<p>21、<a href="https://developer.android.com/reference/android/text/PrecomputedText" target="_blank" rel="external">PrecomputedText API</a></p>
+<p>22、<a href="https://fblitho.com/docs/tutorial" target="_blank" rel="external">Litho Tutorial</a></p>
+<p>23、<a href="https://tech.meituan.com/2019/03/14/litho-use-and-principle-analysis.html" target="_blank" rel="external">基本功 | Litho的使用及原理剖析</a></p>
+<p>24、<a href="https://flutter.cn/docs/resources/technical-overview" target="_blank" rel="external">Flutter官方文档中文版</a></p>
+<p>25、<a href="https://www.bilibili.com/video/av48772383/?spm_id_from=333.788.videocard.0" target="_blank" rel="external">[Google Flutter 团队出品] 深入了解 Flutter 的高性能图形渲染</a></p>
+<p>26、<a href="http://gityuan.com/2019/06/15/flutter_ui_draw/" target="_blank" rel="external">Flutter渲染机制—UI线程</a></p>
+<p>27、<a href="https://mp.weixin.qq.com/s?__biz=MzUyMDAxMjQ3Ng==&amp;mid=2247489230&amp;idx=1&amp;sn=adc193e35903ab90a4c966059933a35a&amp;source=41#wechat_redirect" target="_blank" rel="external">RenderThread:异步渲染动画</a></p>
+<p>28、<a href="https://developer.android.com/guide/topics/renderscript/compute" target="_blank" rel="external">RenderScript官方文档</a></p>
+<p>29、<a href="http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2016/0504/4205.html?utm_source=itdadao&amp;utm_medium=referral" target="_blank" rel="external">RenderScript :简单而快速的图像处理</a></p>
+<p>30、<a href="https://www.jianshu.com/p/b72da42e1463" target="_blank" rel="external">RenderScript渲染利器</a></p>
+<h2 id="赞赏"><a href="#赞赏" class="headerlink" title="赞赏"></a>赞赏</h2><p>如果这个库对您有很大帮助，您愿意支持这个项目的进一步开发和这个项目的持续维护。你可以扫描下面的二维码，让我喝一杯咖啡或啤酒。非常感谢您的捐赠。谢谢！</p>
+<div align="center"><br><img src="https://raw.githubusercontent.com/JsonChao/Awesome-Android-Interview/master/screenshot/wexin_play.jpg" width="20%"><img src="https://raw.githubusercontent.com/JsonChao/Awesome-Android-Interview/master/screenshot/Apaliy.jpg" width="20%"><br></div>
+
+
+<hr>
+<h2 id="Contanct-Me"><a href="#Contanct-Me" class="headerlink" title="Contanct Me"></a>Contanct Me</h2><h3 id="●-微信："><a href="#●-微信：" class="headerlink" title="●  微信："></a>●  微信：</h3><blockquote>
+<p>欢迎关注我的微信：<code>bcce5360</code>  </p>
+</blockquote>
+<h3 id="●-微信群："><a href="#●-微信群：" class="headerlink" title="●  微信群："></a>●  微信群：</h3><blockquote>
+<p><strong>微信群如果不能扫码加入，麻烦大家想进微信群的朋友们，加我微信拉你进群。</strong></p>
+</blockquote>
+<div align="center"><br><img src="https://raw.githubusercontent.com/JsonChao/Awesome-Android-Interview/master/screenshot/wexin_qrcode.jpg" width="35%"><br></div>
+
+
+<h3 id="●-QQ群："><a href="#●-QQ群：" class="headerlink" title="●  QQ群："></a>●  QQ群：</h3><blockquote>
+<p>2千人QQ群，<strong>Awesome-Android学习交流群，QQ群号：959936182</strong>， 欢迎大家加入~</p>
+</blockquote>
+<h3 id="About-me"><a href="#About-me" class="headerlink" title="About me"></a>About me</h3><ul>
+<li><h4 id="Email-chao-qu521-gmail-com"><a href="#Email-chao-qu521-gmail-com" class="headerlink" title="Email: chao.qu521@gmail.com"></a>Email: <a href="">chao.qu521@gmail.com</a></h4></li>
+<li><h4 id="Blog-https-jsonchao-github-io"><a href="#Blog-https-jsonchao-github-io" class="headerlink" title="Blog: https://jsonchao.github.io/"></a>Blog: <a href="https://jsonchao.github.io/" target="_blank" rel="external">https://jsonchao.github.io/</a></h4></li>
+<li><h4 id="掘金-https-juejin-im-user-5a3ba9375188252bca050ade"><a href="#掘金-https-juejin-im-user-5a3ba9375188252bca050ade" class="headerlink" title="掘金: https://juejin.im/user/5a3ba9375188252bca050ade"></a>掘金: <a href="https://juejin.im/user/5a3ba9375188252bca050ade" target="_blank" rel="external">https://juejin.im/user/5a3ba9375188252bca050ade</a></h4></li>
+</ul>
+<h4 id="很感谢您阅读这篇文章，希望您能将它分享给您的朋友或技术群，这对我意义重大。"><a href="#很感谢您阅读这篇文章，希望您能将它分享给您的朋友或技术群，这对我意义重大。" class="headerlink" title="很感谢您阅读这篇文章，希望您能将它分享给您的朋友或技术群，这对我意义重大。"></a>很感谢您阅读这篇文章，希望您能将它分享给您的朋友或技术群，这对我意义重大。</h4><h4 id="希望我们能成为朋友，在-Github、掘金上一起分享知识。"><a href="#希望我们能成为朋友，在-Github、掘金上一起分享知识。" class="headerlink" title="希望我们能成为朋友，在 Github、掘金上一起分享知识。"></a>希望我们能成为朋友，在 <a href="https://github.com/JsonChao" target="_blank" rel="external">Github</a>、<a href="https://juejin.im/user/5a3ba9375188252bca050ade" target="_blank" rel="external">掘金</a>上一起分享知识。</h4>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.png" alt="JsonChao Alipay"/>
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/性能优化/" rel="tag"># 性能优化</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/01/13/深入探索Android布局优化（上）/" rel="next" title="深入探索Android布局优化（上）">
+                <i class="fa fa-chevron-left"></i> 深入探索Android布局优化（上）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div id="lv-container" data-id="city" data-uid="MTAyMC8zMzg1Mi8xMDQwNQ==">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="JsonChao" />
+            
+              <p class="site-author-name" itemprop="name">JsonChao</p>
+              <p class="site-description motion-element" itemprop="description">Persist + Plan = Growing</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">40</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/rss2.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/JsonChao" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://mail.google.com/mail/u/0/#inbox" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-globe"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://juejin.im/user/5a3ba9375188252bca050ade" target="_blank" title="JueJin">
+                      
+                        <i class="fa fa-fw fa-globe"></i>JueJin</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Manito Link
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://wanandroid.com/" title="WanAndroid" target="_blank">WanAndroid</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://hencoder.com/" title="HenCoder" target="_blank">HenCoder</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.trinea.cn/" title="Trinea" target="_blank">Trinea</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://stormzhang.com/" title="stromzhang" target="_blank">stromzhang</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.hensen.site/" title="Hensen" target="_blank">Hensen</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://liuwangshu.cn/" title="刘望舒" target="_blank">刘望舒</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://zhuanlan.zhihu.com/baron/" title="张磊" target="_blank">张磊</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://kymjs.com/" title="张涛" target="_blank">张涛</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://blog.piasy.com/" title="Piasy" target="_blank">Piasy</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://blog.lmj.wiki/" title="ANLY" target="_blank">ANLY</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://glanwang.com/" title="Glan" target="_blank">Glan</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://huangjunbin.com/" title="黄俊彬" target="_blank">黄俊彬</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://droidyue.com/" title="技术小黑屋" target="_blank">技术小黑屋</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://gityuan.com/" title="gityuan" target="_blank">gityuan</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.gcssloop.com/#blog" title="gcsslop" target="_blank">gcsslop</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样-。"><span class="nav-number">1.0.1.</span> <span class="nav-text">成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#六、布局优化常规方案"><span class="nav-number">1.1.</span> <span class="nav-text">六、布局优化常规方案</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、布局Inflate优化方案演进"><span class="nav-number">1.1.1.</span> <span class="nav-text">1、布局Inflate优化方案演进</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1、代码动态创建View"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">1、代码动态创建View</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2、替换MessageQueue来实现异步创建View"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">2、替换MessageQueue来实现异步创建View</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3、AsynclayoutInflater异步创建View"><span class="nav-number">1.1.1.3.</span> <span class="nav-text">3、AsynclayoutInflater异步创建View</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#小结"><span class="nav-number">1.1.2.</span> <span class="nav-text">小结</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#4、使用X2C进行布局加载优化"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">4、使用X2C进行布局加载优化</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用Java代码写布局？"><span class="nav-number">1.1.3.</span> <span class="nav-text">使用Java代码写布局？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#X2C"><span class="nav-number">1.1.4.</span> <span class="nav-text">X2C</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、使用ConstraintLayout降低布局嵌套层级"><span class="nav-number">1.1.5.</span> <span class="nav-text">2、使用ConstraintLayout降低布局嵌套层级</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、过渡绘制优化"><span class="nav-number">1.1.6.</span> <span class="nav-text">3、过渡绘制优化</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#七、布局优化的进阶方案"><span class="nav-number">1.2.</span> <span class="nav-text">七、布局优化的进阶方案</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、使用异步布局框架Litho"><span class="nav-number">1.2.1.</span> <span class="nav-text">1、使用异步布局框架Litho</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#简单使用Litho"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">简单使用Litho</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#使用自定义Component"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">使用自定义Component</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#补充：MountSpec规范"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">补充：MountSpec规范</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1、异步布局化"><span class="nav-number">1.2.1.4.</span> <span class="nav-text">1、异步布局化</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2、布局自动扁平化"><span class="nav-number">1.2.1.5.</span> <span class="nav-text">2、布局自动扁平化</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3、更细粒度地优化RecyclerView中组件的缓存与回收的方法"><span class="nav-number">1.2.1.6.</span> <span class="nav-text">3、更细粒度地优化RecyclerView中组件的缓存与回收的方法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#小结-1"><span class="nav-number">1.2.1.7.</span> <span class="nav-text">小结</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、使用Flutter实现高性能的UI布局"><span class="nav-number">1.2.2.</span> <span class="nav-text">2、使用Flutter实现高性能的UI布局</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#那么Flutter的图形性能为何能够媲美原生应用呢？"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">那么Flutter的图形性能为何能够媲美原生应用呢？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#而Flutter又是如何实现高性能UI布局的呢？"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">而Flutter又是如何实现高性能UI布局的呢？</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、使用RenderThread-与-RenderScript"><span class="nav-number">1.2.3.</span> <span class="nav-text">3、使用RenderThread 与 RenderScript</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1、在ViewPropertyAnimator类系中，有一个ViewPropertyAnimatorRT-，它的主要作用就把动画交给RenderThread去处理。因此，我们需要先去创建对应view的ViewPropertyAnimatorRT，代码如下所示："><span class="nav-number">1.2.3.1.</span> <span class="nav-text">1、在ViewPropertyAnimator类系中，有一个ViewPropertyAnimatorRT ，它的主要作用就把动画交给RenderThread去处理。因此，我们需要先去创建对应view的ViewPropertyAnimatorRT，代码如下所示：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2、接下来，我们需要将ViewPropertyAnimatorRT设置给ViewPropertyAnimator的mRTBackend字段，这样ViewPropertyAnimator才能利用它去将动画交给RenderThread处理，如下所示："><span class="nav-number">1.2.3.2.</span> <span class="nav-text">2、接下来，我们需要将ViewPropertyAnimatorRT设置给ViewPropertyAnimator的mRTBackend字段，这样ViewPropertyAnimator才能利用它去将动画交给RenderThread处理，如下所示：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3、最后，在开启动画之前将ViewPropertyAnimatorRT实例设置进去即可，如下所示："><span class="nav-number">1.2.3.3.</span> <span class="nav-text">3、最后，在开启动画之前将ViewPropertyAnimatorRT实例设置进去即可，如下所示：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#八、布局优化的常见问题"><span class="nav-number">1.3.</span> <span class="nav-text">八、布局优化的常见问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、你在做布局优化的过程中用到了哪些工具？"><span class="nav-number">1.3.1.</span> <span class="nav-text">1、你在做布局优化的过程中用到了哪些工具？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、布局为什么会导致卡顿，你又是如何优化的？"><span class="nav-number">1.3.2.</span> <span class="nav-text">2、布局为什么会导致卡顿，你又是如何优化的？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、做完布局优化有哪些成果产出？"><span class="nav-number">1.3.3.</span> <span class="nav-text">3、做完布局优化有哪些成果产出？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#九、总结"><span class="nav-number">1.4.</span> <span class="nav-text">九、总结</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#参考链接："><span class="nav-number">1.4.0.1.</span> <span class="nav-text">参考链接：</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#赞赏"><span class="nav-number">2.</span> <span class="nav-text">赞赏</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Contanct-Me"><span class="nav-number">3.</span> <span class="nav-text">Contanct Me</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#●-微信："><span class="nav-number">3.1.</span> <span class="nav-text">●  微信：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#●-微信群："><span class="nav-number">3.2.</span> <span class="nav-text">●  微信群：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#●-QQ群："><span class="nav-number">3.3.</span> <span class="nav-text">●  QQ群：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#About-me"><span class="nav-number">3.4.</span> <span class="nav-text">About me</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Email-chao-qu521-gmail-com"><span class="nav-number">3.4.1.</span> <span class="nav-text">Email: chao.qu521@gmail.com</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Blog-https-jsonchao-github-io"><span class="nav-number">3.4.2.</span> <span class="nav-text">Blog: https://jsonchao.github.io/</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#掘金-https-juejin-im-user-5a3ba9375188252bca050ade"><span class="nav-number">3.4.3.</span> <span class="nav-text">掘金: https://juejin.im/user/5a3ba9375188252bca050ade</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#很感谢您阅读这篇文章，希望您能将它分享给您的朋友或技术群，这对我意义重大。"><span class="nav-number">3.4.4.</span> <span class="nav-text">很感谢您阅读这篇文章，希望您能将它分享给您的朋友或技术群，这对我意义重大。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#希望我们能成为朋友，在-Github、掘金上一起分享知识。"><span class="nav-number">3.4.5.</span> <span class="nav-text">希望我们能成为朋友，在 Github、掘金上一起分享知识。</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">JsonChao</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+    
+
+    
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2155025"></script>
+      <!-- UY END -->
+    
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+   
+   
+     
+   
+   
+  
+     
+</div>
+<!-- City版安装代码已完成 -->
+   
+ 
+
+   
+     
+   
+  
+       <div id="lv-container" data-id="city" data-uid="MTAyMC8zMzg1Mi8xMDQwNQ==">
+       <script type="text/javascript">
+          (function(d, s) {
+              var j, e = d.getElementsByTagName(s)[0];
+              if (typeof LivereTower === 'function') { return; }
+              j = d.createElement(s);
+              j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+              j.async = true;
+              e.parentNode.insertBefore(j, e);
+          })(document, 'script');
+       </script>
+       <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+       <!-- UY END -->
+   
+ 
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("2wtHdVd6zid7kU6YQKIqsHU5-gzGzoHsz", "eLibBRhSAsSoX1JbTMJH6ka3");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,2147 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="default">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="性能优化," />
+
+
+
+
+
+  <link rel="alternate" href="/rss2.xml" title="Deep into Android" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="前言成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。Android的绘制优化其实可以分为两个部分，即布局(UI)优化和卡顿优化，而布局优化的核心问题就是要解决因布局渲染性能不佳而导致应用卡顿的问题，所以它可以认为是卡顿优化的一个子集。对于Android开发来说，写布局可以说是一个比较简单的工作，但是如果想将写的每一个布局的渲染性能提升到比较好的">
+<meta name="keywords" content="性能优化">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入探索Android布局优化（上）">
+<meta property="og:url" content="http://yoursite.com/2020/01/13/深入探索Android布局优化（上）/index.html">
+<meta property="og:site_name" content="Deep into Android">
+<meta property="og:description" content="前言成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。Android的绘制优化其实可以分为两个部分，即布局(UI)优化和卡顿优化，而布局优化的核心问题就是要解决因布局渲染性能不佳而导致应用卡顿的问题，所以它可以认为是卡顿优化的一个子集。对于Android开发来说，写布局可以说是一个比较简单的工作，但是如果想将写的每一个布局的渲染性能提升到比较好的">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://raw.githubusercontent.com/yuegs/yuegs.github.io/master/images/android/render-process/diff-hw-soft.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/JsonChao/Awesome-Android-Performance/master/screenshots/graphic_arc.png">
+<meta property="og:image" content="https://static001.geekbang.org/resource/image/7f/7d/7f349aefe7a081259218af30b9a9fc7d.png">
+<meta property="og:image" content="https://pic4.zhimg.com/v2-5b2ed9a8a18793f9801183e327ecc364_b.jpg">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190420175718265.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dxNnlsZzA4,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="http://img.jeepxie.net/upload/6/45/64555d6e993f2e28bee628c8cc52d171_thumb.png">
+<meta property="og:image" content="https://i2.wp.com/5b0988e595225.cdn.sohucs.com/images/20180815/8abd457b9b8c40ab91dc58888aa8c6d9.png?zoom=2&w">
+<meta property="og:image" content="https://raw.githubusercontent.com/JsonChao/Awesome-Android-Performance/master/screenshots/ui_adpt_sw_1.png">
+<meta property="og:image" content="https://github.com/JsonChao/Awesome-Android-Performance/blob/master/screenshots/ui_adpt_sw_2.png?raw=true">
+<meta property="og:image" content="http://image.diydoutu.com/12138865495338.gif?imageView2/0/format/gif/q/75">
+<meta property="og:image" content="https://raw.githubusercontent.com/JsonChao/Awesome-Android-Performance/master/screenshots/systrace_frames.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/JsonChao/Awesome-Android-Performance/master/screenshots/systrace_frame_detail.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/JsonChao/Awesome-Android-Performance/master/screenshots/systrace_alert.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/JsonChao/Awesome-Android-Performance/master/screenshots/layout_inspect_overview.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/JsonChao/Awesome-Android-Performance/master/screenshots/layout_inspect_pro_table.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/JsonChao/Awesome-Android-Performance/master/screenshots/framestats_data.png">
+<meta property="og:image" content="http://image.diydoutu.com/12139979399503.gif?imageView2/0/format/gif/q/75">
+<meta property="og:image" content="https://raw.githubusercontent.com/JsonChao/Awesome-Android-Interview/master/screenshot/wexin_play.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/JsonChao/Awesome-Android-Interview/master/screenshot/Apaliy.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/JsonChao/Awesome-Android-Interview/master/screenshot/wexin_qrcode.jpg">
+<meta property="og:updated_time" content="2020-01-13T14:48:06.657Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="深入探索Android布局优化（上）">
+<meta name="twitter:description" content="前言成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。Android的绘制优化其实可以分为两个部分，即布局(UI)优化和卡顿优化，而布局优化的核心问题就是要解决因布局渲染性能不佳而导致应用卡顿的问题，所以它可以认为是卡顿优化的一个子集。对于Android开发来说，写布局可以说是一个比较简单的工作，但是如果想将写的每一个布局的渲染性能提升到比较好的">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/yuegs/yuegs.github.io/master/images/android/render-process/diff-hw-soft.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":0,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '2JGM8QNUKR',
+      apiKey: 'ad3d08277d479825f7ef759beadbce0d',
+      indexName: 'dicovery',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/01/13/深入探索Android布局优化（上）/"/>
+
+
+
+
+
+  <title>深入探索Android布局优化（上） | Deep into Android</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Deep into Android</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/13/深入探索Android布局优化（上）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JsonChao">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Deep into Android">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">深入探索Android布局优化（上）</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-01-13T22:02:00+08:00">
+                2020-01-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/性能优化/" itemprop="url" rel="index">
+                    <span itemprop="name">性能优化</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2020/01/13/深入探索Android布局优化（上）/" class="leancloud_visitors" data-flag-title="深入探索Android布局优化（上）">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">Visitors&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <hr>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><h4 id="成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样-。"><a href="#成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样-。" class="headerlink" title="成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。"></a>成为一名优秀的Android开发，需要一份完备的<a href="https://github.com/JsonChao/Awesome-Android-Exercise" target="_blank" rel="external">知识体系</a>，在这里，让我们一起成长为自己所想的那样~。</h4><p>Android的绘制优化其实可以分为两个部分，即布局(UI)优化和卡顿优化，而布局优化的核心问题就是要解决因布局渲染性能不佳而导致应用卡顿的问题，所以它可以认为是卡顿优化的一个子集。对于Android开发来说，写布局可以说是一个比较简单的工作，但是如果想将写的每一个布局的渲染性能提升到比较好的程度，要付出的努力是要远远超过写布局所付出的。由于布局优化这一主题包含的内容太多，因此，笔者将它分为了上、下两篇，本篇，即为深入探索Android布局优化的上篇。本篇包含的主要内容如下所示：</p>
+<ul>
+<li>1、绘制原理</li>
+<li>2、屏幕适配</li>
+<li>3、优化工具</li>
+<li>4、布局加载原理</li>
+<li>5、获取界面布局耗时</li>
+</ul>
+<p>说到Android的布局绘制，那么我们就不得不先从布局的绘制原理开始说起。</p>
+<h3 id="一、绘制原理"><a href="#一、绘制原理" class="headerlink" title="一、绘制原理"></a>一、绘制原理</h3><p>Android的绘制实现主要是借助CPU与GPU结合刷新机制共同完成的。</p>
+<h4 id="1、CPU与GPU"><a href="#1、CPU与GPU" class="headerlink" title="1、CPU与GPU"></a>1、CPU与GPU</h4><ul>
+<li>CPU负责计算显示内容，包括Measure、Layout、Record、Execute等操作。在UI绘制上的缺陷在于容易显示重复的视图组件，这样不仅带来重复的计算操作，而且会占用额外的GPU资源。</li>
+<li>GPU负责栅格化（用于将UI元素绘制到屏幕上，即将UI组件拆分到不同的像素上显示）。</li>
+</ul>
+<p>这里举两个栗子来讲解一些CPU和GPU的作用：</p>
+<ul>
+<li>1、文字的显示首先经过CPU换算成纹理，然后再传给GPU进行渲染。</li>
+<li>2、而图片的显示首先是经过CPU的计算，然后加载到内存当中，最后再传给GPU进行渲染。</li>
+</ul>
+<p>那么，软件绘制和硬件绘制有什么区别呢？我们先看看下图：</p>
+<p><img src="https://raw.githubusercontent.com/yuegs/yuegs.github.io/master/images/android/render-process/diff-hw-soft.png" alt="image"></p>
+<p>这里软件绘制使用的是Skia库（一款在低端设备如手机上呈现高质量的 2D 图形的 跨平台图形框架)进行绘制的，而硬件绘制本质上是使用的OpenGl ES接口去利用GPU进行绘制的。OpenGL是一种跨平台的图形API，它为2D/3D图形处理硬件指定了标准的软件接口。而OpenGL ES是用于嵌入式设备的，它是OpenGL规范的一种形式，也可称为其子集。</p>
+<p>并且，由于OpenGl ES系统版本的限制，有很多 绘制API 都有相应的 Android API level 的限制，此外，在Android 7.0 把 OpenGL ES 升级到最新的 3.2 版本的时候，还添加了对Vulkan（一套适用于高性能 3D 图形的低开销、跨平台 API）的支持。Vulan作为下一代图形API以及OpenGL的继承者，它的优势在于大幅优化了CPU上图形驱动相关的性能。</p>
+<h4 id="2、Android-图形系统的整体架构"><a href="#2、Android-图形系统的整体架构" class="headerlink" title="2、Android 图形系统的整体架构"></a>2、Android 图形系统的整体架构</h4><p>Android官方的架构图如下：</p>
+<p><img src="https://raw.githubusercontent.com/JsonChao/Awesome-Android-Performance/master/screenshots/graphic_arc.png" alt="image"></p>
+<p>为了比较好的描述它们之间的作用，我们可以把应用程序图形渲染过程当作一次绘画过程，那么绘画过程中 Android 的各个图形组件的作用分别如下：</p>
+<ul>
+<li>画笔：Skia 或者 OpenGL。我们可以用 Skia去绘制 2D 图形，也可以用 OpenGL 去绘制 2D/3D 图形。</li>
+<li>画纸：Surface。所有的元素都在 Surface 这张画纸上进行绘制和渲染。在 Android 中，Window 是 View 的容器，每个窗口都会关联一个 Surface。而 WindowManager 则负责管理这些窗口，并且把它们的数据传递给 SurfaceFlinger。</li>
+<li>画板：Graphic Buffer。Graphic Buffer 缓冲用于应用程序图形的绘制，在 Android 4.1 之前使用的是双缓冲机制，而在 Android 4.1 之后使用的是三缓冲机制。</li>
+<li>显示：SurfaceFlinger。它将 WindowManager 提供的所有 Surface，通过硬件合成器 Hardware Composer 合成并输出到显示屏。</li>
+</ul>
+<p>在了解完Android图形系统的整体架构之后，我们还需要了解下Android系统的显示原理，关于这块内容可以参考我之前写的<a href="https://jsonchao.github.io/2019/07/28/Android%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E4%B9%8B%E7%BB%98%E5%88%B6%E4%BC%98%E5%8C%96/" target="_blank" rel="external">Android性能优化之绘制优化</a>的Android系统显示原理一节。</p>
+<h4 id="3、RenderThread"><a href="#3、RenderThread" class="headerlink" title="3、RenderThread"></a>3、RenderThread</h4><p>在Android系统的显示过程中，虽然我们利用了GPU的图形高性能计算的能力，但是从计算Display到通过GPU绘制到Frame Buffer都在UI线程中完成，此时如果能让GPU在不同的线程中进行绘制渲染图形，那么绘制将会更加地流畅。</p>
+<p>于是，在Android 5.0之后,引入了RenderNode和RenderThread的概念，它们的作用如下：</p>
+<ul>
+<li>RenderNode：进一步封装了Display和某些View的属性。</li>
+<li>RenderThread：渲染线程，负责执行所有的OpenGl命令，其中的RenderNode保存有渲染帧的所有信息，能在主线程有耗时操作的前提下保证动画流畅。</li>
+</ul>
+<p>CPU将数据同步给GPU之后，通常不会阻塞等待RenderThread去利用GPU去渲染完视图，而是通知结束之后就返回。加入ReaderThread之后的整个显示调用流程图如下图所示：</p>
+<p><img src="https://static001.geekbang.org/resource/image/7f/7d/7f349aefe7a081259218af30b9a9fc7d.png" alt="image"></p>
+<p>在Android 6.0之后，其在adb shell dumpsys gxinfo命令中添加了更加详细的信息，在优化工具一节中我将详细分析下它的使用。</p>
+<p>在Android 7.0之后，对HWUI进行了重构，它是用于2D硬件绘图并负责硬件加速的主要模块，其使用了OpenGl ES来进行GPU硬件绘图。此外，Android 7.0还支持了Vulkan，并且，Vulkan 1.1在Android 被引入。</p>
+<h5 id="硬件加速存在哪些问题？"><a href="#硬件加速存在哪些问题？" class="headerlink" title="硬件加速存在哪些问题？"></a>硬件加速存在哪些问题？</h5><p>我们都知道，硬件加速的原理就是将CPU不擅长的图形计算转换成GPU专用指令。</p>
+<ul>
+<li>1、其中的OpenGl API调用和Graphic Buffer缓冲区至少会占用几MB以上的内存，<strong>内存消耗较大</strong>。</li>
+<li>2、有些OpenGl的绘制API还没有支持，特别是比较低的Android系统版本，并且由于Android每一个版本都会对渲染模块进行一些重构，导致了在硬件加速绘制过程中会出现一些不可预知的Bug。如在Android 5.0~7.0机型上出现的libhwui.so崩溃问题，需要使用inline Hook、GOT Hook等native调试手段去进行分析定位，可能的原因是ReaderThread与UI线程的sync同步过程出现了差错，而这种情况一般都是有多个相同的视图绘制而导致的，比如View的复用、多个动画同时播放。</li>
+</ul>
+<h4 id="4、刷新机制"><a href="#4、刷新机制" class="headerlink" title="4、刷新机制"></a>4、刷新机制</h4><p>16ms发出VSync信号触发UI渲染，大多数的Android设备屏幕刷新频率为60HZ，如果16ms内不能完成渲染过程，则会产生掉帧现象。</p>
+<h3 id="二、屏幕适配"><a href="#二、屏幕适配" class="headerlink" title="二、屏幕适配"></a>二、屏幕适配</h3><p>我们都知道，Android手机屏幕的差异化导致了严重的碎片化问题，并且屏幕材质也是用户比较关注的一个重要因素。</p>
+<p>首先，我们来了解下主流Android屏幕材质，目前主要有两类：</p>
+<ul>
+<li>LCD（Liquid Crystal Display）：液晶显示器。</li>
+<li>OLED（Organic Light-Emitting Diode ）:有机发光二极管。</li>
+</ul>
+<p>早在20世纪60年代，随着半导体集成电路的发展，美国人成功研发出了第一块液晶显示屏LCD，而现在大部分最新的高端机使用的都是OLED材质，这是因为相比于LCD屏幕，OLED屏幕在色彩、可弯曲程度、厚度和耗电等方面都有一定的优势。正因为如此，现在主流的全面屏、曲面屏与未来的柔性折叠屏，使用的几乎都是 OLED 材质。当前，好的材质，它的成本也必然会比较昂贵。</p>
+<h4 id="1、OLED-屏幕和-LCD-屏幕的区别"><a href="#1、OLED-屏幕和-LCD-屏幕的区别" class="headerlink" title="1、OLED 屏幕和 LCD 屏幕的区别"></a>1、OLED 屏幕和 LCD 屏幕的区别</h4><p>如果要明白OLED 屏幕和LCD屏幕的区别，需要了解它们的运行原理，下面，我将分别进行讲解。</p>
+<h5 id="屏幕的成像原理"><a href="#屏幕的成像原理" class="headerlink" title="屏幕的成像原理"></a>屏幕的成像原理</h5><p>屏幕由无数个点组成，并且，每个点由红绿蓝三个子像素组成，每个像素点通过调节红绿蓝子像素的颜色配比来显示不同的颜色，最终所有的像素点就会形成具体的画面。</p>
+<h5 id="LCD背光源与OLED自发光"><a href="#LCD背光源与OLED自发光" class="headerlink" title="LCD背光源与OLED自发光"></a>LCD背光源与OLED自发光</h5><p>下面，我们来看下LCD和OLED的总体结构图，如下所示：</p>
+<p><img src="https://pic4.zhimg.com/v2-5b2ed9a8a18793f9801183e327ecc364_b.jpg" alt="image"></p>
+<p>LCD的发光原理主要在于背光层Back-light，它通常都会由大量的LED背光灯组成以用于显示白光，之后，为了显示出彩色，在其上面加了一层有颜色的薄膜，白色的背光穿透了有颜色的薄膜后就可以显示出彩色了。但是，为了实现调整红绿蓝光的比例，需要在背光层和颜色薄膜之间加入一个控制阀门，即液晶层liquid crystal，它可以通过改变电压的大小来控制开合的程度，开合大则光多，开合小则光少。</p>
+<p>对于OLED来说，它不需要LCD屏幕的背光层和用于控制出光量的液晶层，它就像一个有着无数个小的彩色灯泡组成的屏幕，只需要给它通电就能发光。</p>
+<h5 id="LCD的致命缺陷"><a href="#LCD的致命缺陷" class="headerlink" title="LCD的致命缺陷"></a>LCD的致命缺陷</h5><p>它的液晶层不能完全关合，如果LCD显示黑色，会有部分光穿过颜色层，所以LCD的黑色实际上是白色和黑色混合而成的灰色。而OLED不一样，OLED显示黑色的时候可以直接关闭区域的像素点。</p>
+<p>此外，由于背光层的存在，所以LCD显示器的背光非常容易从屏幕与边框之间的缝隙泄漏出去，即会产生显示器漏光现象。</p>
+<h5 id="OLED屏幕的优势"><a href="#OLED屏幕的优势" class="headerlink" title="OLED屏幕的优势"></a>OLED屏幕的优势</h5><ul>
+<li>1、由于没有有背光层和液晶层的存在，所以它的<strong>厚度更薄，其弯曲程度可以达到180%</strong>。</li>
+<li>2、对比度（白色比黑色的比值）更高，使其画面颜色越浓；相较于LCD来说，<strong>OLED是油画，色彩纯而细腻，而LCD是水彩笔画，色彩朦胧且淡</strong>。</li>
+<li>3、OLED每个像素点都是独立的，所以OLED可以单独点亮某些像素点，即能实现<strong>单独点亮</strong>。而LCD只能控制整个背光层的开关。并且，由于OLED单独点亮的功能，使其<strong>耗电程度大大降低</strong>。</li>
+<li>4、OLED的<strong>屏幕响应时间很快</strong>，不会造成画面残留以致造成视觉上的拖影现象。而LCD则会有严重的拖影现象。</li>
+</ul>
+<h5 id="OLED屏幕的劣势"><a href="#OLED屏幕的劣势" class="headerlink" title="OLED屏幕的劣势"></a>OLED屏幕的劣势</h5><ul>
+<li>1、由于OLED是<strong>有机材料</strong>，导致其寿命是不如LCD的<br>有机材料的。并且，由于OLED单独点亮的功能，会使每个像素点工作的时间不一样，这样，在屏幕老化时就会导致色彩显示不均匀，即产生<strong>烧屏</strong>现象。</li>
+<li>2、由于OLED就不能采取控制电压的方式去调整亮度，所以目前只能通过不断的开关开关开关去进行调光。</li>
+<li>3、OLED的屏幕像素点排列方式不如LCD的紧凑，所以在分辨率相同的情况下，OLED的屏幕是不如LCD清楚的。即OLED的<strong>像素密度较低</strong>。</li>
+</ul>
+<h4 id="2、屏幕适配方案"><a href="#2、屏幕适配方案" class="headerlink" title="2、屏幕适配方案"></a>2、屏幕适配方案</h4><p>我们都知道，Android 的 系统碎片化、机型以及屏幕尺寸碎片化、屏幕分辨率碎片化非常地严重。所以，一个好的屏幕适配方案是很重要的。接下来，我将介绍目前主流的屏幕适配方案。</p>
+<h5 id="1、最原始的Android适配方案：dp-自适应布局或weight比例布局"><a href="#1、最原始的Android适配方案：dp-自适应布局或weight比例布局" class="headerlink" title="1、最原始的Android适配方案：dp + 自适应布局或weight比例布局"></a>1、最原始的Android适配方案：dp + 自适应布局或weight比例布局</h5><p>首先，我们来回顾一下px、dp、dpi、ppi、density等概念：</p>
+<ul>
+<li>px：像素点，px = density * dp。</li>
+<li>ppi：像素密度，每英寸所包含的像素数目，屏幕物理参数，不可调整，dpi没有人为调整时 = ppi。</li>
+<li>dpi：像素密度，在系统软件上指定的单位尺寸的像素数量，可人为调整，dpi没有人为调整时 = ppi。</li>
+<li>dp：density-independent pixels，即密度无关像素，基于屏幕物理分辨率的一个抽象的单位，以dp为尺寸单位的控件，在不同分辨率和尺寸的手机上代表了不同的真实像素，比如在分辨率较低的手机中，可能1dp = 1px,而在分辨率较高的手机中，可能1dp=2px，这样的话，一个64<em>64dp的控件，在不同的手机中就能表现出差不多的大小了，px = dp </em> （dpi / 160）。</li>
+<li>denstiy：密度，屏幕上每平方英寸所包含的像素点个数，density = dpi / 160。</li>
+</ul>
+<p>通常情况下，我们只需要使用dp + 自适应布局（如鸿神的AutoLayout、ConstraintLayout等等）或weight比例布局即可基本解决碎片化问题，当然，这种方式也存在一些问题，比如dpi和ppi的差异所导致在同一分辨率手机上控件大小的不同。</p>
+<h5 id="2、宽高限定符适配方案"><a href="#2、宽高限定符适配方案" class="headerlink" title="2、宽高限定符适配方案"></a>2、宽高限定符适配方案</h5><p>它就是穷举市面上所有的Android手机的宽高像素值，通过设立一个基准的分辨率，其他分辨率都根据这个基准分辨率来计算，在不同的尺寸文件夹内部，根据该尺寸编写对应的dimens文件，如下图所示：</p>
+<p><img src="https://img-blog.csdnimg.cn/20190420175718265.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dxNnlsZzA4,size_16,color_FFFFFF,t_70" alt="image"></p>
+<p>比如以480x320为基准分辨率：</p>
+<ul>
+<li>宽度为320，将任何分辨率的宽度整分为320份，取值为x1-x320。</li>
+<li>高度为480，将任何分辨率的高度整分为480份，取值为y1-y480。</li>
+</ul>
+<p>那么对于800*480的分辨率的dimens文件来说：</p>
+<ul>
+<li>x1=(480/320)*1=1.5px</li>
+<li>x2=(480/320)*2=3px</li>
+</ul>
+<p><img src="http://img.jeepxie.net/upload/6/45/64555d6e993f2e28bee628c8cc52d171_thumb.png" alt="image"></p>
+<p>此时，如果UI设计界面使用的就是基准分辨率，那么我们就可以按照设计稿上的尺寸填写相对应的dimens去引用，而当APP运行在不同分辨率的手机中时，系统会根据这些dimens去引用该分辨率对应的文件夹下面去寻找对应的值。但是这个方案由一个缺点，就是无法做到向下兼容去使用更小的dimens，比如说800x480的手机就一定要找到800x480的限定符，否则就只能用统一默认的dimens文件了。</p>
+<h5 id="3、UI适配框架AndroidAutoLayout的适配方案"><a href="#3、UI适配框架AndroidAutoLayout的适配方案" class="headerlink" title="3、UI适配框架AndroidAutoLayout的适配方案"></a>3、UI适配框架AndroidAutoLayout的适配方案</h5><p>因宽高限定符方案的启发，鸿神出品了一款能使用UI适配更加开发高效和适配精准的项目。</p>
+<p><a href="https://github.com/hongyangAndroid/AndroidAutoLayout" target="_blank" rel="external">项目地址</a></p>
+<p>基本使用步骤如下：</p>
+<p>第一步：在你的项目的AndroidManifest中注明你的设计稿的尺寸：</p>
+<pre><code>&lt;meta-data android:name=&quot;design_width&quot; android:value=&quot;768&quot;&gt;
+&lt;/meta-data&gt;
+&lt;meta-data android:name=&quot;design_height&quot; android:value=&quot;1280&quot;&gt;
+&lt;/meta-data&gt;
+</code></pre><p>第二步：让你的Activity继承自AutoLayoutActivity。如果你不希望继承AutoLayoutActivity，可以在编写布局文件时，直接使用AutoLinearLayout、Auto<em>*</em>等适配布局即可。</p>
+<p>接下来，直接在布局文件里面使用具体的像素值就可以了，因为在APP运行时，AndroidAutoLayout会帮助我们根据不同手机的具体尺寸按比例伸缩。</p>
+<p>AndroidAutoLayout在宽高限定符适配的基础上，解决了其dimens不能向下兼容的问题，但是它在运行时会在onMeasure里面对dimens去做变换，所以对于自定义控件或者某些特定的控件需要进行单独适配；并且，整个UI的适配过程都是由框架完成的，以后想替换成别的UI适配方案成本会比较高，而且，不幸的是，项目已经停止维护了。</p>
+<h5 id="4、smallestWidth适配方案（sw限定符适配）"><a href="#4、smallestWidth适配方案（sw限定符适配）" class="headerlink" title="4、smallestWidth适配方案（sw限定符适配）"></a>4、smallestWidth适配方案（sw限定符适配）</h5><p>smallestWidth即最小宽度，系统会根据当前设备屏幕的 最小宽度 来匹配 values-sw<n>dp。</n></p>
+<p>我们都知道，移动设备都是允许屏幕可以旋转的，当屏幕旋转时，屏幕的高宽就会互换，加上 最小 这两个字，是因为这个方案是不区分屏幕方向的，它只会把屏幕的高度和宽度中值最小的一方认为是 最小宽度。</p>
+<p>并且它跟宽高限定符适配原理上是一样，都是系统通过特定的规则来选择对应的文件。它与AndroidAutoLayout一样，同样解决了其dimens不能向下兼容的问题，如果该屏幕的最小宽度是360dp，但是项目中没有values-sw360dp文件夹的话，它就可能找到values-sw320dp这个文件夹，其尺寸规则命名如下图所示：</p>
+<p><img src="https://i2.wp.com/5b0988e595225.cdn.sohucs.com/images/20180815/8abd457b9b8c40ab91dc58888aa8c6d9.png?zoom=2&amp;w" alt="image"></p>
+<p>假如加入我们的设计稿的像素宽度是375，那么其对应的values-sw360dp和values-sw400dp宽度如下所示：</p>
+<p><img src="https://raw.githubusercontent.com/JsonChao/Awesome-Android-Performance/master/screenshots/ui_adpt_sw_1.png" alt="image"></p>
+<p><img src="https://github.com/JsonChao/Awesome-Android-Performance/blob/master/screenshots/ui_adpt_sw_2.png?raw=true" alt="image"></p>
+<p>smallestWidth的适配机制由系统保证，我们只需要针对这套规则生成对应的资源文件即可，即使对应的smallestWidth值没有找到完全对应的资源文件，它也能向下兼容，寻找最接近的资源文件。虽然多个dimens文件可能导致apk变大，但是其增加大小范围也只是在300kb-800kb这个区间，这还是可以接受的。这套方案唯一的变数就是选择需要适配哪些最小宽度限定符的文件，如果您生成的 values-sw<n>dp 与设备实际的 最小宽度 差别不大，那误差也就在能接受的范围内，如果差别很大，那效果就会很差。最后，总结一下这套方案的优缺点：</n></p>
+<p><strong>优点：</strong></p>
+<ul>
+<li>1、稳定且无性能损耗。</li>
+<li>2、可通过选择需要哪些最小宽度限定符文件去控制适配范围。</li>
+<li>3、在自动生成values-sw<n>的插件基础下，学习成本较低。</n></li>
+</ul>
+<p>插件地址为<a href="https://github.com/ladingwu/dimens_sw" target="_blank" rel="external">自动生成values-sw<n>的项目代码</n></a>。生成需要的values-sw<n>dp文件夹的步骤如下：</n></p>
+<ul>
+<li>1、clone该项目到本地,以Android项目打开。</li>
+<li>2、DimenTypes文件中写入你希望适配的sw尺寸，默认的这些尺寸能够覆盖几乎所有手机适配需求。</li>
+<li>3、DimenGenerator文件中填写设计稿的尺寸(DESIGN_WIDTH是设计稿宽度，DESIGN_HEIGHT是设计稿高度)。</li>
+<li>4、执行lib module中的DimenGenerator.main()方法，当前地址下会生成相应的适配文件,把相应的文件连带文件夹拷贝到正在开发的项目中。</li>
+</ul>
+<p><strong>缺点：</strong></p>
+<ul>
+<li>1、侵入性高，后续切换其他屏幕适配方案需修改大量 dimens 引用。</li>
+<li>2、覆盖更多不同屏幕的机型需要生成更多的资源文件，使APK体积变大。</li>
+<li>3、不能自动支持横竖屏切换时的适配，如要支持需使用 values-w<n>dp 或 屏幕方向限定符 再生成一套资源文件，又使APK体积变大。</n></li>
+</ul>
+<p><strong>如果想让屏幕宽度随着屏幕的旋转而做出改变该怎么办呢？</strong></p>
+<p>此时根据 values-w<n>dp (去掉 sw 中的 s) 去生成一套资源文件即可。</n></p>
+<p><strong>如果想区分屏幕的方向来做适配该怎么办呢？</strong></p>
+<p>去根据 屏幕方向限定符 生成一套资源文件，后缀加上 -land 或 -port 即可，如：values-sw360dp-land (最小宽度 360 dp 横向)，values-sw400dp-port (最小宽度 720 dp 纵向)。</p>
+<p><strong>注意：</strong></p>
+<p>如果UI设计上明显更适合使用wrap_content,match_parent,layout_weight等,我们就要毫不犹豫的使用，毕竟，上述都是仅仅针对不得不使用固定宽高的情况，我相信基础的UI适配知识大部分开发者还是具备的。如果不具备的话，请看下方：</p>
+<div align="center"><br><img src="http://image.diydoutu.com/12138865495338.gif?imageView2/0/format/gif/q/75" width="30%"><br></div>
+
+
+<h5 id="5、今日头条适配方案"><a href="#5、今日头条适配方案" class="headerlink" title="5、今日头条适配方案"></a>5、今日头条适配方案</h5><p>它的原理是根据屏幕的宽度或高度动态调整每个设备的 density (每 dp 占当前设备屏幕多少像素)，通过修改density值的方式，强行把所有不同尺寸分辨率的手机的宽度dp值改成一个统一的值，这样就可以解决所有的适配问题。其对应的重要公式如下：</p>
+<pre><code>当前设备屏幕总宽度（单位为像素）/  设计图总宽度（单位为 dp) = density
+</code></pre><p>今日头条适配方案默认项目中只能以高或宽中的一个作为基准来进行适配，并不像 AndroidAutoLayout 一样，高以高为基准，宽以宽为基准，来同时进行适配，为什么？</p>
+<p>因为，现在中国大部分市面上的 Android 设备的屏幕高宽比都不一致，特别是现在的全面屏、刘海屏、弹性折叠屏，使这个问题更加严重，不同厂商推出的手机的屏幕高宽比都可能不一致。所以，我们只能以高或宽其中的一个作为基准进行适配，以此避免布局在高宽比不一致的屏幕上出现变形。</p>
+<p>它有以下优势：</p>
+<ul>
+<li>1、使用成本低，操作简单，使用该方案后在页面布局时不需要额外的代码和操作。</li>
+<li>2、侵入性低，和项目完全解耦，在项目布局时不会依赖哪怕一行该方案的代码，而且使用的还是 Android 官方的 API，意味着当你遇到什么问题无法解决，想切换为其他屏幕适配方案时，基本不需要更改之前的代码，整个切换过程几乎在瞬间完成，试错成本接近于 0。</li>
+<li>3、可适配三方库的控件和系统的控件(不止是是 Activity 和 Fragment，Dialog、Toast 等所有系统控件都可以适配)，由于修改的 density 在整个项目中是全局的，所以只要一次修改，项目中的所有地方都会受益。</li>
+<li>4、不会有任何性能的损耗。</li>
+<li>5、不涉及私有API。</li>
+</ul>
+<p>它的缺点如下所示：</p>
+<ul>
+<li>1、适配范围不可控，只能一刀切的将整个项目进行适配，这种将所有控件都强行使用我们项目自身的设计图尺寸进行适配的方案会有问题：当某个系统控件或三方库控件的设计图尺寸和和我们项目自身的设计图尺寸差距越大时，该系统控件或三方库控件的适配效果就越差。比较好的解决方案就是按 Activity 为单位，取消当前 Activity 的适配效果，改用其他的适配方案。</li>
+<li>2、对旧项目的UI适配兼容性不够。</li>
+</ul>
+<p><strong>注意：</strong></p>
+<p>千万不要在此方案上使用smallestWidth适配方案中直接填写设计图上标注的 px 值的做法，这样会使项目强耦合于这个方案，后续切换其它方案都不得不将所有的 layout 文件都改一遍。</p>
+<p>这里推荐一下JessYanCoding的<a href="https://github.com/JessYanCoding/AndroidAutoSize" target="_blank" rel="external">AndroidAutoSize</a>项目，用法如下：</p>
+<p>1、首先在项目的build.gradle中添加该库的依赖：</p>
+<pre><code>implementation &apos;me.jessyan:autosize:1.1.2&apos;
+</code></pre><p>2、接着 AndroidManifest 中填写全局设计图尺寸 (单位 dp)，如果使用副单位，则可以直接填写像素尺寸，不需要再将像素转化为 dp：</p>
+<pre><code>&lt;manifest&gt;
+    &lt;application&gt;            
+        &lt;meta-data
+            android:name=&quot;design_width_in_dp&quot;
+            android:value=&quot;360&quot;/&gt;
+        &lt;meta-data
+            android:name=&quot;design_height_in_dp&quot;
+            android:value=&quot;640&quot;/&gt;           
+    &lt;/application&gt;           
+&lt;/manifest&gt;
+</code></pre><p><strong>为什么只需在AndroidManifest.xml 中填写一下 meta-data 标签就可实现自动运行？</strong></p>
+<p>在 App 启动时，系统会在 App 的主进程中自动实例化声明的 ContentProvider，并调用它的 onCreate 方法，执行时机比 Application#onCreate 还靠前，可以做一些初始化的工作，这个时候我们就可以利用它的 onCreate 方法在其中启动框架。如果项目使用了多进程，调用Application#onCreate 中调用下 ContentProvider#query 就能够使用 ContentProvider 在当前进程中进行实例化。</p>
+<h5 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h5><p>上述介绍的所有方案并没有哪一个是十分完美的，但我们能清晰的认识到不同方案的优缺点，并将它们的优点相结合，这样才能应付更加复杂的开发需求，创造出最卓越的产品。比如SmallestWidth 限定符适配方案 主打的是稳定性，在运行过程中极少会出现安全隐患，适配范围也可控，不会产生其他未知的影响，而 今日头条适配方案 主打的是降低开发成本、提高开发效率，使用上更灵活，也能满足更多的扩展需求。所以，具体情况具体分析，到底选择哪一个屏幕适配方案还是需要去根据我们项目自身的需求去选择。</p>
+<h3 id="三、优化工具"><a href="#三、优化工具" class="headerlink" title="三、优化工具"></a>三、优化工具</h3><h4 id="1、Systrace"><a href="#1、Systrace" class="headerlink" title="1、Systrace"></a>1、Systrace</h4><p>早在<a href="https://jsonchao.github.io/2019/11/10/%E6%B7%B1%E5%85%A5%E6%8E%A2%E7%B4%A2Android%E5%90%AF%E5%8A%A8%E9%80%9F%E5%BA%A6%E4%BC%98%E5%8C%96/" target="_blank" rel="external">深入探索Android启动速度优化</a>一文中我们就了解过Systrace的使用、原理及它作为启动速度分析的用法。而它其实主要是用来分析绘制性能方面的问题。下面我就详细介绍下Systrace作为绘制优化工具有哪些必须关注的点。</p>
+<h5 id="1、关注Frames"><a href="#1、关注Frames" class="headerlink" title="1、关注Frames"></a>1、关注Frames</h5><p>首先，先在左边栏选中我们当前的应用进程，在应用进程一栏下面有一栏Frames，我们可以看到有绿、黄、红三种不同的小圆圈，如下图所示：</p>
+<p><img src="https://raw.githubusercontent.com/JsonChao/Awesome-Android-Performance/master/screenshots/systrace_frames.png" alt="image"></p>
+<p>图中每一个小圆圈代表着当前帧的状态，大致的对应关系如下：</p>
+<ul>
+<li>正常：绿色。</li>
+<li>丢帧：黄色。</li>
+<li>严重丢帧：红色。</li>
+</ul>
+<p>并且，选中其中某一帧，我们还可以在视图最下方的详情框看到该帧对应的相关的Alerts报警信息，以帮助我们去排查问题；此外，如果是大于等于Android 5.0的设备（即API Level21），创建帧的工作工作分为UI线程和render线程。而在Android 5.0之前的版本中，创建帧的所有工作都是在UI线程上完成的。接下来，我们看看该帧对应的详情图，如下所示：</p>
+<p><img src="https://raw.githubusercontent.com/JsonChao/Awesome-Android-Performance/master/screenshots/systrace_frame_detail.png" alt="image"></p>
+<p>对应到此帧，我们发现这里可能有两个绘制问题：Bitmap过大、布局嵌套层级过多导致的measure和layout次数过多，这就需要我们去在项目中找到该帧对应的Bitmap进行相应的优化，针对布局嵌套层级过多的问题去选择更高效的布局方式，这块后面我们会详细介绍。</p>
+<h5 id="2、关注Alerts栏"><a href="#2、关注Alerts栏" class="headerlink" title="2、关注Alerts栏"></a>2、关注Alerts栏</h5><p>此外，Systrace的显示界面还在在右边侧栏提供了一栏Alert框去显示出它所检测出所有可能有绘制性能问题的地方及对应的数量，如下图所示：</p>
+<p><img src="https://raw.githubusercontent.com/JsonChao/Awesome-Android-Performance/master/screenshots/systrace_alert.png" alt="image"></p>
+<p>在这里，我们可以将Alert框看做是一个是待修复的Bug列表，通常一个区域的改进可以消除应用程序中的所有类中该类型的警报，所以，不要为这里的警报数量所担忧。</p>
+<h4 id="2、Layout-Inspector"><a href="#2、Layout-Inspector" class="headerlink" title="2、Layout Inspector"></a>2、Layout Inspector</h4><p>Layout Inspector是AndroidStudio自带的工具，它的主要作用就是用来查看视图层级结构的。</p>
+<p>具体的操作路径为：</p>
+<pre><code>点击Tools工具栏 -&gt;第三栏的Layout Inspector -&gt; 选中当前的进程
+</code></pre><p>下面为操作之后打开的<a href="">Awesome-WanAndroid</a>首页图，如下所示：</p>
+<p><img src="https://raw.githubusercontent.com/JsonChao/Awesome-Android-Performance/master/screenshots/layout_inspect_overview.png" alt="image"></p>
+<p>其中，最右侧的View Tree就是用来查看视图的层级结构的，非常方便，这是它最主要的功能，中间的是一个屏幕截图，最右边的是一个属性表格，比如我在截图中选中某一个TextView（Kotlin/入门及知识点一栏），在属性表格的text中就可以显示相关的信息，如下图所示：</p>
+<p><img src="https://raw.githubusercontent.com/JsonChao/Awesome-Android-Performance/master/screenshots/layout_inspect_pro_table.png" alt="image"></p>
+<h4 id="3、Choreographer"><a href="#3、Choreographer" class="headerlink" title="3、Choreographer"></a>3、Choreographer</h4><p>Choreographer是用来获取FPS的，并且可以用于线上使用，具备实时性，但是仅能在Api 16之后使用，具体的调用代码如下：</p>
+<pre><code>Choreographer.getInstance().postFrameCallback();
+</code></pre><p>使用Choreographer获取FPS的完整代码如下所示：</p>
+<pre><code>private long mStartFrameTime = 0;
+private int mFrameCount = 0;
+
+/**
+ * 单次计算FPS使用160毫秒
+ */
+private static final long MONITOR_INTERVAL = 160L; 
+private static final long MONITOR_INTERVAL_NANOS = MONITOR_INTERVAL * 1000L * 1000L;
+
+/**
+ * 设置计算fps的单位时间间隔1000ms,即fps/s
+ */
+private static final long MAX_INTERVAL = 1000L; 
+
+@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+private void getFPS() {
+    if (Build.VERSION.SDK_INT &lt; Build.VERSION_CODES.JELLY_BEAN) {
+        return;
+    }
+    Choreographer.getInstance().postFrameCallback(new Choreographer.FrameCallback() {
+        @Override
+        public void doFrame(long frameTimeNanos) {
+            if (mStartFrameTime == 0) {
+                mStartFrameTime = frameTimeNanos;
+            }
+            long interval = frameTimeNanos - mStartFrameTime;
+            if (interval &gt; MONITOR_INTERVAL_NANOS) {
+                double fps = (((double) (mFrameCount * 1000L * 1000L)) / interval) * MAX_INTERVAL;
+                // log输出fps
+                LogUtils.i(&quot;当前实时fps值为： &quot; + fps);
+                mFrameCount = 0;
+                mStartFrameTime = 0;
+            } else {
+                ++mFrameCount;
+            }
+
+            Choreographer.getInstance().postFrameCallback(this);
+        }
+    });
+}
+</code></pre><h4 id="4、Tracer-for-OpenGL-ES-与-GAPID（Graphics-API-Debugger）"><a href="#4、Tracer-for-OpenGL-ES-与-GAPID（Graphics-API-Debugger）" class="headerlink" title="4、Tracer for OpenGL ES 与 GAPID（Graphics API Debugger）"></a>4、Tracer for OpenGL ES 与 GAPID（Graphics API Debugger）</h4><p>Tracer for OpenGL ES 是 Android 4.1 新增加的工具，它可逐帧、逐函数的记录 App 使用 OpenGL ES 的绘制过程，并且，它可以记录每个 OpenGL 函数调用的消耗时间。当使用Systrace还找不到渲染问题时，就可以去尝试使用它。</p>
+<p>而GAPID是 Android Studio 3.1 推出的工具，可以认为是Tracer for OpenGL ES的进化版，它不仅实现了跨平台，而且支持Vulkan与回放。由于它们主要是用于OpenGL相关开发的使用，这里我就不多介绍了。</p>
+<h4 id="5、自动化测量-UI-渲染性能的方式"><a href="#5、自动化测量-UI-渲染性能的方式" class="headerlink" title="5、自动化测量 UI 渲染性能的方式"></a>5、自动化测量 UI 渲染性能的方式</h4><p>在自动化测试中，我们通常希望通过执行性能测试的自动化脚本来进行线下的自动化检测，那么，有哪些命令可以用于测量UI渲染的性能呢？</p>
+<p>我们都知道，dumpsys是一款输出有关系统服务状态信息的Android工具，利用它我们可以获取当前设备的UI渲染性能信息，目前常用的有如下两种命令：</p>
+<h5 id="1、gfxinfo"><a href="#1、gfxinfo" class="headerlink" title="1、gfxinfo"></a>1、gfxinfo</h5><p>gfxinfo的主要作用是输出各阶段发生的动画与帧相关的信息，命令格式如下：</p>
+<pre><code>adb shell dumpsys gfxinfo &lt;PackageName&gt;
+</code></pre><p>这里我以<a href="https://github.com/JsonChao/Awesome-WanAndroid" target="_blank" rel="external">Awesome-WanAndroid</a>项目为例，输出其对应的gfxinfo信息如下所示：</p>
+<pre><code>quchao@quchaodeMacBook-Pro ~ % adb shell dumpsys gfxinfo json.chao.com.wanandroid
+Applications Graphics Acceleration Info:
+Uptime: 549887348 Realtime: 549887348
+
+** Graphics info for pid 1722     [json.chao.com.wanandroid] **
+
+Stats since: 549356564232951ns
+Total frames rendered: 5210
+Janky frames: 193 (3.70%)
+50th percentile: 5ms
+90th percentile: 9ms
+95th percentile: 13ms
+99th percentile: 34ms
+Number Missed Vsync: 31
+Number High input latency: 0
+Number Slow UI thread: 153
+Number Slow bitmap uploads: 6
+Number Slow issue draw commands: 51
+HISTOGRAM: 5ms=4254 6ms=131 7ms=144 8ms=87 9ms=80 10ms=83 11ms=108 12ms=57 13ms=29 14ms=17 15ms=17 16ms=14 17ms=20 18ms=15 19ms=15 20ms=17 21ms=9 22ms=14 23ms=8 24ms=9 25ms=4 26ms=5 27ms=4 28ms=4 29ms=1 30ms=2 31ms=4 32ms=3 34ms=6 36ms=5 38ms=7 40ms=8 42ms=0 44ms=3 46ms=3 48ms=5 53ms=2 57ms=0 61ms=3 65ms=0 69ms=1 73ms=1 77ms=0 81ms=0 85ms=0 89ms=1 93ms=1 97ms=0 101ms=0 105ms=0 109ms=0 113ms=1 117ms=0 121ms=0 125ms=0 129ms=0 133ms=0 150ms=2 200ms=0 250ms=2 300ms=1 350ms=1 400ms=0 450ms=1 500ms=0 550ms=1 600ms=0 650ms=0 700ms=0 750ms=0 800ms=0 850ms=0 900ms=0 950ms=0 1000ms=0 1050ms=0 1100ms=0 1150ms=0 1200ms=0 1250ms=0 1300ms=0 1350ms=0 1400ms=0 1450ms=0 1500ms=0 1550ms=0 1600ms=0 1650ms=0 1700ms=0 1750ms=0 1800ms=0 1850ms=0 1900ms=0 1950ms=0 2000ms=0 2050ms=0 2100ms=0 2150ms=0 2200ms=0 2250ms=0 2300ms=0 2350ms=0 2400ms=0 2450ms=0 2500ms=0 2550ms=0 2600ms=0 2650ms=0 2700ms=0 2750ms=0 2800ms=0 2850ms=0 2900ms=0 2950ms=0 3000ms=0 3050ms=0 3100ms=0 3150ms=0 3200ms=0 3250ms=0 3300ms=0 3350ms=0 3400ms=0 3450ms=0 3500ms=0 3550ms=0 3600ms=0 3650ms=0 3700ms=0 3750ms=0 3800ms=0 3850ms=0 3900ms=0 3950ms=0 4000ms=0 4050ms=0 4100ms=0 4150ms=0 4200ms=0 4250ms=0 4300ms=0 4350ms=0 4400ms=0 4450ms=0 4500ms=0 4550ms=0 4600ms=0 4650ms=0 4700ms=0 4750ms=0 4800ms=0 4850ms=0 4900ms=0 4950ms=0
+Caches:
+Current memory usage / total memory usage (bytes):
+TextureCache          5087048 / 59097600
+Layers total          0 (numLayers = 0)
+RenderBufferCache           0 /  4924800
+GradientCache           20480 /  1048576
+PathCache                   0 /  9849600
+TessellationCache           0 /  1048576
+TextDropShadowCache         0 /  4924800
+PatchCache                  0 /   131072
+FontRenderer A8        184219 /  1478656
+    A8   texture 0       184219 /  1478656
+FontRenderer RGBA           0 /        0
+FontRenderer total     184219 /  1478656
+Other:
+FboCache                    0 /        0
+Total memory usage:
+6586184 bytes, 6.28 MB
+
+
+Pipeline=FrameBuilder
+Profile data in ms:
+
+    json.chao.com.wanandroid/json.chao.com.wanandroid.ui.main.activity.MainActivity/android.view.ViewRootImpl@4a2142e (visibility=8)
+    json.chao.com.wanandroid/json.chao.com.wanandroid.ui.main.activity.ArticleDetailActivity/android.view.ViewRootImpl@4bccbcf (visibility=8)
+View hierarchy:
+
+json.chao.com.wanandroid/json.chao.com.wanandroid.ui.main.activity.MainActivity/android.view.ViewRootImpl@4a2142e
+151 views, 154.02 kB of display lists
+
+json.chao.com.wanandroid/json.chao.com.wanandroid.ui.main.activity.ArticleDetailActivity/android.view.ViewRootImpl@4bccbcf
+19 views, 18.70 kB of display lists
+
+
+Total ViewRootImpl: 2
+Total Views:        170
+Total DisplayList:  172.73 kB
+</code></pre><p>下面，我将对其中的关键信息进行分析。</p>
+<p><strong>帧的聚合分析数据</strong></p>
+<p>开始的一栏是统计的当前界面所有帧的聚合分析数据，主要作用是<strong>综合查看App的渲染性能以及帧的稳定性。</strong></p>
+<ul>
+<li>Graphics info for pid 1722     [json.chao.com.wanandroid] -&gt; 说明了当前提供的是Awesome-WanAndroid应用界面的帧信息，对应的进程id为1722。</li>
+<li>Total frames rendered 5210 -&gt; 本次dump的数据搜集了5210帧的信息。</li>
+<li>Janky frames: 193 (3.70%) -&gt; 5210帧中有193帧发生了Jank，即单帧耗时时间超过了16ms，卡顿的概率为3.70%。</li>
+<li>50th percentile: 5ms -&gt; 所有帧耗时排序后，其中前50%最大的耗时帧的耗时为5ms。</li>
+<li>90th percentile: 9ms -&gt; 同上，依次类推。</li>
+<li>95th percentile: 13ms -&gt; 同上，依次类推。</li>
+<li>99th percentile: 34ms -&gt; 同上，依次类推。</li>
+<li>Number Missed Vsync: 31 -&gt; 垂直同步失败的帧数为31。</li>
+<li>Number High input latency: 0 -&gt; 处理input耗时的帧数为0。</li>
+<li>Number Slow UI thread: 153 -&gt; 因UI线程的工作而导致耗时的帧数为153。</li>
+<li>Number Slow bitmap uploads: 6 -&gt; 因bitmap加载导致耗时的帧数为6。</li>
+<li>Number Slow issue draw commands: 51 -&gt; 因绘制问题导致耗时的帧数为51。</li>
+<li>HISTOGRAM: 5ms=4254 6ms=131 7ms=144 8ms=87… -&gt; 直方图数据列表，说明了耗时0~5ms的帧数为4254，耗时5~6ms的帧数为131，后续的数据依次类推即可。</li>
+</ul>
+<p>后续的log数据表明了不同组件的缓存占用信息，帧的建立路径信息以及总览信息等等，参考意义不大。</p>
+<p>可以看到，上述的数据只能让我们总体感受到绘制性能的好坏，并不能去定位具体帧的问题，那么，还有更好的方式去获取具体帧的信息吗？</p>
+<p><strong>添加framestats去获取最后120帧的详细信息</strong></p>
+<p>该命令的格式如下：</p>
+<pre><code>adb shell dumpsys gfxinfo &lt;PackageName&gt; framestats
+</code></pre><p>这里还是以Awesome-Android项目为例，输出项目标签页的帧详细信息：</p>
+<pre><code>quchao@quchaodeMacBook-Pro ~ % adb shell dumpsys gfxinfo json.chao.com.wanandroid framestats
+Applications Graphics Acceleration Info:
+Uptime: 603118462 Realtime: 603118462
+
+...
+
+Window: json.chao.com.wanandroid/json.chao.com.wanandroid.ui.main.activity.MainActivity
+Stats since: 603011709157414ns
+Total frames rendered: 3295
+Janky frames: 117 (3.55%)
+50th percentile: 5ms
+90th percentile: 9ms
+95th percentile: 14ms
+99th percentile: 32ms
+Number Missed Vsync: 17
+Number High input latency: 3
+Number Slow UI thread: 97
+Number Slow bitmap uploads: 13
+Number Slow issue draw commands: 20
+HISTOGRAM: 5ms=2710 6ms=75 7ms=81 8ms=70...
+
+---PROFILEDATA---
+Flags,IntendedVsync,Vsync,OldestInputEvent,NewestInputEvent,HandleInputStart,AnimationStart,PerformTraversalsStart,DrawStart,SyncQueued,SyncStart,IssueDrawCommandsStart,SwapBuffers,FrameCompleted,DequeueBufferDuration,QueueBufferDuration,
+0,603111579233508,603111579233508,9223372036854775807,0,603111580203105,603111580207688,603111580417688,603111580651698,603111580981282,603111581033157,603111581263417,603111583942011,603111584638678,1590000,259000,
+0,603111595904553,603111595904553,9223372036854775807,0,603111596650344,603111596692428,603111596828678,603111597073261,603111597301386,603111597362376,603111597600292,603111600584667,603111601288261,1838000,278000,
+...,
+---PROFILEDATA---
+
+...
+</code></pre><p>这里我们只需关注其中的PROFILEDATA一栏，因为它表明了最近120帧每个帧的状态信息。</p>
+<p>因为其中的数据是以csv格式显示的，我们将PROFILEDATA中的数据全部拷贝过来，然后放入一个txt文件中，接着，把.txt后缀改为.csv，使用WPS表格工具打开，如下图所示：</p>
+<p><img src="https://raw.githubusercontent.com/JsonChao/Awesome-Android-Performance/master/screenshots/framestats_data.png" alt="image"></p>
+<p>从上图中，我们看到输出的第一行是对应的输出数据列的格式，下面我将详细进行分析。</p>
+<p><strong>Flags:</strong></p>
+<ul>
+<li>Flags为0则可计算得出该帧耗时：FrameCompleted - IntendedVsync。</li>
+<li>Flags为非0则表示绘制时间超过16ms，为异常帧。</li>
+</ul>
+<p><strong>IntendedVsync：</strong></p>
+<ul>
+<li>帧的预期Vsync时刻，如果预期的Vsync时刻与现实的Vsync时刻不一致，则表明UI线程中有耗时工作导致其无法响应Vsync信号。</li>
+</ul>
+<p><strong>Vsync：</strong></p>
+<ul>
+<li>花费在Vsync监听器和帧绘制的时间，比如Choreographer frame回调、动画、View.getDrawingTime等待。</li>
+<li>理解Vsync：Vsync避免了在屏幕刷新时，把数据从后台缓冲区复制到帧缓冲区所消耗的时间。</li>
+</ul>
+<p><strong>OldestInputEvent：</strong></p>
+<ul>
+<li>输入队列中最旧输入事件的时间戳，如果没有输入事件，则此列数据都为Long.MAX_VALUE。</li>
+<li>通常用于framework层开发。</li>
+</ul>
+<p><strong>NewestInputEvent：</strong></p>
+<ul>
+<li>输入队列中最新输入时间的时间戳，如果没有输入事件，则此列数据都为0。</li>
+<li>计算App大致的延迟添加时间：FrameCompleted - NewestInputEvent。</li>
+<li>通常用于framework层开发。</li>
+</ul>
+<p><strong>HandleInputStart：</strong></p>
+<ul>
+<li>将输入事件分发给App对应的时间戳时刻。</li>
+<li>用于测量App处理输入事件的时间：AnimationStart - HandleInputStart。当值大于2ms时，说明程序花费了很长的时间来处理输入事件，比如View.onTouchEvent等事件。注意在Activity切换或产生点击事件时此值一般都比较大，此时是可以接受的。</li>
+</ul>
+<p><strong>AnimationStart：</strong></p>
+<ul>
+<li>运行Choreographer（舞蹈编排者）注册动画的时间戳。</li>
+<li>用来评估所有运行的所有动画器（ObjectAnimator、ViewPropertyAnimator、常用转换器）需要多长时间：AnimationStart - PerformTraversalsStart。当值大于2ms时，请查看此时是否执行的是自定义动画且动画是否有耗时操作。</li>
+</ul>
+<p><strong>PerformTraversalsStart：</strong></p>
+<ul>
+<li>执行布局递归遍历开始的时间戳。</li>
+<li>用于获取measure、layout的时间：DrawStart - PerformTraversalsStart。（注意滚动或动画期间此值应接近于0）。</li>
+</ul>
+<p><strong>DrawStart：</strong></p>
+<ul>
+<li>draw阶段开始的时间戳，它记录了任何无效视图的DisplayList的起点。</li>
+<li>用于获取视图数中所有无效视图调用View.draw方法所需的时间：SyncStart - DrawStart。</li>
+<li>在此过程中，硬件加速模块中的DisplayList发挥了重要作用，Android系统仍然使用invalidate()调用draw()方法请求屏幕更新和渲染视图，但是对实际图形的处理方式有所不同。Android系统并没有立即执行绘图命令，而是将它们记录在DisplayList中，该列表包含视图层次结构绘图所需的所有信息。相对于软件渲染的另一个优化是，Android系统仅需要记录和更新DispalyList，以显示被invalidate() 标记为dirty的视图。只需重新发布先前记录的Displaylist，即可重新绘制尚未失效的视图。此时的硬件绘制模型主要包括三个过程：刷新视图层级、记录和更新DisplayList、绘制DisplayList。相对于软件绘制模型的刷新视图层级、然后直接去绘制视图层级的两个过程，虽然多了一个步骤，但是节省了很多不必要的绘制开销。</li>
+</ul>
+<p><strong>SyncQueued：</strong></p>
+<ul>
+<li>sync请求发送到RenderThread线程的时间戳。</li>
+<li>获取sync就绪所花费的时间：SyncStart - SyncQueued。如果值大于0.1ms，则说明RenderThread正在忙于处理不同的帧。</li>
+</ul>
+<p><strong>SyncStart：</strong></p>
+<ul>
+<li>绘图的sync阶段开始的时间戳。</li>
+<li>IssueDrawCommandsStart - SyncStart &gt; 0.4ms左右则表明有许多新的位图需要上传至GPU。</li>
+</ul>
+<p><strong>IssueDrawCommandsStart：</strong></p>
+<ul>
+<li>硬件渲染器开始GPU发出绘图命令的时间戳。</li>
+<li>用于观察App此时绘制时消耗了多少GPU：FrameCompleted - IssueDrawCommandsStart。</li>
+</ul>
+<p><strong>SwapBuffers：</strong></p>
+<ul>
+<li>eglSwapBuffers被调用时的时间戳。</li>
+<li>通常用于Framework层开发。</li>
+</ul>
+<p><strong>FrameCompleted：</strong></p>
+<ul>
+<li>当前帧完成绘制的时间戳。</li>
+<li>获取当前帧绘制的总时间：FrameCompleted - IntendedVsync。</li>
+</ul>
+<p>综上，我们可以利用这些数据计算获取我们在自动化测试中想关注的因素，比如帧耗时、该帧调用View.draw方法所消耗的时间。framestats和帧耗时信息等一般2s收集一次，即一次120帧。为了精确控制收集数据的时间窗口，如将数据限制为特定的动画，可以重置计数器，重新聚合统计的信息，对应命令如下：</p>
+<pre><code>adb shell dumpsys gfxinfo &lt;PackageName&gt; reset
+</code></pre><h5 id="2、SurfaceFlinger"><a href="#2、SurfaceFlinger" class="headerlink" title="2、SurfaceFlinger"></a>2、SurfaceFlinger</h5><p>我们都知道，在Android 4.1以后，系统使用了三级缓冲机制，即此时有三个Graphic Buffer，那么<strong>如何查看每个Graphic Buffer占用的内存呢？</strong></p>
+<p>答案是使用SurfaceFlinger，命令如下所示：</p>
+<pre><code>adb shell dumpsys SurfaceFlinger
+</code></pre><p>输出的结果非常多，因为包含很多系统应用和界面的相关信息，这里我们仅过滤出Awesome-WanAndroid应用对应的信息：</p>
+<pre><code>+ Layer 0x7f5a92f000 (json.chao.com.wanandroid/json.chao.com.wanandroid.ui.main.activity.MainActivity#0)
+  layerStack=   0, z=    21050, pos=(0,0), size=(1080,2280), crop=(   0,   0,1080,2280), finalCrop=(   0,   0,  -1,  -1), isOpaque=1, invalidate=0, dataspace=(deprecated) sRGB Linear Full range, pixelformat=RGBA_8888 alpha=0.000, flags=0x00000002, tr=[1.00, 0.00][0.00, 1.00]
+  client=0x7f5dc23600
+  format= 1, activeBuffer=[1080x2280:1088,  1], queued-frames=0, mRefreshPending=0
+        mTexName=386 mCurrentTexture=0
+        mCurrentCrop=[0,0,0,0] mCurrentTransform=0
+        mAbandoned=0
+        - BufferQueue mMaxAcquiredBufferCount=1 mMaxDequeuedBufferCount=2
+          mDequeueBufferCannotBlock=0 mAsyncMode=0
+          default-size=[1080x2280] default-format=1 transform-hint=00 frame-counter=51
+        FIFO(0):
+        Slots:
+          // 序号           // 表明是否使用的状态 // 对象地址 // 当前负责第几帧 // 手机屏幕分辨率大小
+         &gt;[00:0x7f5e05a5c0] state=ACQUIRED 0x7f5b1ca580 frame=51 [1080x2280:1088,  1]
+          [02:0x7f5e05a860] state=FREE     0x7f5b1ca880 frame=49 [1080x2280:1088,  1]
+          [01:0x7f5e05a780] state=FREE     0x7f5b052a00 frame=50 [1080x2280:1088,  1]
+</code></pre><p>在Slots中，显示的是缓冲区相关的信息，可以看到，此时App使用的是00号缓冲区，即第一个缓冲区。</p>
+<p>接着，在SurfaceFlinger命令输出log的最下方有一栏Allocated buffers，这这里可以使用当前缓冲区对应的对象地址去查询其占用的内存大小。具体对应到我们这里的是0x7f5b1ca580，匹配到的结果如下所示：</p>
+<pre><code>0x7f5b052a00: 9690.00 KiB | 1080 (1088) x 2280 |    1 |        1 | 0x10000900 | json.chao.com.wanandroid/json.chao.com.wanandroid.ui.main.activity.MainActivity#0
+0x7f5b1ca580: 9690.00 KiB | 1080 (1088) x 2280 |    1 |        1 | 0x10000900 | json.chao.com.wanandroid/json.chao.com.wanandroid.ui.main.activity.MainActivity#0
+0x7f5b1ca880: 9690.00 KiB | 1080 (1088) x 2280 |    1 |        1 | 0x10000900 | json.chao.com.wanandroid/json.chao.com.wanandroid.ui.main.activity.MainActivity#0
+</code></pre><p>可以看到，这里每一个Graphic Buffer都占用了9MB多的内存，通常分辨率越大，单个Graphic Buffer占用的内存就越多，如1080 x 1920的手机屏幕，一般占用8160kb的内存大小。此外，如果应用使用了其它的Surface，如SurfaceView或TextureView（两者一般用在opengl进行图像处理或视频处理的过程中），这个值会更大。如果当App退到后台，系统就会将这部分内存回收。</p>
+<p>了解了常用布局优化常用的工具与命令之后，我们就应该开始着手进行优化了，但在开始之前，我们还得对Android的布局加载原理有比较深入的了解。</p>
+<div align="center"><br><img src="http://image.diydoutu.com/12139979399503.gif?imageView2/0/format/gif/q/75" width="30%"><br></div>
+
+
+<h3 id="四、布局加载原理"><a href="#四、布局加载原理" class="headerlink" title="四、布局加载原理"></a>四、布局加载原理</h3><h4 id="1、为什么要了解Android布局加载原理？"><a href="#1、为什么要了解Android布局加载原理？" class="headerlink" title="1、为什么要了解Android布局加载原理？"></a>1、为什么要了解Android布局加载原理？</h4><p>知其然知其所以然，不仅要明白在平时开发过程中是怎样对布局API进行调用，还要知道它内部的实现原理是什么。明白具体的实现原理与流程之后，我们可能会发现更多可优化的点。</p>
+<h4 id="2、布局加载源码分析"><a href="#2、布局加载源码分析" class="headerlink" title="2、布局加载源码分析"></a>2、布局加载源码分析</h4><p>我们都知道，Android的布局都是通过setContentView()这个方法进行设置的，那么它的内部肯定实现了布局的加载，接下来，我们就详细分析下它内部的实现原理与流程。</p>
+<p>以<a href="https://github.com/JsonChao/Awesome-WanAndroid" target="_blank" rel="external">Awesome-WanAndroid</a>项目为例，我们在通用Activity基类的onCreate方法中进行了布局的设置：</p>
+<pre><code>setContentView(getLayoutId());
+</code></pre><p>点进去，发现是调用了AppCompatActivity的setContentView方法：</p>
+<pre><code>@Override
+public void setContentView(@LayoutRes int layoutResID) {
+    getDelegate().setContentView(layoutResID);
+}
+</code></pre><p>这里的setContentView其实是AppCompatDelegate这个代理类的抽象方法：</p>
+<pre><code> /**
+ * Should be called instead of {@link Activity#setContentView(int)}}
+ */
+public abstract void setContentView(@LayoutRes int resId);
+</code></pre><p>在这个抽象方法的左边，会有一个绿色的小圆圈，点击它就可以查看到对应的实现类与方法，这里的实现类是AppCompatDelegateImplV9，实现方法如下所示：</p>
+<pre><code> @Override
+public void setContentView(int resId) {
+    ensureSubDecor();
+    ViewGroup contentParent = (ViewGroup) mSubDecor.findViewById(android.R.id.content);
+    contentParent.removeAllViews();
+    LayoutInflater.from(mContext).inflate(resId, contentParent);
+    mOriginalWindowCallback.onContentChanged();
+}
+</code></pre><p>setContentView方法中主要是获取到了content父布局，移除其内部所有视图之后并<strong>最终调用了LayoutInflater对象的inflate去加载对应的布局</strong>。接下来，我们关注inflate内部的实现：</p>
+<pre><code>public View inflate(@LayoutRes int resource, @Nullable ViewGroup root) {
+    return inflate(resource, root, root != null);
+}
+</code></pre><p>这里只是调用了inflate另一个的重载方法：</p>
+<pre><code>public View inflate(@LayoutRes int resource, @Nullable ViewGroup root, boolean attachToRoot) {
+    final Resources res = getContext().getResources();
+    if (DEBUG) {
+        Log.d(TAG, &quot;INFLATING from resource: \&quot;&quot; + res.getResourceName(resource) + &quot;\&quot; (&quot;
+                + Integer.toHexString(resource) + &quot;)&quot;);
+    }
+
+    // 1
+    final XmlResourceParser parser = res.getLayout(resource);
+    try {
+        // 2
+        return inflate(parser, root, attachToRoot);
+    } finally {
+        parser.close();
+    }
+}
+</code></pre><p>在注释1处，通过Resources的getLayout方法获取到了一个XmlResourceParser对象，继续跟踪下getLayout方法：</p>
+<pre><code>public XmlResourceParser getLayout(@LayoutRes int id) throws NotFoundException {
+    return loadXmlResourceParser(id, &quot;layout&quot;);
+}
+</code></pre><p>这里继续调用了loadXmlResourceParser方法，注意第二个参数传入的为layout，说明此时加载的是一个Xml资源布局解析器。我们继续跟踪loadXmlResourceParse方法：</p>
+<pre><code>@NonNull
+XmlResourceParser loadXmlResourceParser(@AnyRes int id, @NonNull String type)
+        throws NotFoundException {
+    final TypedValue value = obtainTempTypedValue();
+    try {
+        final ResourcesImpl impl = mResourcesImpl;
+        impl.getValue(id, value, true);
+        if (value.type == TypedValue.TYPE_STRING) {
+            // 1
+            return impl.loadXmlResourceParser(value.string.toString(), id,
+                    value.assetCookie, type);
+        }
+        throw new NotFoundException(&quot;Resource ID #0x&quot; + Integer.toHexString(id)
+                + &quot; type #0x&quot; + Integer.toHexString(value.type) + &quot; is not valid&quot;);
+    } finally {
+        releaseTempTypedValue(value);
+    }
+}
+</code></pre><p>在注释1处，如果值类型为字符串的话，则调用了ResourcesImpl实例的loadXmlResourceParser方法。我们首先看看这个方法的注释：</p>
+<pre><code>/**
+ * Loads an XML parser for the specified file.
+ *
+ * @param file the path for the XML file to parse
+ * @param id the resource identifier for the file
+ * @param assetCookie the asset cookie for the file
+ * @param type the type of resource (used for logging)
+ * @return a parser for the specified XML file
+ * @throws NotFoundException if the file could not be loaded
+ */
+@NonNull
+XmlResourceParser loadXmlResourceParser(@NonNull String file, @AnyRes int id, int assetCookie,
+        @NonNull String type)
+        throws NotFoundException {
+
+        ...
+
+        final XmlBlock block = mAssets.openXmlBlockAsset(assetCookie, file);
+
+        ...
+
+        return block.newParser();
+
+        ...
+}
+</code></pre><p>注释的意思说明了这个方法是用于<strong>加载指定文件的Xml解析器</strong>，这里我们之间查看关键的mAssets.openXmlBlockAsset方法，这里的mAssets对象是AssetManager类型的，看看AssetManager实例的openXmlBlockAsset方法做了什么处理：</p>
+<pre><code>/**
+ * {@hide}
+ * Retrieve a non-asset as a compiled XML file.  Not for use by
+ * applications.
+ * 
+ * @param cookie Identifier of the package to be opened.
+ * @param fileName Name of the asset to retrieve.
+ */
+/*package*/ final XmlBlock openXmlBlockAsset(int cookie, String fileName)
+    throws IOException {
+    synchronized (this) {
+        if (!mOpen) {
+            throw new RuntimeException(&quot;Assetmanager has been closed&quot;);
+        }
+        // 1
+        long xmlBlock = openXmlAssetNative(cookie, fileName);
+        if (xmlBlock != 0) {
+            XmlBlock res = new XmlBlock(this, xmlBlock);
+            incRefsLocked(res.hashCode());
+            return res;
+        }
+    }
+    throw new FileNotFoundException(&quot;Asset XML file: &quot; + fileName);
+}
+</code></pre><p>可以看到，最终是调用了注释1处的openXmlAssetNative方法，这是定义在AssetManager中的一个Native方法：</p>
+<pre><code>private native final long openXmlAssetNative(int cookie, String fileName);
+</code></pre><p>与此同时，我们可以猜到读取Xml文件肯定是通过IO流的方式进行的，而openXmlBlockAsset方法后抛出的IOException异常也验证了我们的想法。因为涉及到IO流的读取，所以这里是Android布局加载流程一个耗时点<br>，也有可能是我们后续优化的一个方向。</p>
+<p>分析完Resources实例的getLayout方法的实现之后，我们继续跟踪inflate方法的注释2处：</p>
+<pre><code>public View inflate(@LayoutRes int resource, @Nullable ViewGroup root, boolean attachToRoot) {
+    final Resources res = getContext().getResources();
+    if (DEBUG) {
+        Log.d(TAG, &quot;INFLATING from resource: \&quot;&quot; + res.getResourceName(resource) + &quot;\&quot; (&quot;
+                + Integer.toHexString(resource) + &quot;)&quot;);
+    }
+
+    // 1
+    final XmlResourceParser parser = res.getLayout(resource);
+    try {
+        // 2
+        return inflate(parser, root, attachToRoot);
+    } finally {
+        parser.close();
+    }
+}
+</code></pre><p>infalte的实现代码如下：</p>
+<pre><code>public View inflate(XmlPullParser parser, @Nullable ViewGroup root, boolean attachToRoot) {
+    synchronized (mConstructorArgs) {
+
+        ...
+
+        try {
+            // Look for the root node.
+            int type;
+            while ((type = parser.next()) != XmlPullParser.START_TAG &amp;&amp;
+                    type != XmlPullParser.END_DOCUMENT) {
+                // Empty
+            }
+
+            if (type != XmlPullParser.START_TAG) {
+                throw new InflateException(parser.getPositionDescription()
+                        + &quot;: No start tag found!&quot;);
+            }
+
+            final String name = parser.getName();
+
+            ...
+
+            // 1
+            if (TAG_MERGE.equals(name)) {
+                if (root == null || !attachToRoot) {
+                    throw new InflateException(&quot;&lt;merge /&gt; can be used only with a valid &quot;
+                            + &quot;ViewGroup root and attachToRoot=true&quot;);
+                }
+
+                rInflate(parser, root, inflaterContext, attrs, false);
+            } else {
+                // Temp is the root view that was found in the xml
+                // 2
+                final View temp = createViewFromTag(root, name, inflaterContext, attrs);
+
+                ...
+            }
+            ...
+        }
+        ...
+    }
+    ...
+}
+</code></pre><p>可以看到，infalte内部是通过XmlPull解析的方式对布局的每一个节点进行创建对应的视图的。首先，在注释1处会判断节点是否是merge标签，如果是，则对merge标签进行校验，如果merge节点不是当前布局的父节点，则抛出异常。然后，在注释2处，<strong>通过createViewFromTag方法去根据每一个标签创建对应的View视图</strong>。我们继续跟踪下createViewFromTag方法的实现：</p>
+<pre><code>private View createViewFromTag(View parent, String name, Context context, AttributeSet attrs) {
+    return createViewFromTag(parent, name, context, attrs, false);
+}
+
+ View createViewFromTag(View parent, String name, Context context, AttributeSet attrs,
+        boolean ignoreThemeAttr) {
+
+    ...
+
+    try {
+        View view;
+        if (mFactory2 != null) {
+            view = mFactory2.onCreateView(parent, name, context, attrs);
+        } else if (mFactory != null) {
+            view = mFactory.onCreateView(name, context, attrs);
+        } else {
+            view = null;
+        }
+
+        if (view == null &amp;&amp; mPrivateFactory != null) {
+            view = mPrivateFactory.onCreateView(parent, name, context, attrs);
+        }
+
+        if (view == null) {
+            final Object lastContext = mConstructorArgs[0];
+            mConstructorArgs[0] = context;
+            try {
+                if (-1 == name.indexOf(&apos;.&apos;)) {
+                    view = onCreateView(parent, name, attrs);
+                } else {
+                    view = createView(name, null, attrs);
+                }
+            } finally {
+                mConstructorArgs[0] = lastContext;
+            }
+        }
+
+        return view;
+    } 
+    ...
+}
+</code></pre><p>在createViewFromTag方法中，首先会判断mFactory2是否存在，存在就会使用mFactory2的onCreateView方法区创建视图，否则就会调用mFactory的onCreateView方法，接下来，如果此时的tag是一个Fragment，则会调用mPrivateFactory的onCreateView方法，否则的话，最终都会调用LayoutInflater实例的createView方法：</p>
+<pre><code> public final View createView(String name, String prefix, AttributeSet attrs)
+        throws ClassNotFoundException, InflateException {
+
+   ...
+
+    try {
+        Trace.traceBegin(Trace.TRACE_TAG_VIEW, name);
+
+        if (constructor == null) {
+            // Class not found in the cache, see if it&apos;s real, and try to add it
+            // 1
+            clazz = mContext.getClassLoader().loadClass(
+                    prefix != null ? (prefix + name) : name).asSubclass(View.class);
+
+            if (mFilter != null &amp;&amp; clazz != null) {
+                boolean allowed = mFilter.onLoadClass(clazz);
+                if (!allowed) {
+                    failNotAllowed(name, prefix, attrs);
+                }
+            }
+            // 2
+            constructor = clazz.getConstructor(mConstructorSignature);
+            constructor.setAccessible(true);
+            sConstructorMap.put(name, constructor);
+        } else {
+            ...
+        }
+
+        ...
+
+        // 3
+        final View view = constructor.newInstance(args);
+        if (view instanceof ViewStub) {
+            // Use the same context when inflating ViewStub later.
+            final ViewStub viewStub = (ViewStub) view;
+            viewStub.setLayoutInflater(cloneInContext((Context) args[0]));
+        }
+        mConstructorArgs[0] = lastContext;
+        return view;
+
+    } 
+   ...
+}
+</code></pre><p>LayoutInflater的createView方法中，首先，在注释1处，使用类加载器创建了对应的Class实例，然后在注释2处根据Class实例获取到了对应的构造器实例，并最终在注释3处通过构造器实例constructor的newInstance方法创建了对应的View对象。可以看到，在视图节点的创建过程中采用到了反射，我们都知道反射是比较耗性能的，过多的反射可能会导致布局加载过程变慢，这个点可能是后续优化的一个方向。</p>
+<p>最后，我们来总结下Android中的布局加载流程：</p>
+<ul>
+<li>1、在setContentView方法中，会通过LayoutInflater的inflate方法去加载对应的布局。</li>
+<li>2、inflate方法中首先会调用Resources的getLayout方法去通过IO的方式去加载对应的Xml布局解析器到内存中。</li>
+<li>3、接着，会通过createViewFromTag根据每一个tag创建具体的View对象。</li>
+<li>4、它内部主要是按优先顺序为Factory2和Factory的onCreatView、createView方法进行View的创建，而createView方法内部采用了构造器反射的方式实现。</li>
+</ul>
+<p>从以上分析可知，在Android的布局加载流程中，性能瓶颈主要存在两个地方：</p>
+<ul>
+<li>1、布局文件解析中的IO过程。</li>
+<li>2、创建View对象时的反射过程。</li>
+</ul>
+<h4 id="3、LayoutInflater-Factory分析"><a href="#3、LayoutInflater-Factory分析" class="headerlink" title="3、LayoutInflater.Factory分析"></a>3、LayoutInflater.Factory分析</h4><p>在前面分析的View的创建过程中，我们明白系统会优先使用Factory2和Factory去创建对应的View，那么它们究竟是干什么的呢？</p>
+<p>其实LayoutInflater.Factory是layoutInflater中创建View的一个Hook，Hook即挂钩，我们可以利用它在创建View的过程中加入一些日志或进行其它更高级的定制化处理：比如可以全局替换自定义的TextView等等。</p>
+<p>接下来，我们查看下Factory2的实现：</p>
+<pre><code> public interface Factory2 extends Factory {
+    /**
+     * Version of {@link #onCreateView(String, Context, AttributeSet)}
+     * that also supplies the parent that the view created view will be
+     * placed in.
+     *
+     * @param parent The parent that the created view will be placed
+     * in; &lt;em&gt;note that this may be null&lt;/em&gt;.
+     * @param name Tag name to be inflated.
+     * @param context The context the view is being created in.
+     * @param attrs Inflation attributes as specified in XML file.
+     *
+     * @return View Newly created view. Return null for the default
+     *         behavior.
+     */
+    public View onCreateView(View parent, String name, Context context, AttributeSet attrs);
+}
+</code></pre><p>可以看到，Factory2是直接继承于Factory,继续跟踪下Factory的源码：</p>
+<pre><code> public interface Factory {
+    /**
+     * Hook you can supply that is called when inflating from a LayoutInflater.
+     * You can use this to customize the tag names available in your XML
+     * layout files.
+     *
+     * &lt;p&gt;
+     * Note that it is good practice to prefix these custom names with your
+     * package (i.e., com.coolcompany.apps) to avoid conflicts with system
+     * names.
+     *
+     * @param name Tag name to be inflated.
+     * @param context The context the view is being created in.
+     * @param attrs Inflation attributes as specified in XML file.
+     *
+     * @return View Newly created view. Return null for the default
+     *         behavior.
+     */
+    public View onCreateView(String name, Context context, AttributeSet attrs);
+}
+</code></pre><p>onCreateView方法中的第一个参数就是指的tag名字，比如TextView等等，我们还注意到Factory2比Factory的onCreateView方法多一个parent的参数，这是当前创建的View的父View。看来，Factory2比Factory功能要更强大一些。</p>
+<p>最后，我们总结下Factory与Factory2的区别：</p>
+<ul>
+<li>1、Factory2继承与Factory。</li>
+<li>2、Factory2比Factory的onCreateView方法多一个parent的参数，即当前创建View的父View。</li>
+</ul>
+<h3 id="五、获取界面布局耗时"><a href="#五、获取界面布局耗时" class="headerlink" title="五、获取界面布局耗时"></a>五、获取界面布局耗时</h3><h4 id="1、常规方式"><a href="#1、常规方式" class="headerlink" title="1、常规方式"></a>1、常规方式</h4><p>如果要获取每个界面的加载耗时，我们就必需在setContentView方法前后进行手动埋点。但是它有如下缺点：</p>
+<ul>
+<li>1、不够优雅。</li>
+<li>2、代码有侵入性。</li>
+</ul>
+<h4 id="2、AOP"><a href="#2、AOP" class="headerlink" title="2、AOP"></a>2、AOP</h4><p>关于AOP的使用，我在<a href="">《深入探索Android启动速度优化》</a>一文的<strong>AOP(Aspect Oriented Programming)打点</strong>部分已经详细讲解过了，这里就不再赘述，还不了解的同学可以点击上面的链接先去学习下AOP的使用。</p>
+<p>我们要使用AOP去获取界面布局的耗时，那么我们的切入点就是setContentView方法，声明一个@Aspect注解的PerformanceAop类，然后，我们就可以在里面实现对setContentView进行切面的方法，如下所示：</p>
+<pre><code>@Around(&quot;execution(* android.app.Activity.setContentView(..))&quot;)
+public void getSetContentViewTime(ProceedingJoinPoint joinPoint) {
+    Signature signature = joinPoint.getSignature();
+    String name = signature.toShortString();
+    long time = System.currentTimeMillis();
+    try {
+        joinPoint.proceed();
+    } catch (Throwable throwable) {
+        throwable.printStackTrace();
+    }
+    LogHelper.i(name + &quot; cost &quot; + (System.currentTimeMillis() - time));
+}
+</code></pre><p>为了获取方法的耗时，我们必须使用@Around注解，这样第一个参数ProceedingJoinPoint就可以提供proceed方法去执行我们的setContentView方法，在此方法的前后就可以获取setContentView方法的耗时。后面的execution表明了在setContentView方法执行内部去调用我们写好的getSetContentViewTime方法，后面括号内的*是通配符，表示匹配任何Activity的setContentView方法，并且方法参数的个数和类型不做限定。</p>
+<p>完成AOP获取界面布局耗时的方法之后，重装应用，打开几个Activity界面，就可以看到如下的界面布局加载耗时日志：</p>
+<pre><code>2020-01-01 12:20:17.605 12297-12297/json.chao.com.wanandroid I/WanAndroid-PEGASILOG: │ [PerformanceAop.java | 36 | getSetContentViewTime] AppCompatActivity.setContentView(..) cost 174
+2020-01-01 12:20:58.010 12297-12297/json.chao.com.wanandroid I/WanAndroid-PEGASILOG: │ [PerformanceAop.java | 36 | getSetContentViewTime] AppCompatActivity.setContentView(..) cost 13
+2020-01-01 12:21:27.058 12297-12297/json.chao.com.wanandroid I/WanAndroid-PEGASILOG: │ [PerformanceAop.java | 36 | getSetContentViewTime] AppCompatActivity.setContentView(..) cost 44
+2020-01-01 12:21:31.128 12297-12297/json.chao.com.wanandroid I/WanAndroid-PEGASILOG: │ [PerformanceAop.java | 36 | getSetContentViewTime] AppCompatActivity.setContentView(..) cost 61
+2020-01-01 12:23:09.805 12297-12297/json.chao.com.wanandroid I/WanAndroid-PEGASILOG: │ [PerformanceAop.java | 36 | getSetContentViewTime] AppCompatActivity.setContentView(..) cost 22
+</code></pre><p>可以看到，Awesome-WanAndroid项目里面各个界面的加载耗时一般都在几十毫秒作用，加载慢的界面可能会达到100多ms，当然，不同手机的配置不一样，但是，这足够让我们发现那些界面布局的加载比较慢。</p>
+<h4 id="3、LayoutInflaterCompat-setFactory2"><a href="#3、LayoutInflaterCompat-setFactory2" class="headerlink" title="3、LayoutInflaterCompat.setFactory2"></a>3、LayoutInflaterCompat.setFactory2</h4><p>上面我们使用了AOP的方式监控了Activity的布局加载耗时，那么，如果我们需要监控每一个控件的加载耗时，该怎么实现呢？</p>
+<p>答案是使用LayoutInflater.Factory2，我们在基类Activity的onCreate方法中直接使用LayoutInflaterCompat.setFactory2方法对Factory2的onCreateView方法进行重写，代码如下所示：</p>
+<pre><code>@Override
+protected void onCreate(@Nullable Bundle savedInstanceState) {
+
+    // 使用LayoutInflaterCompat.Factory2全局监控Activity界面每一个控件的加载耗时，
+    // 也可以做全局的自定义控件替换处理，比如：将TextView全局替换为自定义的TextView。
+    LayoutInflaterCompat.setFactory2(getLayoutInflater(), new LayoutInflater.Factory2() {
+        @Override
+        public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {
+
+            if (TextUtils.equals(name, &quot;TextView&quot;)) {
+                // 生成自定义TextView
+            }
+            long time = System.currentTimeMillis();
+            // 1
+            View view = getDelegate().createView(parent, name, context, attrs);
+            LogHelper.i(name + &quot; cost &quot; + (System.currentTimeMillis() - time));
+            return view;
+        }
+
+        @Override
+        public View onCreateView(String name, Context context, AttributeSet attrs) {
+            return null;
+        }
+    });
+
+    // 2、setFactory2方法需在super.onCreate方法前调用，否则无效        
+    super.onCreate(savedInstanceState);
+    setContentView(getLayoutId());
+    unBinder = ButterKnife.bind(this);
+    mActivity = this;
+    ActivityCollector.getInstance().addActivity(this);
+    onViewCreated();
+    initToolbar();
+    initEventAndData();
+}
+</code></pre><p>这样我们就实现了利用LayoutInflaterCompat.Factory2全局监控Activity界面每一个控件加载耗时的处理，后续我们可以将这些数据上传到我们自己的APM服务端，作为监控数据可以分析出哪些控件加载比较耗时。当然，这里我们也可以做全局的自定义控件替换处理，比如在上述代码中，我们可以将TextView全局替换为自定义的TextView。</p>
+<p>然后，我们注意到这里我们使用getDelegate().createView方法来创建对应的View实例，跟踪进去发现这里的createView是一个抽象方法：</p>
+<pre><code>public abstract View createView(@Nullable View parent, String name, @NonNull Context context,
+       @NonNull AttributeSet attrs);
+</code></pre><p>它对应的实现方法为AppCompatDelegateImplV9对象的createView方法，代码如下所示：</p>
+<pre><code>@Override
+public View createView(View parent, final String name, @NonNull Context context,
+        @NonNull AttributeSet attrs) {
+
+    ...
+
+    return mAppCompatViewInflater.createView(parent, name, context, attrs, inheritContext,
+            IS_PRE_LOLLIPOP, /* Only read android:theme pre-L (L+ handles this anyway) */
+            true, /* Read read app:theme as a fallback at all times for legacy reasons */
+            VectorEnabledTintResources.shouldBeUsed() /* Only tint wrap the context if enabled */
+    );
+}
+</code></pre><p>这里最终又调用了AppCompatViewInflater对象的createView方法：</p>
+<pre><code> public final View createView(View parent, final String name, @NonNull Context context,
+        @NonNull AttributeSet attrs, boolean inheritContext,
+        boolean readAndroidTheme, boolean readAppTheme, boolean wrapContext) {
+
+    ...
+
+    // We need to &apos;inject&apos; our tint aware Views in place of the standard framework versions
+    switch (name) {
+        case &quot;TextView&quot;:
+            view = new AppCompatTextView(context, attrs);
+            break;
+        case &quot;ImageView&quot;:
+            view = new AppCompatImageView(context, attrs);
+            break;
+        case &quot;Button&quot;:
+            view = new AppCompatButton(context, attrs);
+            break;
+        case &quot;EditText&quot;:
+            view = new AppCompatEditText(context, attrs);
+            break;
+        case &quot;Spinner&quot;:
+            view = new AppCompatSpinner(context, attrs);
+            break;
+        case &quot;ImageButton&quot;:
+            view = new AppCompatImageButton(context, attrs);
+            break;
+        case &quot;CheckBox&quot;:
+            view = new AppCompatCheckBox(context, attrs);
+            break;
+        case &quot;RadioButton&quot;:
+            view = new AppCompatRadioButton(context, attrs);
+            break;
+        case &quot;CheckedTextView&quot;:
+            view = new AppCompatCheckedTextView(context, attrs);
+            break;
+        case &quot;AutoCompleteTextView&quot;:
+            view = new AppCompatAutoCompleteTextView(context, attrs);
+            break;
+        case &quot;MultiAutoCompleteTextView&quot;:
+            view = new AppCompatMultiAutoCompleteTextView(context, attrs);
+            break;
+        case &quot;RatingBar&quot;:
+            view = new AppCompatRatingBar(context, attrs);
+            break;
+        case &quot;SeekBar&quot;:
+            view = new AppCompatSeekBar(context, attrs);
+            break;
+    }
+
+    if (view == null &amp;&amp; originalContext != context) {
+        // If the original context does not equal our themed context, then we need to manually
+        // inflate it using the name so that android:theme takes effect.
+        view = createViewFromTag(context, name, attrs);
+    }
+
+    if (view != null) {
+        // If we have created a view, check its android:onClick
+        checkOnClickListener(view, attrs);
+    }
+
+    return view;
+}
+</code></pre><p>在AppCompatViewInflater对象的createView方法中系统根据不同的tag名字创建出了对应的AppCompat兼容控件。看到这里，我们明白了Android系统是使用了LayoutInflater的Factor2/Factory结合了AppCompat兼容类来进行高级版本控件的适配。</p>
+<p>接下来，我们注意到注释1处，setFactory2方法需在super.onCreate方法前调用，否则无效，这是为什么呢？</p>
+<p>这里可以先大胆猜测一下，可能是因为在super.onCreate()方法中就需要将Factory2实例存储到内存中。下面，我们就跟踪一下super.onCreate()的源码，看看是否如我们所假设的一样。AppCompatActivity的onCreate方法如下所示：</p>
+<pre><code>@Override
+protected void onCreate(@Nullable Bundle savedInstanceState) {
+    final AppCompatDelegate delegate = getDelegate();
+    delegate.installViewFactory();
+    delegate.onCreate(savedInstanceState);
+    if (delegate.applyDayNight() &amp;&amp; mThemeId != 0) {
+        // If DayNight has been applied, we need to re-apply the theme for
+        // the changes to take effect. On API 23+, we should bypass
+        // setTheme(), which will no-op if the theme ID is identical to the
+        // current theme ID.
+        if (Build.VERSION.SDK_INT &gt;= 23) {
+            onApplyThemeResource(getTheme(), mThemeId, false);
+        } else {
+            setTheme(mThemeId);
+        }
+    }
+    super.onCreate(savedInstanceState);
+}
+</code></pre><p>第一行的delegate实例的installViewFactory()方法就吸引了我们的注意，因为它包含了一个敏感的关键字“Factory“，这里我们继续跟踪进installViewFactory()方法：</p>
+<pre><code>public abstract void installViewFactory();
+</code></pre><p>这里一个是抽象方法，点击左边绿色圆圈，可以看到这里具体的实现类为AppCompatDelegateImplV9，其实现的installViewFactory()方法如下所示：</p>
+<pre><code>@Override
+public void installViewFactory() {
+    LayoutInflater layoutInflater = LayoutInflater.from(mContext);
+    if (layoutInflater.getFactory() == null) {
+        LayoutInflaterCompat.setFactory2(layoutInflater, this);
+    } else {
+        if (!(layoutInflater.getFactory2() instanceof AppCompatDelegateImplV9)) {
+            Log.i(TAG, &quot;The Activity&apos;s LayoutInflater already has a Factory installed&quot;
+                    + &quot; so we can not install AppCompat&apos;s&quot;);
+        }
+    }
+}
+</code></pre><p>可以看到，如果我们在super.onCreate()方法前没有设置LayoutInflater的Factory2实例的话，这里就会设置一个默认的Factory2。最后，我们再来看下默认Factory2的onCreateView方法的实现：</p>
+<pre><code>/**
+ * From {@link LayoutInflater.Factory2}.
+ */
+@Override
+public final View onCreateView(View parent, String name, Context context, AttributeSet attrs) {
+    // 1、First let the Activity&apos;s Factory try and inflate the view
+    final View view = callActivityOnCreateView(parent, name, context, attrs);
+    if (view != null) {
+        return view;
+    }
+
+    // 2、If the Factory didn&apos;t handle it, let our createView() method try
+    return createView(parent, name, context, attrs);
+}
+</code></pre><p>在注释1处，我们首先会尝试让Activity的Facotry实例去加载对应的View实例，如果Factory不能够处理它，在注释2处，就会调用createView方法去创建对应的View，AppCompatDelegateImplV9类的createView方法的实现上面我们已经分析过了，此处就不再赘述了。</p>
+<p>下篇，我们将进入布局优化的实战环节，敬请期待~</p>
+<h5 id="参考链接："><a href="#参考链接：" class="headerlink" title="参考链接："></a>参考链接：</h5><hr>
+<p>1、<a href="https://coding.imooc.com/class/308.html" target="_blank" rel="external">国内Top团队大牛带你玩转Android性能分析与优化 第五章 布局优化</a></p>
+<p>2、<a href="https://time.geekbang.org/column/article/80921" target="_blank" rel="external">极客时间之Android开发高手课 UI优化</a></p>
+<p>3、<a href="http://mobile.zol.com.cn/680/6809348.html" target="_blank" rel="external">手机屏幕的前世今生 可能比你想的还精彩</a></p>
+<p>4、<a href="https://www.zhihu.com/question/22263252" target="_blank" rel="external">OLED 和 LCD 什么区别？</a></p>
+<p>5、<a href="https://mp.weixin.qq.com/s?__biz=MzAxMTI4MTkwNQ==&amp;mid=2650826034&amp;idx=1&amp;sn=5e86768d7abc1850b057941cdd003927&amp;chksm=80b7b1acb7c038ba8912b9a09f7e0d41eef13ec0cea19462e47c4e4fe6a08ab760fec864c777&amp;scene=21#wechat_redirect" target="_blank" rel="external">Android 目前稳定高效的UI适配方案</a></p>
+<p>6、<a href="https://mp.weixin.qq.com/s?__biz=MzAxMTI4MTkwNQ==&amp;mid=2650826381&amp;idx=1&amp;sn=5b71b7f1654b04a55fca25b0e90a4433&amp;chksm=80b7b213b7c03b0598f6014bfa2f7de12e1f32ca9f7b7fc49a2cf0f96440e4a7897d45c788fb&amp;scene=21#wechat_redirect" target="_blank" rel="external">骚年你的屏幕适配方式该升级了!-smallestWidth 限定符适配方案</a></p>
+<p>7、<a href="https://github.com/ladingwu/dimens_sw" target="_blank" rel="external">dimens_sw github</a></p>
+<p>8、<a href="https://mp.weixin.qq.com/s?__biz=MzI1MzYzMjE0MQ==&amp;mid=2247484502&amp;idx=2&amp;sn=a60ea223de4171dd2022bc2c71e09351&amp;scene=21#wechat_redirect" target="_blank" rel="external">一种极低成本的Android屏幕适配方式</a></p>
+<p>9、<a href="https://mp.weixin.qq.com/s/oSBUA7QKMWZURm1AHMyubA" target="_blank" rel="external">骚年你的屏幕适配方式该升级了!-今日头条适配方案</a></p>
+<p>10、<a href="https://juejin.im/post/5bce688e6fb9a05cf715d1c2#heading-0" target="_blank" rel="external">今日头条屏幕适配方案终极版正式发布!</a></p>
+<p>11、<a href="https://www.jianshu.com/p/b492140a555f" target="_blank" rel="external">使用Systrace分析UI性能</a></p>
+<p>12、<a href="https://gapid.dev/about/" target="_blank" rel="external">GAPID-Graphics API Debugger</a></p>
+<p>13、<a href="http://hukai.me/android-performance-render/" target="_blank" rel="external">Android性能优化之渲染篇</a></p>
+<p>14、<a href="https://blog.csdn.net/qian520ao/article/details/81144167" target="_blank" rel="external">Android 屏幕绘制机制及硬件加速</a></p>
+<p>15、<a href="https://blog.csdn.net/qian520ao/article/details/81144167" target="_blank" rel="external">Android 图形处理官方教程</a></p>
+<p>16、<a href="https://zhuanlan.zhihu.com/p/20712354" target="_blank" rel="external">Vulkan - 高性能渲染</a></p>
+<p>17、<a href="https://source.android.com/devices/graphics/arch-vulkan" target="_blank" rel="external">Android Vulkan Tutorial</a></p>
+<p>18、<a href="https://developer.android.com/training/testing/performance#top_of_page" target="_blank" rel="external">Test UI performance-gfxinfo</a></p>
+<p>19、<a href="https://www.jianshu.com/p/7477e381a7ea" target="_blank" rel="external">使用dumpsys gfxinfo 测UI性能（适用于Android6.0以后）</a></p>
+<p>20、<a href="https://developer.android.com/reference/android/view/TextureView" target="_blank" rel="external">TextureView API</a></p>
+<p>21、<a href="https://developer.android.com/reference/android/text/PrecomputedText" target="_blank" rel="external">PrecomputedText API</a></p>
+<p>22、<a href="https://fblitho.com/docs/tutorial" target="_blank" rel="external">Litho Tutorial</a></p>
+<p>23、<a href="https://tech.meituan.com/2019/03/14/litho-use-and-principle-analysis.html" target="_blank" rel="external">基本功 | Litho的使用及原理剖析</a></p>
+<p>24、<a href="https://flutter.cn/docs/resources/technical-overview" target="_blank" rel="external">Flutter官方文档中文版</a></p>
+<p>25、<a href="https://www.bilibili.com/video/av48772383/?spm_id_from=333.788.videocard.0" target="_blank" rel="external">[Google Flutter 团队出品] 深入了解 Flutter 的高性能图形渲染</a></p>
+<p>26、<a href="http://gityuan.com/2019/06/15/flutter_ui_draw/" target="_blank" rel="external">Flutter渲染机制—UI线程</a></p>
+<p>27、<a href="https://mp.weixin.qq.com/s?__biz=MzUyMDAxMjQ3Ng==&amp;mid=2247489230&amp;idx=1&amp;sn=adc193e35903ab90a4c966059933a35a&amp;source=41#wechat_redirect" target="_blank" rel="external">RenderThread:异步渲染动画</a></p>
+<p>28、<a href="https://developer.android.com/guide/topics/renderscript/compute" target="_blank" rel="external">RenderScript官方文档</a></p>
+<p>29、<a href="http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2016/0504/4205.html?utm_source=itdadao&amp;utm_medium=referral" target="_blank" rel="external">RenderScript :简单而快速的图像处理</a></p>
+<p>30、<a href="https://www.jianshu.com/p/b72da42e1463" target="_blank" rel="external">RenderScript渲染利器</a></p>
+<h2 id="赞赏"><a href="#赞赏" class="headerlink" title="赞赏"></a>赞赏</h2><p>如果这个库对您有很大帮助，您愿意支持这个项目的进一步开发和这个项目的持续维护。你可以扫描下面的二维码，让我喝一杯咖啡或啤酒。非常感谢您的捐赠。谢谢！</p>
+<div align="center"><br><img src="https://raw.githubusercontent.com/JsonChao/Awesome-Android-Interview/master/screenshot/wexin_play.jpg" width="20%"><img src="https://raw.githubusercontent.com/JsonChao/Awesome-Android-Interview/master/screenshot/Apaliy.jpg" width="20%"><br></div>
+
+
+<hr>
+<h2 id="Contanct-Me"><a href="#Contanct-Me" class="headerlink" title="Contanct Me"></a>Contanct Me</h2><h3 id="●-微信："><a href="#●-微信：" class="headerlink" title="●  微信："></a>●  微信：</h3><blockquote>
+<p>欢迎关注我的微信：<code>bcce5360</code>  </p>
+</blockquote>
+<h3 id="●-微信群："><a href="#●-微信群：" class="headerlink" title="●  微信群："></a>●  微信群：</h3><blockquote>
+<p><strong>微信群如果不能扫码加入，麻烦大家想进微信群的朋友们，加我微信拉你进群。</strong></p>
+</blockquote>
+<div align="center"><br><img src="https://raw.githubusercontent.com/JsonChao/Awesome-Android-Interview/master/screenshot/wexin_qrcode.jpg" width="35%"><br></div>
+
+
+<h3 id="●-QQ群："><a href="#●-QQ群：" class="headerlink" title="●  QQ群："></a>●  QQ群：</h3><blockquote>
+<p>2千人QQ群，<strong>Awesome-Android学习交流群，QQ群号：959936182</strong>， 欢迎大家加入~</p>
+</blockquote>
+<h3 id="About-me"><a href="#About-me" class="headerlink" title="About me"></a>About me</h3><ul>
+<li><h4 id="Email-chao-qu521-gmail-com"><a href="#Email-chao-qu521-gmail-com" class="headerlink" title="Email: chao.qu521@gmail.com"></a>Email: <a href="">chao.qu521@gmail.com</a></h4></li>
+<li><h4 id="Blog-https-jsonchao-github-io"><a href="#Blog-https-jsonchao-github-io" class="headerlink" title="Blog: https://jsonchao.github.io/"></a>Blog: <a href="https://jsonchao.github.io/" target="_blank" rel="external">https://jsonchao.github.io/</a></h4></li>
+<li><h4 id="掘金-https-juejin-im-user-5a3ba9375188252bca050ade"><a href="#掘金-https-juejin-im-user-5a3ba9375188252bca050ade" class="headerlink" title="掘金: https://juejin.im/user/5a3ba9375188252bca050ade"></a>掘金: <a href="https://juejin.im/user/5a3ba9375188252bca050ade" target="_blank" rel="external">https://juejin.im/user/5a3ba9375188252bca050ade</a></h4></li>
+</ul>
+<h4 id="很感谢您阅读这篇文章，希望您能将它分享给您的朋友或技术群，这对我意义重大。"><a href="#很感谢您阅读这篇文章，希望您能将它分享给您的朋友或技术群，这对我意义重大。" class="headerlink" title="很感谢您阅读这篇文章，希望您能将它分享给您的朋友或技术群，这对我意义重大。"></a>很感谢您阅读这篇文章，希望您能将它分享给您的朋友或技术群，这对我意义重大。</h4><h4 id="希望我们能成为朋友，在-Github、掘金上一起分享知识。"><a href="#希望我们能成为朋友，在-Github、掘金上一起分享知识。" class="headerlink" title="希望我们能成为朋友，在 Github、掘金上一起分享知识。"></a>希望我们能成为朋友，在 <a href="https://github.com/JsonChao" target="_blank" rel="external">Github</a>、<a href="https://juejin.im/user/5a3ba9375188252bca050ade" target="_blank" rel="external">掘金</a>上一起分享知识。</h4>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.png" alt="JsonChao Alipay"/>
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/性能优化/" rel="tag"># 性能优化</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/12/29/2019年终总结/" rel="next" title="2019年终总结">
+                <i class="fa fa-chevron-left"></i> 2019年终总结
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/01/13/深入探索Android布局优化（下）/" rel="prev" title="深入探索Android布局优化（下）">
+                深入探索Android布局优化（下） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div id="lv-container" data-id="city" data-uid="MTAyMC8zMzg1Mi8xMDQwNQ==">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="JsonChao" />
+            
+              <p class="site-author-name" itemprop="name">JsonChao</p>
+              <p class="site-description motion-element" itemprop="description">Persist + Plan = Growing</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">40</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/rss2.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/JsonChao" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://mail.google.com/mail/u/0/#inbox" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-globe"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://juejin.im/user/5a3ba9375188252bca050ade" target="_blank" title="JueJin">
+                      
+                        <i class="fa fa-fw fa-globe"></i>JueJin</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Manito Link
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://wanandroid.com/" title="WanAndroid" target="_blank">WanAndroid</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://hencoder.com/" title="HenCoder" target="_blank">HenCoder</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.trinea.cn/" title="Trinea" target="_blank">Trinea</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://stormzhang.com/" title="stromzhang" target="_blank">stromzhang</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.hensen.site/" title="Hensen" target="_blank">Hensen</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://liuwangshu.cn/" title="刘望舒" target="_blank">刘望舒</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://zhuanlan.zhihu.com/baron/" title="张磊" target="_blank">张磊</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://kymjs.com/" title="张涛" target="_blank">张涛</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://blog.piasy.com/" title="Piasy" target="_blank">Piasy</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://blog.lmj.wiki/" title="ANLY" target="_blank">ANLY</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://glanwang.com/" title="Glan" target="_blank">Glan</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://huangjunbin.com/" title="黄俊彬" target="_blank">黄俊彬</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://droidyue.com/" title="技术小黑屋" target="_blank">技术小黑屋</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://gityuan.com/" title="gityuan" target="_blank">gityuan</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.gcssloop.com/#blog" title="gcsslop" target="_blank">gcsslop</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样-。"><span class="nav-number">1.0.1.</span> <span class="nav-text">成为一名优秀的Android开发，需要一份完备的知识体系，在这里，让我们一起成长为自己所想的那样~。</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一、绘制原理"><span class="nav-number">1.1.</span> <span class="nav-text">一、绘制原理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、CPU与GPU"><span class="nav-number">1.1.1.</span> <span class="nav-text">1、CPU与GPU</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、Android-图形系统的整体架构"><span class="nav-number">1.1.2.</span> <span class="nav-text">2、Android 图形系统的整体架构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、RenderThread"><span class="nav-number">1.1.3.</span> <span class="nav-text">3、RenderThread</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#硬件加速存在哪些问题？"><span class="nav-number">1.1.3.1.</span> <span class="nav-text">硬件加速存在哪些问题？</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4、刷新机制"><span class="nav-number">1.1.4.</span> <span class="nav-text">4、刷新机制</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、屏幕适配"><span class="nav-number">1.2.</span> <span class="nav-text">二、屏幕适配</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、OLED-屏幕和-LCD-屏幕的区别"><span class="nav-number">1.2.1.</span> <span class="nav-text">1、OLED 屏幕和 LCD 屏幕的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#屏幕的成像原理"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">屏幕的成像原理</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#LCD背光源与OLED自发光"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">LCD背光源与OLED自发光</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#LCD的致命缺陷"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">LCD的致命缺陷</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#OLED屏幕的优势"><span class="nav-number">1.2.1.4.</span> <span class="nav-text">OLED屏幕的优势</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#OLED屏幕的劣势"><span class="nav-number">1.2.1.5.</span> <span class="nav-text">OLED屏幕的劣势</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、屏幕适配方案"><span class="nav-number">1.2.2.</span> <span class="nav-text">2、屏幕适配方案</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1、最原始的Android适配方案：dp-自适应布局或weight比例布局"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">1、最原始的Android适配方案：dp + 自适应布局或weight比例布局</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2、宽高限定符适配方案"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">2、宽高限定符适配方案</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3、UI适配框架AndroidAutoLayout的适配方案"><span class="nav-number">1.2.2.3.</span> <span class="nav-text">3、UI适配框架AndroidAutoLayout的适配方案</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4、smallestWidth适配方案（sw限定符适配）"><span class="nav-number">1.2.2.4.</span> <span class="nav-text">4、smallestWidth适配方案（sw限定符适配）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5、今日头条适配方案"><span class="nav-number">1.2.2.5.</span> <span class="nav-text">5、今日头条适配方案</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#小结"><span class="nav-number">1.2.2.6.</span> <span class="nav-text">小结</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、优化工具"><span class="nav-number">1.3.</span> <span class="nav-text">三、优化工具</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、Systrace"><span class="nav-number">1.3.1.</span> <span class="nav-text">1、Systrace</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1、关注Frames"><span class="nav-number">1.3.1.1.</span> <span class="nav-text">1、关注Frames</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2、关注Alerts栏"><span class="nav-number">1.3.1.2.</span> <span class="nav-text">2、关注Alerts栏</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、Layout-Inspector"><span class="nav-number">1.3.2.</span> <span class="nav-text">2、Layout Inspector</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、Choreographer"><span class="nav-number">1.3.3.</span> <span class="nav-text">3、Choreographer</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4、Tracer-for-OpenGL-ES-与-GAPID（Graphics-API-Debugger）"><span class="nav-number">1.3.4.</span> <span class="nav-text">4、Tracer for OpenGL ES 与 GAPID（Graphics API Debugger）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5、自动化测量-UI-渲染性能的方式"><span class="nav-number">1.3.5.</span> <span class="nav-text">5、自动化测量 UI 渲染性能的方式</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1、gfxinfo"><span class="nav-number">1.3.5.1.</span> <span class="nav-text">1、gfxinfo</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2、SurfaceFlinger"><span class="nav-number">1.3.5.2.</span> <span class="nav-text">2、SurfaceFlinger</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、布局加载原理"><span class="nav-number">1.4.</span> <span class="nav-text">四、布局加载原理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、为什么要了解Android布局加载原理？"><span class="nav-number">1.4.1.</span> <span class="nav-text">1、为什么要了解Android布局加载原理？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、布局加载源码分析"><span class="nav-number">1.4.2.</span> <span class="nav-text">2、布局加载源码分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、LayoutInflater-Factory分析"><span class="nav-number">1.4.3.</span> <span class="nav-text">3、LayoutInflater.Factory分析</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五、获取界面布局耗时"><span class="nav-number">1.5.</span> <span class="nav-text">五、获取界面布局耗时</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、常规方式"><span class="nav-number">1.5.1.</span> <span class="nav-text">1、常规方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、AOP"><span class="nav-number">1.5.2.</span> <span class="nav-text">2、AOP</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、LayoutInflaterCompat-setFactory2"><span class="nav-number">1.5.3.</span> <span class="nav-text">3、LayoutInflaterCompat.setFactory2</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#参考链接："><span class="nav-number">1.5.3.1.</span> <span class="nav-text">参考链接：</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#赞赏"><span class="nav-number">2.</span> <span class="nav-text">赞赏</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Contanct-Me"><span class="nav-number">3.</span> <span class="nav-text">Contanct Me</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#●-微信："><span class="nav-number">3.1.</span> <span class="nav-text">●  微信：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#●-微信群："><span class="nav-number">3.2.</span> <span class="nav-text">●  微信群：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#●-QQ群："><span class="nav-number">3.3.</span> <span class="nav-text">●  QQ群：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#About-me"><span class="nav-number">3.4.</span> <span class="nav-text">About me</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Email-chao-qu521-gmail-com"><span class="nav-number">3.4.1.</span> <span class="nav-text">Email: chao.qu521@gmail.com</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Blog-https-jsonchao-github-io"><span class="nav-number">3.4.2.</span> <span class="nav-text">Blog: https://jsonchao.github.io/</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#掘金-https-juejin-im-user-5a3ba9375188252bca050ade"><span class="nav-number">3.4.3.</span> <span class="nav-text">掘金: https://juejin.im/user/5a3ba9375188252bca050ade</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#很感谢您阅读这篇文章，希望您能将它分享给您的朋友或技术群，这对我意义重大。"><span class="nav-number">3.4.4.</span> <span class="nav-text">很感谢您阅读这篇文章，希望您能将它分享给您的朋友或技术群，这对我意义重大。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#希望我们能成为朋友，在-Github、掘金上一起分享知识。"><span class="nav-number">3.4.5.</span> <span class="nav-text">希望我们能成为朋友，在 Github、掘金上一起分享知识。</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">JsonChao</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+    
+
+    
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2155025"></script>
+      <!-- UY END -->
+    
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+   
+   
+     
+   
+   
+  
+     
+</div>
+<!-- City版安装代码已完成 -->
+   
+ 
+
+   
+     
+   
+  
+       <div id="lv-container" data-id="city" data-uid="MTAyMC8zMzg1Mi8xMDQwNQ==">
+       <script type="text/javascript">
+          (function(d, s) {
+              var j, e = d.getElementsByTagName(s)[0];
+              if (typeof LivereTower === 'function') { return; }
+              j = d.createElement(s);
+              j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+              j.async = true;
+              e.parentNode.insertBefore(j, e);
+          })(document, 'script');
+       </script>
+       <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+       <!-- UY END -->
+   
+ 
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("2wtHdVd6zid7kU6YQKIqsHU5-gzGzoHsz", "eLibBRhSAsSoX1JbTMJH6ka3");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
